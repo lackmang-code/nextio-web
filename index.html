@@ -56,7 +56,7 @@
   <div class="hero-wrap">
     <div class="hero-text reveal">
       <p class="eyebrow">AI EDUCATION SPECIALIST</p>
-      <h1 class="hero-h">넥스트<br>아이오</h1>
+      <h1 class="hero-h">Next IO</h1>
       <p class="hero-sub">공학적 통찰, AI로 확장하다<br>AI 실무교육 · 학술 콘텐츠 위탁제작</p>
       <a href="mailto:info@nextio.ai.kr" class="cta-btn">www.nextio.ai.kr</a>
     </div>
@@ -143,7 +143,7 @@
   </div>
 </section>
 
-<!-- ④ PROFILE (Problem Statement 스타일 — 번호 카드) -->
+<!-- ④ PROFILE + STATS -->
 <section id="profile" class="pg pg-light">
   <div class="deco deco-tr"></div>
   <div class="deco deco-bl"></div>
@@ -176,26 +176,24 @@
       <img class="rect-img" src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&q=80" alt="대학 캠퍼스">
     </div>
   </div>
-</section>
-
-<!-- ⑤ STATS (네이비 전체) -->
-<section id="stats" class="pg-stats">
-  <div class="stats-wrap">
-    <div class="stat reveal">
-      <span class="sn" data-count="23" data-suffix="년">23년</span>
-      <span class="sl">삼성디스플레이<br>수석연구원</span>
-    </div>
-    <div class="stat reveal reveal-d1">
-      <span class="sn" data-count="357" data-suffix="건">357건</span>
-      <span class="sl">국내외 등록 특허<br>(Google Patent 2025)</span>
-    </div>
-    <div class="stat reveal reveal-d2">
-      <span class="sn" data-count="20" data-suffix="+건">20+건</span>
-      <span class="sl">대학연계<br>산학과제</span>
-    </div>
-    <div class="stat reveal reveal-d3">
-      <span class="sn" data-count="2" data-suffix="건">2건</span>
-      <span class="sl">장관상·국제 학회상<br>수상</span>
+  <div class="pg-stats">
+    <div class="stats-wrap">
+      <div class="stat reveal">
+        <span class="sn" data-count="23" data-suffix="년">23년</span>
+        <span class="sl">삼성디스플레이<br>수석연구원</span>
+      </div>
+      <div class="stat reveal reveal-d1">
+        <span class="sn" data-count="357" data-suffix="건">357건</span>
+        <span class="sl">국내외 등록 특허<br>(Google Patent 2025)</span>
+      </div>
+      <div class="stat reveal reveal-d2">
+        <span class="sn" data-count="20" data-suffix="+건">20+건</span>
+        <span class="sl">대학연계<br>산학과제</span>
+      </div>
+      <div class="stat reveal reveal-d3">
+        <span class="sn" data-count="2" data-suffix="건">2건</span>
+        <span class="sl">장관상·국제 학회상<br>수상</span>
+      </div>
     </div>
   </div>
 </section>
@@ -205,9 +203,8 @@
   <div class="deco deco-tr"></div>
   <div class="deco deco-bl"></div>
   <div class="two-col">
-    <div class="col-2img reveal">
-      <img class="dbl-img dbl-img-1" src="https://images.unsplash.com/photo-1562774053-701939374585?w=500&q=80" alt="교육 현장">
-      <img class="dbl-img dbl-img-2" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&q=80" alt="발표 실습">
+    <div class="col-img reveal">
+      <img class="rect-img" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" alt="발표 실습">
     </div>
     <div class="col-text reveal reveal-d2">
       <h2 class="sec-h">대표 교육 프로그램</h2>
@@ -245,5 +242,16 @@
 </footer>
 
 <script src="main.js"></script>
+<script>
+  // ?edit=1 일 때만 편집 도구 로드
+  if (new URLSearchParams(location.search).has('edit')) {
+    const l = document.createElement('link');
+    l.rel = 'stylesheet'; l.href = 'editor.css';
+    document.head.appendChild(l);
+    const s = document.createElement('script');
+    s.src = 'editor.js'; s.defer = true;
+    document.body.appendChild(s);
+  }
+</script>
 </body>
 </html>
