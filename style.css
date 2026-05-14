@@ -158,20 +158,20 @@ section { position: relative; }
 .info-tbl td { padding: 10px 0; font-size: 13px; color: var(--text-h); font-weight: 500; }
 
 /* ===== SPLIT SECTION (사업 영역) ===== */
-.pg-split { background: none; }
-.split-top { background-color: var(--bg); background-image: repeating-linear-gradient(80deg, transparent 0px, transparent 24px, rgba(255,255,255,0.55) 24px, rgba(255,255,255,0.55) 26px); padding: 60px 40px 0; }
+.pg-split { background: none; min-height: 100vh; display: flex; flex-direction: column; }
+.split-top { background-color: var(--bg); background-image: repeating-linear-gradient(80deg, transparent 0px, transparent 24px, rgba(255,255,255,0.55) 24px, rgba(255,255,255,0.55) 26px); padding: 80px 40px 40px; }
 .split-top .sec-h { max-width: 1200px; margin: 0 auto; }
 
 .split-icons {
   position: relative; z-index: 2;
-  max-width: 1000px; margin: 0 auto;
-  display: flex; gap: 32px;
+  max-width: 1100px; margin: 0 auto;
+  display: flex; gap: 40px;
   padding: 0 40px;
   justify-content: center;
 }
-.svc-item { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 280px; }
+.svc-item { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 320px; }
 .svc-circle {
-  width: 110px; height: 110px; border-radius: 50%;
+  width: 120px; height: 120px; border-radius: 50%;
   background: var(--navy); border: 4px solid #fff;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 8px 28px rgba(27,45,107,0.35);
@@ -179,13 +179,14 @@ section { position: relative; }
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .svc-item:hover .svc-circle { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(27,45,107,0.45); }
-.svc-info { background: var(--navy); color: #fff; padding: 60px 24px 28px; border-radius: 0 0 12px 12px; margin-top: -50px; width: 100%; }
-.svc-info strong { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
-.svc-info p { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+.svc-info { background: var(--navy); color: #fff; padding: 70px 28px 36px; border-radius: 0 0 14px 14px; margin-top: -56px; width: 100%; }
+.svc-info strong { display: block; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+.svc-info p { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.8; }
 
 .split-bottom {
+  flex: 1;
   background: var(--navy);
-  text-align: center; padding: 32px 40px 60px;
+  text-align: center; padding: 48px 40px 80px;
 }
 .split-bottom p { color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.9; max-width: 800px; margin: 0 auto; }
 
