@@ -102,11 +102,12 @@ section { position: relative; }
 .hero-text { flex: 0 0 44%; z-index: 1; }
 .hero-h {
   font-family: 'Raleway', sans-serif;
-  font-weight: 200;
+  font-weight: 900;
   font-size: clamp(60px, 8vw, 110px);
   color: var(--text-h);
   line-height: 0.95;
   margin-bottom: 20px;
+  letter-spacing: -2px;
 }
 .hero-sub { font-size: 16px; color: var(--text-b); line-height: 1.7; margin-bottom: 32px; }
 .cta-btn {
@@ -195,7 +196,7 @@ section { position: relative; }
   display: flex; gap: 0;
   background: var(--navy);
   border-radius: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(27,45,107,0.14);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -203,14 +204,14 @@ section { position: relative; }
 .num-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(27,45,107,0.22); }
 .nc-num {
   display: flex; align-items: center; justify-content: center;
-  width: 64px; flex-shrink: 0;
+  width: 56px; flex-shrink: 0;
   background: rgba(0,0,0,0.2);
   color: var(--blue); font-family: 'Raleway', sans-serif;
-  font-weight: 700; font-size: 18px;
+  font-weight: 700; font-size: 16px;
 }
-.nc-body { padding: 16px 20px; }
-.nc-body strong { display: block; color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-.nc-body p { color: rgba(255,255,255,0.7); font-size: 12px; line-height: 1.7; }
+.nc-body { padding: 12px 18px; }
+.nc-body strong { display: block; color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.nc-body p { color: rgba(255,255,255,0.7); font-size: 11px; line-height: 1.6; }
 
 /* ===== STATS ===== */
 .pg-stats { background: var(--navy); padding: 80px 40px; }
@@ -271,6 +272,99 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 .reveal-d1 { transition-delay: 0.12s; }
 .reveal-d2 { transition-delay: 0.24s; }
 .reveal-d3 { transition-delay: 0.36s; }
+
+/* ===== PC: 가로 페이지 전환 ===== */
+@media (min-width: 769px) {
+  html, body { overflow: hidden; height: 100%; }
+  footer { display: none; }
+
+  #pages {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  #pages::-webkit-scrollbar { display: none; }
+
+  #pages > section {
+    flex: 0 0 100vw;
+    min-width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  #pages > section::-webkit-scrollbar { display: none; }
+
+  /* 히어로 섹션: 수직 중앙 정렬 */
+  #hero { display: flex; align-items: center; padding-top: 64px; }
+
+  /* 프로필 섹션 패딩 축소 */
+  #profile .two-col { padding-top: 48px; padding-bottom: 48px; }
+  #profile .sec-h { font-size: 42px; margin-bottom: 16px; }
+
+  /* 통계 섹션: 수직 중앙 */
+  .pg-stats { display: flex; align-items: center; justify-content: center; }
+
+  /* 연락처 섹션: 수직 중앙 */
+  .pg-contact { display: flex; align-items: center; justify-content: center; }
+  .pg-contact .contact-wrap { width: 100%; }
+
+  /* ── 페이지 이동 버튼 ── */
+  .pg-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 600;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(27,45,107,0.55);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+    backdrop-filter: blur(4px);
+  }
+  .pg-nav:hover { background: var(--navy); transform: translateY(-50%) scale(1.1); }
+  .pg-nav:disabled { opacity: 0.2; pointer-events: none; }
+  .pg-prev { left: 20px; }
+  .pg-next { right: 20px; }
+
+  /* ── 페이지 점 표시 ── */
+  .pg-dots {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 600;
+  }
+  .pg-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(27,45,107,0.25);
+    border: 1px solid rgba(27,45,107,0.4);
+    cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
+    padding: 0;
+  }
+  .pg-dot.active {
+    background: var(--navy);
+    transform: scale(1.5);
+    border-color: var(--navy);
+  }
+}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 960px) {
