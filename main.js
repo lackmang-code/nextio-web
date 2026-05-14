@@ -59,10 +59,18 @@ sections.forEach((s, i) => {
   dotsWrap.appendChild(btn);
 });
 
+// scroll-snap 컨테이너에서 CSS scroll-behavior:smooth가 Chromium에서 깨지는 이슈를 피하기 위해
+// 즉시 스크롤 + 시각적 부드러움은 섹션 내 .reveal 페이드로 제공.
+// IntersectionObserver가 가로 스크롤을 안정적으로 감지 못 하는 경우가 있어, 도착 섹션의 reveal을 직접 활성화.
+function activateReveals(section) {
+  section.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+}
 function goTo(idx) {
   if (!IS_DESKTOP()) return;
   currentIdx = Math.max(0, Math.min(idx, sections.length - 1));
-  sections[currentIdx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  const target = currentIdx * pagesEl.clientWidth;
+  pagesEl.scrollLeft = target;
+  activateReveals(sections[currentIdx]);
   syncUI();
 }
 
@@ -94,8 +102,7 @@ const snapObs = new IntersectionObserver((entries) => {
     if (e.isIntersecting && e.intersectionRatio >= 0.5) {
       currentIdx = sections.indexOf(e.target);
       syncUI();
-      // 카운트업 트리거
-      if (e.target.id === 'stats' && !counted) countObs.disconnect();
+      activateReveals(e.target);
     }
   });
 }, { root: pagesEl, threshold: 0.5 });
