@@ -381,9 +381,9 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 
   /* Services */
   #services { padding-top: 64px; }
-  .split-top { padding: 72px 40px 32px; }
-  .split-top .sec-h { font-size: clamp(40px, 5vw, 68px); margin-bottom: 20px; max-width: 1000px; }
-  .split-icons { padding: 0 40px; gap: 48px; flex: 1; flex-wrap: nowrap; align-items: center; flex-direction: row; }
+  .split-top { padding: 72px 40px 32px; text-align: center; }
+  .split-top .sec-h { font-size: clamp(40px, 5vw, 68px); margin: 0 auto 20px; max-width: 1000px; }
+  .split-icons { padding: 0 80px; gap: 48px; flex: 1; flex-wrap: nowrap; align-items: center; flex-direction: row; }
   .svc-item { flex: 1; max-width: none; width: auto; }
   .svc-circle { width: 120px; height: 120px; }
   .svc-info { padding: 70px 20px 36px; margin-top: -56px; }
