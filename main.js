@@ -141,11 +141,23 @@ syncUI();
     btn.disabled = false;
   });
 
+  // ▶ EmailJS 설정값 (emailjs.com 에서 발급)
+  const EJS = {
+    serviceId:  'YOUR_SERVICE_ID',
+    templateId: 'YOUR_TEMPLATE_ID',
+    publicKey:  'YOUR_PUBLIC_KEY'
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const isPriv = privCh.checked;
-    const title  = titleI.value.trim() || '제목 없음';
+    const isPriv   = privCh.checked;
+    const title    = titleI.value.trim() || '제목 없음';
     subj.value = (isPriv ? '[비공개] ' : '') + '문의: ' + title;
+
+    // 자동답장용 값 미리 저장
+    const toEmail = form.querySelector('[name="email"]').value;
+    const toName  = form.querySelector('[name="name"]').value || '고객';
+    const toMsg   = form.querySelector('[name="message"]').value;
 
     btn.textContent = '전송 중...';
     btn.disabled = true;
@@ -154,6 +166,14 @@ syncUI();
       const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) });
       const json = await res.json();
       if (json.success) {
+        // 자동답장 (EmailJS) — 실패해도 메인 접수는 이미 완료
+        emailjs.send(EJS.serviceId, EJS.templateId, {
+          to_email: toEmail,
+          to_name:  toName,
+          inq_title: title,
+          inq_body:  toMsg
+        }, EJS.publicKey).catch(() => {});
+
         form.hidden = true;
         done.hidden = false;
       } else {
