@@ -425,13 +425,14 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 
   /* Contact */
   #contact { padding-top: 64px; }
-  .pg-contact { min-height: 0; padding: 60px 40px; align-items: center; }
-  #contact .eyebrow { font-size: 18px; }
-  .contact-tagline { font-size: 18px; line-height: 1.8; margin-bottom: 32px; }
+  #pages > section#contact { overflow-y: auto; }
+  .pg-contact { min-height: 0; padding: 36px 80px; align-items: center; }
+  #contact .eyebrow { font-size: 16px; }
+  .contact-tagline { font-size: 16px; line-height: 1.7; margin-bottom: 20px; }
   .bf-row { flex-direction: row; gap: 16px; }
   .bf-col { flex: 1; }
-  .bf-input, .bf-textarea { font-size: 15px; padding: 13px 16px; }
-  .bf-label { font-size: 14px; }
-  .bf-textarea { min-height: 140px; }
-  .bf-submit { padding: 13px 36px; font-size: 15px; }
+  .bf-input, .bf-textarea { font-size: 14px; padding: 11px 14px; }
+  .bf-label { font-size: 13px; }
+  .bf-textarea { min-height: 96px; }
+  .bf-submit { padding: 11px 32px; font-size: 14px; }
 }
