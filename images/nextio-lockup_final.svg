@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 601 225" width="601" height="225">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;800&amp;family=Noto+Sans+KR:wght@400;600&amp;display=swap');</style>
+    
+    <radialGradient id="m-node" cx="0.3" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.55" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#b45309"/>
+    </radialGradient>
+    <radialGradient id="m-out" cx="0.35" cy="0.35" r="0.9">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.4" stop-color="#fde68a"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </radialGradient>
+    <marker id="m-arr" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L5,2.5 L0,5 L1.2,2.5 Z" fill="#fbbf24"/>
+    </marker>
+  </defs>
+  <rect width="601" height="225" fill="#0a0a0a"/>
+  <g transform="translate(7.059999999999999, 7.059999999999999) scale(1.1)"><line x1="32" y1="168" x2="100" y2="100" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="100" y1="100" x2="168" y2="32" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="32" y1="32" x2="168" y2="168" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="32" y1="168" x2="168" y2="32" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="32" y1="32" x2="168" y2="32" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="32" y1="157" x2="32" y2="49" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" marker-end="url(#m-arr)"/><line x1="39.77817459305202" y1="39.77817459305202" x2="87.9791847198287" y2="87.9791847198287" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" marker-end="url(#m-arr)"/><line x1="107.77817459305203" y1="107.77817459305203" x2="155.97918471982868" y2="155.97918471982868" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" marker-end="url(#m-arr)"/><line x1="168" y1="157" x2="168" y2="54.6" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" marker-end="url(#m-arr)"/><circle cx="32" cy="168" r="8" fill="url(#m-node)" stroke="#fde68a" stroke-width="1"/><circle cx="32" cy="32" r="8" fill="url(#m-node)" stroke="#fde68a" stroke-width="1"/><circle cx="100" cy="100" r="8" fill="url(#m-node)" stroke="#fde68a" stroke-width="1"/><circle cx="168" cy="168" r="8" fill="url(#m-node)" stroke="#fde68a" stroke-width="1"/><circle cx="168" cy="32" r="16.6" fill="none" stroke="#fde68a" stroke-width="1.2" opacity="0.85"/>
+              <circle cx="168" cy="32" r="13.6" fill="url(#m-out)" stroke="#fde68a" stroke-width="1"/>
+              <circle cx="164.6" cy="28.6" r="3.8080000000000003" fill="#ffffff" opacity="0.85"/></g>
+  <g>
+    <text x="234.11999999999998" y="148.7330014178157" font-family="Inter, 'Noto Sans KR', sans-serif" font-weight="800" font-size="76" letter-spacing="-2" fill="#ffffff">NEXT<tspan fill="#fbbf24">·</tspan>I/O</text>
+    <text x="234.11999999999998" y="194.67446031191946" font-family="'Noto Sans KR', sans-serif" font-weight="400" font-size="27.206998582184315" fill="#ffffff" opacity="0.92">공학적 통찰, <tspan fill="#fbbf24" font-weight="600">AI로 확장하다.</tspan></text>
+  </g>
+</svg>
