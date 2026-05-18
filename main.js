@@ -145,7 +145,7 @@ syncUI();
     e.preventDefault();
     const isPriv = privCh.checked;
     const title  = titleI.value.trim() || '제목 없음';
-    subj.value = (isPriv ? '[비공개] ' : '') + '협력제안: ' + title;
+    subj.value = (isPriv ? '[비공개] ' : '') + '문의: ' + title;
 
     btn.textContent = '전송 중...';
     btn.disabled = true;
