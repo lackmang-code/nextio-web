@@ -143,9 +143,9 @@ syncUI();
 
   // ▶ EmailJS 설정값 (emailjs.com 에서 발급)
   const EJS = {
-    serviceId:  'YOUR_SERVICE_ID',
-    templateId: 'YOUR_TEMPLATE_ID',
-    publicKey:  'YOUR_PUBLIC_KEY'
+    serviceId:  'service_d3dgl6d',
+    templateId: 'template_rlsvr49',
+    publicKey:  '-hkY5jZrgHffSGU2d'
   };
 
   form.addEventListener('submit', async (e) => {
