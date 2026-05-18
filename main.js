@@ -121,3 +121,48 @@ const mobileObs = new IntersectionObserver((entries) => {
 sections.forEach(s => mobileObs.observe(s));
 
 syncUI();
+
+// ── 협력제안 게시판 폼 ──
+(function () {
+  const form   = document.getElementById('boardForm');
+  const btn    = document.getElementById('bf-btn');
+  const privCh = document.getElementById('bf-priv-chk');
+  const subj   = document.getElementById('bf-subject');
+  const titleI = document.getElementById('bf-title');
+  const done   = document.getElementById('boardDone');
+  const again  = document.getElementById('bd-again-btn');
+  if (!form) return;
+
+  again.addEventListener('click', () => {
+    done.hidden = true;
+    form.hidden = false;
+    form.reset();
+    btn.textContent = '게시하기 →';
+    btn.disabled = false;
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const isPriv = privCh.checked;
+    const title  = titleI.value.trim() || '제목 없음';
+    subj.value = (isPriv ? '[비공개] ' : '') + '협력제안: ' + title;
+
+    btn.textContent = '전송 중...';
+    btn.disabled = true;
+
+    try {
+      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) });
+      const json = await res.json();
+      if (json.success) {
+        form.hidden = true;
+        done.hidden = false;
+      } else {
+        btn.textContent = '오류 — 다시 시도';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = '전송 실패 — 다시 시도';
+      btn.disabled = false;
+    }
+  });
+})();

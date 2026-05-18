@@ -217,17 +217,60 @@
   </div>
 </section>
 
-<!-- ⑦ CONTACT -->
+<!-- ⑦ CONTACT / 협력제안 게시판 -->
 <section id="contact" class="pg-contact">
-  <div class="contact-wrap reveal">
+  <div class="board-wrap reveal">
     <p class="eyebrow white">CONTACT US</p>
-    <h2 class="sec-h white">협력 제안 환영합니다</h2>
-    <p class="contact-tagline">넥스트아이오는 귀 기관의 AI 실무교육 및 학술 콘텐츠 제작 파트너로서 최선을 다하겠습니다.</p>
-    <div class="contact-grid">
-      <div class="cbox reveal reveal-d1"><span class="cl">대표</span><span class="cv">박원상</span></div>
-      <div class="cbox reveal reveal-d2"><span class="cl">전화</span><span class="cv">010-3938-0486</span></div>
-      <div class="cbox reveal reveal-d1"><span class="cl">이메일</span><span class="cv">info@nextio.ai.kr</span></div>
-      <div class="cbox reveal reveal-d2"><span class="cl">홈페이지</span><span class="cv">www.nextio.ai.kr</span></div>
+    <h2 class="sec-h white">협력 제안 게시판</h2>
+    <p class="contact-tagline">AI 실무교육 및 학술 콘텐츠 제작 관련 협력 제안을 남겨주세요.</p>
+
+    <form id="boardForm" class="board-form" novalidate>
+      <!-- ▶ https://web3forms.com 에서 이메일 입력 후 발급된 Access Key를 아래에 입력 -->
+      <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY">
+      <input type="hidden" name="from_name" value="NextIO 홈페이지">
+      <input type="hidden" id="bf-subject" name="subject" value="[협력제안] 새 글이 등록되었습니다">
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+
+      <div class="bf-row">
+        <div class="bf-col">
+          <label class="bf-label">이름 <span class="bf-req">*</span></label>
+          <input class="bf-input" type="text" name="name" placeholder="성함" required>
+        </div>
+        <div class="bf-col">
+          <label class="bf-label">연락처 <span class="bf-req">*</span></label>
+          <input class="bf-input" type="text" name="contact" placeholder="이메일 또는 전화번호" required>
+        </div>
+      </div>
+
+      <div class="bf-full">
+        <label class="bf-label">소속 / 기관</label>
+        <input class="bf-input" type="text" name="organization" placeholder="회사 · 학교 · 기관명 (선택)">
+      </div>
+
+      <div class="bf-full">
+        <label class="bf-label">제목 <span class="bf-req">*</span></label>
+        <input class="bf-input" id="bf-title" type="text" name="title" placeholder="협력 제안 제목" required>
+      </div>
+
+      <div class="bf-full">
+        <label class="bf-label">내용 <span class="bf-req">*</span></label>
+        <textarea class="bf-textarea" name="message" placeholder="협력 제안 내용을 자유롭게 작성해 주세요." required></textarea>
+      </div>
+
+      <div class="bf-actions">
+        <label class="bf-priv">
+          <input type="checkbox" id="bf-priv-chk">
+          <span>🔒 비공개 처리</span>
+        </label>
+        <button type="submit" class="bf-submit" id="bf-btn">게시하기 →</button>
+      </div>
+    </form>
+
+    <div id="boardDone" class="board-done" hidden>
+      <div class="bd-icon">✓</div>
+      <p class="bd-title">제안이 접수되었습니다</p>
+      <p class="bd-sub">빠른 시일 내에 연락드리겠습니다.</p>
+      <button class="bd-again" id="bd-again-btn">다시 작성하기</button>
     </div>
   </div>
 </section>
