@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="1024" height="1024">
+  <defs>
+    <radialGradient id="nodeGrad" cx="0.3" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.55" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#b45309"/>
+    </radialGradient>
+    <radialGradient id="outGrad" cx="0.35" cy="0.35" r="0.9">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.4" stop-color="#fde68a"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </radialGradient>
+    <marker id="arr" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L5,2.5 L0,5 L1.2,2.5 Z" fill="#fbbf24"/>
+    </marker>
+  </defs>
+  
+  <g transform="translate(0, 0)">
+    <line x1="32" y1="168" x2="100" y2="100" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="100" y1="100" x2="168" y2="32" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="32" y1="32" x2="168" y2="168" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="32" y1="168" x2="168" y2="32" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/><line x1="32" y1="32" x2="168" y2="32" stroke="#9a9a9a" stroke-opacity="0.22" stroke-width="4"/>
+    <line x1="32" y1="157" x2="32" y2="49" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" marker-end="url(#arr)"/><line x1="39.77817459305202" y1="39.77817459305202" x2="87.9791847198287" y2="87.9791847198287" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" marker-end="url(#arr)"/><line x1="107.77817459305203" y1="107.77817459305203" x2="155.97918471982868" y2="155.97918471982868" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" marker-end="url(#arr)"/><line x1="168" y1="157" x2="168" y2="54.6" stroke="#fbbf24" stroke-width="4.2" stroke-linecap="round" marker-end="url(#arr)"/>
+    <circle cx="32" cy="168" r="8" fill="url(#nodeGrad)" stroke="#fde68a" stroke-width="1"/><circle cx="32" cy="32" r="8" fill="url(#nodeGrad)" stroke="#fde68a" stroke-width="1"/><circle cx="100" cy="100" r="8" fill="url(#nodeGrad)" stroke="#fde68a" stroke-width="1"/><circle cx="168" cy="168" r="8" fill="url(#nodeGrad)" stroke="#fde68a" stroke-width="1"/>
+        <circle cx="168" cy="32" r="16.6" fill="none" stroke="#fde68a" stroke-width="1.2" opacity="0.85"/>
+        <circle cx="168" cy="32" r="13.6" fill="url(#outGrad)" stroke="#fde68a" stroke-width="1"/>
+        <circle cx="164.6" cy="28.6" r="3.8080000000000003" fill="#ffffff" opacity="0.85"/>
+  </g>
+  
+</svg>
