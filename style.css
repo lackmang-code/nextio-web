@@ -500,3 +500,19 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
   .unicorn-card { padding: 48px 36px; min-height: 300px; }
   .uc-h { font-size: 34px; }
 }
+
+@media (max-width: 768px) {
+  .day-badges {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .db {
+    width: 100%;
+    padding: 14px 10px;
+    font-size: 14px;
+    min-width: unset;
+    box-sizing: border-box;
+  }
+  .db span { font-size: 11px; margin-top: 5px; }
+}
