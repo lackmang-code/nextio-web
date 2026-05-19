@@ -436,3 +436,55 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
   .bf-textarea { min-height: 96px; }
   .bf-submit { padding: 11px 32px; font-size: 14px; }
 }
+
+/* ===== AI 유니콘 과정 섹션 ===== */
+.pg-unicorn {
+  background-color: #161F38;
+  background-image: repeating-linear-gradient(80deg, transparent 0px, transparent 24px, rgba(255,255,255,0.03) 24px, rgba(255,255,255,0.03) 26px);
+  padding-top: 64px;
+}
+.pg-unicorn .sec-h { font-size: 30px; }
+
+/* 5일 배지 */
+.day-badges {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px;
+}
+.db {
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: 8px 14px; border-radius: 6px;
+  font-size: 13px; font-weight: 700; color: #fff; min-width: 62px;
+}
+.db span { font-size: 10px; font-weight: 400; margin-top: 3px; opacity: 0.9; }
+
+/* 우측 카드 */
+.unicorn-card {
+  background: linear-gradient(135deg, #1E2A50 0%, #0F1E38 100%);
+  border: 1px solid rgba(91,155,213,0.25);
+  border-radius: 14px; padding: 40px 28px;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; min-height: 260px;
+}
+.uc-tag {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  color: #5B9BD5; text-transform: uppercase; margin-bottom: 18px;
+}
+.uc-h {
+  font-family: 'Raleway', sans-serif; font-size: 28px; font-weight: 700;
+  color: #FFF5CC; line-height: 1.35; margin-bottom: 14px;
+}
+.uc-sub { font-size: 13px; color: #8AADCE; line-height: 1.7; margin-bottom: 20px; }
+.uc-meta {
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+}
+.uc-meta span {
+  background: rgba(91,155,213,0.15); border: 1px solid rgba(91,155,213,0.3);
+  color: #7EB3F5; font-size: 12px; font-weight: 600;
+  padding: 5px 14px; border-radius: 20px;
+}
+
+@media (min-width: 900px) {
+  .pg-unicorn .two-col { padding: 72px 40px; }
+  .pg-unicorn .sec-h { font-size: clamp(32px, 4vw, 52px); }
+  .unicorn-card { padding: 48px 36px; min-height: 300px; }
+  .uc-h { font-size: 34px; }
+}
