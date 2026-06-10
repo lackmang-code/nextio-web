@@ -903,13 +903,13 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 }
 
 /* ===== DAILY NEWS 2-COL LAYOUT (Premium Design) ===== */
-.daily-news-section { padding: 60px 20px; text-align: center; }
+.daily-news-section { padding: 40px 20px 60px 20px; text-align: center; }
 .daily-news-wrap { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
 
 .dn-2col {
   display: flex; gap: 40px; max-width: 1100px; margin: 0 auto;
   align-items: stretch; text-align: left;
-  height: 750px;
+  height: 800px;
 }
 
 /* Sidebar (Left) */
