@@ -909,10 +909,19 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 .dn-2col {
   display: flex; gap: 40px; max-width: 1100px; margin: 0 auto;
   align-items: stretch; text-align: left;
+  height: 750px;
 }
 
 /* Sidebar (Left) */
-.dn-sidebar { flex: 0 0 320px; display: flex; flex-direction: column; }
+.dn-sidebar { 
+  flex: 0 0 320px; display: flex; flex-direction: column;
+  overflow-y: auto; padding-right: 12px;
+}
+.dn-sidebar::-webkit-scrollbar { width: 6px; }
+.dn-sidebar::-webkit-scrollbar-track { background: rgba(74, 144, 217, 0.05); border-radius: 4px; }
+.dn-sidebar::-webkit-scrollbar-thumb { background: rgba(74, 144, 217, 0.3); border-radius: 4px; }
+.dn-sidebar::-webkit-scrollbar-thumb:hover { background: rgba(74, 144, 217, 0.6); }
+
 .dn-list-title {
   font-family: 'Raleway', sans-serif; font-size: 18px; font-weight: 700;
   color: var(--text-h); margin-bottom: 20px; padding-bottom: 12px;
@@ -963,12 +972,11 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
   flex: 1; background: rgba(255, 255, 255, 0.85); border-radius: 20px;
   box-shadow: 0 20px 60px rgba(27, 45, 107, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   overflow: hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  position: relative; min-height: 600px;
+  position: relative;
 }
 .daily-news-container iframe {
   position: absolute; top: 0; left: 0;
-  width: 125%; height: 125%;
-  transform: scale(0.8); transform-origin: top left;
+  width: 100%; height: 100%;
   border: none; display: block;
   transition: opacity 0.2s ease-in-out;
 }
@@ -984,8 +992,9 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 .btn-outline:hover { background: #f8f9fa; border-color: #4A90D9; color: #4A90D9; }
 
 @media (max-width: 900px) {
-  .dn-2col { flex-direction: column; gap: 30px; }
-  .dn-sidebar { flex: none; width: 100%; }
+  .dn-2col { flex-direction: column; gap: 30px; height: auto; }
+  .dn-sidebar { flex: none; width: 100%; height: 400px; overflow-y: auto; }
   .dn-list-item:hover, .dn-list-item.active { transform: none; }
-  .daily-news-container iframe { height: 600px; }
+  .daily-news-container { min-height: 600px; }
+  .daily-news-container iframe { height: 600px; position: static; }
 }

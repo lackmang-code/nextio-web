@@ -506,8 +506,8 @@
       const iframeEl = document.getElementById('dn-iframe');
       listEl.innerHTML = ''; // clear placeholder
       
-      // 최근 10개만 슬라이스
-      const recentDates = dates.slice(0, 10);
+      // 전체 인덱스를 렌더링
+      const recentDates = dates;
       
       recentDates.forEach((dateStr, index) => {
         const li = document.createElement('li');
@@ -525,13 +525,28 @@
           iframeEl.classList.add('fading');
           setTimeout(() => {
             iframeEl.src = `display-daily/card_${dateStr}.html`;
-            iframeEl.onload = () => {
-              iframeEl.classList.remove('fading');
-            };
           }, 200);
         });
         
         listEl.appendChild(li);
+      });
+
+      // CSS Injection on Iframe Load
+      iframeEl.addEventListener('load', () => {
+        try {
+          const doc = iframeEl.contentDocument || iframeEl.contentWindow.document;
+          const style = doc.createElement('style');
+          style.innerHTML = `
+            body { background: transparent !important; padding: 0 !important; }
+            .sheet { max-width: 100% !important; box-shadow: none !important; border-radius: 0 !important; background: transparent !important; margin: 0 !important; }
+            .hd { border-radius: 20px 20px 0 0 !important; }
+            .cta { display: none !important; }
+          `;
+          doc.head.appendChild(style);
+        } catch (e) {
+          console.warn('Iframe CSS injection failed:', e);
+        }
+        setTimeout(() => iframeEl.classList.remove('fading'), 50);
       });
     })
     .catch(err => {
