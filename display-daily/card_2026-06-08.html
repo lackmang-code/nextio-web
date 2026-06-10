@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디스플레이 데일리 — 2026-06-08 | Next I/O</title>
+<meta name="description" content="Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;background:#c8bfb0;padding:22px 12px;line-height:1.6}
+.sheet{max-width:800px;margin:0 auto;background:#fdf9f3;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);overflow:hidden}
+/* 다크 로고 헤더 */
+.hd{background:#0a0a0a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hd .logo{height:46px;display:flex;align-items:center}
+.hd .logo svg{height:46px;width:auto;border-radius:4px}
+.hd .kick{text-align:right}
+.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
+.hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
+.inner{padding:26px 30px 22px}
+.title{font-size:1.4rem;line-height:1.3;letter-spacing:-.5px;color:#000;font-weight:700;margin-bottom:4px}
+.date{font-size:.85rem;color:#777;font-weight:600;margin-bottom:16px}
+.date b{color:#b45309}
+.dt{height:1px;background:#e0e0e0;margin:14px 0}
+
+.top{background:#1a1a1a;color:#f0eadf;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.top .tk{font-size:10px;letter-spacing:1.5px;color:#ffd700;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.top .tt{font-size:1.08rem;line-height:1.4;color:#fff;font-weight:700;word-break:keep-all;margin-bottom:7px}
+.top .eye{font-size:.84rem;line-height:1.7;color:#e8e2d6;word-break:keep-all}
+.top .eye b{color:#ffd700;font-weight:700}
+.top .meta{font-size:11px;color:#bbb;margin-top:9px}
+.top .meta a{color:#d9c98a;text-decoration:none}
+
+.item{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #ece7dd}
+.item:last-of-type{border-bottom:none}
+.num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#efe9df;border:1px solid #e0d8c9;color:#3a3228;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ib{flex:1;min-width:0}
+.it{font-size:1rem;line-height:1.4;color:#111;font-weight:700;word-break:keep-all;margin-bottom:4px}
+.eye{font-size:.84rem;line-height:1.65;color:#444;word-break:keep-all}
+.eye .lab{color:#b45309;font-weight:700}
+.meta{font-size:11px;color:#999;margin-top:5px;word-break:break-all}
+.meta a{color:#8a6d3b;text-decoration:none;font-weight:600}
+.dbadge{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:#3a3228;border-radius:4px;padding:1px 6px;margin-right:7px}
+.top .dbadge{background:#fbbf24;color:#1a1a1a}
+/* 기사 본문 아코디언(한글 번역·편집본) */
+.art{margin-top:10px;border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;overflow:hidden}
+.art>summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:.8rem;font-weight:700;color:#3a3228;background:#f1ece2;user-select:none}
+.art>summary::-webkit-details-marker{display:none}
+.art>summary::before{content:"▸ ";color:#b45309}
+.art[open]>summary::before{content:"▾ "}
+.art[open]>summary{border-bottom:1px solid #e3ddd2}
+.bodytext{padding:12px 14px}
+.bodytext p{font-size:.85rem;line-height:1.8;color:#333;word-break:keep-all;text-align:justify;margin-bottom:9px}
+.bodytext p:last-child{margin-bottom:0}
+.top .art{background:#262626;border-color:#3a3a3a;margin-top:11px}
+.top .art>summary{background:#333;color:#e8e2d6}
+.top .art>summary::before{color:#fbbf24}
+.top .bodytext p{color:#ddd6c8}
+
+/* 홍보 푸터 (CTA) */
+.cta{margin-top:20px;background:#fbf6ee;border:1px solid #ecdfca;border-radius:10px;padding:16px 18px;text-align:center}
+.cta .c1{font-size:.92rem;color:#1a1a1a;font-weight:700;word-break:keep-all}
+.cta .c1 b{color:#b45309}
+.cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
+.cta .c2 a{color:#b45309;text-decoration:none;font-weight:600}
+.foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="hd">
+    <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
+<g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+<line x1="22" y1="36" x2="60" y2="60"></line><line x1="22" y1="84" x2="60" y2="60"></line><line x1="60" y1="60" x2="100" y2="36"></line><line x1="60" y1="60" x2="100" y2="84"></line></g>
+<circle cx="22" cy="36" r="8" fill="#6FA8FF"></circle><circle cx="22" cy="84" r="8" fill="#6FA8FF"></circle>
+<circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle>
+<circle cx="60" cy="60" r="15" fill="#FBBF24"></circle>
+<text x="150" y="78" font-family="Pretendard, &#39;Apple SD Gothic Neo&#39;, sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text></svg></div>
+    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">AI 큐레이션 · 매일 업데이트</div></div>
+  </div>
+  <div class="inner">
+    <h1 class="title">오늘의 디스플레이 Tech</h1>
+    <div class="date">2026-06-08 · AI가 고른 소식 <b>9건</b></div>
+    <div class="top">
+  <div class="tk">🥇 오늘의 Top Pick</div>
+  <div class="tt">SFC, 청색 OLED 특허소송 1심 승소…SK머티리얼즈JNC &#x27;항소 예정&#x27;</div>
+  <div class="eye">가장 난제로 꼽히는 &#x27;청색 OLED&#x27; 발광소재 IP 다툼에서 삼성디스플레이 합작사 SFC가 1심 승소. 소재 주도권 경쟁의 분수령. <b>청색 OLED = 소재 IP 전장</b></div>
+  <div class="meta"><span class="dbadge">2026-06-08</span>디일렉(THE ELEC) · <a href="https://www.thelec.kr/news/articleView.html?idxno=57748" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+  <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>삼성디스플레이와 일본 호도가야의 합작사 SFC가 SK머티리얼즈JNC와의 청색 OLED 도판트 특허 침해 소송 1심에서 승소했다. 특허 유효성을 인정받은 데 이어, 실제 제품의 침해 여부를 다툰 민사소송에서도 유리한 판단을 받았다.</p>
+<p>서울중앙지법 민사61부는 5월 29일 SK머티리얼즈JNC에 &#x27;SFC에 1억원을 배상하라&#x27;고 판결했다. 손해액 자체는 SK 측 매출과 업계 평균 이익률을 근거로 2억5000만원으로 산정됐으나, SFC 청구액(1억원)에 맞춰 배상액이 정해졌다.</p>
+<p>쟁점은 SK가 쓴 청색 도판트 화합물이 SFC 특허 권리범위에 드는지였다. 재판부는 두 물질의 화학구조와 청구항을 비교해 SK 제품이 SFC 특허의 핵심 기술적 특징을 갖췄다고 봤고, SK가 별도 특허를 보유한 점도 침해 책임을 면할 근거가 아니라고 판단했다.</p>
+<p>두 회사는 2019년부터 한·일·독에서 청색 도판트 특허를 다퉈왔다. 문제의 특허(&#x27;다환 방향족 유도체 화합물&#x27;)는 무효심판·특허법원·대법원을 거쳐 유효성이 최종 인정됐고, 이번 1심은 그 특허로 실제 침해를 처음 인정한 사건이다. SK 측은 &#x27;판결문 검토 후 항소&#x27; 방침.</p>
+<p>── 디일렉(THE ELEC) 기사 편집본 · 원문 링크 위 출처 참조</p></div>
+</details>
+</div><div class="dt"></div><div class="item">
+  <div class="num">2</div>
+  <div class="ib">
+    <div class="it">오픈셸(라디칼) 이미터 — OLED 소자의 급진적 대안?</div>
+    <div class="eye">기존 OLED 발광체는 전자쌍이 모두 채워진 &#x27;닫힌 껍질(closed-shell)&#x27; 분자로, 형광·인광·TADF가 모두 여기 속한다. 홀전자를 갖는 &#x27;열린 껍질(open-shell·라디칼)&#x27; 이미터는 발광 메커니즘이 근본적으로 달라 차세대 소자 후보로 거론된다. <span class="lab">— 발광 소자의 새 패러다임 후보</span></div>
+    <div class="meta"><span class="dbadge">2026-06-08</span>OLED-Info(글로벌) · <a href="https://www.oled-info.com/bright-side-brannan-open-shell-emitters-oleds-radical-alternative" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>기존 OLED 발광체는 전자쌍이 모두 채워진 &#x27;닫힌 껍질(closed-shell)&#x27; 분자다. 형광·인광·TADF(열활성 지연형광) 등 현재의 주요 발광체가 모두 여기 속하며, 바닥상태에 홀전자가 없다.</p>
+<p>&#x27;열린 껍질(open-shell)&#x27; 이미터는 홀전자(라디칼)를 가진 분자로, 발광 메커니즘이 근본적으로 다르다. 라디칼(도블렛) 발광은 형광이 안고 있는 스핀 통계(단일항 25%)의 제약을 우회할 수 있어, 효율 측면의 잠재력이 거론된다.</p>
+<p>다만 라디칼 분자는 안정성과 수명 확보가 핵심 과제로, 아직 상용 소자라기보다 차세대 발광 패러다임의 &#x27;급진적 대안&#x27; 후보로 연구되는 단계다.</p>
+<p>── OLED-Info(영문) 공개 프리뷰 번역·편집본 (전문은 유료) · 원문 링크 위 출처 참조</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">3</div>
+  <div class="ib">
+    <div class="it">美 UDC, 中 청두에 OLED 소재 기술혁신센터 설립</div>
+    <div class="eye">OLED 발광소재 글로벌 선두 UDC가 중국 청두에 기술혁신센터를 세운다. BOE 등에 인광 소재를 근거리 지원하며 소재 공급망의 무게추가 이동하는 신호. <span class="lab">— 소재 공급망 재편</span></div>
+    <div class="meta"><span class="dbadge">2026-06-08</span>내외뉴스통신 · <a href="http://www.nbnnews.co.kr/news/articleView.html?idxno=1033518" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>고효율 OLED 소재 글로벌 선두 UDC가 투자한 &#x27;환위(寰宇)디스플레이 청두 OLED 기술혁신센터&#x27;가 쓰촨성 청두 하이테크산업개발구에서 정식 가동에 들어갔다. 첨단 실험실과 전용 고객서비스센터를 갖춰 소재 특성 분석·소자 최적화·응용 개발을 지원한다.</p>
+<p>이 센터는 징둥팡(BOE) 등 선두 패널사에 OLED 인광 발광소재의 테스트부터 제품 응용까지 전 과정을 근거리에서 지원한다. 청두의 디스플레이용 발광소재 공급망을 보완하는 거점이 된다.</p>
+<p>스티븐 V. 에이브럼슨 UDC CEO는 &#x27;중국 시장에 깊이 뿌리내려 현지 고객·파트너를 지원하겠다&#x27;며 차세대 고효율 디스플레이·조명 소재 개발 의지를 밝혔다.</p>
+<p>쓰촨성은 중국 최대 AMOLED 생산기지로 전 세계 플렉시블 디스플레이의 약 20%를 생산한다. 지난해 청두 신형 디스플레이 매출은 1,090억 위안(약 24조9,610억원). 징둥팡 8.6세대 AMOLED 라인이 곧 양산에 들어가면 경쟁력이 한층 강화될 전망이다.</p>
+<p>── 내외뉴스통신 기사 편집본 (구글뉴스 링크를 브라우저로 풀어 원문 확보) · 원문 링크 위 출처 참조</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">4</div>
+  <div class="ib">
+    <div class="it">삼성디스플레이, 마이크로LED 스마트워치 파일럿 라인 구축 중</div>
+    <div class="eye">삼성디스플레이가 아산 A2의 5.5세대 쿼터컷 라인에 마이크로LED 스마트워치용 파일럿 시설을 구축 중. 마이크로LED 양산 채비. 영문 기사 → 한글 번역 본문 수록. <span class="lab">— 마이크로LED, 웨어러블로 먼저 온다</span></div>
+    <div class="meta"><span class="dbadge">2026-06-04</span>LEDinside(글로벌) · <a href="https://www.ledinside.com/news/2026/6/2026_06_05_01" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>삼성디스플레이가 충남 아산 A2 캠퍼스의 5.5세대 쿼터컷 라인에 마이크로LED 스마트워치 디스플레이용 파일럿 생산 시설을 구축 중이다. 전사·본딩·검사·수리 등 마이크로LED 공정 장비가 올해 안에 설치될 예정이다.</p>
+<p>회사는 파일럿 시설 완성 후 내년 하반기 양산 투자를 검토하고 있다. 앞서 CES와 디스플레이 위크 2026에서 해상도 418×540·밝기 4,000니트의 2.1인치 마이크로LED 스마트워치를 선보였고, 칩은 산안(三安) 옵토일렉트로닉스에서 공급받았다.</p>
+<p>R&amp;D 완료 후 샘플은 삼성전자와 유럽·미국 브랜드 고객에 제공되며, 최종 양산 계획은 고객의 실제 수요에 따라 결정될 전망이다.</p>
+<p>── LEDinside(영문) 기사 번역·편집본 · 원문 링크 위 출처 참조</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">5</div>
+  <div class="ib">
+    <div class="it">GIGABYTE, AI 화질 최적화·자동 OLED 보호 게이밍 모니터 공개</div>
+    <div class="eye">기가바이트가 AI 기반 화질 최적화와 지능형 OLED 번인 보호를 결합한 &#x27;AORUS ELITE 시리즈&#x27;를 컴퓨텍스서 공개. <span class="lab">— OLED 모니터, AI로 수명 관리</span></div>
+    <div class="meta"><span class="dbadge">2026-06-08</span>KIPOST · <a href="https://www.kipost.net/news/articleView.html?idxno=338934" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>기가바이트가 컴퓨텍스(타이베이, 6월 8일)에서 AI 화질 최적화와 지능형 OLED 보호를 적용한 게이밍 모니터 &#x27;AORUS ELITE 시리즈&#x27;를 공개했다. 게이밍 디스플레이가 전통적 사양을 넘어 진화하면서, 보다 적응형·신뢰성 높은 디스플레이 경험을 내세웠다.</p>
+<p>AI 기반 시각 기술이 핵심이다. AI Picture Mode는 SDR 콘텐츠 설정을 자동 최적화하고, HyperNits는 HDR 밝기를 동적으로 높이면서 하이라이트 디테일을 보존한다. 최적화된 EOTF 곡선은 고-APL HDR 장면 밝기를 최대 30% 높이되 과노출을 막는다. 5K 미니LED 모델 전용 AI Super Resolution은 지능형 업스케일링으로 선명도를 강화한다.</p>
+<p>OLED 신뢰성은 &#x27;AI OLED CARE PRO&#x27;가 맡는다. AI 센서로 사용자 존재·주변광·픽셀 클리닝을 자동 관리해 번인을 방지한다. 히트파이프·열소재 개선으로 FO27Q28G는 경쟁 플래그십 대비 T-Con 온도 12%↓·피크 표면온도 5%↓·온도 균일성 최대 35%↑를 달성했고, 일부 모델은 4년 번인 보증을 제공한다.</p>
+<p>── KIPOST 기사 편집본 · 원문 링크 위 출처 참조</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">6</div>
+  <div class="ib">
+    <div class="it">에이수스, 국내 첫 프로아트 태블릿 &#x27;PZ14&#x27; 출시 — 3K OLED·AI 결합</div>
+    <div class="eye">에이수스가 전문가급 3K OLED와 AI 프로세서를 결합한 첫 프로아트 태블릿 PZ14를 국내 출시. <span class="lab">— 크리에이터 태블릿도 OLED로</span></div>
+    <div class="meta"><span class="dbadge">2026-06-08</span>뉴스탭 · <a href="https://www.newstap.co.kr/news/articleView.html?idxno=328143" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>에이수스가 국내 첫 프로아트 태블릿 &#x27;프로아트 PZ14&#x27;를 출시했다. 14인치 폼팩터에 고성능 AI 프로세서, 전문가급 OLED 디스플레이, 스타일러스 입력을 결합해 스케치부터 콘텐츠 편집까지 지원한다. 펜·슬리브·스탠드가 기본 구성된다.</p>
+<p>프로세서는 스냅드래곤 X2 엘리트(18코어 CPU, 아드레노 GPU, 최대 80 TOPS NPU)이며 32GB LPDDR5X·1TB SSD를 갖췄다. 디스플레이는 14인치 16:10 3K &#x27;Lumina Pro OLED&#x27;로 최대 144Hz·VRR, 500니트, 100% DCI-P3, 팬톤 인증과 Delta E&lt;1 색정확도를 지원한다.</p>
+<p>항공우주급 알루미늄 유니바디로 두께 9.0mm·무게 0.79kg, 75Wh 배터리에 USB4 2개·SD Express·와이파이7을 더했고 IP52·MIL-STD-810H 내구성을 충족했다. 윈도우11 홈 기반 코파일럿+ PC AI 기능을 지원하며, 구매 시 Adobe 3개월·고프로 6개월 구독 혜택을 제공한다.</p>
+<p>── 뉴스탭 기사 편집본 · 원문 링크 위 출처 참조</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">7</div>
+  <div class="ib">
+    <div class="it">삼성 &#x27;초격차&#x27; vs LG &#x27;차별화&#x27; — 503조 OLED 시장 경쟁 가열</div>
+    <div class="eye">글로벌 OLED 시장이 2034년 503조원 규모로 전망되는 가운데, 삼성·LG디스플레이가 서로 다른 전략으로 전 응용처를 공략. <span class="lab">— 전 응용처 동시 전선</span></div>
+    <div class="meta"><span class="dbadge">2026-06-08</span>the-biz · <a href="http://www.the-biz.co.kr/news/articleView.html?idxno=722090" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>OLED 패널 응용처가 가전·자동차·IT·XR·군용으로 확대되는 가운데, 시장조사기관 포춘비즈니스인사이트는 글로벌 OLED 시장이 올해 768억 달러(약 119조원)에서 2034년 3225억 달러(약 503조원)로 성장할 것으로 전망했다(8일). 한국은 지난해 세계 OLED 시장의 3분의 2 이상을 점유했다.</p>
+<p>삼성디스플레이는 &#x27;초격차&#x27; 전략으로 영토를 넓힌다. 지난달 페라리 신차 &#x27;루체&#x27;에 OLED 4종을 단독 공급(12.9·12형 2장을 입체적으로 겹친 업계 최초 다층구조)했고, 컴퓨텍스 2026서 게이밍 OLED·QD-OLED 16종을 공개했다. 노트북용 울트라슬림은 두께를 20% 이상 줄였고, 모니터용 QD-OLED는 세계 최초 4K 360Hz를 동시 구현했다. 2023년 마이크로OLED 기업 이매진 인수로 XR·군용 수요까지 흡수했다.</p>
+<p>LG디스플레이는 &#x27;차별화&#x27;에 집중한다. 1분기 OLED 매출 비중이 60%(전년比 +5%p)로 올랐고, 대만 게이밍 OLED 로드쇼(~10일)에서 세계 최초 39인치 5K2K 등 차별화 패널을 공개한다. 차량용에선 ASPICE CL2 인증을 획득했으며, 지난 4월 1조1000억원 규모 OLED 신기술 인프라 투자를 승인(2028년 2분기까지)했다.</p>
+<p>── the-biz 기사 편집본 · 원문 링크 위 출처 참조</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">8</div>
+  <div class="ib">
+    <div class="it">중국, 2026년 글로벌 LCD의 95% 장악 전망</div>
+    <div class="eye">중국이 지난 10년간 5,000개+ LCD 라인을 깔며 사실상 시장을 장악. 2026년 글로벌 LCD의 95% 이상이 중국산이 될 전망. 중국어 기사 → 한글 번역 본문 수록. <span class="lab">— 중국, LCD 패권 굳히기</span></div>
+    <div class="meta"><span class="dbadge">2026-06-08</span>OFweek 디스플레이(중국) · <a href="https://display.ofweek.com/2026-06/ART-8321303-8420-30689873.html" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>글로벌 LCD 시장이 포화 국면에 들어섰다. 중국 제조사들이 지난 10년간 5,000개 이상의 생산 라인을 구축했고 이 중 약 2,700개가 가동 중이지만, 디스플레이 수요가 이 공급 확대를 따라가지 못하고 대형 화면 성장세도 둔화되고 있다.</p>
+<p>TV 등 대형 디스플레이의 평균 화면 크기는 약 10년 전 24인치 수준에서 2025년 50인치까지 커졌고, 75·85인치도 일반화됐으며 100인치를 넘는 제품까지 등장했다.</p>
+<p>글로벌 TV 상위 10개 브랜드 중 6곳이 중국 기업(TCL·하이센스·샤오미·창훙 등)이다. 필립스·소니 같은 국제 브랜드도 중국에서 생산되고, TPV 같은 글로벌 공급자를 통하면 사실상 중국 제품으로 분류된다.</p>
+<p>이에 따라 2026년 글로벌 LCD 시장의 95% 이상이 중국 제조사 제품으로 채워질 것으로 전망된다. 중국 디스플레이 산업의 국제 시장 지배력을 보여주는 수치다.</p>
+<p>── OFweek(중국) 기사 번역·편집본 · 원문 링크 위 출처 참조</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">9</div>
+  <div class="ib">
+    <div class="it">중국, 총투자 500억 위안+ — 14개 OLED·Micro LED·칩 프로젝트 동시 진행</div>
+    <div class="eye">惠科(HKC)·TCL화싱광전(CSOT)·京东方(BOE)·兆驰·华灿광전 등 14개 프로젝트가 총 500억 위안 이상 규모로 진행. 본문 추출 불가(PjTime 서버 차단) → 요약·링크만이라 맨 뒤 배치. <span class="lab">— 중국 디스플레이 대규모 증설 가속</span></div>
+    <div class="meta"><span class="dbadge">2026-06-07</span>投影时代(PjTime, 중국) · <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE1jVXpFYWhZeHljVVF4Q1Y4bTYzUTdjbi1tem53djVwWVlHMDZ0cnJ0NUY1b0ltTk9iN0VNZ0Z5TVVRVVVvcVVKRU40R1NRUWowUXFYem9rajkwMDQ?oc=5" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    
+  </div>
+</div>
+    <div class="cta">
+      <div class="c1">이 브리핑, <b>Next I/O</b>가 AI로 <b>매일 자동 제작</b>합니다.</div>
+      <div class="c2">학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다.<br><a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a> · 온라인 매거진 「첨디공 ON」 제작사</div>
+    </div>
+    <div class="foot">본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 Next I/O가 한 줄 해설을 덧붙인 큐레이션입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.</div>
+  </div>
+</div>
+</body>
+</html>
