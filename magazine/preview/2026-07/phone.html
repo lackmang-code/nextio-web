@@ -31,8 +31,11 @@ h1,h2,h3{font-weight:700;color:#000}
 #rotate-overlay .rot-msg{font-size:1.1rem;font-weight:700;color:#ffd700;letter-spacing:.5px;text-align:center;line-height:1.6}
 #rotate-overlay .rot-sub{font-size:.85rem;color:#888;text-align:center}
 @media (orientation:landscape) and (max-width:900px){
-  #rotate-overlay{display:flex!important}
+  body:not(.fs) #rotate-overlay{display:flex!important}
 }
+/* 전체화면에선 기기가 방향을 못 읽어(뷰포트가 가로로 고정됨) → CSS 판단 끄고,
+   전체화면 진입 직전의 일반모드 판단을 JS가 .fs-show 로 스냅샷해 고정한다. */
+body.fs #rotate-overlay.fs-show{display:flex!important}
 
 .db{height:4px;background:#111;margin-bottom:10px}
 .dt{height:1px;background:#e0e0e0;margin:12px 0}
@@ -687,19 +690,32 @@ function phoneGo(d){phoneJump(Math.min(Math.max(cur+d,0),phonePages.length-1));}
 
 function toggleFS(){
   const b=document.getElementById('p-btn-fs');
+  const ov=document.getElementById('rotate-overlay');
   if(!document.fullscreenElement&&!document.webkitFullscreenElement){
+    // 이 기기는 전체화면에서 방향을 못 읽으므로(강제 가로회전), 진입 직전 일반모드 판단을 스냅샷(폴백)
+    if(ov) ov.classList.toggle('fs-show', window.matchMedia('(orientation:landscape)').matches);
+    document.body.classList.add('fs');
     const el=document.documentElement;
-    if(el.requestFullscreen)el.requestFullscreen();
-    else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();
+    const req=el.requestFullscreen||el.webkitRequestFullscreen;
+    const p=req.call(el);
+    // 전체화면 진입 후 세로로 잠금 시도(지원 기기에선 가로로 눕지 않고 세로 유지 = 근본 해결)
+    const lockP=function(){ try{ if(screen.orientation&&screen.orientation.lock) screen.orientation.lock('portrait').catch(function(){}); }catch(e){} };
+    if(p&&p.then) p.then(lockP).catch(function(){}); else setTimeout(lockP,100);
     b.textContent='종료';
   }else{
+    try{ if(screen.orientation&&screen.orientation.unlock) screen.orientation.unlock(); }catch(e){}
     if(document.exitFullscreen)document.exitFullscreen();
     else if(document.webkitExitFullscreen)document.webkitExitFullscreen();
     b.textContent='전체화면';
   }
 }
-document.addEventListener('fullscreenchange',()=>{const b=document.getElementById('p-btn-fs');if(b)b.textContent=document.fullscreenElement?'종료':'전체화면';});
-document.addEventListener('webkitfullscreenchange',()=>{const b=document.getElementById('p-btn-fs');if(b)b.textContent=document.webkitFullscreenElement?'종료':'전체화면';});
+function onFsChange(){
+  const fs=document.fullscreenElement||document.webkitFullscreenElement;
+  const b=document.getElementById('p-btn-fs'); if(b)b.textContent=fs?'종료':'전체화면';
+  if(!fs){ document.body.classList.remove('fs'); const ov=document.getElementById('rotate-overlay'); if(ov)ov.classList.remove('fs-show'); }
+}
+document.addEventListener('fullscreenchange',onFsChange);
+document.addEventListener('webkitfullscreenchange',onFsChange);
 
 function toggleAcc(id){
   const b=document.getElementById(id),arr=document.getElementById('arr_'+id);
