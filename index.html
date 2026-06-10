@@ -180,17 +180,31 @@
 </section>
 
 <!-- ①-2 LATEST DAILY NEWS -->
-<section id="daily-news" class="pg pg-light" style="padding: 60px 20px; text-align: center;">
+<section id="daily-news" class="pg pg-light daily-news-section">
   <div class="deco deco-tr"></div>
   <div class="deco deco-bl"></div>
-  <div style="max-width: 1000px; margin: 0 auto; position: relative; z-index: 2;">
+  <div class="daily-news-wrap">
     <p class="eyebrow" style="color: var(--primary)">DAILY UPDATE</p>
     <h2 class="sec-h" style="margin-bottom: 40px;">디스플레이 데일리 뉴스</h2>
-    <div class="daily-news-container" style="background: #ffffff; border-radius: 16px; box-shadow: 0 12px 40px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid rgba(0,0,0,0.05);">
-      <iframe src="display-daily/latest.html" style="width: 100%; height: 800px; border: none; display: block;" title="Latest Display Daily"></iframe>
-    </div>
-    <div style="margin-top: 30px;">
-      <a href="display-daily/" class="cta-btn" style="background: #fff; color: var(--text-dark); border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.05);">지난 뉴스 전체 보기 →</a>
+    
+    <div class="dn-2col">
+      <!-- Left side: Index list -->
+      <div class="dn-sidebar">
+        <h3 class="dn-list-title">최근 발행된 뉴스</h3>
+        <ul id="dn-list" class="dn-list">
+          <li class="dn-list-placeholder">뉴스를 불러오는 중...</li>
+        </ul>
+        <div class="dn-archive-btn-wrap">
+          <a href="display-daily/" class="cta-btn btn-outline dn-archive-btn">지난 뉴스 전체 보기 →</a>
+        </div>
+      </div>
+      
+      <!-- Right side: Iframe viewer -->
+      <div class="dn-viewer">
+        <div class="daily-news-container">
+          <iframe id="dn-iframe" src="display-daily/latest.html" title="Latest Display Daily"></iframe>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -477,6 +491,53 @@
     s.src = 'editor.js'; s.defer = true;
     document.body.appendChild(s);
   }
+
+  // Mobile Drawer Toggle
+  document.getElementById('btn-mob').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.getElementById('mob-drawer').classList.toggle('open');
+  });
+
+  // 디스플레이 데일리 인덱스 페치 및 렌더링
+  fetch('display-daily/index.json')
+    .then(response => response.json())
+    .then(dates => {
+      const listEl = document.getElementById('dn-list');
+      const iframeEl = document.getElementById('dn-iframe');
+      listEl.innerHTML = ''; // clear placeholder
+      
+      // 최근 10개만 슬라이스
+      const recentDates = dates.slice(0, 10);
+      
+      recentDates.forEach((dateStr, index) => {
+        const li = document.createElement('li');
+        li.className = 'dn-list-item' + (index === 0 ? ' active' : '');
+        
+        const isNew = index === 0 ? '<span class="dn-badge">최신</span>' : '';
+        li.innerHTML = `<span class="dn-date">${dateStr}</span>${isNew}`;
+        
+        li.addEventListener('click', () => {
+          // Update active class
+          document.querySelectorAll('.dn-list-item').forEach(el => el.classList.remove('active'));
+          li.classList.add('active');
+          
+          // Add fade effect
+          iframeEl.classList.add('fading');
+          setTimeout(() => {
+            iframeEl.src = `display-daily/card_${dateStr}.html`;
+            iframeEl.onload = () => {
+              iframeEl.classList.remove('fading');
+            };
+          }, 200);
+        });
+        
+        listEl.appendChild(li);
+      });
+    })
+    .catch(err => {
+      console.error('Failed to load daily news index:', err);
+      document.getElementById('dn-list').innerHTML = '<li class="dn-list-placeholder">리스트를 불러올 수 없습니다.</li>';
+    });
 </script>
 </body>
 </html>
