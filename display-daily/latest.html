@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디스플레이 데일리 — 2026-06-10 | Next I/O</title>
+<meta name="description" content="Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;background:#c8bfb0;padding:22px 12px;line-height:1.6}
+.sheet{max-width:800px;margin:0 auto;background:#fdf9f3;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);overflow:hidden}
+/* 다크 로고 헤더 */
+.hd{background:#0a0a0a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hd .logo{height:46px;display:flex;align-items:center}
+.hd .logo svg{height:46px;width:auto;border-radius:4px}
+.hd .kick{text-align:right}
+.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
+.hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
+.inner{padding:26px 30px 22px}
+.title{font-size:1.4rem;line-height:1.3;letter-spacing:-.5px;color:#000;font-weight:700;margin-bottom:4px}
+.date{font-size:.85rem;color:#777;font-weight:600;margin-bottom:16px}
+.date b{color:#b45309}
+.dt{height:1px;background:#e0e0e0;margin:14px 0}
+
+.top{background:#1a1a1a;color:#f0eadf;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.top .tk{font-size:10px;letter-spacing:1.5px;color:#ffd700;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.top .tt{font-size:1.08rem;line-height:1.4;color:#fff;font-weight:700;word-break:keep-all;margin-bottom:7px}
+.top .eye{font-size:.84rem;line-height:1.7;color:#e8e2d6;word-break:keep-all}
+.top .eye b{color:#ffd700;font-weight:700}
+.top .meta{font-size:11px;color:#bbb;margin-top:9px}
+.top .meta a{color:#d9c98a;text-decoration:none}
+
+.item{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #ece7dd}
+.item:last-of-type{border-bottom:none}
+.num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#efe9df;border:1px solid #e0d8c9;color:#3a3228;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ib{flex:1;min-width:0}
+.it{font-size:1rem;line-height:1.4;color:#111;font-weight:700;word-break:keep-all;margin-bottom:4px}
+.eye{font-size:.84rem;line-height:1.65;color:#444;word-break:keep-all}
+.eye .lab{color:#b45309;font-weight:700}
+.meta{font-size:11px;color:#999;margin-top:5px;word-break:break-all}
+.meta a{color:#8a6d3b;text-decoration:none;font-weight:600}
+.dbadge{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:#3a3228;border-radius:4px;padding:1px 6px;margin-right:7px}
+.top .dbadge{background:#fbbf24;color:#1a1a1a}
+/* 기사 본문 아코디언(한글 번역·편집본) */
+.art{margin-top:10px;border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;overflow:hidden}
+.art>summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:.8rem;font-weight:700;color:#3a3228;background:#f1ece2;user-select:none}
+.art>summary::-webkit-details-marker{display:none}
+.art>summary::before{content:"▸ ";color:#b45309}
+.art[open]>summary::before{content:"▾ "}
+.art[open]>summary{border-bottom:1px solid #e3ddd2}
+.bodytext{padding:12px 14px}
+.bodytext p{font-size:.85rem;line-height:1.8;color:#333;word-break:keep-all;text-align:justify;margin-bottom:9px}
+.bodytext p:last-child{margin-bottom:0}
+.top .art{background:#262626;border-color:#3a3a3a;margin-top:11px}
+.top .art>summary{background:#333;color:#e8e2d6}
+.top .art>summary::before{color:#fbbf24}
+.top .bodytext p{color:#ddd6c8}
+
+/* 홍보 푸터 (CTA) */
+.cta{margin-top:20px;background:#fbf6ee;border:1px solid #ecdfca;border-radius:10px;padding:16px 18px;text-align:center}
+.cta .c1{font-size:.92rem;color:#1a1a1a;font-weight:700;word-break:keep-all}
+.cta .c1 b{color:#b45309}
+.cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
+.cta .c2 a{color:#b45309;text-decoration:none;font-weight:600}
+.foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="hd">
+    <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
+<g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+<line x1="22" y1="36" x2="60" y2="60"></line><line x1="22" y1="84" x2="60" y2="60"></line><line x1="60" y1="60" x2="100" y2="36"></line><line x1="60" y1="60" x2="100" y2="84"></line></g>
+<circle cx="22" cy="36" r="8" fill="#6FA8FF"></circle><circle cx="22" cy="84" r="8" fill="#6FA8FF"></circle>
+<circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle>
+<circle cx="60" cy="60" r="15" fill="#FBBF24"></circle>
+<text x="150" y="78" font-family="Pretendard, &#39;Apple SD Gothic Neo&#39;, sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text></svg></div>
+    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">AI 큐레이션 · 매일 업데이트</div></div>
+  </div>
+  <div class="inner">
+    <h1 class="title">오늘의 디스플레이 Tech</h1>
+    <div class="date">2026-06-10 · AI가 고른 소식 <b>8건</b></div>
+    <div class="top">
+  <div class="tk">🥇 오늘의 Top Pick</div>
+  <div class="tt">선익시스템-에스엔디스플레이, 페로브스카이트 디스플레이 증착장비 공동개발…OLED 대체 발광소재 도전</div>
+  <div class="eye">선익시스템이 에스엔디스플레이와 페로브스카이트 디스플레이용 증착 장비를 공동 개발한다. OLED를 대체·보완할 차세대 발광소재의 양산 공정에 도전하는 행보. <b>차세대 발광소재</b></div>
+  <div class="meta"><span class="dbadge">2026-06-10</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=57784" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+  <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>선익시스템이 에스엔디스플레이와 업무협약을 체결하고 차세대 디스플레이용 페로브스카이트 증착 장비를 공동 개발한다. 양사는 소재 특성에 맞춘 증착 공정·장비 구조 개발, 증착용 소재 최적화, 기술 테스트·시제품 검증, 양산 적용을 위한 협력을 추진한다.</p>
+<p>페로브스카이트는 빛을 흡수해 전류를 만드는 특성과 반대로, 전류를 흘리면 빛을 내는 발광 특성도 있어 디스플레이 소재로 활용될 수 있다. 기존 OLED를 대체·보완할 차세대 광전자 소재로 주목받으며, AR·VR용 마이크로디스플레이와 고해상도 색변환층 적용이 가능하다.</p>
+<p>선익시스템은 OLED 증착 장비의 진공 증착·박막 형성 기술을, 에스엔디스플레이는 고색순도·고효율 페로브스카이트 광소재와 증착용 프리커서 소재 기술을 보유한다. 다만 현재 초기 단계여서 개발 완료 시점과 공급 계획은 아직 미정이다.</p>
+<p>── 디일렉 기사 편집본</p></div>
+</details>
+</div><div class="dt"></div><div class="item">
+  <div class="num">2</div>
+  <div class="ib">
+    <div class="it">LG디스플레이, 중국 톈마(Tianma)와 디스플레이 특허 라이선스 계약 체결</div>
+    <div class="eye">LG디스플레이가 중국 패널사 톈마와 디스플레이 특허 라이선스 계약을 맺었다. 보유 특허 자산을 수익화하면서, 중국 업체와의 관계를 분쟁이 아닌 라이선스 협력으로 전환하는 의미 있는 행보다. <span class="lab">— 특허·라이선스</span></div>
+    <div class="meta"><span class="dbadge">2026-06-10</span>디일렉 · <a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE9KaHlVenVMRnNVTGNaOEFCSVczNVRrWk9BNTN6TlFPeDI5T19GMHJUTWdHdE1QeF90WFUycTdjUkdWeEM1aUlFT1FYYnpvWTQ?oc=5" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>LG디스플레이가 중국의 주요 디스플레이 패널 제조업체인 톈마(Tianma)와 특허 라이선스 계약을 체결하고 특허 자산 수익화에 나섰습니다. 이번 계약은 양사 간의 디스플레이 관련 특허 포트폴리오를 상호 활용할 수 있도록 허용하는 조치로, OLED 및 LCD 분야의 광범위한 기술 특허가 포함된 것으로 알려졌습니다.</p>
+<p>업계에서는 이번 계약을 LG디스플레이가 보유한 핵심 원천 특허의 가치를 중국 시장에서 공식적으로 인정받은 사례로 평가하고 있습니다. 그동안 특허 무단 도용이나 소송전으로 치닫던 중국 업체와의 관계를 상호 협력 및 정당한 라이선스 대가 지불 방식으로 전환하는 이정표가 될 전망입니다.</p>
+<p>LGD는 향후 글로벌 패널 제조사들을 대상으로 추가적인 특허 라이선스 계약을 추진하여 지식재산권(IP) 수익 사업을 강화할 계획입니다. 이번 계약 체결을 시작으로 특허 침해 행위에 대한 적극적인 법적 대응과 수익화 전략이 동시에 가속화될 것으로 보입니다.</p>
+<p>── 디일렉 기사 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">3</div>
+  <div class="ib">
+    <div class="it">중국 플렉시블 OLED 가동률 70% 밑으로…2분기 67% 전망</div>
+    <div class="eye">시그마인텔 집계 중국 6세대 플렉시블 OLED 평균 가동률이 작년 4Q 80%에서 올 1Q 69%로 급락, 2Q엔 67% 전망. 스마트폰 수요 부진과 재고 부담이 원인. <span class="lab">— 시황·가동률</span></div>
+    <div class="meta"><span class="dbadge">2026-06-10</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=57821" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>중국 패널 업체들의 6세대 플렉시블 OLED 라인 평균 가동률이 큰 폭으로 하락했다. 시그마인텔에 따르면 지난해 4분기 80%에서 올해 1분기 69%로 급감했고, 2분기엔 67% 수준으로 더 악화될 전망이다. 스마트폰 수요 부진과 작년 말 쌓인 재고 부담으로 패널 구매가 줄어든 것이 주된 원인이다.</p>
+<p>다만 시장 점유율로 보면 중국 업체의 위상은 여전히 강하다. 1분기 글로벌 스마트폰 패널 출하 5억5600만장 중 BOE가 1억4800만장(26.6%)으로 1위, CSOT 7200만장(13.0%), HKC 6300만장(11.4%)을 기록했다. 업계는 고주사율·저전력 등 고사양 플렉시블 OLED가 중가 제품까지 확대되면 가동률 회복의 계기가 될 수 있다고 본다.</p>
+<p>── 디일렉 기사 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">4</div>
+  <div class="ib">
+    <div class="it">삼성전자, 2026년 폴더블 출하 전망 하향…폴더블 OLED 수요 둔화 신호</div>
+    <div class="eye">삼성이 2026년 폴더블 출하 전망을 650만대에서 500~600만대로 낮췄다. 메모리값 상승발 가격 인상(최대 450달러)과 수요 부진이 폴더블 OLED 패널 수요 둔화로 이어진다. <span class="lab">— 폴더블·수요</span></div>
+    <div class="meta"><span class="dbadge">2026-06-10</span>OLED-Info (번역·편집) · <a href="https://www.oled-info.com/samsung-electronics-reduces-its-foldable-smartphone-shipments-2026" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>삼성전자가 2026년 폴더블 스마트폰 출하 전망을 당초보다 낮춘 것으로 알려졌다. 업계 보도에 따르면 삼성은 새 8세대 시리즈(갤럭시 Z 폴드8·Z 플립8·갤럭시 와이드 폴드 포함)에서 약 500만~600만 대를 출하할 계획으로, 2025년 약 600만 대에서 소폭 줄어든 규모다. 6월엔 2026년 650만 대를 예상했으나 최근 하향 조정했다.</p>
+<p>감소의 주된 원인은 부품 가격 상승이다. 특히 메모리 칩 비용 증가로 스마트폰 가격이 오르고 있으며, 삼성은 폴더블 가격을 모델별 최대 450달러까지 올릴 가능성이 있는 것으로 전해졌다. 가격 인상과 수요 부진은 폴더블 OLED 패널 수요 둔화를 의미하며, 삼성의 신중한 시장 전망을 반영한다.</p>
+<p>── OLED-Info 기사 번역·편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">5</div>
+  <div class="ib">
+    <div class="it">디스플레이 업계, &quot;코팅·필름 분야 5년 유예는 산업 현실과 괴리…최소 12년 필요&quot;</div>
+    <div class="eye">디스플레이 업계가 코팅·필름 분야 규제의 &#x27;5년 유예&#x27;는 산업 현실과 동떨어졌다며, 소재·공정 전환에 최소 12년이 필요하다고 반발했다. <span class="lab">— 소재·규제</span></div>
+    <div class="meta"><span class="dbadge">2026-06-10</span>elec4 · <a href="https://news.google.com/rss/articles/CBMic0FVX3lxTE45dnZhaU9XMXUwMUk1dTZwUjY4OVJTRjZ2SGRRVTNVOUZIblB1TDI2RGpKZ09zTktIM0FEb01iblhuckU3MmVRQ0hocUxBVmRQM1NmalozdEY4XzVWTEM4XzVlSm83dGkwaE5lQy13UjJMMDA?oc=5" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>국내 디스플레이 업계가 환경 규제 물질(PFAS 등) 제한과 관련해 정부가 추진 중인 코팅·필름 분야 &#x27;5년 유예&#x27; 방침에 강력히 반발하고 나섰습니다. 업계는 미세 공정과 고휘도 구현을 위한 대체 화학 물질 개발 및 장비 적용 테스트에 물리적으로 최소 12년 이상의 기간이 소요된다고 주장했습니다.</p>
+<p>한국디스플레이산업협회와 유관 기업들은 대체재가 개발되지 않은 상황에서 규제가 섣불리 시행될 경우 OLED 패널의 수율 저하와 글로벌 경쟁력 악화로 이어질 수 있다고 경고했습니다. 특히 초미세 코팅막 기술은 디스플레이 화질 및 신뢰성을 결정짓는 핵심 공정으로 대체 물질 검증에 수년이 걸린다는 설명입니다.</p>
+<p>이에 따라 업계는 유럽연합(EU) 등의 글로벌 환경 규제 로드맵과의 정합성을 맞추고, 대체 소재 공동 연구개발(R&amp;D) 예산 확보 등 정부 차원의 장기적이고 실질적인 지원 대책 마련을 요구하고 있습니다.</p>
+<p>── elec4 기사 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">6</div>
+  <div class="ib">
+    <div class="it">OLED 투자 확대 기대감…장비주 &#x27;케이씨텍·영우디에스피&#x27; 주목</div>
+    <div class="eye">OLED 신규 투자 확대 기대에 증착·공정 장비주 케이씨텍·영우디에스피가 시장의 주목을 받고 있다. <span class="lab">— 장비·투자</span></div>
+    <div class="meta"><span class="dbadge">2026-06-10</span>뉴스핌 · <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFA4YUFSZVdac2o5Z1I1OXV0bnc3VzdTX0wwU2JXajl4ZWVDeHFJS3JBblBBb2l6aklKSGw5X2pWeC1VR0RyTUJvb3RlYWcydFpYamVaZm9WbTNqZ2Ey?oc=5" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>글로벌 패널사들의 8.6세대 IT용 OLED 라인 신규 투자 계획이 구체화되면서 반도체 및 디스플레이 핵심 장비 제조사인 케이씨텍과 영우디에스피가 시장에서 큰 주목을 받고 있습니다. 세정 장비와 검사 장비 분야에서 원천 기술을 확보한 이들 기업의 수주 잔고가 크게 늘어날 것이라는 분석입니다.</p>
+<p>케이씨텍은 화학기계적연마(CMP) 장비와 디스플레이 세정 장비 분야의 강자로, 패널 대형화 및 유리기판 도입 확대의 직접적인 수혜주로 꼽힙니다. 영우디에스피 역시 OLED 셀 및 모듈 단계의 초정밀 비전 검사 장비를 공급하고 있어, 신규 라인 가동에 따른 대규모 장비 반입 시 실적 턴어라운드가 기대되는 상황입니다.</p>
+<p>증권가에서는 올해 하반기부터 국내외 대기업의 OLED 설비 투자가 본격적인 장비 발주 사이클로 진입함에 따라, 관련 부품·장비 밸류체인 전반의 실적이 개선세로 접어들 것으로 내다보고 있습니다.</p>
+<p>── 뉴스핌 기사 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">7</div>
+  <div class="ib">
+    <div class="it">기가바이트, AI 화질 최적화·자동 OLED 보호 기능 더한 게이밍 모니터 공개</div>
+    <div class="eye">기가바이트가 AI 화질 최적화와 번인 방지용 자동 OLED 보호 기능을 결합한 게이밍 모니터를 선보였다. <span class="lab">— 세트 신제품</span></div>
+    <div class="meta"><span class="dbadge">2026-06-10</span>PR Newswire · <a href="https://news.google.com/rss/articles/CBMipgJBVV95cUxOcS1tUmF6aHFiWFluVU9GU3dBUDQ4NThGb283ZGtUV0d1ODdzdjk3b0xQUVMyaVBLclktNFJGcU45VWNUX2NRYURzenV1NDVVc1VoWGpsYWZ6Nk4wNHp3aHBtQ2wtUG5aY1NkMFdKSmxmS0w4ZHg4ZTJDM1dfSkxKQWZSMzZhaVF3dlh6N0Z6N0ZRYXpWMXVNZ2NrYnZtR1FSMFBWR0RYalVzWDZuRlg1emduTnRRdHFaWTJxT29NUFI1ZU03VFR5ZzVtMXNCYlAxdk5qbnEwaHUwVDRfalFzb2U2bmI2SjV6ek5wLW1MTmxrRkEwX1hiMjhHbmQxZHdVZmItTmxmaW1sR1ZZS05oZEtxNzJnMkdTQWVJWlNhbW93WUZRaGc?oc=5" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>기가바이트(Gigabyte)가 컴퓨텍스 2026에서 AI 화질 최적화 기능과 OLED 번인 방지를 위한 자동 보호 솔루션인 &#x27;OLED Care&#x27;를 탑재한 프리미엄 게이밍 모니터 제품군을 대거 공개했습니다. 이번 신제품들은 삼성디스플레이의 최신 QD-OLED 패널을 탑재하여 화질 완성도를 한 단계 끌어올렸습니다.</p>
+<p>새롭게 적용된 AI 알고리즘은 사용자의 화면 구성을 실시간으로 감지하여 정적 픽셀의 밝기를 미세하게 조절하고 전체 화질 밸런스를 잡음으로써 OLED 고질적 문제인 번인(Burn-in) 현상을 원천적으로 예방합니다. 또한, 장시간 게이밍 중에도 눈의 피로를 최소화하는 반사 방지 코팅이 강화되었습니다.</p>
+<p>기가바이트는 고주사율(최대 360Hz)과 초고화질을 동시에 요구하는 최고급 하이엔드 게이밍 시장을 집중 공략하여 글로벌 게이밍 기어 분야에서 리더십을 확고히 한다는 구상입니다.</p>
+<p>── PR Newswire 기사 번역·편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">8</div>
+  <div class="ib">
+    <div class="it">리안리, 2K 커브드 OLED 품은 수랭 쿨러 등 컴퓨텍스 2026서 신제품 대거 공개</div>
+    <div class="eye">리안리가 2K 커브드 OLED를 품은 수랭 쿨러 등 OLED를 전면에 내세운 신제품을 컴퓨텍스 2026에서 대거 공개했다. <span class="lab">— 세트·컴퓨텍스</span></div>
+    <div class="meta"><span class="dbadge">2026-06-10</span>인벤 · <a href="https://news.google.com/rss/articles/CBMib0FVX3lxTFBKVzB1c0lNUkdGYnBlMzI3b3cxa3F0LTZHQ3FJUzQyWlZBcXJQNjQ1eG0yRTFwaUFfdE5NS3J0QWxWSjRfN2NYN3MwcS1vZ1hFdjRIQjBaeWsxckdYY0hGOVVmdGN4RGtwcWRlaGtVOA?oc=5" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>글로벌 PC 하드웨어 전문 제조사인 리안리(Lian Li)가 대만 타이베이에서 개최된 컴퓨텍스 2026에서 2K 해상도의 커브드 OLED 디스플레이를 내장한 플래그십 일체형 수랭 쿨러를 최초로 선보이며 관람객들의 시선을 사로잡았습니다. 펌프 캡 부분에 2.8인치의 휘어진 OLED 패널을 장착해 독보적인 튜닝 감성을 자랑합니다.</p>
+<p>이 커브드 OLED 디스플레이는 PC 내부의 실시간 온도, 팬 속도 등 핵심 하드웨어 상태를 그래픽으로 출력할 수 있을 뿐만 아니라, 사용자가 직접 올린 고화질 애니메이션 이미지(GIF)나 비디오를 매끄럽게 재생할 수 있도록 설계되었습니다. 2K 해상도로 아주 또렷하고 풍부한 색감을 자랑하는 것이 특징입니다.</p>
+<p>리안리는 이번 고해상도 OLED 하드웨어 외에도 스마트 RGB 케이블, 최적화된 공기 흐름 케이스 등 차세대 커스텀 PC 솔루션을 다수 공개하여 프리미엄 DIY PC 시장의 선두 자리를 굳히겠다는 전략을 밝혔습니다.</p>
+<p>── 인벤 기사 편집본</p></div>
+</details>
+  </div>
+</div>
+    <div class="cta">
+      <div class="c1">이 브리핑, <b>Next I/O</b>가 AI로 <b>매일 자동 제작</b>합니다.</div>
+      <div class="c2">학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다.<br><a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a> · 온라인 매거진 「첨디공 ON」 제작사</div>
+    </div>
+    <div class="foot">본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 Next I/O가 한 줄 해설을 덧붙인 큐레이션입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.</div>
+  </div>
+</div>
+</body>
+</html>
