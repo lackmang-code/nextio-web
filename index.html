@@ -52,6 +52,7 @@
 <div id="pages">
 <!-- ① HERO -->
 <section id="hero" class="pg">
+  <canvas id="hero-canvas"></canvas>
   <div class="deco deco-tr"></div>
   <div class="deco deco-bl"></div>
   <div class="hero-wrap">
@@ -61,8 +62,119 @@
       <p class="hero-sub">공학적 통찰, AI로 확장하다<br>AI 실무교육 · 학술 콘텐츠 위탁제작</p>
       <a href="mailto:info@nextio.ai.kr" class="cta-btn">www.nextio.ai.kr</a>
     </div>
-    <div class="hero-img-wrap reveal reveal-d2">
-      <img src="images/cover.png" alt="NextIO 대표 이미지">
+    <div class="hero-console-wrap reveal reveal-d2">
+      <!-- Console Header -->
+      <div class="console-header">
+        <div class="console-dots">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <div class="console-tabs">
+          <button class="console-tab active" data-tab="terminal">📟 Terminal</button>
+          <button class="console-tab" data-tab="agents">🕸️ Agent Map</button>
+          <button class="console-tab" data-tab="result">💻 Result</button>
+        </div>
+      </div>
+      <!-- Console Body -->
+      <div class="console-body">
+        <!-- 1. Terminal Tab -->
+        <div class="console-tab-content active" id="tab-terminal">
+          <div class="terminal-welcome">NextIO Agent IDE v1.2.0. Ready.</div>
+          <div class="terminal-prompt-line">실행할 AI 파이프라인 시뮬레이션을 선택하세요:</div>
+          <div class="terminal-buttons">
+            <button class="term-btn" id="btn-run-unicorn">🚀 1인 유니콘 창업</button>
+            <button class="term-btn" id="btn-run-research">🧪 AI 연구 자동화</button>
+          </div>
+          <div class="terminal-logs" id="terminal-logs">
+            <div class="log-line system">> system: 에이전트 구동 준비 완료.</div>
+          </div>
+        </div>
+        
+        <!-- 2. Agent Map Tab -->
+        <div class="console-tab-content" id="tab-agents">
+          <div class="agent-network-container">
+            <div class="agent-node" id="node-ceo">
+              <div class="node-icon">👑</div>
+              <div class="node-label">CEO</div>
+            </div>
+            <div class="agent-node" id="node-cfo">
+              <div class="node-icon">💼</div>
+              <div class="node-label">CFO</div>
+            </div>
+            <div class="agent-node" id="node-pr">
+              <div class="node-icon">📢</div>
+              <div class="node-label">PR (홍보)</div>
+            </div>
+            <div class="agent-node" id="node-dev">
+              <div class="node-icon">🛠️</div>
+              <div class="node-label">DEV (개발)</div>
+            </div>
+            <div class="agent-node" id="node-res">
+              <div class="node-icon">🔬</div>
+              <div class="node-label">RES (연구)</div>
+            </div>
+            
+            <svg class="agent-svg-lines">
+              <!-- CEO connects to all satellite nodes -->
+              <line class="agent-link" id="link-ceo-cfo" x1="50%" y1="50%" x2="20%" y2="25%" />
+              <line class="agent-link" id="link-ceo-pr" x1="50%" y1="50%" x2="80%" y2="25%" />
+              <line class="agent-link" id="link-ceo-dev" x1="50%" y1="50%" x2="20%" y2="75%" />
+              <line class="agent-link" id="link-ceo-res" x1="50%" y1="50%" x2="80%" y2="75%" />
+            </svg>
+          </div>
+        </div>
+        
+        <!-- 3. Result Tab -->
+        <div class="console-tab-content" id="tab-result">
+          <div class="result-placeholder" id="result-placeholder">
+            <div class="ph-icon">⚡</div>
+            <p>시뮬레이션을 구동하면 에이전트들이 생성해 낸 실시간 산출물 프리뷰가 이곳에 렌더링됩니다.</p>
+          </div>
+          <!-- 3-1. Result Unicorn -->
+          <div class="result-preview" id="preview-unicorn" style="display: none;">
+            <div class="mini-browser">
+              <div class="mb-bar">
+                <span class="mb-address">www.my-unicorn-startup.ai</span>
+              </div>
+              <div class="mb-body">
+                <header class="mini-header">
+                  <div class="mh-logo">⭐ StartUp AI</div>
+                  <div class="mh-nav"><span>Home</span><span>About</span><span>Pricing</span></div>
+                </header>
+                <main class="mini-main">
+                  <h3>AI 직원이 빌드한 웹사이트</h3>
+                  <p>CEO, CFO, 홍보, 개발 에이전트 협업으로 1초 만에 배포가 완료되었습니다.</p>
+                  <div class="mini-cards">
+                    <div class="mini-card">⚡ 초고속 배포</div>
+                    <div class="mini-card">🔒 보안 서명</div>
+                  </div>
+                </main>
+              </div>
+            </div>
+          </div>
+          <!-- 3-2. Result Research -->
+          <div class="result-preview" id="preview-research" style="display: none;">
+            <div class="mini-paper">
+              <div class="mp-header">
+                <h4>[AI 학술 요약 보고서]</h4>
+                <span class="mp-meta">Topic: OLED & Sensor AI Automation</span>
+              </div>
+              <div class="mp-body">
+                <div class="mp-summary">
+                  <strong>핵심 요약:</strong> AI 연구 에이전트가 12개 주요 학술 자료를 분석하여 추출한 차트 모델입니다.
+                </div>
+                <div class="mini-chart">
+                  <!-- Simulated bar chart -->
+                  <div class="bar-col"><div class="bar-val" style="height: 40%"></div><span>2024</span></div>
+                  <div class="bar-col"><div class="bar-val" style="height: 65%"></div><span>2025</span></div>
+                  <div class="bar-col"><div class="bar-val" style="height: 90%"></div><span>2026 (AI)</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
