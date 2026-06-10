@@ -30,8 +30,9 @@ h1,h2,h3{font-weight:700;color:#000}
 }
 #rotate-overlay .rot-msg{font-size:1.1rem;font-weight:700;color:#ffd700;letter-spacing:.5px;text-align:center;line-height:1.6}
 #rotate-overlay .rot-sub{font-size:.85rem;color:#888;text-align:center}
-/* 회전 안내 표시 여부는 JS(syncRotateOverlay)가 기기 물리 방향으로 제어한다.
-   CSS 비율(orientation) 미디어쿼리는 전체화면 진입 시 세로를 가로로 오판정하므로 쓰지 않는다. */
+@media (orientation:landscape) and (max-width:900px){
+  #rotate-overlay{display:flex!important}
+}
 
 .db{height:4px;background:#111;margin-bottom:10px}
 .dt{height:1px;background:#e0e0e0;margin:12px 0}
@@ -699,26 +700,6 @@ function toggleFS(){
 }
 document.addEventListener('fullscreenchange',()=>{const b=document.getElementById('p-btn-fs');if(b)b.textContent=document.fullscreenElement?'종료':'전체화면';});
 document.addEventListener('webkitfullscreenchange',()=>{const b=document.getElementById('p-btn-fs');if(b)b.textContent=document.webkitFullscreenElement?'종료':'전체화면';});
-
-/* 회전 안내 — 기기 물리 방향(screen.orientation.angle) 기준.
-   세로=숨김, 가로=표시. 전체화면 중에는 항상 숨김(콘텐츠 우선). */
-function syncRotateOverlay(){
-  const ov=document.getElementById('rotate-overlay'); if(!ov) return;
-  const fs=document.fullscreenElement||document.webkitFullscreenElement;
-  let landscape;
-  if(screen.orientation && typeof screen.orientation.angle==='number'){
-    landscape=(screen.orientation.angle===90||screen.orientation.angle===270);
-  }else if(typeof window.orientation==='number'){
-    landscape=(window.orientation===90||window.orientation===-90);
-  }else{
-    landscape=window.matchMedia('(orientation:landscape)').matches;
-  }
-  const small=Math.min(screen.width,screen.height)<820;
-  ov.style.display=(landscape && small && !fs)?'flex':'none';
-}
-['orientationchange','resize','fullscreenchange','webkitfullscreenchange'].forEach(ev=>window.addEventListener(ev,syncRotateOverlay));
-if(screen.orientation && screen.orientation.addEventListener) screen.orientation.addEventListener('change',syncRotateOverlay);
-syncRotateOverlay();
 
 function toggleAcc(id){
   const b=document.getElementById(id),arr=document.getElementById('arr_'+id);
