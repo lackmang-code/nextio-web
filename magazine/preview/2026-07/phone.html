@@ -33,6 +33,9 @@ h1,h2,h3{font-weight:700;color:#000}
 @media (orientation:landscape) and (max-width:900px){
   #rotate-overlay{display:flex!important}
 }
+/* 전체화면 중에는 회전 안내를 띄우지 않는다(전체화면 진입 시 가로 인식으로 콘텐츠가 가려지는 버그 방지) */
+:fullscreen #rotate-overlay,
+:-webkit-full-screen #rotate-overlay{display:none!important}
 
 .db{height:4px;background:#111;margin-bottom:10px}
 .dt{height:1px;background:#e0e0e0;margin:12px 0}
