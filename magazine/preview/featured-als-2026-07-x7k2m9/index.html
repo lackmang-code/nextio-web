@@ -852,7 +852,7 @@ function attachInplaceZoom(box){
   document.querySelectorAll('.phone-page').forEach(function(p,i){ p.classList.toggle('active', i===0); });
   if(typeof phoneJump==='function') phoneJump(0);
   // 5) 검토 배너
-  var BANHTML='<span style=\"background:#C0392B;color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;padding:3px 10px;border-radius:4px\">발행 전 검토용</span> <b style=\"margin-left:8px;font-size:15px\">이달의 논문 — 저자(성균관대 첨단디스플레이공학과 이준엽 교수) 컨펌 요청</b>';
+  var BANHTML='';
   if(BANHTML){
     var ban=document.createElement('div');
     ban.style.cssText='margin:0 auto;max-width:560px;width:calc(100% - 24px);'+
