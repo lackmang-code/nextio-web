@@ -97,6 +97,12 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif
   .notch { display: none; }
 }
 </style>
+<script>
+// If opened directly on PC, redirect to the Archive App Viewer with this card selected
+if (window.top === window.self && window.innerWidth > 900) {
+    window.location.replace("index.html?date=2026-06-09");
+}
+</script>
 </head>
 <body>
 <div class="sheet">

@@ -6,81 +6,133 @@
 <title>디스플레이 데일리 아카이브 | Next I/O</title>
 <meta name="description" content="Next I/O가 AI로 매일 자동 제작하는 디스플레이 업계 뉴스 브리핑 아카이브">
 <style>
+/* Base Styles */
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;background:#c8bfb0;padding:22px 12px;line-height:1.6}
-.sheet{max-width:800px;margin:0 auto;background:#fdf9f3;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.4);overflow:hidden}
-.hd{background:#0a0a0a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-.hd .logo svg{height:46px;width:auto;border-radius:4px}
-.hd .kick{text-align:right}
-.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
-.hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
-.inner{padding:26px 30px 24px}
-.title{font-size:1.45rem;font-weight:700;color:#000;margin-bottom:4px}
-.sub{font-size:.88rem;color:#666;margin-bottom:18px;word-break:keep-all}
-.row{display:block;text-decoration:none;color:inherit;border:1px solid #e8e2d6;border-radius:9px;padding:13px 16px;margin-bottom:9px;background:#fff;transition:all .15s}
-.row:hover{border-color:#b45309;box-shadow:0 2px 10px rgba(0,0,0,.08);transform:translateY(-1px)}
-.row .d{font-size:1rem;font-weight:700;color:#111}
-.row .d .badge{font-size:10px;font-weight:700;color:#1a1a1a;background:#fbbf24;border-radius:4px;padding:1px 7px;margin-left:8px;vertical-align:middle}
-.row .go{float:right;color:#b45309;font-size:.85rem;font-weight:600}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;color:#1a1a1a;background:#c8bfb0;line-height:1.6}
+
+/* App Layout */
+.app-container {
+  display: flex; gap: 40px; max-width: 1100px; margin: 20px auto; align-items: stretch; height: 860px; padding: 0 20px;
+}
+/* Left Sidebar */
+.sidebar {
+  flex: 0 0 340px; display: flex; flex-direction: column;
+}
+.sidebar-header {
+  background: #0a0a0a; padding: 20px 24px; border-radius: 20px; margin-bottom: 20px;
+  box-shadow: 0 14px 44px rgba(0,0,0,0.25); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sidebar-header .logo svg { height: 32px; width: auto; border-radius: 4px; }
+.sidebar-header .kick { text-align: right; }
+.sidebar-header .k1 { font-size: 13px; font-weight: 700; color: #fbbf24; letter-spacing: 2px; line-height: 1.2; }
+.sidebar-header .k2 { font-size: 11px; color: #bbb; margin-top: 4px; }
+
+.index-box {
+  flex: 1; background: rgba(255, 255, 255, 0.85); border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08); padding: 24px; overflow-y: auto;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.index-box::-webkit-scrollbar { width: 6px; }
+.index-box::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
+
+.row{
+  display:flex; align-items:center; justify-content:space-between;
+  text-decoration:none; color:inherit; border:1px solid #e8e2d6; border-radius:12px;
+  padding:16px 20px; margin-bottom:12px; background:rgba(255,255,255,0.9);
+  transition:all 0.2s ease; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,0.03);
+}
+.row:hover{ border-color:#b45309; transform:translateY(-2px); background:#fff; }
+.row.active{ border:2px solid #b45309; padding:15px 19px; transform:translateY(-2px); background:#fff; }
+.row .d{font-size:1.05rem;font-weight:700;color:#111; display:flex; align-items:center; }
+.row .badge{font-size:10px;font-weight:700;color:#1a1a1a;background:#fbbf24;border-radius:4px;padding:2px 7px;margin-left:10px;}
+.row .go{color:#b45309;font-size:0.85rem;font-weight:600;opacity:0;transition:opacity 0.2s;}
+.row:hover .go, .row.active .go{opacity:1;}
+
 .empty{padding:30px 0;text-align:center;color:#999}
 .foot{margin-top:18px;padding-top:14px;border-top:1px solid #e0e0e0;font-size:11px;color:#999;text-align:center;line-height:1.6}
 .foot a{color:#b45309;text-decoration:none;font-weight:600}
 
-@media (max-width: 600px) {
-  body { padding: 0 !important; }
-  .sheet { border-radius: 0 !important; box-shadow: none !important; }
-  .hd { padding: 14px 16px !important; flex-direction: column; align-items: flex-start; gap: 10px; }
-  .inner { padding: 20px 16px !important; }
-  .title { font-size: 1.25rem !important; }
-  .row { padding: 10px 12px !important; }
-  .row .d { font-size: 0.95rem !important; }
-  .item { flex-direction: column; gap: 8px; }
-  .num { width: 24px; height: 24px; font-size: 11px; }
-  .it { font-size: 1rem !important; }
-}
+/* Right Viewer */
+.viewer { flex: 1; display: flex; justify-content: center; align-items: center; min-width: 0; }
+.viewer iframe { width: 100%; height: 100%; border: none; background: transparent; }
 
-@media (min-width: 601px) {
-  body { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px 0; }
-  .sheet {
-    width: 390px; height: 844px; margin: 0 auto;
-    border-radius: 40px; box-shadow: 0 0 0 14px #1a1a1a, 0 20px 50px rgba(0,0,0,0.4);
-    overflow-y: auto; position: relative; overflow-x: hidden;
-  }
-  .sheet::-webkit-scrollbar { display: none; }
-  .sheet { -ms-overflow-style: none; scrollbar-width: none; }
-  .notch {
-    position: sticky; top: 0; left: 0; right: 0; width: 140px; height: 28px;
-    background: #1a1a1a; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
-    margin: 0 auto -28px auto; z-index: 100;
-  }
-}
-@media (max-width: 600px) {
-  .notch { display: none; }
+/* Mobile View: Fallback to single column list */
+@media (max-width: 900px) {
+  .app-container { flex-direction: column; height: auto; margin: 0; padding: 0; gap: 0; }
+  .viewer { display: none; }
+  .sidebar { flex: none; width: 100%; }
+  .sidebar-header { border-radius: 0; margin-bottom: 0; }
+  .index-box { border-radius: 0; box-shadow: none; background: #fdf9f3; min-height: 100vh; }
 }
 </style>
 </head>
 <body>
-<div class="sheet">
-  <div class="notch"></div>
-  <div class="hd">
-    <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
+<div class="app-container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
 <g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
 <line x1="22" y1="36" x2="60" y2="60"></line><line x1="22" y1="84" x2="60" y2="60"></line><line x1="60" y1="60" x2="100" y2="36"></line><line x1="60" y1="60" x2="100" y2="84"></line></g>
 <circle cx="22" cy="36" r="8" fill="#6FA8FF"></circle><circle cx="22" cy="84" r="8" fill="#6FA8FF"></circle>
 <circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle>
 <circle cx="60" cy="60" r="15" fill="#FBBF24"></circle>
 <text x="150" y="78" font-family="Pretendard, &#39;Apple SD Gothic Neo&#39;, sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text></svg></div>
-    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">아카이브 · 매일 업데이트</div></div>
-  </div>
-  <div class="inner">
-    <h1 class="title">디스플레이 데일리 아카이브</h1>
-    <div class="sub">Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑. 날짜를 눌러 그날의 브리핑을 확인하세요.</div>
-    <a class="row" href="card_2026-06-11.html"><span class="d">2026-06-11 <span class="badge">최신</span></span><span class="go">브리핑 보기 →</span></a>
+      <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">아카이브 · 매일 업데이트</div></div>
+    </div>
+    <div class="index-box">
+      <h1 style="font-size:1.45rem;font-weight:700;color:#000;margin-bottom:4px">디스플레이 데일리 아카이브</h1>
+      <div style="font-size:0.88rem;color:#666;margin-bottom:18px;word-break:keep-all">Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑. 날짜를 눌러 그날의 브리핑을 확인하세요.</div>
+      <a class="row" href="card_2026-06-11.html"><span class="d">2026-06-11 <span class="badge">최신</span></span><span class="go">브리핑 보기 →</span></a>
 <a class="row" href="card_2026-06-10.html"><span class="d">2026-06-10</span><span class="go">브리핑 보기 →</span></a>
 <a class="row" href="card_2026-06-09.html"><span class="d">2026-06-09</span><span class="go">브리핑 보기 →</span></a>
 <a class="row" href="card_2026-06-08.html"><span class="d">2026-06-08</span><span class="go">브리핑 보기 →</span></a>
-    <div class="foot">AI 자동 큐레이션 by <b>Next I/O</b> · 온라인 매거진 위탁 개발 · <a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
+      <div class="foot">AI 자동 큐레이션 by <b>Next I/O</b> · 온라인 매거진 위탁 개발 · <a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
+    </div>
+  </div>
+  <div class="viewer">
+    <iframe src="" name="viewer_frame" id="viewer_frame"></iframe>
   </div>
 </div>
+<script>
+const rows = document.querySelectorAll('.row');
+const iframe = document.getElementById('viewer_frame');
+
+// Parse URL ?date=YYYY-MM-DD
+const params = new URLSearchParams(window.location.search);
+const targetDate = params.get('date');
+
+let initialUrl = '';
+if (rows.length > 0) {
+    let activeRow = rows[0];
+    if (targetDate) {
+        for (const row of rows) {
+            if (row.getAttribute('href') === 'card_' + targetDate + '.html') {
+                activeRow = row;
+                break;
+            }
+        }
+    }
+    initialUrl = activeRow.getAttribute('href');
+    activeRow.classList.add('active');
+    iframe.src = initialUrl;
+}
+
+rows.forEach(row => {
+  row.addEventListener('click', (e) => {
+    if (window.innerWidth <= 900) return; // on mobile, let it navigate naturally
+    e.preventDefault();
+    iframe.src = row.getAttribute('href');
+    rows.forEach(r => r.classList.remove('active'));
+    row.classList.add('active');
+    
+    // Update URL history to support sharing/reloading
+    const dateMatch = row.getAttribute('href').match(/card_(.*)\.html/);
+    if(dateMatch) {
+        window.history.replaceState({}, '', '?date=' + dateMatch[1]);
+    }
+  });
+});
+</script>
 </body>
 </html>
