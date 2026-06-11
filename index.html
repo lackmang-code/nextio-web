@@ -189,8 +189,13 @@
       <!-- Left side: Index list -->
       <div class="dn-sidebar">
         <div class="dn-sidebar-header">
-          <p class="eyebrow" style="color: var(--primary); text-align: left; margin-bottom: 8px;">DAILY UPDATE</p>
-          <h2 class="sec-h" style="font-size: 28px; text-align: left; margin-bottom: 24px;">디스플레이 데일리</h2>
+          <div class="dn-logo-area">
+             <span class="logo">Next<span>IO</span></span>
+          </div>
+          <div class="dn-kick">
+            <div class="k1">DISPLAY DAILY</div>
+            <div class="k2">매일 아침 업데이트</div>
+          </div>
         </div>
         <div class="dn-index-box">
           <ul id="dn-list" class="dn-list">
@@ -514,7 +519,7 @@
         li.className = 'dn-list-item' + (index === 0 ? ' active' : '');
         
         const isNew = index === 0 ? '<span class="dn-badge">최신</span>' : '';
-        li.innerHTML = `<span class="dn-date">${dateStr}</span>${isNew}`;
+        li.innerHTML = `<span class="d">${dateStr}${isNew}</span><span class="go">브리핑 보기 →</span>`;
         
         li.addEventListener('click', () => {
           // Update active class
