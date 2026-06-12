@@ -1019,13 +1019,13 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 
 .io-eyebrow {
   font-size: 12px; font-weight: 700; letter-spacing: 4px;
-  color: rgba(111,168,255,0.9); text-transform: uppercase; margin: 0;
+  color: rgba(251,191,36,0.95); text-transform: uppercase; margin: 0;
 }
 
 .io-stage {
   display: flex; align-items: center; justify-content: center;
-  gap: 48px; width: 100%; max-width: 1100px;
-  min-height: 340px; position: relative;
+  gap: 56px; width: 100%; max-width: 1400px;
+  min-height: 380px; position: relative;
 }
 
 #io-flow-canvas {
@@ -1034,8 +1034,8 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 }
 
 .io-col {
-  display: flex; flex-direction: column; gap: 13px;
-  flex: 1; max-width: 250px; z-index: 2;
+  display: flex; flex-direction: column; gap: 14px;
+  flex: 1; max-width: 320px; z-index: 2;
 }
 .io-col-label {
   font-size: 11px; font-weight: 700; letter-spacing: 3px;
@@ -1045,15 +1045,16 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 .io-out { align-items: flex-start; }
 
 .io-chip {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(111,168,255,0.28);
-  border-radius: 12px; padding: 13px 20px;
-  font-size: 15px; font-family: 'Noto Sans KR', sans-serif;
-  color: rgba(255,255,255,0.88); white-space: nowrap;
+  background: rgba(111,168,255,0.14);
+  border: 1.5px solid rgba(111,168,255,0.5);
+  border-radius: 12px; padding: 16px 28px;
+  font-size: 22px; font-family: 'Noto Sans KR', sans-serif;
+  color: rgba(255,255,255,0.92); white-space: nowrap;
   opacity: 0; animation: ioChipIn 0.45s ease forwards;
 }
 .io-out .io-chip {
-  border-color: rgba(251,191,36,0.3);
+  background: rgba(251,191,36,0.13);
+  border-color: rgba(251,191,36,0.55);
   animation-name: ioChipOut;
 }
 .io-in  .io-chip:nth-child(2) { animation-delay: 0.10s; }
