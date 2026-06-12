@@ -64,49 +64,10 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif
 .cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
 .cta .c2 a{color:#b45309;text-decoration:none;font-weight:600}
 .foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
-
-@media (max-width: 600px) {
-  body { padding: 0 !important; }
-  .sheet { border-radius: 0 !important; box-shadow: none !important; }
-  .hd { padding: 14px 16px !important; flex-direction: column; align-items: flex-start; gap: 10px; }
-  .inner { padding: 20px 16px !important; }
-  .title { font-size: 1.25rem !important; }
-  .row { padding: 10px 12px !important; }
-  .row .d { font-size: 0.95rem !important; }
-  .item { flex-direction: column; gap: 8px; }
-  .num { width: 24px; height: 24px; font-size: 11px; }
-  .it { font-size: 1rem !important; }
-}
-
-@media (min-width: 601px) {
-  body { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px 0; }
-  .sheet {
-    width: 390px; height: 844px; margin: 0 auto;
-    border-radius: 40px; box-shadow: 0 0 0 14px #1a1a1a, 0 20px 50px rgba(0,0,0,0.4);
-    overflow-y: auto; position: relative; overflow-x: hidden;
-  }
-  .sheet::-webkit-scrollbar { display: none; }
-  .sheet { -ms-overflow-style: none; scrollbar-width: none; }
-  .notch {
-    position: sticky; top: 0; left: 0; right: 0; width: 140px; height: 28px;
-    background: #1a1a1a; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
-    margin: 0 auto -28px auto; z-index: 100;
-  }
-}
-@media (max-width: 600px) {
-  .notch { display: none; }
-}
 </style>
-<script>
-// If opened directly on PC, redirect to the Archive App Viewer with this card selected
-if (window.top === window.self && window.innerWidth > 900) {
-    window.location.replace("index.html?date=2026-06-10");
-}
-</script>
 </head>
 <body>
 <div class="sheet">
-  <div class="notch"></div>
   <div class="hd">
     <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
 <g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
