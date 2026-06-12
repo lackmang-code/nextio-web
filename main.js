@@ -190,7 +190,7 @@ syncUI();
   let mouse = { x: null, y: null, radius: 150 };
   let animationId = null;
   let isMobile = window.innerWidth < 769;
-  let maxParticles = isMobile ? 25 : 65;
+  let maxParticles = isMobile ? 60 : 150;
   const connectionDist = 110;
 
   function resize() {
