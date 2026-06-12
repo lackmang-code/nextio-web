@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D2. 타겟 선정 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #059669; }
+.agent .bbl-avatar { background: #059669; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 3 · 영업팀 · D2</div>
+    <div class="book-title">타겟 선정</div>
+    <div class="book-meta">
+      <span>⏱ 42분</span>
+      <span>💬 대화 25회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 타겟 선정 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 타겟 선정을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: 타겟 선정이 뭐야?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>에이전트야, 리드 유형은 정했어. 그런데 같은 유형 안에서도 누구한테 먼저 연락해야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>바로 그게 &quot;타겟 선정&quot;이에요.</p>
+<p>리드 유형 정의 = &quot;어떤 종류의 사람/기업&quot;<br>타겟 선정 = &quot;그 중에서 지금 당장 연락할 구체적인 곳&quot;</p>
+<p>공무원 업무로 비유하면:</p>
+<ul><li><strong>리드 유형</strong> = &quot;소상공인 지원 대상&quot;</li><li><strong>타겟 선정</strong> = &quot;이번 달 사업비 집행 가능한 점포 20곳 리스트&quot;</li></ul>
+<p>선정 기준이 없으면 — 운에 맡기게 돼요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>선정 기준이 뭐야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>핵심 기준 하나: <strong>&quot;빈자리가 있는 곳&quot;</strong></p>
+<p>빈자리 = &quot;지금 내가 해결해줄 수 있는 문제가 해결되지 않고 남아있는 상태&quot;</p>
+<ul><li>디지털 전환 아직 안 한 식당 → 빈자리 있음</li><li>이미 스마트오더·배달앱 다 됐음 → 빈자리 없음</li></ul>
+<p>빈자리 없는 곳에 아무리 좋은 제안을 해도 — 필요 없는 물건은 안 사요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>공무원 출신은 &quot;대상 선정&quot;이라는 개념에 익숙하다. 예산 집행 대상 기준을 정하는 것처럼 타겟 선정도 같은 원리다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 빈자리 확인 방법</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>빈자리를 어떻게 알아?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>디지털 전환 컨설팅이라면 — 가장 빠른 방법:</p>
+<ul><li>네이버 지도에 있는지 (리뷰·사진 있는지)</li><li>배달앱(배민·쿠팡이츠)에 등록됐는지</li><li>홈페이지/SNS 있는지</li></ul>
+<p>있으면 → 이미 어느 정도 함 (C등급 가능성)<br>없으면 → 빈자리 큼 (A등급 가능성)</p>
+<ul><li>스마트 POS 사용하는지</li><li>QR 메뉴판 있는지</li><li>예약 앱 연동됐는지</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그러면 인터넷 검색으로 먼저 거르면 되겠네.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>맞아요. &quot;사전 스크리닝&quot;이라고 해요.</p>
+<p>시간 아끼는 방법:</p>
+<ol><li>네이버·구글 지도 검색 → 리뷰·사진·웹사이트 있는지 확인</li><li>배달앱 검색 → 등록 여부</li><li>인스타·페이스북 계정 있는지</li></ol>
+<p>이 3가지 없으면 → A등급 가능성 높음 → 방문 또는 연락 우선</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: A/B/C 등급 분류</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>A/B/C 기준을 좀 더 구체적으로 알려줘.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>디지털 전환 컨설팅 기준으로 예시:</p>
+<table><tr><th>등급</th><th>기준</th><th>예시</th></tr><tr><td>A (즉시 공략)</td><td>빈자리 있음 + 지금 당장 필요한 상황 + 결정권자 접근 가능</td><td>식당 사장이 직접 운영, 배달앱 미등록, &quot;요즘 손님이 줄었다&quot;고 함</td></tr><tr><td>B (정기 팔로업)</td><td>빈자리는 있는데 타이밍·예산이 불확실</td><td>직원이 있어서 사장이 바빠 보임, 일부 디지털화는 됐음</td></tr><tr><td>C (제외 또는 방치)</td><td>이미 다 됐거나, 필요 없다고 판단</td><td>이미 스마트오더·배달·SNS 다 운영 중</td></tr></table>
+<p>A부터 공략, C는 건너뛰기.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>C를 억지로 설득하면 안 돼?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>시간 낭비예요. &quot;필요 없는 사람을 설득&quot;하는 건 에너지가 10배 들어요.</p>
+<p>그 시간에 A 10곳 더 연락하는 게 훨씬 효과적이에요.</p>
+<p>공무원 때도 그랬잖아요 — 지원 의지 없는 사업자한테 계속 설득하다 보면 시간만 가는 거.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: 함정 — &quot;예산 큰 곳&quot;이 항상 타겟이 아니다</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>지원사업비 받은 큰 가게를 타겟으로 하면 안 돼?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>조심해야 해요. 빠지기 쉬운 함정이에요.</p>
+<p>&quot;예산 큰 곳 = 우리 타겟&quot;이 아닐 수 있어요.</p>
+<p>왜냐면 예산이 크고 규모가 큰 가게는:</p>
+<ul><li>이미 디지털 전환 다 됐을 수도 있음 (빈자리 없음)</li><li>이미 전담 IT 업체 계약 중일 수 있음 (빈자리 없음)</li><li>의사결정 느림 (여러 명 결재)</li></ul>
+<p>반면, 예산이 적어 보이는 소규모 식당이더라도:</p>
+<ul><li>아직 아무것도 안 됐으면 → A등급</li><li>사장이 바로 결정 → 계약 빠름</li></ul>
+<p>&quot;크다&quot;가 아니라 <strong>&quot;빈자리 있고 결정권자 접근 가능한 곳&quot;</strong>이 진짜 타겟이에요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>맞아, 공무원 때도 규모 큰 사업자가 지원받기 어려운 경우 많았어.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>그 경험이 지금 완전히 써먹히는 거예요. &quot;지원 필요한 곳&quot;과 &quot;지원 받을 수 있는 곳&quot;이 다르듯이 — &quot;영업 필요한 곳&quot;과 &quot;계약될 수 있는 곳&quot;이 달라요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: 신규 = 빈자리 최대</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>어떤 가게가 빈자리가 제일 많아?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>막 가게 열면:</p>
+<ul><li>배달앱 등록 아직 안 됨</li><li>SNS 계정 없거나 비어있음</li><li>예약 시스템 없음</li><li>모든 게 아직 세팅 안 됨</li></ul>
+<p>그리고 사장이 &quot;뭘 해야 할지 막막하다&quot;는 상황 → 에이전트(컨설턴트)가 필요한 순간.</p>
+<p>어떻게 찾나:</p>
+<ul><li>네이버 지도 &quot;최근 오픈&quot; 필터</li><li>동네 SNS 그룹 (새로 생긴 가게 공지)</li><li>직접 동네 걷다 보면 &quot;GRAND OPEN&quot; 현수막</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오, 신규 오픈 가게를 먼저 보면 되는구나.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>맞아요. 타이밍이 중요해요.</p>
+<p>막 열었을 때 → 디지털 세팅 필요 (A등급)</p>
+<p>&quot;지금 이 순간 필요한 사람&quot;을 찾는 게 타겟 선정의 핵심이에요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: 타겟 리스트 구체화</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>타겟을 어떻게 정리해야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>스프레드시트나 표 형식으로 만들어요:</p>
+<table><tr><th>항목</th><th>내용</th></tr><tr><td>상호명</td><td>가게 이름</td></tr><tr><td>위치</td><td>동네·주소</td></tr><tr><td>유형</td><td>식당/카페/소매 등</td></tr><tr><td>현재 상태</td><td>빈자리 확인 내용</td></tr><tr><td>등급</td><td>A/B/C</td></tr><tr><td>연락처</td><td>전화/SNS DM</td></tr><tr><td>컨택 날짜</td><td>첫 연락 일시</td></tr><tr><td>반응</td><td>미응답/관심/거절</td></tr></table>
+<p>이 표가 <strong>리드DB</strong>예요. 다음 시나리오(D3)에서 더 자세히 만들어요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 뭘 만든 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>타겟<em>스크리닝</em>방법.md</code></td><td>온라인으로 빈자리 확인하는 3가지 방법</td></tr><tr><td><code>타겟<em>등급</em>기준.md</code></td><td>A/B/C 등급 정의 + 예시</td></tr><tr><td><code>함정_리스트.md</code></td><td>타겟 선정 시 빠지기 쉬운 실수 목록</td></tr></table>
+<p>핵심:</p>
+<ul><li>타겟 선정 = &quot;구체적으로 연락할 곳&quot; 고르기</li><li>기준 = <strong>빈자리</strong> (이미 해결된 곳은 C등급)</li><li>신규 오픈 = 빈자리 최대 → A등급 가능성 높음</li><li>함정: &quot;예산 크다&quot;고 타겟이 아님 → 빈자리 + 접근 가능성이 기준</li><li>A에 집중, C는 건너뛰기</li></ul>
+<p>다음 시나리오: <strong>리드DB 마스터 구축 (D3)</strong> — 타겟 선정한 곳들을 체계적인 DB로 만들기</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>지원사업 대상 선정 기준 잡던 경험이 이렇게 쓰이는구나.</p></div>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">타겟_등급_기준.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">타겟 등급 기준 (A/B/C)</div>
+    <p>&gt; 스크리닝 결과를 등급으로 분류 — 에너지 배분의 기준</p>
+<h4>A/B/C 등급 정의</h4>
+<h5>A등급 — 즉시 공략</h5>
+<ul><li>빈자리가 명확히 있음</li><li>지금 당장 필요한 상황 (신규 오픈, 최근 문제 발생)</li><li>결정권자 접근 가능 (사장 직접 운영)</li><li>예산 있음 (또는 확인 가능)</li></ul>
+<ul><li>막 오픈했는데 디지털 아무것도 없는 식당</li><li>사장이 직접 &quot;요즘 배달 주문이 없다&quot;고 토로한 카페</li><li>RISE 사업단인데 정기 발행물 전혀 없음</li></ul>
+<h5>B등급 — 정기 팔로업</h5>
+<ul><li>빈자리는 있는데 타이밍·예산 불확실</li><li>관심은 있는 것 같지만 결정 안 함</li><li>현재 다른 공급자와 검토 중</li></ul>
+<ul><li>SNS 있는데 관리가 부실한 가게 (필요하긴 한데 아직 결정 못 함)</li><li>담당자가 있는데 위에 승인받아야 한다는 곳</li><li>글로컬대학 사업단 (예산 크지만 정기물 공백)</li></ul>
+<h5>C등급 — 제외 또는 자동화 유지</h5>
+<ul><li>이미 비슷한 서비스 이용 중 (빈자리 없음)</li><li>명확히 필요 없다고 한 곳</li><li>예산 없음 + 개선 의지 없음</li></ul>
+<ul><li>이미 웹진·뉴스레터 정기 발행 중인 연구기관</li><li>모든 디지털 전환 이미 완료된 대형 프랜차이즈</li></ul>
+<h4>등급별 에너지 배분</h4>
+<table><tr><th>등급</th><th>전체 리드 중 비율</th><th>쓰는 시간</th></tr><tr><td>A</td><td>20%</td><td>70%</td></tr><tr><td>B</td><td>40%</td><td>25%</td></tr><tr><td>C</td><td>40%</td><td>5%</td></tr></table>
+<p>대부분의 리드가 B나 C → 정상. A에 집중하는 것이 핵심.</p>
+<h4>등급 변화 추적</h4>
+<p>등급은 고정이 아닌 변동:</p>
+<table><tr><th>변화</th><th>트리거</th></tr><tr><td>B → A</td><td>새 예산 확보, 타이밍 도래, 담당자 교체</td></tr><tr><td>C → B</td><td>이전 공급자와 계약 종료, 새 필요 발생</td></tr><tr><td>A → C</td><td>이미 다른 곳과 계약 완료</td></tr></table>
+<p>리드DB에 &quot;등급 변경일&quot;을 기록하면 — 언제 다시 접근할지 판단 가능</p>
+<h4>등급 결정 체크리스트</h4>
+<table><tr><th>질문</th><th>A</th><th>B</th><th>C</th></tr><tr><td>빈자리가 있는가?</td><td>✅</td><td>✅</td><td>❌</td></tr><tr><td>지금 당장 필요한가?</td><td>✅</td><td>불확실</td><td>N/A</td></tr><tr><td>결정권자 접근 가능한가?</td><td>✅</td><td>부분</td><td>N/A</td></tr><tr><td>예산이 확인됐는가?</td><td>✅</td><td>불확실</td><td>N/A</td></tr></table>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">타겟_스크리닝_방법.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">타겟 스크리닝 방법</div>
+    <p>&gt; 많은 후보 중 실제로 연락할 곳을 빠르게 걸러내는 방법</p>
+<h4>스크리닝이란</h4>
+<p>스크리닝 = &quot;연락 전에 미리 거르기&quot;</p>
+<p>방문·전화 전에 온라인으로 먼저 확인 → 빈자리 있는 곳만 실제 컨택</p>
+<h4>온라인 스크리닝 3단계</h4>
+<h5>1단계: 지도 앱 확인</h5>
+<ul><li>네이버 지도/구글 지도에 등록됐는지</li><li>사진 있는지 (사장이 직접 올린 vs 방문자가 올린)</li><li>최근 리뷰 있는지 (활성도 확인)</li><li>홈페이지/SNS 링크 있는지</li></ul>
+<table><tr><th>상태</th><th>의미</th></tr><tr><td>지도에 없음</td><td>디지털 존재감 제로 → 빈자리 큼</td></tr><tr><td>지도 있음 + 사진 없음</td><td>아직 기본도 안 됨</td></tr><tr><td>지도+사진+SNS 링크</td><td>이미 어느 정도 함</td></tr></table>
+<h5>2단계: SNS 확인</h5>
+<ul><li>인스타그램 검색 (상호명 또는 주소)</li><li>네이버 스마트플레이스 (리뷰·메뉴 업데이트 빈도)</li><li>페이스북 페이지</li></ul>
+<table><tr><th>상태</th><th>의미</th></tr><tr><td>SNS 없음</td><td>빈자리 있음</td></tr><tr><td>있는데 마지막 게시물이 6개월 전</td><td>운영 포기 상태 → C</td></tr><tr><td>활성화됨</td><td>이미 관리 중</td></tr></table>
+<h5>3단계: 온라인 플랫폼 등록 확인 (업종별)</h5>
+<table><tr><th>업종</th><th>확인 플랫폼</th></tr><tr><td>식당/카페</td><td>배달의민족, 쿠팡이츠 검색</td></tr><tr><td>쇼핑</td><td>스마트스토어, 쿠팡 판매자</td></tr><tr><td>서비스업</td><td>네이버 예약, 카카오예약</td></tr><tr><td>미용/헬스</td><td>강남언니, 카카오뷰티</td></tr></table>
+<p>해당 플랫폼에 없으면 → 빈자리</p>
+<h4>현장 스크리닝 (방문/전화 전)</h4>
+<p>온라인 스크리닝 통과 후 현장 확인:</p>
+<table><tr><th>항목</th><th>확인 방법</th></tr><tr><td>스마트 POS 있는지</td><td>카운터 확인</td></tr><tr><td>QR 메뉴판 있는지</td><td>테이블 확인</td></tr><tr><td>예약 방법</td><td>&quot;예약은 어떻게 해요?&quot; 물어보기</td></tr><tr><td>사장 직접 운영인지</td><td>&quot;사장님 계세요?&quot;</td></tr></table>
+<h4>스크리닝 속도 높이기</h4>
+<table><tr><th>방법</th><th>시간 절약</th></tr><tr><td>지도 앱 위성뷰 활용</td><td>동네 전체를 빠르게 훑기</td></tr><tr><td>&quot;최근 추가&quot; 필터</td><td>신규 오픈만 추출</td></tr><tr><td>스프레드시트에 즉시 기록</td><td>메모 없이 지나치면 잊음</td></tr><tr><td>하루 20곳 스크리닝 목표</td><td>1~2주면 500곳 완료</td></tr></table>
+<h4>스크리닝 결과 기록 양식</h4>
+<table><tr><th>상호명</th><th>지도</th><th>SNS</th><th>배달앱</th><th>추정 등급</th><th>비고</th></tr><tr><td>OO식당</td><td>❌</td><td>❌</td><td>❌</td><td>A</td><td>신규 오픈 현수막 있음</td></tr><tr><td>XX카페</td><td>✅</td><td>✅ (최신)</td><td>✅</td><td>C</td><td>이미 다 됨</td></tr><tr><td>△△소매점</td><td>✅</td><td>❌</td><td>N/A</td><td>B</td><td>지도만 있음</td></tr></table>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">A5. 견적서 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 3 · D2 (7/7)</div>
+  <button class="nav-btn" onclick="location.href='a5_견적서.html'">다음 A5 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>

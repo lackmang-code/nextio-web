@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G6. 코너 표준 작성 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #B45309; }
+.agent .bbl-avatar { background: #B45309; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 5 · 편집제작팀 · G6</div>
+    <div class="book-title">코너 표준 작성</div>
+    <div class="book-meta">
+      <span>⏱ 50분</span>
+      <span>💬 대화 19회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 코너 표준 작성 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 코너 표준 작성을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: 코너 vs 기사 — 뭐가 다른가?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>매달 나오는 코너를 어떻게 만들어? 매달 새로 다 짜야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>코너는 <strong>구조는 고정, 소재만 바꾸는</strong> 방식이에요.</p>
+<table><tr><th>기사</th><th>고정 코너</th></tr><tr><td>구조</td><td>매번 새로 설계</td><td>한번 정하면 매달 동일</td></tr><tr><td>소재</td><td>편집회의에서 결정</td><td>소재 뱅크에서 꺼내옴</td></tr><tr><td>제작 시간</td><td>길다</td><td>짧다 (구조 고민 없음)</td></tr><tr><td>독자 기대</td><td>매번 다름</td><td>&quot;이번 달은 누가 나올까?&quot;</td></tr></table>
+<p>구조를 한번 잘 만들어두면 — 에디터는 소재만 찾으면 돼요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>구조를 어떻게 설계해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>독자에게 <strong>매달 같은 질문에 대한 다른 답</strong>을 주는 구조예요.</p>
+<p>&quot;이달의 1인 유니콘&quot; 코너 예시:</p>
+<ul><li>매달 같은 질문: &quot;혼자서 어떻게 회사를 굴렸는가?&quot;</li><li>매달 다른 답: 다른 인물, 다른 업종, 다른 방법</li></ul>
+<p>독자는 &quot;이 코너가 나오면 또 흥미로운 사람 얘기구나&quot;라고 기대해요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>잡지에서 고정 코너가 독자 충성도를 만드는 원리. 에디터 출신이 가장 잘 아는 구조임을 강조.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 코너 표준 양식 5개 파트</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>코너 표준이라는 게 뭐야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>매회 반드시 들어가는 5개 파트예요. 이걸 미리 정해두면 집필자가 달라져도 코너 품질이 유지돼요.</p>
+<ul><li>코너명 + 인물명</li><li>부제: 숫자로 한 방</li><li>예) &quot;혼자 만든 앱, 6개월 만에 1,100억에 팔다&quot;</li></ul>
+<p>박스 형태로 매회 동일 항목:</p>
+<ul><li>누구 / 회사·제품 / 팀 규모 / 핵심 숫자 / 쓰는 무기 / 기간</li></ul>
+<ol><li>무엇을 했나 (한 일)</li><li>어떻게 혼자 했나 (AI 활용)</li><li>우리가 배울 점 (실전 교훈)</li></ol>
+<p>⚖️ 기호로 구분. 사실/주장/미확인 3단 구분 + 리스크 명시</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: 인물 카드 — 왜 박스인가?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>왜 인물 카드를 박스로 만들어?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>세 가지 이유예요:</p>
+<p>바쁜 독자가 &quot;이 사람이 누구야?&quot;를 빨리 파악할 수 있어요.<br>박스 하나로 3~4개 문단을 대체해요.</p>
+<p>매달 같은 항목 → 독자가 지난 회와 자연스럽게 비교<br>&quot;지난달은 6개월, 이번 달은 3개월이네&quot;</p>
+<p>에디터가 &quot;이 항목만 채우면 된다&quot;고 명확해져요.<br>취재 방향도 이 항목 중심으로 진행하면 됨</p>
+<table><tr><th>항목</th><th>이유</th></tr><tr><td>누구</td><td>독자 진입점</td></tr><tr><td>회사·제품</td><td>맥락 파악</td></tr><tr><td>팀 규모</td><td>&quot;진짜 혼자인가?&quot; 확인</td></tr><tr><td>핵심 숫자</td><td>신뢰도 + 후킹</td></tr><tr><td>쓰는 무기</td><td>AI 도구 독자에게 실전 팁</td></tr><tr><td>기간</td><td>&quot;얼마나 걸렸나?&quot;</td></tr></table></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: 팩트체크 박스 — 거품을 거품이라 쓰는 원칙</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>팩트체크 박스가 왜 필요해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>다른 매체와 차별화되는 핵심 무기예요.</p>
+<p>대부분 미디어의 &quot;성공한 1인 창업자&quot; 기사:</p>
+<ul><li>미담만 강조</li><li>출처 없는 수치 그대로 인용</li><li>리스크·실패는 안 씀</li></ul>
+<p>우리 코너의 원칙: <strong>거품은 거품이라 적는다</strong></p>
+<table><tr><th>표시</th><th>의미</th><th>예시</th></tr><tr><td>✅ 사실</td><td>공식 발표·공시·검증된 수치</td><td>&quot;Wix 공시 기준 $80M 매각&quot;</td></tr><tr><td>💬 본인 주장</td><td>인터뷰·SNS에서 본인이 한 말</td><td>&quot;연매출 $3M+ (본인 공개)&quot;</td></tr><tr><td>⚠️ 미확인</td><td>출처 불명·검증 불가</td><td>&quot;투자금 $10M (출처 미확인)&quot;</td></tr></table>
+<ul><li>미담 2~3회마다 &#x27;경계편&#x27; 1회</li><li>경계편 예시: &quot;AI 스타트업이라 불렸지만 FDA 경고장을 받은 사례&quot;</li><li>이 균형이 코너 전체의 신뢰를 만든다</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>경계편을 넣으면 독자가 실망하지 않아?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>오히려 반대예요. 경계편이 있어서 미담편의 신뢰도가 올라가요.</p>
+<p>&quot;이 코너는 띄우기만 하지 않는다&quot; → 독자가 미담편의 숫자도 믿게 돼요.<br>거품만 쓰는 매체 → 독자가 모든 숫자를 의심하게 됨</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: 소재 뱅크 — 고갈되지 않는 시스템</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>소재가 매달 떨어지면 어떡해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>소재 뱅크를 미리 만들어두면 돼요.</p>
+<ol><li><strong>X(트위터) 인디해커 커뮤니티</strong> — @levelsio 류의 공개 빌더</li><li><strong>ProductHunt 월간 Top</strong> — 성과 확인 가능한 신제품</li><li><strong>M&amp;A 뉴스</strong> — 인수 공시 = 수치 검증 가능</li><li><strong>국내 1인 창업 커뮤니티</strong> — 로컬 소재 (국내 독자 친화)</li></ol>
+<ul><li>핵심 숫자 최소 1개 검증 가능해야 함</li><li>팀 규모 확인 가능해야 함</li><li>본인 인터뷰 또는 공개 글이 있어야 함</li></ul>
+<p>항상 3개월 치 소재를 미리 확보해둔다. 소재가 갑자기 고갈되는 상황 방지.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: 코너 톤 — AI 같지 않게 쓰기</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>코너 톤은 어떻게 유지해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>세 가지 원칙이에요:</p>
+<ul><li>나쁜 예: &quot;마오르 슐로모는 이스라엘 출신으로 Base44라는 회사를...&quot;</li><li>좋은 예: &quot;혼자 만든 AI 앱빌더가 6개월 만에 860억에 팔렸다.&quot;</li></ul>
+<p>결론 먼저, 맥락은 나중</p>
+<p>AI가 생성하는 전형적 패턴 피하기:</p>
+<ul><li>&quot;~를 통해 혁신적인 결과를 달성했습니다&quot; → 금지</li><li>&quot;6개월. 직원 없이. $80M.&quot; → 허용</li></ul>
+<p>짧고 강한 문장이 오히려 사람 손길처럼 보임</p>
+<p>&quot;아마도&quot;, &quot;~처럼 보인다&quot;는 팩트체크 박스 밖에서 쓰지 않음<br>본문은 확인된 사실만</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 뭘 만든 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>코너표준_양식.md</code></td><td>5파트 구조 + 인물카드 양식 (바로 사용 가능)</td></tr><tr><td><code>소재뱅크_운영법.md</code></td><td>소재 채널 4개 + 검증 기준 + 버퍼 원칙</td></tr><tr><td><code>팩트체크박스_작성법.md</code></td><td>사실/주장/미확인 3단 구분 + 경계편 운영</td></tr></table>
+<p>핵심:</p>
+<ul><li>코너 = 구조 고정, 소재만 바꾸기</li><li>인물 카드 6항목 박스 = 매회 동일</li><li>본문 3블록: 무엇/어떻게/교훈</li><li>팩트체크 박스: 거품은 거품이라 적기</li><li>소재 뱅크 3개월 치 미리 확보</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"></div>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">A7. 회사 소개글 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 5 · G6 (3/8)</div>
+  <button class="nav-btn" onclick="location.href='a7_회사소개글.html'">다음 A7 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>

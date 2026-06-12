@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F2. 위탁계약서 작성 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #7C3AED; }
+.agent .bbl-avatar { background: #7C3AED; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 3 · 법무팀 · F2</div>
+    <div class="book-title">위탁계약서 작성</div>
+    <div class="book-meta">
+      <span>⏱ 42분</span>
+      <span>💬 대화 25회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 위탁계약서 작성 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 위탁계약서 작성을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: NDA랑 위탁계약서 차이</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>NDA 말고 위탁계약서도 따로 써야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>역할이 달라요.</p>
+<table><tr><th>NDA</th><th>위탁계약서</th></tr><tr><td>목적</td><td>비밀 보호</td><td>거래 조건 확정</td></tr><tr><td>체결 시점</td><td>미팅 전</td><td>작업 착수 전</td></tr><tr><td>내용</td><td>정보 보호 의무</td><td>돈·결과물·일정·책임</td></tr><tr><td>효력</td><td>미팅부터</td><td>착수부터 납품까지</td></tr></table>
+<p>NDA는 &quot;우리 미팅 내용 지켜요&quot;고, 위탁계약서는 &quot;이 일을 이렇게 하고 이 돈을 이때 받아요&quot; — 본 거래 계약이에요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>계약서 없이 그냥 시작하면 안 돼?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>구두 계약도 법적 효력이 있긴 해요. 하지만:</p>
+<ul><li>&quot;얼마 준다고 했잖아요&quot; vs &quot;그런 말 안 했어요&quot; → 분쟁 발생</li><li>&quot;이 범위까지 해주는 줄 알았어요&quot; → 추가 작업 분쟁</li><li>&quot;환불 받을 수 있어요&quot; → 환불 조건 분쟁</li></ul>
+<p>서면 계약서가 없으면 분쟁 시 내 입장을 증명하기 어려워요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>항공사 출신은 절차·규정에 민감하다. &quot;매뉴얼 없이 비행하는 것과 같다&quot;는 비유가 효과적.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 위탁계약서 7대 조항</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>위탁계약서에 뭐가 들어가?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>핵심 7가지예요:</p>
+<table><tr><th>번호</th><th>조항</th><th>내용</th></tr><tr><td>1</td><td>계약 당사자</td><td>갑(발주자)·을(수주자) 명칭·주소·대표자</td></tr><tr><td>2</td><td>용역 범위</td><td>어떤 일을 어디까지 하는가</td></tr><tr><td>3</td><td>대금·지급 조건</td><td>얼마를, 언제, 어떻게</td></tr><tr><td>4</td><td>납품·검수 조건</td><td>언제까지, 어떻게 확인하는가</td></tr><tr><td>5</td><td>지적재산권 귀속</td><td>결과물의 권리는 누구 것인가</td></tr><tr><td>6</td><td>계약 해지 조건</td><td>어떤 경우에 해지 가능한가</td></tr><tr><td>7</td><td>비밀유지</td><td>NDA와 중복되지만 계약서에도 명시</td></tr></table></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>다 필요해요. 빠지면 나중에 그 부분이 분쟁 포인트가 돼요.</p>
+<p>특히 <strong>지적재산권 조항</strong>은 콘텐츠 사업에서 제일 중요해요. 박낭만 씨가 여행 콘텐츠를 만들면 — 그게 내 것인지 고객 것인지 계약서에 안 쓰면 무조건 분쟁이 나요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: 용역 범위 — 범위를 좁혀야 하는 이유</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>용역 범위가 뭔가요?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>&quot;내가 어디까지 해주는 건지&quot;예요.</p>
+<p>나쁜 예:</p>
+<p>좋은 예:</p>
+<p>항공사에서 비유하면: &quot;객실 서비스 = 기내 담당, 수하물 분실 = 공항 담당&quot; — 역할 경계가 명확해야 책임도 명확해요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>고객이 나중에 &quot;이것도 해주세요&quot;라고 하면?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>범위 외 요청이에요.</p>
+<p>계약서에 포함 안 됐으면 &quot;별도 견적으로 진행 가능합니다&quot;라고 응대할 수 있어요. 계약서가 없으면 &quot;그냥 해줘야 하나?&quot; 고민이 생기고 관계도 불편해져요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: 대금·지급 조건</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>대금 조건은 어떻게 써?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><table><tr><th>방식</th><th>내용</th><th>사용 상황</th></tr><tr><td>선금 + 잔금</td><td>착수 시 50% + 납품 시 50%</td><td>일반적</td></tr><tr><td>3단 분할</td><td>착수 30% + 중간 30% + 납품 40%</td><td>장기 프로젝트</td></tr><tr><td>후불</td><td>납품 완료 후 전액</td><td>고객이 요구하는 경우 (위험)</td></tr></table>
+<p>선금이 없으면 착수 후 고객이 잠수할 위험이 있어요. <strong>착수금 30~50%는 꼭 받아야 해요.</strong></p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>항공사에서도 선불 구매가 기본이잖아요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>맞아요. 서비스업은 &quot;먼저 돈을 받아야 나중에 제대로 된 서비스를 제공할 수 있다&quot;는 원칙이 같아요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: 지적재산권 (IP) 조항</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>IP 귀속 조항이 뭐야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>&quot;내가 만든 콘텐츠의 권리가 누구 것이냐&quot;예요.</p>
+<p>선택지:</p>
+<table><tr><th>유형</th><th>내용</th><th>권장 상황</th></tr><tr><td>고객 귀속</td><td>결과물 권리가 고객에게 이전</td><td>맞춤형 제작 일반</td></tr><tr><td>공동 소유</td><td>양측 모두 소유</td><td>파트너십형 협업</td></tr><tr><td>라이선스 방식</td><td>권리는 내가 갖고 고객에게 이용 허락</td><td>방법론·템플릿 포함 시</td></tr></table>
+<p>핵심: <strong>대금 완납 조건으로 IP 이전</strong> — 돈 받기 전에 권리 넘기지 않기</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>방법론은 내 것으로 남는 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>그래서 이 문구가 중요해요. &quot;결과물은 고객 것, 방법론은 내 것&quot; — 명확히 분리해야 해요. 없으면 고객이 &quot;이 방식대로 직접 하겠다&quot;고 할 수도 있어요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: 계약 해지 조건</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>계약 해지 조항도 필요해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><p>꼭 필요해요. 해지 사유가 명확해야 분쟁 없이 끝낼 수 있어요.</p>
+<table><tr><th>사유</th><th>처리</th></tr><tr><td>갑이 대금을 기한 내 미지급</td><td>을이 해지 가능 + 기지급 대금 미반환</td></tr><tr><td>을이 납품 기한을 초과 (정당한 사유 없이)</td><td>갑이 해지 가능 + 선금 반환 요구 가능</td></tr><tr><td>상호 합의에 의한 해지</td><td>진행 완료분 대금 정산 후 종결</td></tr><tr><td>불가항력 (천재지변·코로나 등)</td><td>이행 유예 or 협의 해지</td></tr></table></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 뭘 만든 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(법무팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>위탁계약서<em>핵심조항</em>가이드.md</code></td><td>7대 조항 내용 + 작성 포인트</td></tr><tr><td><code>대금<em>지급</em>조건_설정법.md</code></td><td>지급 방식 3가지 + 선금 원칙</td></tr><tr><td><code>IP<em>귀속</em>조항_가이드.md</code></td><td>콘텐츠 권리 귀속 설정법</td></tr></table>
+<p>핵심:</p>
+<ul><li>NDA ≠ 위탁계약서: 위탁계약서 = 돈·결과물·일정·책임</li><li>7대 조항: 당사자/용역범위/대금/납품검수/IP/해지/비밀유지</li><li>&quot;포함하지 않는 것&quot;도 반드시 명시</li><li>착수금 30~50% 필수 (선금 없이 착수 금지)</li><li>IP 조항: 대금 완납 후 이전, 방법론은 내 것</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>비행 전 체크리스트처럼 계약서도 빠짐없이 확인하는 거네요.</p></div>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">IP_귀속_조항_가이드.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">IP 귀속 조항 가이드</div>
+    <p>&gt; 결과물의 권리는 누가 갖는가 — 콘텐츠 사업 핵심 조항</p>
+<h4>IP (지적재산권)란?</h4>
+<ul><li><strong>저작권</strong>: 창작물 (글, 이미지, 디자인, 영상)의 권리</li><li><strong>상표권</strong>: 브랜드명·로고</li><li><strong>영업비밀</strong>: 방법론·노하우</li></ul>
+<p>콘텐츠 사업에서는 <strong>저작권</strong>이 핵심</p>
+<h4>3가지 귀속 방식</h4>
+<table><tr><th>방식</th><th>내용</th><th>콘텐츠 사업 적합도</th></tr><tr><td>고객 귀속</td><td>대금 완납 후 결과물 권리 이전</td><td>✅ 일반적</td></tr><tr><td>공동 소유</td><td>양측 모두 소유</td><td>파트너십 협업 시</td></tr><tr><td>라이선스 방식</td><td>권리는 내가 갖고 고객에게 이용 허락</td><td>방법론·템플릿 포함 시</td></tr></table>
+<h4>권장 조항 (콘텐츠 위탁 제작)</h4>
+<p>&gt; &quot;본 계약에 따라 제작된 콘텐츠의 저작권은 대금 완납이 확인된 시점에 갑에게 귀속된다.&quot;</p>
+<p>&gt; &quot;단, 을이 계약 수행에 활용한 편집 방법론, 레이아웃 템플릿, 자체 제작 도구 및 소프트웨어는 을의 독점 소유이며 이전 대상에서 제외된다.&quot;</p>
+<h4>&quot;대금 완납 후&quot; 이전이 중요한 이유</h4>
+<p>```<br>대금 완납 전 이전:<br>┌─────────────────┐<br>│ 고객이 결과물 수령 │<br>│ → 대금 안 줘도 됨 │<br>│ → 내가 아무 레버리지 없음 │<br>└─────────────────┘</p>
+<p>대금 완납 후 이전:<br>┌─────────────────┐<br>│ 대금을 줘야 │<br>│ → 결과물 권리를 받음 │<br>│ → 내가 레버리지 있음 │<br>└─────────────────┘<br>```</p>
+<h4>자주 발생하는 분쟁 유형</h4>
+<table><tr><th>분쟁</th><th>예방 조항</th></tr><tr><td>&quot;이 디자인 스타일을 다른 고객에도 쓰면 안 된다&quot;</td><td>&quot;방법론·템플릿은 을 소유&quot; 명시</td></tr><tr><td>&quot;계약 기간 외에도 무상 수정 요구&quot;</td><td>수정 횟수 상한 명시</td></tr><tr><td>&quot;원본 파일 다 내놔라&quot;</td><td>&quot;납품 파일 형식&quot; 범위 명시</td></tr><tr><td>&quot;다른 사람한테 똑같이 해줬잖아요&quot;</td><td>독점 제공 조건 협의 시에만 명시</td></tr></table>
+<h4>독점 제공 조항 (선택)</h4>
+<p>고객이 &quot;우리만 이 방식 쓰게 해달라&quot;고 요구하는 경우:</p>
+<p>&gt; &quot;을은 본 계약 기간 중 [지역/업종] 내 다른 고객에게 동일한 서비스를 제공하지 않는다.&quot;</p>
+<ul><li>독점 제공은 영업 기회 제한이므로 비용 추가 필수</li><li>통상 20~50% 프리미엄</li></ul>
+<h4>체크리스트</h4>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>1</td><td>결과물 권리 귀속 방식 결정됐는가</td><td>☐</td></tr><tr><td>2</td><td>&quot;대금 완납 후 이전&quot; 문구가 있는가</td><td>☐</td></tr><tr><td>3</td><td>방법론·템플릿 분리 조항이 있는가</td><td>☐</td></tr><tr><td>4</td><td>납품 파일 형식·범위가 명시됐는가</td><td>☐</td></tr><tr><td>5</td><td>독점 조항 필요 여부 확인됐는가</td><td>☐</td></tr></table>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">대금_지급_조건_설정법.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">대금 지급 조건 설정법</div>
+    <p>&gt; 돈을 제때 받기 위한 계약서 조건 설정</p>
+<h4>지급 방식 3가지</h4>
+<table><tr><th>방식</th><th>구조</th><th>적합 상황</th><th>위험도</th></tr><tr><td>선금+잔금</td><td>착수 50% + 납품 50%</td><td>1~2개월 프로젝트</td><td>낮음</td></tr><tr><td>3단 분할</td><td>착수 30% + 중간 30% + 납품 40%</td><td>3개월 이상</td><td>낮음</td></tr><tr><td>후불 전액</td><td>납품 완료 후 100%</td><td>대기업 발주 (어쩔 수 없을 때)</td><td>높음</td></tr></table>
+<h4>착수금이 필수인 이유</h4>
+<p>착수금 없이 작업을 시작하면:</p>
+<ul><li>중간에 고객이 연락을 끊어도 아무 대가 없이 시간을 잃음</li><li>작업 방향 변경이 무한정 반복될 수 있음</li><li>고객의 진지도 확인 불가</li></ul>
+<ul><li>고객의 진지도 확인됨</li><li>방향 변경 요청 시 &quot;착수금 범위 내에서&quot; 제한 가능</li><li>납품 거절 시 착수금은 보존</li></ul>
+<h4>지급 기한 설정</h4>
+<table><tr><th>상황</th><th>권장 기한</th></tr><tr><td>개인 고객</td><td>납품 후 7일 이내</td></tr><tr><td>중소기업</td><td>납품 후 14일 이내</td></tr><tr><td>대기업·기관</td><td>납품 후 30일 이내 (관행)</td></tr></table>
+<p>&gt; &quot;잔금은 최종 납품 확인 후 [14]일 이내에 을의 계좌로 송금한다.&quot;</p>
+<h4>연체이자 조항 (선택)</h4>
+<p>지급이 늦어질 경우를 대비:<br>&gt; &quot;대금 지급이 기한을 초과하는 경우 연체일수에 대해 연 [12~15]%의 이자를 가산한다.&quot;</p>
+<p>→ 없어도 되지만 있으면 지연 방지 효과</p>
+<h4>지급 방식별 장단점</h4>
+<table><tr><th>지급 방식</th><th>장점</th><th>단점</th></tr><tr><td>계좌이체</td><td>빠름, 증빙 쉬움</td><td>없음</td></tr><tr><td>카드</td><td>고객 편의</td><td>수수료 발생 (2~3%)</td></tr><tr><td>가상계좌</td><td>자동화 가능</td><td>설정 필요</td></tr></table>
+<h4>세금계산서 발행 시기</h4>
+<table><tr><th>상황</th><th>발행 시점</th></tr><tr><td>착수금 수령 시</td><td>착수금 기준으로 발행</td></tr><tr><td>잔금 수령 시</td><td>잔금 기준으로 발행</td></tr><tr><td>단순 후불</td><td>납품 완료·확인 후 발행</td></tr></table>
+<p>세금계산서는 발행일 다음 달 10일까지 발행해야 가산세 없음</p>
+<h4>미지급 대응 절차</h4>
+<table><tr><th>단계</th><th>시점</th><th>방법</th></tr><tr><td>1차 안내</td><td>기한 당일</td><td>문자·카톡으로 확인 요청</td></tr><tr><td>2차 독촉</td><td>기한+7일</td><td>이메일 공식 요청</td></tr><tr><td>3차 경고</td><td>기한+14일</td><td>내용증명 발송</td></tr><tr><td>4차 조치</td><td>기한+30일</td><td>납품 거부 + 법적 조치</td></tr></table>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">위탁계약서_핵심조항_가이드.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">위탁계약서 핵심조항 가이드</div>
+    <p>&gt; B2B 서비스 위탁계약서의 7대 핵심 조항</p>
+<h4>위탁계약서 vs NDA</h4>
+<table><tr><th>NDA</th><th>위탁계약서</th></tr><tr><td>목적</td><td>비밀 보호</td><td>거래 조건 확정</td></tr><tr><td>체결 시점</td><td>미팅 전</td><td>작업 착수 전</td></tr><tr><td>내용</td><td>정보 보호 의무</td><td>돈·결과물·일정·책임</td></tr></table>
+<h4>조항 1: 계약 당사자</h4>
+<p>```<br>갑 (발주자): [고객사명] / 대표자: [이름] / 주소: [주소]<br>을 (수주자): [내 회사명] / 대표자: [이름] / 주소: [주소]<br>```</p>
+<ul><li>개인이 아닌 사업자명으로 (사업자등록증 기준)</li><li>주민등록번호 대신 사업자등록번호</li></ul>
+<h4>조항 2: 용역 범위</h4>
+<ul><li>포함되는 것: 구체적으로</li><li><strong>포함되지 않는 것: 구체적으로</strong> (더 중요)</li></ul>
+<p>&gt; &quot;을은 아래의 서비스를 제공한다:<br>&gt; 포함: 월간 온라인 매거진 기획(1회), 콘텐츠 10꼭지, 편집디자인, 웹 발행<br>&gt; 미포함: SNS 홍보 대행, 인쇄물 제작, 영상 콘텐츠, 10꼭지 초과 원고&quot;</p>
+<h4>조항 3: 대금·지급 조건</h4>
+<ol><li>총 금액 + VAT 별도 명시</li><li>지급 방식 (선금 비율·잔금 시점)</li><li>지급 기한 (납품 후 XX일 이내)</li></ol>
+<table><tr><th>시점</th><th>비율</th><th>금액</th></tr><tr><td>계약 체결 시 (착수금)</td><td>30~50%</td></tr><tr><td>중간 납품 시 (선택)</td><td>20~30%</td></tr><tr><td>최종 납품·검수 완료 시 (잔금)</td><td>나머지</td></tr></table>
+<h4>조항 4: 납품·검수 조건</h4>
+<ul><li>납품 기한</li><li>납품 방식 (이메일/링크/파일)</li><li>검수 기간 (고객이 확인할 수 있는 기간)</li><li>수정 횟수 상한</li></ul>
+<p>&gt; &quot;을은 매월 [XX]일까지 납품한다.<br>&gt; 갑은 납품 후 [7]일 이내 검수 의견을 제출한다.<br>&gt; 수정은 [2]회까지 무상으로 제공하며, 초과 시 건당 별도 청구한다.&quot;</p>
+<h4>조항 5: 지적재산권 귀속</h4>
+<ul><li>결과물 권리: 고객에게 이전? 공동 소유?</li><li>방법론·도구: 내가 보유</li><li>이전 시점: 대금 완납 후</li></ul>
+<p>&gt; &quot;결과물의 저작권은 대금 완납 시 갑에게 귀속된다.<br>&gt; 단, 을이 보유한 방법론·템플릿·자체 도구는 을의 소유이며 이전 대상에서 제외된다.&quot;</p>
+<h4>조항 6: 계약 해지 조건</h4>
+<table><tr><th>해지 사유</th><th>처리</th></tr><tr><td>갑 대금 미지급 (기한 초과)</td><td>을이 해지 가능 + 기지급분 미반환</td></tr><tr><td>을 납품 기한 초과</td><td>갑이 해지 가능 + 선금 반환 요구 가능</td></tr><tr><td>상호 합의 해지</td><td>진행 완료분 대금 정산 후 종결</td></tr><tr><td>불가항력</td><td>이행 유예 또는 협의 해지</td></tr></table>
+<h4>조항 7: 비밀유지</h4>
+<p>NDA와 중복되지만 계약서에도 명시:</p>
+<p>&gt; &quot;양측은 계약 수행 과정에서 취득한 상대방의 비밀정보를 제3자에게 공개·누설하지 않는다.&quot;</p>
+<h4>계약서 체결 절차</h4>
+<ol><li>템플릿 열기 → 빈칸 채우기</li><li>PDF로 저장 → 이메일 발송</li><li>상대방 서명 → 반환</li><li>내 서명 → 사본 각자 1부 보관</li><li>체결본: <code>체결완료/고객명_날짜/</code> 에 보관</li></ol>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">F3. 독소조항 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 3 · F2 (3/7)</div>
+  <button class="nav-btn" onclick="location.href='f3_독소조항.html'">다음 F3 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>

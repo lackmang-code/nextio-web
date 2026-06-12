@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E2. 견적 산출 근거 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #059669; }
+.agent .bbl-avatar { background: #059669; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 4 · 영업팀 · E2</div>
+    <div class="book-title">견적 산출 근거</div>
+    <div class="book-meta">
+      <span>⏱ 42분</span>
+      <span>💬 대화 24회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 견적 산출 근거 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 견적 산출 근거을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: 견적서와 산출 근거 — 같은 거야?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>견적서 이미 만들었는데, 산출 근거 따로 정리해야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>역할이 달라요.</p>
+<table><tr><th>견적서</th><th>산출 근거</th></tr><tr><td>독자</td><td><strong>고객</strong></td><td><strong>나(대표)</strong></td></tr><tr><td>목적</td><td>&quot;얼마냐&quot; 전달</td><td>&quot;왜 이 가격이냐&quot; 검증</td></tr><tr><td>포함 내용</td><td>최종 가격·항목</td><td>시장가 비교 + 원가 계산</td></tr><tr><td>공유 여부</td><td>고객에게 보냄</td><td>내부 보관</td></tr></table>
+<p>고객한테는 견적서만 보내고, 산출 근거는 내가 &quot;이 가격이 맞나?&quot; 자기 검증에 쓰는 거예요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그러면 산출 근거를 왜 만들어?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><ol><li><strong>가격 협상 시</strong>: &quot;왜 이 가격이냐&quot;는 질문이 왔을 때 근거가 있어야 흔들리지 않음</li><li><strong>손해 방지</strong>: &quot;내가 손해 보는 가격인지&quot; 계산 안 하면 일할수록 적자</li><li><strong>단가 업데이트 근거</strong>: 6개월 후 가격 올릴 때 &quot;시장가가 올랐다&quot;는 근거가 있어야</li></ol></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>인쇄소 영업 출신은 &quot;단가표 = 절대기준&quot;으로 생각하는 경향이 있다. 산출 근거가 단가표를 만드는 과정임을 강조.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 두 가지 방법 — 위에서 아래로 vs 아래에서 위로</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>산출 근거는 어떻게 만들어?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>두 가지 방법을 같이 쓰면 돼요:</p>
+<p>시장에서 비슷한 서비스가 얼마에 팔리나 → 그 구간에 내 가격이 맞는지 확인</p>
+<p>예: 콘텐츠 마케팅 에이전시 월 대행료 = 500만~1,500만<br>→ 내 가격 800만이면 중단 → 말이 됨</p>
+<p>내가 이 일 하는데 실제로 얼마나 드나 → 원가 합산 → 마진 더하기</p>
+<p>예: 원고 5만 + 디자인 15만 + 기획 10만 = 직접원가 30만<br>→ 마진 40% 더하면 → 가격 50만</p>
+<ul><li>Top-down = 인쇄소 주변 경쟁사 단가 확인 (시장가 파악)</li><li>Bottom-up = 종이값 + 잉크값 + 인건비 계산 (원가 계산)</li></ul>
+<ul><li>Top-down만: 시장가 맞는데 내가 적자일 수 있음</li><li>Bottom-up만: 원가 맞는데 시장가 너무 낮거나 높을 수 있음</li></ul>
+<p>→ 두 결과가 비슷하면 &quot;이 가격이 맞다&quot;고 확신할 수 있어요</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: Top-down 실습</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>Top-down 어떻게 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>인터넷에서 비슷한 서비스 3~5개 가격 찾기예요.</p>
+<p>&quot;편집디자인 + 인쇄 발주 대행&quot;의 시장가를 찾아볼게요.</p>
+<p>찾을 키워드:</p>
+<ul><li>&quot;편집디자인 가격&quot;</li><li>&quot;디자인 단가표&quot;</li><li>&quot;출판편집 외주 가격&quot;</li></ul>
+<p>제가 알고 있는 시장가:</p>
+<table><tr><th>항목</th><th>시장 단가</th><th>출처</th></tr><tr><td>편집디자인 (페이지당)</td><td>1만~3만 원</td><td>디자인 견적 사이트</td></tr><tr><td>브로슈어·카탈로그 (기획포함)</td><td>페이지당 5만~15만</td><td>편집 전문 플랫폼</td></tr><tr><td>원고 교정·윤문</td><td>꼭지당 2만 원</td><td>뉴스레터 플랫폼</td></tr></table></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>근데 나는 디자이너도 고용하고, 외주도 주고. 그게 섞이는데?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>그래서 Bottom-up이 필요해요. 네가 실제로 뭘 하든, 그 비용을 쌓는 거예요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: Bottom-up 원가 적산</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>Bottom-up은 어떻게 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>이 서비스 하는 데 드는 비용을 항목별로 쌓아요.</p>
+<table><tr><th>항목</th><th>설명</th><th>단가 기준</th></tr><tr><td>원고 제작·교정</td><td>꼭지당 시간 × 시급</td><td>시장 외주단가 기준</td></tr><tr><td>디자인·편집</td><td>페이지당</td><td>외주 단가 or 내 시급</td></tr><tr><td>사진·이미지</td><td>스톡 구매 or 촬영</td><td>실비</td></tr><tr><td>기획·PM</td><td>시간 × 시급</td><td>고정비 배분</td></tr><tr><td>배포·QA</td><td>시간 × 시급</td><td>고정비 배분</td></tr></table>
+<p>```<br>원고 교정 5꼭지 × 2만     = 10만<br>편집디자인 10페이지 × 2만  = 20만<br>기획·PM                    = 10만<br>배포·검수                  = 5만<br>─────────────────────────<br>직접원가 합계              ≈ 45만<br>```</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그러면 나는 얼마에 팔아야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>직접원가에 마진을 더하면 돼요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: 매출총이익률 — 마진이 얼마나 남아야 해?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>마진이 몇 %야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>```<br>매출총이익률 = (가격 - 직접원가) ÷ 가격 × 100</p>
+<p>예: 가격 65만, 직접원가 45만<br>→ (65만 - 45만) ÷ 65만 × 100 = 30.7%  ✅<br>```</p>
+<ul><li>직접원가에는 사무실·전기·통신·영업비가 안 들어감</li><li>이 간접비를 빼면 순이익이 낮아짐</li><li>30% 미만이면 힘들게 일하고 남는 게 없음</li></ul>
+<table><tr><th>상황</th><th>최소 마진</th></tr><tr><td>직접원가만 계산한 경우</td><td>30% 이상</td></tr><tr><td>간접비까지 합산한 경우</td><td>15~20% 이상</td></tr></table>
+<p>인쇄소에서는 기계 감가상각·재료비가 원가에 들어가는데 — 서비스업은 사람 시간이 핵심 원가예요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>직접원가가 45만이면 가격이 65만이 되네?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>맞아요. 역산하면 이래요:</p>
+<p>```<br>목표 매출총이익률 = 30%<br>직접원가 = 45만</p>
+<p>가격 = 직접원가 ÷ (1 - 목표이익률)<br>     = 45만 ÷ 0.7<br>     = 64.3만 → 올림해서 65만 또는 70만<br>```</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: 두 방법 교차검증</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>Top-down이랑 Bottom-up 결과가 다르면?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>교차검증하는 거예요.</p>
+<table><tr><th>결과</th><th>의미</th><th>처리</th></tr><tr><td>두 결과가 비슷</td><td>가격이 합리적</td><td>그 가격으로 확정</td></tr><tr><td>Bottom-up &gt; Top-down</td><td>내 원가가 시장가보다 비쌈</td><td>원가 절감 방법 찾기</td></tr><tr><td>Top-down &gt; Bottom-up</td><td>시장보다 싸게 받고 있음</td><td>가격 올릴 여지 있음</td></tr></table>
+<p>박낭만 씨 예시:</p>
+<ul><li>Top-down: 비슷한 서비스 시장가 60만~80만</li><li>Bottom-up: 원가 45만, 마진 30% 적용 → 65만</li><li>결과: 65만 ✅ 두 방법 일치 → 가격 확정</li></ul></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 뭘 만든 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>견적<em>산출근거</em>계산법.md</code></td><td>Top-down + Bottom-up 방법 정리</td></tr><tr><td><code>매출총이익률_가이드.md</code></td><td>마진 계산법 + 등급별 기준</td></tr><tr><td><code>원가<em>적산</em>템플릿.md</code></td><td>직접원가 항목 목록 + 계산 템플릿</td></tr></table>
+<p>핵심:</p>
+<ul><li>견적서(고객용) ≠ 산출 근거(내부용)</li><li>Top-down: 시장가 확인 / Bottom-up: 원가 계산</li><li>두 방법 교차검증 → 일치하면 확신</li><li>매출총이익률 30% 이상 유지</li><li>인건비·시간이 핵심 원가 (기계·재료비 중심 인쇄업과 다름)</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>인쇄소에서는 단가표가 다 있었는데. 내가 직접 단가표를 만들어야 하는 거네.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>맞아요. 사장이 된다는 게 그거예요 — 단가표를 받는 사람에서 단가표를 만드는 사람으로.</p></div>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">견적_산출근거_계산법.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">견적 산출 근거 계산법</div>
+    <p>&gt; 내 가격이 맞는지 확인하는 두 가지 방법</p>
+<h4>견적서 vs 산출 근거 — 무엇이 다른가</h4>
+<table><tr><th>견적서</th><th>산출 근거</th></tr><tr><td>독자</td><td>고객</td><td>나(대표)</td></tr><tr><td>목적</td><td>&quot;얼마냐&quot; 전달</td><td>&quot;왜 이 가격이냐&quot; 검증</td></tr><tr><td>내용</td><td>최종 가격·항목</td><td>시장가 비교 + 원가 계산</td></tr><tr><td>공유</td><td>고객에게 발송</td><td>내부 보관</td></tr></table>
+<ol><li>협상 시 흔들리지 않기 위해</li><li>손해 보는 가격 방지</li><li>단가 업데이트 근거 확보</li></ol>
+<h4>방법 1: Top-down (시장가 비교)</h4>
+<p>비슷한 서비스가 시장에서 얼마에 팔리는지 확인</p>
+<ol><li>내 서비스와 비슷한 서비스 3~5개 검색</li><li>가격 범위 파악 (최저~최고)</li><li>내 가격이 그 범위 안에 있는지 확인</li></ol>
+<ul><li>&quot;편집디자인 가격&quot;</li><li>&quot;콘텐츠 마케팅 대행 월 비용&quot;</li><li>&quot;뉴스레터 제작 서비스 가격&quot;</li></ul>
+<table><tr><th>항목</th><th>시장 단가</th></tr><tr><td>편집디자인 (페이지당)</td><td>1만~3만 원</td></tr><tr><td>브로슈어·카탈로그 (기획+편집)</td><td>페이지당 5만~15만</td></tr><tr><td>원고 교정·윤문</td><td>꼭지당 2만 원</td></tr><tr><td>취재 기사 원고료</td><td>200자 원고지 매당 1만~1.5만</td></tr><tr><td>콘텐츠 마케팅 에이전시 월 대행</td><td>500만~1,500만</td></tr></table>
+<table><tr><th>내 가격 위치</th><th>의미</th></tr><tr><td>하단 (최저 근처)</td><td>진입형·경쟁력 강, 마진 낮을 수 있음</td></tr><tr><td>중단</td><td>표준 시장 가격</td></tr><tr><td>상단</td><td>프리미엄 포지셔닝, 차별화 근거 필요</td></tr></table>
+<h4>방법 2: Bottom-up (원가 적산)</h4>
+<p>내가 이 일을 하는 데 실제로 드는 비용 합산</p>
+<table><tr><th>항목</th><th>계산 방법</th><th>예시 단가</th></tr><tr><td>원고 집필·취재</td><td>꼭지 수 × 평균 원고 매수 × 매당 단가</td><td>매당 1만~1.4만</td></tr><tr><td>원고 교정·윤문</td><td>꼭지 수 × 꼭지당 단가</td><td>꼭지당 2만</td></tr><tr><td>디자인·편집</td><td>페이지 수 × 페이지당 단가</td><td>페이지당 1만~3만</td></tr><tr><td>사진·이미지</td><td>실비</td><td>스톡 20만 / 촬영 60만</td></tr><tr><td>기획·PM</td><td>시간 × 시급</td><td>건당 10만~40만</td></tr><tr><td>배포·QA</td><td>시간 × 시급</td><td>건당 5만~20만</td></tr></table>
+<p>```<br>직접원가 = 집필비 + 디자인비 + 이미지비 + 기획비 + 배포·QA비<br>```</p>
+<h4>교차검증</h4>
+<table><tr><th>상황</th><th>의미</th><th>처리</th></tr><tr><td>Top-down ≈ Bottom-up</td><td>가격이 합리적</td><td>확정</td></tr><tr><td>Bottom-up &gt; Top-down</td><td>원가가 시장보다 비쌈</td><td>원가 절감 방법 찾기</td></tr><tr><td>Top-down &gt; Bottom-up</td><td>시장보다 싸게 받는 중</td><td>가격 올릴 여지 있음</td></tr></table>
+<p>```<br>Top-down: 시장가 범위 60만~80만<br>Bottom-up: 직접원가 45만 + 마진 30% → 65만</p>
+<p>결과: 65만 → 시장가 범위(60~80만) 안에 있음 ✅<br>```</p>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">원가_적산_템플릿.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">원가 적산 템플릿</div>
+    <p>&gt; 내 서비스 원가를 항목별로 계산하는 양식</p>
+<h4>사용 방법</h4>
+<ol><li>아래 표의 &quot;내 단가&quot; 칸을 채운다</li><li>수량·규모에 맞게 계산한다</li><li>합산 후 마진 30%+ 추가 → 최종 가격</li></ol>
+<h4>직접원가 계산표</h4>
+<h5>콘텐츠 제작 원가</h5>
+<table><tr><th>항목</th><th>단위</th><th>시장 외주단가</th><th>내 단가</th><th>수량</th><th>원가</th></tr><tr><td>원고 집필·취재</td><td>원고지 1매</td><td>1만~1.4만</td></tr><tr><td>원고 윤문·교정</td><td>꼭지당</td><td>2만</td></tr><tr><td>카피·헤드라인</td><td>꼭지당</td><td>1.5만~2만</td></tr><tr><td><strong>콘텐츠 소계</strong></td></tr></table>
+<h5>디자인·편집 원가</h5>
+<table><tr><th>항목</th><th>단위</th><th>시장 외주단가</th><th>내 단가</th><th>수량</th><th>원가</th></tr><tr><td>웹 편집·디자인 (템플릿)</td><td>꼭지당</td><td>6만</td></tr><tr><td>웹 편집·디자인 (맞춤)</td><td>꼭지당</td><td>9만</td></tr><tr><td>웹 편집·디자인 (인터랙티브)</td><td>꼭지당</td><td>14만</td></tr><tr><td>인쇄 편집디자인</td><td>페이지당</td><td>1만~3만</td></tr><tr><td><strong>디자인 소계</strong></td></tr></table>
+<h5>이미지·사진 원가</h5>
+<table><tr><th>항목</th><th>단위</th><th>시장 외주단가</th><th>내 단가</th><th>수량</th><th>원가</th></tr><tr><td>스톡 이미지 + 편집</td><td>호당</td><td>20만</td></tr><tr><td>제품·현장 촬영</td><td>호당</td><td>60만</td></tr><tr><td>SNS 카드뉴스</td><td>건당</td><td>6만</td></tr><tr><td><strong>이미지 소계</strong></td></tr></table>
+<h5>기획·운영 원가</h5>
+<table><tr><th>항목</th><th>단위</th><th>시장 외주단가</th><th>내 단가</th><th>수량</th><th>원가</th></tr><tr><td>호별 기획 (라이트)</td><td>호당</td><td>15만</td></tr><tr><td>호별 기획 (표준)</td><td>호당</td><td>40만</td></tr><tr><td>호별 기획 (풀)</td><td>호당</td><td>80만</td></tr><tr><td>PM·발행·QA (라이트)</td><td>호당</td><td>20만</td></tr><tr><td>PM·발행·QA (표준)</td><td>호당</td><td>40만</td></tr><tr><td>PM·발행·QA (풀)</td><td>호당</td><td>70만</td></tr><tr><td><strong>기획·운영 소계</strong></td></tr></table>
+<h4>합산 및 가격 산출</h4>
+<p>```<br>직접원가 합계 = 콘텐츠 소계 + 디자인 소계 + 이미지 소계 + 기획·운영 소계<br>             = __________ 만 원</p>
+<p>목표 매출총이익률 = 30%</p>
+<p>적정 가격 = 직접원가 ÷ 0.70<br>          = __________ ÷ 0.70<br>          = __________ 만 원</p>
+<p>→ 올림하여 최종 가격 결정: __________ 만 원</p>
+<p>최종 매출총이익률 확인:<br>= (최종 가격 - 직접원가) ÷ 최종 가격 × 100<br>= __________ %  (30% 이상인지 확인)<br>```</p>
+<h4>등급별 산출 예시 (온라인 매거진)</h4>
+<table><tr><th>라이트</th><th>표준</th><th>프리미엄</th></tr><tr><td>발행 주기</td><td>분기</td><td>격월</td><td>월간</td></tr><tr><td>꼭지 수</td><td>5꼭지</td><td>10꼭지</td><td>14꼭지</td></tr><tr><td>콘텐츠 제작</td><td>고객 제공</td><td>절반 자체</td><td>전량 취재</td></tr><tr><td>직접원가 (추정)</td><td>≈75만</td><td>≈272만</td><td>≈671만</td></tr><tr><td>권장단가</td><td>180만</td><td>480만</td><td>950만~1,150만</td></tr><tr><td>매출총이익률</td><td>58%</td><td>43%</td><td>29%~42%</td></tr></table>
+<h4>주의사항</h4>
+<table><tr><th>항목</th><th>체크</th></tr><tr><td>꼭지 수 상한 명시 (초과 시 별도 청구)</td><td>☐</td></tr><tr><td>콘텐츠 제작 범위·꼭지 수 계약서에 명문화</td><td>☐</td></tr><tr><td>6개월 후 실측 원가로 v2 업데이트</td><td>☐</td></tr><tr><td>시장 단가 변동 시 연 1회 재검토</td><td>☐</td></tr></table>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">A6. 매거진 기획안 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 4 · E2 (6/8)</div>
+  <button class="nav-btn" onclick="location.href='a6_기획안.html'">다음 A6 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>

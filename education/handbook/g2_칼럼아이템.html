@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G2. 칼럼 아이템 기획 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #B45309; }
+.agent .bbl-avatar { background: #B45309; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 5 · 편집제작팀 · G2</div>
+    <div class="book-title">칼럼 아이템 기획</div>
+    <div class="book-meta">
+      <span>⏱ 50분</span>
+      <span>💬 대화 19회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 칼럼 아이템 기획 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 칼럼 아이템 기획을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: 아이템 선정에 기준이 필요한 이유</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>아이템 선정을 그냥 감으로 하면 안 돼?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>감이 틀리진 않아요. 그런데 3가지 문제가 생겨요:</p>
+<ol><li><strong>일관성 없음</strong> — 어떤 달은 기술 중심, 어떤 달은 사회 중심 → 코너 정체성이 흔들림</li><li><strong>코너 간 중복</strong> — 비슷한 주제가 다른 코너에 겹쳐서 나옴</li><li><strong>설명하기 어려움</strong> — 고객이나 독자가 &quot;왜 이걸 골랐어요?&quot; 물었을 때 대답 없음</li></ol>
+<p>기준이 있으면 — 매달 같은 방식으로 고르고, 설명할 수 있어요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>과학지에서 편집장이 뭘 기준으로 골랐는지 몰랐는데.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>많은 편집장이 직관으로 하고, 그 직관이 오랜 경험의 축적이에요. 우리는 그걸 <strong>3가지 축</strong>으로 명시화하는 거예요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>기자 출신은 &quot;뉴스 가치 판단&quot;에 익숙하다. 3축이 그 기준의 명시화임을 강조.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 선정 기준 3축</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>이래요:</p>
+<p>&quot;세상을 리딩하는 무게가 있나?&quot;</p>
+<p>기자로서 &quot;이 뉴스가 중요한가?&quot; — 똑같아요.</p>
+<ul><li>★★★ = 패러다임 전환급</li><li>★★ = 중요하지만 니치</li><li>★ = 흥미롭지만 작은 변화</li></ul>
+<p>&quot;우리 독자(1인 창업자)와 연결고리가 있나?&quot;</p>
+<p>AI 코딩 툴 = 1인 창업자 직접 활용 → 독자 연결 높음<br>소행성 탐사 = 아름답지만 직접 관련 없음 → 독자 연결 낮음</p>
+<p>&quot;다른 코너·지난 호와 겹치지 않나?&quot;</p>
+<p>코너가 여러 개라면 각 코너가 서로 다른 역할을 해야 해요. 같은 주제를 두 코너가 다루면 독자가 &quot;왜 이게 두 번이야?&quot;라고 느껴요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: 후보 풀 만들기</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>후보는 어떻게 만들어?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>D-14 소스 스캔 결과에서 뽑아요 (편집기획 시스템 시나리오에서 만든 루틴).</p>
+<ol><li>소스 레지스트리 훑어 흥미로운 것 7~10개 수집</li><li>제목·링크만 일단 나열</li><li>각각 3축 간단히 평가 (★1~3개 or 높음/중간/낮음)</li><li>상위 3~5개 추려서 최종 선정 단계로</li></ol>
+<ul><li><strong>제한 없이 일단 모으기</strong> — 좁히는 건 다음 단계</li><li><strong>중복 걱정 없이</strong> — D-12에 코너별 중복 체크</li></ul></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: 코너 간 역할 분리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>코너가 여러 개면 어떻게 역할을 나눠?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>각 코너에 &quot;이 코너는 이런 것만&quot;이라는 역할 규칙이 있어야 해요.</p>
+<table><tr><th>코너</th><th>역할</th><th>커버 대상</th></tr><tr><td>① 기술 인물</td><td>사람 중심</td><td>누가 이 기술을 만들었나</td></tr><tr><td>② 편집장 칼럼</td><td>기술 트렌드</td><td>AI 이외 기술, 큰 그림</td></tr><tr><td>③ 도구 비교</td><td>도구·제품</td><td>AI 모델·앱 비교</td></tr></table>
+<p>→ 이 구조면 같은 &quot;AI 코딩 툴&quot; 주제도:</p>
+<ul><li>③ 도구 비교 = 어떤 도구가 좋은가 (실용)</li><li>② 편집장 칼럼 = 코딩이 어떻게 바뀌고 있나 (트렌드)</li></ul>
+<ul><li>화면 안: AI/소프트웨어</li><li>화면 밖: 로봇/물리세계</li><li>화면 너머: 에너지/바이오/우주</li></ul></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: 형식 선택 — 3선 vs 1주제 심층</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>칼럼을 어떻게 쓸 거야? 하나를 깊게 파야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>두 가지 형식 중 선택해요:</p>
+<p>&quot;이 달의 주목 기술 3가지&quot; — 각 하나씩 압축</p>
+<p>장점: 넓은 시야 / 독자가 다양하게 접함<br>단점: 각각 깊이가 얕음</p>
+<p>&quot;이달의 핵심 기술 하나 깊게&quot;</p>
+<p>장점: 깊이 있음 / 전문성 높음<br>단점: 한 달에 하나만 / 독자 관심이 분산</p>
+<ul><li>창간호·이슈가 많은 달 → A (3선)</li><li>핵심 이슈 하나가 압도적인 달 → B (심층)</li><li>독자층이 일반 대중 → A / 전문가 → B</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>과학지에서 커버스토리는 1주제 심층이었고, 짧은 코너는 3선이었는데.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>맞아요. 콘텐츠 아키텍처가 같아요. 칼럼 분량에 따라 선택하면 돼요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: 균형 편집 — 미담과 경계편</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>매달 긍정 기사만 쓰면 안 돼?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>안 좋아요. <strong>&quot;AI 만능론 선전&quot;</strong>이 될 수 있어요.</p>
+<p>균형 편집 원칙:</p>
+<ul><li>미담·성공 사례 2~3호</li><li>경계편(비판·위험 경고) 1호</li></ul>
+<ul><li>&quot;AI 데이터센터의 에너지 그림자&quot;</li><li>&quot;AI 과대광고의 거품 경고&quot;</li><li>&quot;개인정보 위험&quot;</li></ul>
+<p>경계편이 있으면:</p>
+<ul><li>콘텐츠의 신뢰도 올라감 (비판도 할 줄 안다)</li><li>독자가 맹목적 추종이 아닌 판단력 생김</li></ul></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 뭘 만든 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>칼럼<em>아이템</em>3축_평가법.md</code></td><td>임팩트/독자연결/차별화 3축 상세</td></tr><tr><td><code>코너<em>역할</em>분리_원칙.md</code></td><td>코너별 커버 범위 설정법</td></tr><tr><td><code>아이템<em>검토</em>양식.md</code></td><td>후보 목록 + 3축 평가 표</td></tr></table>
+<p>핵심:</p>
+<ul><li>아이템 선정 = 3축 (임팩트/독자연결/차별화)</li><li>코너마다 역할 경계 설정 → 중복 방지</li><li>3선 큐레이션 vs 1주제 심층 — 달마다 선택</li><li>화면 안→밖→너머 구성으로 시야 확장</li><li>미담 2~3호 + 경계편 1호 균형</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>편집장이 매달 직관으로 하던 걸 이제 내가 기준을 만들어서 하는 거구나.</p></div>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">아이템_검토_양식.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">아이템 검토 양식</div>
+    <p>&gt; D-12에 사용하는 칼럼 아이템 선정 문서 — 복사해서 사용</p>
+<h4>이번 호 아이템 검토</h4>
+<h4>1. 후보 풀 (D-14 소스 스캔 결과)</h4>
+<table><tr><th>#</th><th>기술/주제</th><th>분야</th><th>소스 링크</th><th>날짜</th></tr><tr><td>1</td></tr><tr><td>2</td></tr><tr><td>3</td></tr><tr><td>4</td></tr><tr><td>5</td></tr></table>
+<h4>2. 3축 평가</h4>
+<table><tr><th>#</th><th>기술/주제</th><th>임팩트 (★)</th><th>독자연결</th><th>차별화</th><th>비고</th></tr><tr><td>1</td><td>★★★/★★/★</td><td>높/중/낮</td><td>높/중/낮</td></tr><tr><td>2</td></tr><tr><td>3</td></tr><tr><td>4</td></tr><tr><td>5</td></tr></table>
+<h4>3. 코너 중복 확인</h4>
+<ul><li>코너 ①: ________________________</li><li>코너 ②: ________________________</li><li>코너 ③: ________________________</li></ul>
+<ul><li>N-1호: ________________________</li><li>N-2호: ________________________</li><li>N-3호: ________________________</li></ul>
+<h4>4. 형식 선택</h4>
+<p>☐ 3선 큐레이션 (선택 이유: ________________________)</p>
+<p>☐ 1주제 심층 (선택 이유: ________________________)</p>
+<h4>5. 최종 선정</h4>
+<ul><li>임팩트: ________________________</li><li>독자 연결: ________________________</li><li>차별화: ________________________</li></ul>
+<h4>6. 확정 기록</h4>
+<table><tr><th>항목</th><th>내용</th></tr><tr><td>확정일</td></tr><tr><td>집필 시작일 (D-7)</td></tr><tr><td>납품 예정일 (D-4)</td></tr><tr><td>담당자</td></tr></table>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">칼럼_아이템_3축_평가법.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">칼럼 아이템 3축 평가법</div>
+    <p>&gt; 매달 칼럼 주제를 일관되게 선정하는 기준</p>
+<h4>왜 기준이 필요한가</h4>
+<p>감으로 고르면:</p>
+<ul><li>코너 정체성이 흔들림 (달마다 달라짐)</li><li>코너 간 주제 중복 발생</li><li>&quot;왜 이걸 골랐어요?&quot; 설명이 어려움</li></ul>
+<ul><li>매달 같은 방식으로 일관성 유지</li><li>코너 역할 명확화</li><li>독자·고객에게 설명 가능</li></ul>
+<h4>축 1: 임팩트</h4>
+<table><tr><th>등급</th><th>기준</th><th>예시</th></tr><tr><td>★★★</td><td>패러다임 전환급</td><td>AI가 일하는 방식을 바꾸는 에이전트 AI</td></tr><tr><td>★★</td><td>중요하지만 니치</td><td>특정 산업에만 영향이 큰 기술</td></tr><tr><td>★</td><td>흥미롭지만 작은 변화</td><td>편의 기능 개선 수준</td></tr></table>
+<ul><li>5년 후에도 언급될 기술인가?</li><li>산업 구조를 바꾸는가?</li><li>주요 미디어가 앞다퉈 보도하는가?</li></ul>
+<h4>축 2: 독자 연결</h4>
+<table><tr><th>등급</th><th>기준</th><th>예시</th></tr><tr><td>높음</td><td>독자가 바로 활용 가능</td><td>AI 코딩 툴, 뉴스레터 도구</td></tr><tr><td>중간</td><td>간접 영향</td><td>로봇 산업 트렌드</td></tr><tr><td>낮음</td><td>흥미롭지만 무관</td><td>소행성 탐사, 핵융합 연구</td></tr></table>
+<ul><li>독자가 이 기술을 오늘부터 쓸 수 있나?</li><li>독자의 사업에 영향을 미치는가?</li><li>독자가 &quot;나도 관련 있다&quot;고 느끼는가?</li></ul>
+<h4>축 3: 차별화</h4>
+<table><tr><th>상태</th><th>기준</th></tr><tr><td>높음</td><td>다른 코너에서 다루지 않는 영역</td></tr><tr><td>중간</td><td>겹치지만 앵글이 다름</td></tr><tr><td>낮음</td><td>이미 다른 코너에서 동일하게 다룸</td></tr></table>
+<ol><li>다른 코너 담당 주제 목록 확인</li><li>지난 3개월 발행호 주제 목록 확인</li><li>겹치는 게 있으면 앵글을 바꾸거나 다른 주제 선택</li></ol>
+<h4>3축 종합 평가표</h4>
+<table><tr><th>후보</th><th>임팩트</th><th>독자연결</th><th>차별화</th><th>총점</th><th>채택</th></tr><tr><td>★★★/★★/★</td><td>높/중/낮</td><td>높/중/낮</td></tr><tr></tr><tr></tr></table>
+<ul><li>임팩트 ★★★ + 독자연결 높음 + 차별화 높음 → 최우선</li><li>임팩트 ★★★ + 나머지 중간 이상 → 가능</li><li>임팩트 ★★ 이하 + 차별화 낮음 → 보류</li></ul>
+<h4>균형 편집 원칙</h4>
+<table><tr><th>원칙</th><th>내용</th></tr><tr><td>미담 2~3호마다 경계편 1호</td><td>AI 만능론 선전 방지</td></tr><tr><td>경계편: 비판·위험 경고</td><td>데이터 위험, 거품 경고, 에너지 문제 등</td></tr><tr><td>경계편 효과</td><td>신뢰도 상승, 독자의 판단력 지원</td></tr></table>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">코너_역할_분리_원칙.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">코너 역할 분리 원칙</div>
+    <p>&gt; 코너 간 중복을 방지하고 각 코너의 정체성을 유지하는 방법</p>
+<h4>역할 분리가 필요한 이유</h4>
+<p>같은 주제를 두 코너가 다루면:</p>
+<ul><li>독자: &quot;왜 이게 두 번이야?&quot; — 혼란</li><li>콘텐츠: 중복 작업, 품질 분산</li><li>코너 정체성: 각각이 뭘 하는 코너인지 불분명</li></ul>
+<h4>코너 역할 분리 방법</h4>
+<h5>1단계: 각 코너의 &quot;이것만&quot; 규칙 설정</h5>
+<table><tr><th>코너</th><th>담당 영역</th><th>담당하지 않는 것</th></tr><tr><td>① 인물 스토리</td><td>사람·스토리</td><td>기술 그 자체</td></tr><tr><td>② 편집장 칼럼</td><td>기술 트렌드·큰 그림</td><td>AI 모델 세부 비교</td></tr><tr><td>③ 도구 비교</td><td>도구·제품·실용</td><td>기술 개념·배경</td></tr></table>
+<h5>2단계: 같은 주제도 앵글로 구분</h5>
+<p>&quot;AI 코딩 툴&quot; 주제 예시:</p>
+<ul><li>② 편집장 칼럼: &quot;코딩이 어떻게 바뀌고 있나&quot; (트렌드 앵글)</li><li>③ 도구 비교: &quot;어떤 툴이 제일 좋나&quot; (실용 앵글)</li></ul>
+<p>→ 같은 소재, 다른 앵글 → 중복 아님</p>
+<h4>&quot;화면 안→밖→너머&quot; 구성</h4>
+<p>시야를 점차 넓히는 구성 원칙:</p>
+<table><tr><th>층</th><th>영역</th><th>예시</th></tr><tr><td>화면 안</td><td>AI/소프트웨어</td><td>에이전트 AI, 코딩 툴, LLM</td></tr><tr><td>화면 밖</td><td>로봇/물리세계</td><td>휴머노이드 로봇, 자율주행</td></tr><tr><td>화면 너머</td><td>에너지/바이오/우주</td><td>소듐이온 배터리, 유전자편집</td></tr></table>
+<p>&quot;AI 전문 매거진이 AI만 다루지 않는다&quot; → 신뢰도·격 상승</p>
+<h4>코너 역할 분리 체크리스트</h4>
+<table><tr><th>확인 항목</th><th>완료</th></tr><tr><td>각 코너의 &quot;이것만&quot; 규칙이 문서화됐는가</td><td>☐</td></tr><tr><td>코너별 담당 소스 레지스트리가 분리됐는가</td><td>☐</td></tr><tr><td>아이템 선정 시 다른 코너 주제와 대조했는가</td><td>☐</td></tr><tr><td>지난 3호 발행 주제와 중복 확인했는가</td><td>☐</td></tr></table>
+<h4>코너 역할 문서 양식</h4>
+<ul><li>이 코너에서 다루는 방식: ________________________</li><li>다른 코너와 앵글 구분: ________________________</li></ul>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">G3. 창간사 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 5 · G2 (1/8)</div>
+  <button class="nav-btn" onclick="location.href='g3_창간사.html'">다음 G3 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>

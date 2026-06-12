@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 직원을 이용한 1인 유니콘 첫발 딛기 — Next I/O</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #1B2D6B;
+  --gold:  #FBBF24;
+  --c-admin:  #1B2D6B;
+  --c-legal:  #7C3AED;
+  --c-sales:  #059669;
+  --c-edit:   #B45309;
+  --c-mkt:    #DB2777;
+  --white: #ffffff;
+  --offwhite: #F7F5F0;
+  --txt: #1a1a2e;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; color: var(--txt); background: var(--white); overflow-x: hidden; }
+img  { display: block; width: 100%; }
+
+/* ── NAV ── */
+.brochure-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5vw; height: 60px;
+  background: rgba(27,45,107,.92); backdrop-filter: blur(8px);
+}
+.brochure-nav .logo { height: 28px; width: auto; }
+.brochure-nav a {
+  color: var(--gold); font-size: .85rem; font-weight: 600;
+  text-decoration: none; border: 1.5px solid var(--gold);
+  padding: 6px 18px; border-radius: 20px;
+  transition: background .2s;
+}
+.brochure-nav a:hover { background: var(--gold); color: var(--navy); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; height: 100vh; min-height: 560px;
+  display: flex; align-items: flex-end; padding-bottom: 10vh;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: url('images/hero.png') center/cover no-repeat;
+}
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,15,40,.35) 0%, rgba(10,15,40,.72) 60%, rgba(10,15,40,.92) 100%);
+}
+.hero-body {
+  position: relative; z-index: 1;
+  padding: 0 8vw; max-width: 900px;
+}
+.hero-eyebrow {
+  font-size: .8rem; font-weight: 600; letter-spacing: .18em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 16px;
+}
+.hero-h1 {
+  font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.15;
+  color: var(--white); margin-bottom: 20px;
+}
+.hero-h1 em { color: var(--gold); font-style: normal; }
+.hero-sub {
+  font-size: clamp(.9rem, 1.5vw, 1.1rem); color: rgba(255,255,255,.8);
+  line-height: 1.7; margin-bottom: 36px; max-width: 560px;
+}
+.hero-badges {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px;
+}
+.hero-badge {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3);
+  color: var(--white); font-size: .78rem; font-weight: 600;
+  padding: 6px 14px; border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+.btn-cta {
+  display: inline-block; background: var(--gold); color: var(--navy);
+  font-size: 1rem; font-weight: 700; padding: 14px 36px;
+  border-radius: 30px; text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 4px 20px rgba(251,191,36,.4);
+}
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(251,191,36,.5); }
+
+/* ── SCROLL HINT ── */
+.scroll-hint {
+  position: absolute; bottom: 2.5vh; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: rgba(255,255,255,.5); font-size: .7rem; letter-spacing: .1em;
+}
+.scroll-arrow { width: 20px; height: 20px; border-right: 2px solid rgba(255,255,255,.4); border-bottom: 2px solid rgba(255,255,255,.4); transform: rotate(45deg); animation: bounce 1.6s infinite; }
+@keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
+
+/* ── SECTION COMMON ── */
+.section {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 520px;
+}
+.section.rev { direction: rtl; }
+.section.rev > * { direction: ltr; }
+
+.sec-img { overflow: hidden; }
+.sec-img img { height: 100%; object-fit: cover; }
+
+.sec-body {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 64px 8vw;
+}
+.sec-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .72rem; font-weight: 700; letter-spacing: .15em;
+  text-transform: uppercase; margin-bottom: 18px;
+}
+.sec-tag .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.sec-h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem); font-weight: 900;
+  line-height: 1.25; color: var(--navy); margin-bottom: 14px;
+}
+.sec-desc {
+  font-size: .95rem; color: #4a5568; line-height: 1.75;
+  margin-bottom: 28px;
+}
+.output-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.output-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: .88rem; color: #2d3748;
+}
+.output-list li::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; margin-top: 7px; flex-shrink: 0;
+}
+.day-chip {
+  display: inline-block; font-size: .7rem; font-weight: 700;
+  padding: 3px 12px; border-radius: 12px;
+  margin-bottom: 12px; letter-spacing: .06em;
+}
+
+/* 섹션 배경 교차 */
+.section:nth-child(odd) .sec-body  { background: var(--white); }
+.section:nth-child(even) .sec-body { background: var(--offwhite); }
+.section:nth-child(even) .sec-img  { background: #e8e4dc; }
+
+/* ── RESULT STRIP ── */
+.result-strip {
+  position: relative; overflow: hidden;
+  min-height: 420px; display: grid; grid-template-columns: 1fr 1fr;
+}
+.result-img { overflow: hidden; }
+.result-img img { height: 100%; object-fit: cover; object-position: center top; }
+.result-body {
+  background: var(--navy);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 64px 8vw; gap: 32px;
+}
+.result-eyebrow {
+  font-size: .75rem; font-weight: 700; letter-spacing: .2em;
+  color: var(--gold); text-transform: uppercase;
+}
+.result-h2 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 900;
+  color: var(--white); line-height: 1.3;
+}
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.stat-card {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(251,191,36,.25);
+  border-radius: 12px; padding: 18px 20px;
+}
+.stat-num {
+  font-size: 2rem; font-weight: 900; color: var(--gold);
+  line-height: 1;
+}
+.stat-label { font-size: .78rem; color: rgba(255,255,255,.65); margin-top: 4px; }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: var(--offwhite); text-align: center;
+  padding: 80px 8vw;
+}
+.cta-section .eyebrow {
+  font-size: .75rem; font-weight: 700; letter-spacing: .18em;
+  color: var(--navy); text-transform: uppercase; margin-bottom: 16px;
+}
+.cta-h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900;
+  color: var(--navy); margin-bottom: 14px; line-height: 1.3;
+}
+.cta-sub {
+  font-size: .95rem; color: #4a5568; max-width: 480px;
+  margin: 0 auto 36px; line-height: 1.7;
+}
+.cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-outline {
+  display: inline-block; border: 2px solid var(--navy); color: var(--navy);
+  font-size: .95rem; font-weight: 700; padding: 13px 30px;
+  border-radius: 30px; text-decoration: none;
+  transition: background .2s, color .2s;
+}
+.btn-outline:hover { background: var(--navy); color: var(--white); }
+
+/* ── FOOTER ── */
+.brochure-footer {
+  background: var(--navy); color: rgba(255,255,255,.5);
+  text-align: center; padding: 24px 8vw;
+  font-size: .78rem;
+}
+.brochure-footer a { color: var(--gold); text-decoration: none; }
+
+/* ── REVEAL ANIMATION ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .brochure-nav { padding: 0 5vw; }
+  .section, .result-strip { grid-template-columns: 1fr; }
+  .section.rev { direction: ltr; }
+  .sec-img { height: 260px; }
+  .sec-body { padding: 44px 6vw; }
+  .result-img { height: 280px; }
+  .result-body { padding: 44px 6vw; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .cta-section { padding: 60px 6vw; }
+  .hero-body { padding: 0 6vw; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="brochure-nav">
+  <img src="../images/nextio-lockup-reverse.svg" alt="Next I/O" class="logo">
+  <a href="#contact-cta">교육 문의하기</a>
+</nav>
+
+<!-- ① HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-body">
+    <p class="hero-eyebrow">Featured Course · 5-Day Intensive</p>
+    <h1 class="hero-h1">5일 후, 당신에게는<br><em>5명의 AI 팀원</em>이 생깁니다</h1>
+    <p class="hero-sub">Claude Code로 AI 팀장을 하루에 한 명씩 채용하며, 혼자서 10명의 역할을 수행하는 5일 실전 과정. 제로베이스 입문 가능, 노트북 1대만 준비하세요.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">연속 5일 · 40시간</span>
+      <span class="hero-badge">소수정예 · 실습 중심</span>
+      <span class="hero-badge">AI 구독 1개월 지원</span>
+      <span class="hero-badge">제로베이스 입문 가능</span>
+    </div>
+    <a href="#contact-cta" class="btn-cta">교육 문의하기 →</a>
+  </div>
+  <div class="scroll-hint">
+    <span>SCROLL</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ② Day 2 총무팀 -->
+<section class="section reveal" id="day2">
+  <div class="sec-img">
+    <img src="images/day2_branding.png" alt="브랜드 디자인 작업">
+  </div>
+  <div class="sec-body">
+    <span class="day-chip" style="background:#E8EEFF; color:var(--c-admin)">Day 2</span>
+    <span class="sec-tag" style="color:var(--c-admin)">
+      <span class="dot" style="background:var(--c-admin)"></span>총무팀장 채용
+    </span>
+    <h2 class="sec-h2">브랜드에셋부터<br>홈페이지까지,<br>하루 만에 완성</h2>
+    <p class="sec-desc">AI 총무팀장과 함께 회사의 얼굴을 만듭니다. 컬러·폰트·로고 시스템을 확정하고, 브랜드가이드·문서 템플릿·홈페이지·명함을 하루 안에 완성합니다.</p>
+    <ul class="output-list" style="color:var(--c-admin)">
+      <li>브랜드 컬러 · 폰트 · 로고 시스템 확정</li>
+      <li>회사 홈페이지 (GitHub Pages) 라이브</li>
+      <li>명함 사양서 + 인쇄소 발주까지 완료</li>
+      <li>문서 템플릿 · QR 코드 생성</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ③ Day 3 법무팀 -->
+<section class="section rev reveal" id="day3">
+  <div class="sec-img">
+    <img src="images/day3_legal.png" alt="AI 법무 검토">
+  </div>
+  <div class="sec-body">
+    <span class="day-chip" style="background:#F3EEFF; color:var(--c-legal)">Day 3</span>
+    <span class="sec-tag" style="color:var(--c-legal)">
+      <span class="dot" style="background:var(--c-legal)"></span>법무팀장 채용
+    </span>
+    <h2 class="sec-h2">계약서 3종을<br>AI가 초안부터<br>독소조항 검토까지</h2>
+    <p class="sec-desc">1인기업에게 가장 무서운 건 계약입니다. AI 법무팀장이 NDA · 위탁계약서를 작성하고, 상대방이 보내온 계약서의 독소조항을 실시간으로 검토합니다.</p>
+    <ul class="output-list" style="color:var(--c-legal)">
+      <li>계약서식 목록 체계화</li>
+      <li>NDA (비밀유지계약서) 완성</li>
+      <li>위탁용역 계약서 완성</li>
+      <li>독소조항 체크리스트 완성</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ④ Day 4 영업팀 -->
+<section class="section reveal" id="day4">
+  <div class="sec-img">
+    <img src="images/day4_sales.png" alt="영업 CRM 대시보드">
+  </div>
+  <div class="sec-body">
+    <span class="day-chip" style="background:#EAFAF4; color:var(--c-sales)">Day 4</span>
+    <span class="sec-tag" style="color:var(--c-sales)">
+      <span class="dot" style="background:var(--c-sales)"></span>영업팀장 채용
+    </span>
+    <h2 class="sec-h2">시장지도부터<br>제안서 발송까지<br>영업 파이프라인 완성</h2>
+    <p class="sec-desc">AI 영업팀장이 잠재 고객을 발굴하고, 리드DB를 구축합니다. 수주 원페이저 · 견적서 · 제안서를 자동 생성하고 타겟에게 직접 이메일을 발송합니다.</p>
+    <ul class="output-list" style="color:var(--c-sales)">
+      <li>시장지도 · 타겟 선정 완료</li>
+      <li>리드DB 마스터 구축</li>
+      <li>수주 원페이저 · 제안서 · 견적서 완성</li>
+      <li>컨택 이메일 발송까지 완료</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ⑤ Day 5 편집·마케팅팀 -->
+<section class="section rev reveal" id="day5">
+  <div class="sec-img">
+    <img src="images/day5_editorial.png" alt="매거진 편집 작업">
+  </div>
+  <div class="sec-body">
+    <span class="day-chip" style="background:#FEF3C7; color:var(--c-edit)">Day 5</span>
+    <span class="sec-tag" style="color:var(--c-edit)">
+      <span class="dot" style="background:var(--c-edit)"></span>편집·마케팅팀장 채용
+    </span>
+    <h2 class="sec-h2">창간사 · SNS 전략 ·<br>발행 체크리스트까지<br>콘텐츠 회사 완성</h2>
+    <p class="sec-desc">AI 편집팀장이 매거진 기획안 · 칼럼 · 창간사를 작성하고, 마케팅팀장이 SNS 채널 전략 · 발행 캘린더 · 보도자료를 완성합니다. 5일의 마지막, 여러분은 1인 매거진 회사 CEO입니다.</p>
+    <ul class="output-list" style="color:var(--c-edit)">
+      <li>매거진 기획안 · 편집기획 시스템 완성</li>
+      <li>창간사 · 칼럼 아이템 기획</li>
+      <li>SNS 채널 전략 · 발행 캘린더</li>
+      <li>발행 체크리스트 완성</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ⑥ 수료 결과 -->
+<section class="result-strip reveal" id="result">
+  <div class="result-img">
+    <img src="images/result.png" alt="수료 후 1인 CEO">
+  </div>
+  <div class="result-body">
+    <p class="result-eyebrow">5일 후 당신이 갖게 되는 것</p>
+    <h2 class="result-h2">혼자지만,<br>팀으로 일하는<br>1인 유니콘 기업</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-num">5개</div>
+        <div class="stat-label">AI 팀 (총무·법무·영업·편집·마케팅)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">34개</div>
+        <div class="stat-label">실전 산출물 (계약서·제안서·홈페이지 등)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5일</div>
+        <div class="stat-label">연속 집중 과정 · 40시간</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1개월</div>
+        <div class="stat-label">AI 구독 지원 (Claude Pro)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ CTA -->
+<section class="cta-section" id="contact-cta">
+  <p class="eyebrow">Next I/O 교육 문의</p>
+  <h2 class="cta-h2">지금 바로 CEO가 되어 보세요</h2>
+  <p class="cta-sub">기업·대학·기관 위탁교육 가능합니다. 일정·규모·커스터마이징 문의를 남겨주세요.</p>
+  <div class="cta-btns">
+    <a href="mailto:nackmann@skku.edu" class="btn-cta">교육 문의 이메일 →</a>
+    <a href="../index.html#contact" class="btn-outline">문의 게시판</a>
+  </div>
+  <p style="margin-top:28px; font-size:.8rem; color:#888;">
+    실습 핸드북 미리 보기 →
+    <a href="handbook/index.html" style="color:var(--navy); font-weight:600; text-decoration:none;">
+      education/handbook
+    </a>
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer class="brochure-footer">
+  <p>© 2026 Next I/O · <a href="../index.html">www.nextio.ai.kr</a> · 문의: nackmann@skku.edu</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

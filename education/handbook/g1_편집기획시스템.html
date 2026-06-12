@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G1. 편집기획 시스템 수립 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #B45309; }
+.agent .bbl-avatar { background: #B45309; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 4 · 편집제작팀 · G1</div>
+    <div class="book-title">편집기획 시스템 수립</div>
+    <div class="book-meta">
+      <span>⏱ 50분</span>
+      <span>💬 대화 25회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 편집기획 시스템 수립 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 편집기획 시스템 수립을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: 20명 시스템을 1인으로</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>편집부 20명이 하던 걸 혼자 해야 하는 거야? 어떻게 줄여?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>줄이는 게 아니라 <strong>구조를 단순화</strong>하는 거예요.</p>
+<p>잡지사 편집 구조:<br>```<br>편집장 → 팀장 → 기자 → 작가 → 디자이너 → 교열 → 발행<br>```</p>
+<p>```<br>나 + AI에이전트 → 정해진 루틴 → 발행<br>```</p>
+<p>핵심: 사람이 줄어도 <strong>루틴이 사라지면 안 된다.</strong> 루틴이 팀을 대체해요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>루틴이 어떻게 팀을 대체해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>예시:</p>
+<ul><li>팀 있을 때: 기획회의 → 기자가 소재 찾기 → 편집장 확인</li><li>1인 루틴: 매달 D-14에 혼자 정해진 소스 훑기 → D-12에 아이템 확정</li></ul>
+<p>&quot;기획회의&quot; 대신 &quot;D-14 루틴&quot;이 그 역할을 해요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>대형 편집부 출신은 체계에 대한 이해가 높다. &quot;팀→루틴&quot; 전환이 핵심 프레임.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 편집 기획의 2층 구조</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>어디서부터 시작해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>편집 기획 시스템은 2층이에요:</p>
+<ul><li>&quot;12개월 동안 뭘 다룰 것인가&quot; — 큰 그림</li><li>코너별 테마, 계절·시의성, 중복 방지</li></ul>
+<ul><li>&quot;이번 달 콘텐츠를 언제까지 어떻게 만들 것인가&quot; — 실행</li></ul>
+<p>이 두 층이 없으면 매달 &quot;이번엔 뭐 쓰지?&quot; 새로 고민하게 돼요. 시스템이 없는 상태.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>잡지사에서도 연간 계획 짜고 매달 편집회의 하는 구조였는데.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>맞아요. 그게 바로 2층 구조예요. 잡지사가 큰 이유 중 하나가 이 구조를 유지할 수 있어서예요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: 1층 — 연간 로드맵 만들기</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>연간 로드맵을 어떻게 짜?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>코너 구조부터 정해야 해요.</p>
+<table><tr><th>코너</th><th>성격</th><th>로드맵 기준</th></tr><tr><td>① 이달의 기술 인물</td><td>고정 (사람 스토리)</td><td>소재뱅크에서 선정</td></tr><tr><td>② 주목 기술 칼럼</td><td>고정 (기술 트렌드)</td><td>연간 로드맵 + 최신 조정</td></tr><tr><td>③ 도구 비교 리뷰</td><td>고정 (실용)</td><td>매달 최신 기준</td></tr></table>
+<ol><li>코너 간 중복 없게 — ① 사람, ② 트렌드, ③ 도구로 역할 분리</li><li>시의성 반영 — 1월=연초 전망, 12월=연간 결산</li><li>매달 교체 가능 — 큰 뉴스 터지면 테마 유연하게 교체</li><li>미담·경계편 균형 — 2~3회 밝은 뉴스 → 1회 비판·경계 편</li></ol></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>스케치만이에요. <strong>확정 아님</strong> 원칙이 중요해요.</p>
+<p>기술 분야는 3개월 후 세상이 달라져요. 로드맵은 &quot;큰 방향&quot;이고, 매달 D-14에 최신 상황으로 조정해요.</p>
+<p>잡지사도 연간 기획서 있지만 — 실제로는 매달 편집회의에서 수정하잖아요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: 2층 — 발행 역산 워크플로우</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>매달 워크플로우는?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>발행일(D-0)에서 역산해요:</p>
+<table><tr><th>시점</th><th>단계</th><th>할 일</th></tr><tr><td>D-14</td><td>소스 스캔</td><td>그달 신규 발표·뉴스 수집</td></tr><tr><td>D-12</td><td>아이템 선정</td><td>후보 3~5개 → 3축 평가 → 확정</td></tr><tr><td>D-10</td><td>취재·검증</td><td>팩트체크, 출처 확보</td></tr><tr><td>D-7</td><td>집필</td><td>원고 작성</td></tr><tr><td>D-4</td><td>빌드</td><td>템플릿에 원고 적용</td></tr><tr><td>D-2</td><td>검수</td><td>내용·링크 점검</td></tr><tr><td>D-0</td><td>발행</td><td>배포 + 아카이브</td></tr></table>
+<p>핵심 원칙: <strong>최신성이 생명인 코너는 D-7 이후에 쓰기</strong></p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>왜 D-7 이후야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>너무 일찍 쓰면 낡아요.</p>
+<p>D-14에 쓴 글 → 발행 때 보면 2주 지난 이야기. IT 분야는 하루가 다른데, 2주 전 내용이면 &quot;이미 다 아는 것&quot;이 되거든요.</p>
+<p>D-7에 쓰면 — 발행 시점 기준 1주일 신선도. 최선이에요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: 소스 레지스트리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>소스는 어떻게 관리해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>소스 레지스트리예요 — &quot;매달 여기를 보면 소재가 나온다&quot;는 정해진 목록.</p>
+<table><tr><th>코너</th><th>소스</th></tr><tr><td>③ 도구 비교</td><td>각 사 공식 블로그, Product Hunt, AlternativeTo</td></tr><tr><td>② 기술 칼럼</td><td>MIT Technology Review, IEEE Spectrum, Nature News</td></tr><tr><td>① 기술 인물</td><td>Indie Hackers, X/트위터 빌드인퍼블릭, 팟캐스트 인터뷰</td></tr></table></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>잡지사에서 DB를 팀이 관리했는데, 혼자 하면 DB가 없잖아.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>소스 레지스트리가 그 DB예요. 팀이 관리하던 것을 — 고정 URL 목록으로 대체하는 거예요.</p>
+<p>새 소스 발견하면 여기 추가, 안 좋은 소스는 빼기. 분기에 한 번 정리하면 돼요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: 선정 기준 3축</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>아이템 선정은 어떻게 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><table><tr><th>축</th><th>질문</th></tr><tr><td>임팩트</td><td>세상을 바꾸는 무게가 있나?</td></tr><tr><td>독자연결</td><td>우리 독자(1인 창업자)와 연결고리가 있나?</td></tr><tr><td>차별화</td><td>다른 코너·지난 호와 겹치지 않나?</td></tr></table>
+<p>세 가지 다 높은 아이템을 고르면 돼요.</p>
+<p>편집장이 &quot;임팩트가 있나? 독자 관심사인가? 이미 한 얘기 아닌가?&quot; 물어보는 게 바로 이 3축이에요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 뭘 만든 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>편집기획_2층구조.md</code></td><td>연간 로드맵 + 월간 워크플로우 구조</td></tr><tr><td><code>발행역산_워크플로우.md</code></td><td>D-14~D-0 단계별 할 일</td></tr><tr><td><code>소스레지스트리_구축법.md</code></td><td>소스 목록 관리 + D-14 루틴</td></tr></table>
+<p>핵심:</p>
+<ul><li>2층 구조: 연간 로드맵(큰 방향) + 매월 워크플로우(실행 루틴)</li><li>팀 → 루틴으로 대체</li><li>발행 역산: D-14 소스스캔부터 D-0 발행까지</li><li>최신성 코너: D-7 이후에 집필</li><li>소스 레지스트리: 매달 D-14에 30분 훑기</li><li>선정 3축: 임팩트/독자연결/차별화</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"></div>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">G2. 칼럼 아이템 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 4 · G1 (8/8)</div>
+  <button class="nav-btn" onclick="location.href='g2_칼럼아이템.html'">다음 G2 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>

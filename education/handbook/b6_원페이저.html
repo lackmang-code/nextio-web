@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B6. 수주 원페이저 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #059669; }
+.agent .bbl-avatar { background: #059669; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 4 · 영업팀 · B6</div>
+    <div class="book-title">수주 원페이저</div>
+    <div class="book-meta">
+      <span>⏱ 42분</span>
+      <span>💬 대화 30회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 수주 원페이저 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 수주 원페이저을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: 원페이저가 뭐야?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>에이전트야, 선배가 &quot;영업할 때 원페이저는 있어야 한다&quot;고 했는데 그게 뭐야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>원페이저는 &quot;A4 1장짜리 설득 문서&quot;예요.</p>
+<p>마케팅팀 출신이시니까 익숙한 개념으로 풀면 — &quot;제품 원페이저&quot;랑 같아요. 신제품 런칭 전에 사업부가 &quot;이 제품 왜 만들었고, 뭐가 좋고, 어떻게 팔 건지&quot; 한 장에 요약한 거요.</p>
+<p>영업용 원페이저는:</p>
+<ul><li>제안서: 30~50페이지 → 미팅 후 보내는 것</li><li>원페이저: 1~2페이지 → <strong>&quot;관심 있어요? 더 얘기 나눠봐요?&quot;</strong> 유도하는 것</li><li>명함: 이름·연락처만</li></ul>
+<p>즉, 원페이저는 <strong>&quot;미팅을 만들기 위한 문서&quot;</strong>예요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그러면 제안서를 줄인 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>줄인 게 아니라 <strong>목적이 달라요</strong>.</p>
+<table><tr><th>원페이저</th><th>제안서</th></tr><tr><td>목적</td><td>관심 유도, 미팅 성사</td><td>계약 설득, 상세 설명</td></tr><tr><td>분량</td><td>1~2페이지</td><td>20~50페이지</td></tr><tr><td>타이밍</td><td>첫 컨택 시</td><td>미팅 후</td></tr><tr><td>읽는 시간</td><td>30초~2분</td><td>30분 이상</td></tr></table>
+<p>제안서는 &quot;이미 관심 있는 사람&quot;에게 줘요. 원페이저는 &quot;아직 모르는 사람&quot;을 관심 있게 만드는 거예요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>원페이저/제안서/명함의 역할 구분이 이 시나리오의 핵심 학습 목표다. 마케터 출신이면 &quot;퍼널 상단&quot; 개념으로 이해시킬 수 있다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 원페이저에 뭘 넣어야 해?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>어떤 내용을 넣어야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>원페이저 핵심 구성 5개:</p>
+<p>&quot;당신이 하는 일을 한 줄로.&quot; 읽는 사람이 0.5초 안에 &quot;어? 나한테 필요한 거네&quot;라고 느껴야 해요.</p>
+<p>나쁜 예: &quot;식품 마케팅 컨설팅 전문가&quot;<br>좋은 예: &quot;로컬 식품 브랜드가 서울에서 팔리게 만드는 사람&quot;</p>
+<p>&quot;이런 문제 있으시죠?&quot; — 고객이 공감하는 고통 1~2가지</p>
+<p>&quot;저는 이렇게 해결합니다&quot; — 구체적으로 1~2가지</p>
+<p>&quot;남들과 다른 나만의 근거&quot; — 실적·포트폴리오·자격·경험</p>
+<p>&quot;이제 어떻게 하면 돼요?&quot; — 전화, 이메일, 미팅 예약</p>
+<p>이 5개가 다 있으면 원페이저 구조 완성이에요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>Why Me가 제일 어려울 것 같아. 나는 아직 독립 컨설턴트로서 실적이 없어.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>&quot;독립 후 실적&quot;이 없어도 돼요. 쓸 수 있는 게 3가지 있어요:</p>
+<p>처음 독립하는 분들은 &quot;실적이 없어서 못 쓴다&quot;고 생각하는데 — 그게 아니에요. 대기업 10년이 이미 실적이에요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: 메시지하우스와 RTB</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>&quot;RTB&quot;라는 말도 들었는데, 그게 뭐야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>RTB = <strong>Reasons To Believe</strong> — &quot;믿어야 할 이유들&quot;이에요.</p>
+<p>대기업 마케팅에서 쓰는 <strong>&quot;메시지하우스&quot;</strong> 개념 아세요?</p>
+<p>```<br>     [핵심 메시지 1줄]<br>          |<br>   ┌──────┴──────┐<br>  RTB1          RTB2          RTB3<br>(근거 1)       (근거 2)       (근거 3)<br>```</p>
+<p>핵심 메시지 하나를 &quot;왜 그게 맞는지&quot; 근거 3개로 받치는 구조예요.</p>
+<p>원페이저에 적용하면:</p>
+<ul><li>RTB1 (자기증명): 제 브랜드가 이미 서울 입점을 해봤습니다</li><li>RTB2 (포트폴리오): [고객 A] 브랜드의 편의점 입점을 도왔습니다</li><li>RTB3 (전문성): 대형 식품사 마케팅팀에서 바이어 영업을 10년 했습니다</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그러니까 &quot;나를 쓰면 좋다&quot;는 말 하나를 3가지 근거로 뒷받침하는 거네.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>정확해요. 대기업 마케팅팀에서 &quot;이 제품 왜 좋아요?&quot;를 단순히 주장만 하면 안 되고, 소비자 조사·성분 데이터·수상 실적으로 증명했던 것과 같은 구조예요.</p>
+<p>고객도 &quot;좋은 말은 누구나 한다&quot;는 걸 알아요. 3가지 이유가 있어야 믿어요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>대기업 마케터 출신이면 메시지하우스/RTB를 이미 알고 있을 가능성이 높다. 에이전트가 기존 지식과 연결하면 바로 이해한다는 걸 보여주는 대목이다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: &quot;자기증명&quot; 전략</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>RTB1에서 &quot;내 브랜드로 먼저 증명&quot;이라고 했는데 — 그게 구체적으로 어떻게 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>아주 좋은 전략이에요. 과정:</p>
+<ol><li>박낭만 씨 자신의 &quot;샘플 프로젝트&quot;를 만들어요</li></ol>
+<p>   - 예: 실제 로컬 식품 하나를 무료·소액으로 컨설팅해서 작은 성과를 만듦<br>   - 또는: 자신의 컨설팅 서비스 브랜딩을 직접 해서 공개</p>
+<ol><li>그 과정을 기록·공개</li></ol>
+<p>   - &quot;저는 이런 방식으로 일합니다&quot; → 브랜드 컨셉 설정부터 판매채널 개척까지</p>
+<ol><li>그 결과물이 포트폴리오가 됨</li></ol>
+<p>   - 원페이저에: &quot;아직 의뢰 전에, 직접 해봤습니다 → 링크&quot;</p>
+<p>이걸 원페이저에 표현하면:</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오, 그거 강력하다. 말 대신 결과물.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>&quot;Show, don&#x27;t tell&quot; — 마케팅의 기본 원칙이잖아요. 원페이저에도 그대로 적용돼요.</p>
+<p>실적이 없는 초기에는 이게 가장 강력한 무기예요. 첫 1~2건은 소액 또는 무료로 해서라도 실물 포트폴리오를 만들어요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: 진행 방식 표기</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>원페이저에 &quot;어떻게 진행됩니까&quot;도 넣어야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>짧게는 넣는 게 좋아요. 고객이 &quot;계약하면 어떻게 되는지&quot;를 알아야 결정을 내리거든요.</p>
+<p>표준 진행 흐름:<br>```<br>① 첫 미팅 → ② 현황 파악 → ③ 방향 제안 → ④ 실행 → ⑤ 결과 공유<br>```</p>
+<p>이걸 원페이저에 넣을 때는 — 자세한 설명이 아니라 <strong>화살표 흐름도</strong> 한 줄로 충분해요:</p>
+<p>보는 사람이 &quot;아, 이 단계로 진행되는구나&quot;를 3초 안에 이해해야 해요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>비용은 넣어?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>보통 두 가지 방법이 있어요:</p>
+<p>&quot;월 고정 컨설팅 OO만원~&quot; 처럼 최소 금액 힌트</p>
+<p>&quot;비용은 미팅 후 협의&quot; → CTA를 미팅으로 유도</p>
+<p>원페이저에서 비용을 자세히 적으면 — 미팅 전에 &quot;너무 비싸다&quot;고 판단해서 연락 안 해요. 비용은 미팅에서 얘기하는 게 전환율이 높아요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: CTA 작성</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>원페이저 마지막에 뭐라고 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>CTA(Call To Action) — &quot;지금 이 사람에게 뭘 해달라고?&quot;가 명확해야 해요.</p>
+<p>나쁜 CTA: &quot;문의는 이메일로 주세요&quot;<br>좋은 CTA:</p>
+<p>핵심: <strong>다음 행동이 쉬워야 해요.</strong> 상대방이 별로 노력 안 해도 다음 단계로 넘어갈 수 있게.</p>
+<p>&quot;문의하세요&quot;보다 &quot;클릭 한 번으로 15분 일정 잡기&quot;가 100배 효과적이에요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>Calendly 같은 거 연동하면 되겠네.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>정확해요. Calendly 무료 플랜으로 미팅 예약 링크 만들면 — CTA에 바로 링크 걸면 돼요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 배포 방법</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>원페이저 완성하면 어떻게 써?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>PDF로 변환 → 첫 컨택 이메일에 첨부<br>이메일 본문: &quot;안녕하세요, [회사명] 박낭만입니다. 원페이저 첨부드립니다.&quot;</p>
+<p>A4 1장 인쇄해서 미팅에 갈 때 꺼내기<br>상대방이 가져가도록 두 장 챙기기</p>
+<p>Google Drive에 PDF 올려서 링크 생성 → 카카오톡·문자로도 공유 가능<br>이때 &quot;링크 공유 권한&quot;을 &quot;링크가 있는 모든 사람이 볼 수 있음&quot;으로 설정</p>
+<p>어떤 방식이든 — <strong>항상 PDF 형식</strong>으로. Word/한글 파일로 보내면 상대방 환경에서 깨질 수 있어요.</p></div>
+  </div>
+</div>
+
+<div class="output-announce">
+  <span>📄</span>
+  <span>에이전트 생성: <strong>배포_체크리스트.md</strong></span>
+</div>
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">배포_체크리스트.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">원페이저 배포 체크리스트</div>
+    <p>&gt; 원페이저 완성 후 배포 전 확인 사항</p>
+<h4>파일 준비</h4>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>1</td><td>PDF 변환 완료 (Word/한글 파일 금지)</td><td>☐</td></tr><tr><td>2</td><td>파일 크기 5MB 이하 (이메일 첨부 기준)</td><td>☐</td></tr><tr><td>3</td><td>파일명 깔끔하게: <code>[회사명]_원페이저.pdf</code></td><td>☐</td></tr><tr><td>4</td><td>모바일에서 열었을 때 잘 보이는지 확인</td><td>☐</td></tr><tr><td>5</td><td>인쇄했을 때 글자·이미지 깨지지 않는지</td><td>☐</td></tr></table>
+<h4>내용 최종 확인</h4>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>6</td><td>오탈자 없는지</td><td>☐</td></tr><tr><td>7</td><td>연락처(이메일·전화) 정확한지</td><td>☐</td></tr><tr><td>8</td><td>CTA 링크가 실제로 작동하는지</td><td>☐</td></tr><tr><td>9</td><td>포트폴리오·샘플 링크가 열리는지</td><td>☐</td></tr><tr><td>10</td><td>회사 로고 삽입됐는지</td><td>☐</td></tr></table>
+<h4>배포 방법별 준비</h4>
+<h5>이메일 첨부</h5>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>11</td><td>이메일 제목: 관심 유도형으로 (&quot;안녕하세요&quot; X, &quot;로컬 식품 브랜드 서울 입점 관련&quot; O)</td><td>☐</td></tr><tr><td>12</td><td>본문에 1~2줄 소개 후 첨부</td><td>☐</td></tr><tr><td>13</td><td>첨부 파일 용량 5MB 이하</td><td>☐</td></tr></table>
+<h5>대면 미팅</h5>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>14</td><td>A4 컬러 인쇄 준비 (2장 이상)</td><td>☐</td></tr><tr><td>15</td><td>상대방이 가져갈 수 있도록 1장 남겨두기</td><td>☐</td></tr></table>
+<h5>링크 공유</h5>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>16</td><td>Google Drive에 업로드</td><td>☐</td></tr><tr><td>17</td><td>공유 권한: &quot;링크가 있는 모든 사람이 볼 수 있음&quot; 설정</td><td>☐</td></tr><tr><td>18</td><td>링크 단축 (bit.ly 등) — 카카오톡·문자 공유 시 가독성 향상</td><td>☐</td></tr></table>
+<h4>배포 후 추적</h4>
+<table><tr><th>#</th><th>항목</th></tr><tr><td>19</td><td>보낸 대상·날짜·반응 기록 → 리드DB에 업데이트</td></tr><tr><td>20</td><td>1주일 후 반응 없으면 팔로업 이메일 1회</td></tr><tr><td>21</td><td>&quot;원페이저 보셨나요?&quot; 직접 질문 → 미팅으로 전환 시도</td></tr></table>
+<h4>업데이트 주기</h4>
+<table><tr><th>상황</th><th>원페이저 업데이트</th></tr><tr><td>포트폴리오·실적 추가 시</td><td>RTB2 업데이트</td></tr><tr><td>서비스 변경 시</td><td>해결법·CTA 업데이트</td></tr><tr><td>연락처·링크 변경 시</td><td>즉시 업데이트</td></tr><tr><td>3개월 이상 동일 버전 사용 중</td><td>전체 리뷰 권장</td></tr></table>
+<h4>버전 관리</h4>
+<p>파일명 예시:</p>
+<ul><li><code>회사명<em>원페이저</em>v1.pdf</code> — 첫 버전</li><li><code>회사명<em>원페이저</em>v2.pdf</code> — 포트폴리오 추가 후</li></ul>
+<p>이전 버전은 삭제하지 말고 <code>_archive</code> 폴더에 보관</p>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">8단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 뭘 만든 거야 정리해줘.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>원페이저<em>구성</em>가이드.md</code></td><td>5개 구성 요소 + 작성 원칙</td></tr><tr><td><code>메시지하우스_RTB.md</code></td><td>핵심 메시지 → RTB 3개 구조</td></tr><tr><td><code>배포_체크리스트.md</code></td><td>이메일·대면·링크 배포 방법</td></tr></table>
+<p>핵심:</p>
+<ul><li>원페이저 = &quot;미팅을 만들기 위한 1~2장짜리 설득 문서&quot;</li><li>5요소: 캐치카피 / 문제 / 해결법 / Why Me / CTA</li><li>RTB = 핵심 메시지를 뒷받침하는 3가지 근거</li><li>자기증명: 실물 결과물이 제안서보다 강력</li><li>비용은 원페이저에 안 넣는 게 전환율 높음</li><li>CTA: 쉬워야 함 (클릭 1번으로 다음 단계)</li></ul>
+<p>다음 시나리오: <strong>QR 코드 생성 (C1)</strong> — 명함·홈페이지·원페이저에 넣을 QR 코드 제대로 만들기</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>대기업에서 쓰던 메시지하우스가 여기서도 쓰이는 거잖아. 이미 아는 걸 다시 쓰는 거니까 두렵지 않다.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(영업팀)</div>
+    <div class="bubble"><p>그게 핵심이에요. 10년 동안 배운 게 지금 그대로 써먹히는 거예요. 새로 배우는 게 아니라 — 기존 무기를 새 전장에서 꺼내 드는 겁니다.</p></div>
+  </div>
+</div>
+
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">원페이저_구성_가이드.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">원페이저 구성 가이드</div>
+    <p>&gt; 영업용 1장 설득 문서 작성 표준</p>
+<h4>원페이저란</h4>
+<p>&quot;미팅을 만들기 위한 문서&quot;</p>
+<table><tr><th>문서</th><th>목적</th><th>분량</th><th>타이밍</th></tr><tr><td>명함</td><td>연락처 전달</td><td>1장 (카드 크기)</td><td>첫 만남</td></tr><tr><td><strong>원페이저</strong></td><td><strong>관심 유도, 미팅 성사</strong></td><td><strong>1~2페이지</strong></td><td><strong>첫 컨택 시</strong></td></tr><tr><td>제안서</td><td>계약 설득, 상세 설명</td><td>20~50페이지</td><td>미팅 후</td></tr></table>
+<p>원페이저는 &quot;이미 관심 있는 사람&quot;이 아니라 <strong>&quot;아직 모르는 사람&quot;을 관심 있게 만드는 도구</strong></p>
+<h4>핵심 구성 5요소</h4>
+<h5>① 캐치카피 (1줄)</h5>
+<p>읽는 사람이 0.5초 안에 &quot;나한테 필요한 거네&quot;를 느껴야 함</p>
+<table><tr><th>예시</th></tr><tr><td>❌ 나쁜 예</td><td>&quot;마케팅 컨설팅 전문가&quot;</td></tr><tr><td>✅ 좋은 예</td><td>&quot;로컬 식품 브랜드가 서울에서 팔리게 만드는 사람&quot;</td></tr></table>
+<p>공식: <strong>[고객 집단] + [구체적 결과]</strong></p>
+<h5>② 문제 제기</h5>
+<p>&quot;이런 문제 있으시죠?&quot; — 고객이 공감하는 고통 1~2가지</p>
+<ul><li>고객의 말로 표현 (내 관점 X, 고객 관점 O)</li><li>질문형으로 쓰면 공감도 높음</li><li>예: &quot;매장 들어가려고 바이어한테 이메일 보냈는데 답장이 없으신 적 있나요?&quot;</li></ul>
+<h5>③ 내 해결 방법</h5>
+<p>&quot;저는 이렇게 해결합니다&quot; — 구체적으로 1~2가지</p>
+<ul><li>추상적 단어 금지 (&quot;최선을 다해&quot; X)</li><li>과정·방법 구체적으로 (&quot;바이어가 어떤 자료를 보고 결정하는지 알기 때문에 그 자료를 만들어드립니다&quot; O)</li></ul>
+<h5>④ Why Me (나를 써야 하는 이유)</h5>
+<p>RTB 3개 구조로 작성 → <code>메시지하우스_RTB.md</code> 참조</p>
+<p>실적 없을 때 대안:</p>
+<ol><li><strong>대기업 경험</strong>: &quot;10년 현장 경험 보유&quot;</li><li><strong>자기증명</strong>: 내 브랜드·서비스를 직접 만들어 결과 공개</li><li><strong>프로세스 공개</strong>: &quot;어떻게 일하는지&quot; 방법론 투명 공개</li></ol>
+<h5>⑤ CTA (Call To Action)</h5>
+<p>고객이 다음에 뭘 해야 하는지 명확하게</p>
+<table><tr><th>예시</th></tr><tr><td>❌ 나쁜 CTA</td><td>&quot;문의는 이메일로 주세요&quot;</td></tr><tr><td>✅ 좋은 CTA</td><td>&quot;15분 무료 상담 예약 → [Calendly 링크]&quot;</td></tr></table>
+<p>원칙: 상대방이 별로 노력 안 해도 다음 단계로 넘어갈 수 있어야 함</p>
+<h4>비용 표기 원칙</h4>
+<table><tr><th>전략</th><th>방법</th></tr><tr><td>범위 힌트</td><td>&quot;월 고정 컨설팅 OO만원~&quot;</td></tr><tr><td>비우기 (권장)</td><td>&quot;비용은 미팅 후 협의&quot;</td></tr></table>
+<p>원페이저에 비용을 자세히 적으면 → 미팅 전에 &quot;너무 비싸다&quot;고 판단해서 연락 안 함<br>비용은 미팅에서 설명하는 것이 전환율 높음</p>
+<h4>진행 흐름 표기</h4>
+<p>A4 1줄 화살표로 표시:<br>```<br>상담(30분) → 현황 진단 → 전략 수립 → 실행 지원 → 성과 공유<br>```</p>
+<p>상세 설명 불필요 — 보는 사람이 3초 안에 이해하면 됨</p>
+<h4>형식 원칙</h4>
+<ul><li><strong>분량</strong>: A4 1장 (절대 2장 초과 금지)</li><li><strong>파일 형식</strong>: PDF (Word·한글 금지 — 상대방 환경에서 깨질 수 있음)</li><li><strong>폰트</strong>: 브랜드 폰트 사용, 최소 10pt</li><li><strong>로고</strong>: 필수 삽입</li><li><strong>연락처</strong>: 이메일·전화 반드시 포함</li></ul>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">D3. 리드DB 구축 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 4 · B6 (2/8)</div>
+  <button class="nav-btn" onclick="location.href='d3_리드DB.html'">다음 D3 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>

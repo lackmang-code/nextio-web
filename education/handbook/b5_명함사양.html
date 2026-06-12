@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B5. 명함 사양서 작성 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #1B2D6B; }
+.agent .bbl-avatar { background: #1B2D6B; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 2 · 총무팀 · B5</div>
+    <div class="book-title">명함 사양서 작성</div>
+    <div class="book-meta">
+      <span>⏱ 33분</span>
+      <span>💬 대화 31회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 명함 사양서 작성 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 명함 사양서 작성을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: 명함 사양서가 뭐야?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>에이전트야, 명함 사양서가 뭐야? 그냥 디자인하면 되는 거 아니야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>디자인만 하면 안 되는 게 있어요.</p>
+<p>세금 신고서로 비유하면 — 계산은 다 했는데 제출 형식이 맞지 않으면 안 받아주잖아요. 명함도 디자인은 예쁜데 인쇄소 요구 사양을 맞추지 않으면 — 인쇄 결과가 엉망이 나와요.</p>
+<p>명함 사양서는 &quot;이 명함을 만들 때 알아야 할 기술적 기준&quot;이에요:</p>
+<ul><li>크기</li><li>앞면/뒷면 구성</li><li>인쇄 색상 모드</li><li>여백(재단여백)</li><li>QR 포함 여부</li></ul>
+<p>이걸 정리해두면 — 디자이너 의뢰할 때도, 인쇄소 발주할 때도 명확하게 전달할 수 있어요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그러면 어디서 시작해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>먼저 &quot;명함에 들어갈 정보&quot;를 정리하는 게 시작이에요.</p>
+<p>무엇을 넣을지 결정 전에:</p>
+<ol><li>이름·직함</li><li>연락처</li><li>어떤 서비스를 하는 사람인지</li></ol>
+<p>이 세 가지가 명확하면 명함 정보가 완성돼요.</p>
+<p>박낭만 씨 명함에 들어갈 기본 정보 정리해볼까요?</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>명함 제작의 첫 단계는 디자인이 아니라 &quot;무슨 정보를 넣을 것인가&quot;이다. 에이전트가 세무사 경험에 비유하면서 사양서의 중요성을 설명하는 것이 포인트다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 명함 정보 정리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>이름은 박낭만이고 세금 컨설팅이야. 그 외에 뭘 넣어야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>명함에 들어가는 표준 정보:</p>
+<table><tr><th>항목</th><th>필수/선택</th><th>예시</th></tr><tr><td>이름</td><td>필수</td><td>박낭만</td></tr><tr><td>직함/자격</td><td>필수</td><td>세무사 / 대표</td></tr><tr><td>회사명</td><td>필수</td><td>[회사명]</td></tr><tr><td>이메일</td><td>필수</td><td>mun@example.com</td></tr><tr><td>전화</td><td>필수</td><td>010-0000-0000</td></tr><tr><td>홈페이지</td><td>선택</td><td>www.example.com</td></tr><tr><td>영문 이름</td><td>선택</td><td>Sung-Min Moon</td></tr><tr><td>QR 코드</td><td>선택 (강력 권장)</td><td>vCard QR</td></tr><tr><td>주소</td><td>선택</td><td>1인 창업은 생략 가능</td></tr><tr><td>서비스 태그라인</td><td>선택</td><td>&quot;개인사업자·소규모 법인 세금 전문&quot;</td></tr></table>
+<p>세무사 자격증이 있으면 — &quot;세무사&quot; 자격 표기가 고객 신뢰에 큰 역할을 해요. 반드시 넣으세요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>주소는 넣지 않아도 돼?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><ul><li>사무실이 없거나 집 주소인 경우 → 공개하기 부담스러움</li><li>이사할 경우 명함을 다시 만들어야 함</li><li>이메일·전화로 충분히 연락 가능</li></ul>
+<p>단, 신뢰가 중요한 업종(법무·회계·의료)에서는 주소 있으면 더 전문적으로 보이기도 해요. 지역 기반 영업이면 넣는 게 나아요.</p>
+<p>박낭만 씨는 어디 타겟이에요? 특정 지역이에요, 아니면 원격으로 전국?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>원격으로 전국 상대하려고.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>그러면 주소 생략해도 돼요. 오히려 &quot;전국 비대면 컨설팅&quot; 태그라인이 더 효과적이에요.</p></div>
+  </div>
+</div>
+
+<div class="output-announce">
+  <span>📄</span>
+  <span>에이전트 생성: <strong>명함_정보_정리.md</strong></span>
+</div>
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">명함_정보_정리.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">명함 정보 정리</div>
+    <p>&gt; 인쇄소·디자이너에게 전달하기 전 명함 기본 정보 확정 시트</p>
+<h4>기본 정보</h4>
+<table><tr><th>항목</th><th>내용</th></tr><tr><td>이름</td><td>박낭만</td></tr><tr><td>영문 이름</td><td>Sung-Min Moon</td></tr><tr><td>직함/자격</td><td>세무사 / 대표</td></tr><tr><td>회사명</td><td>[회사명]</td></tr><tr><td>이메일</td><td>[이메일]</td></tr><tr><td>전화</td><td>010-0000-0000</td></tr><tr><td>홈페이지</td><td>[도메인] (선택)</td></tr><tr><td>주소</td><td>생략 (비대면 전국 컨설팅)</td></tr></table>
+<h4>앞면 구성</h4>
+<table><tr><th>영역</th><th>내용</th></tr><tr><td>상단</td><td>회사 로고</td></tr><tr><td>중앙</td><td>이름 (크게) + 직함</td></tr><tr><td>하단 좌측</td><td>이메일 / 전화</td></tr><tr><td>하단 우측</td><td>vCard QR 코드</td></tr></table>
+<h4>뒷면 구성</h4>
+<table><tr><th>항목</th><th>내용</th></tr><tr><td>배경</td><td>브랜드 메인 컬러</td></tr><tr><td>서비스 키워드 4개</td><td>개인사업자 세금 신고 / 소규모 법인 절세 / 창업 세금 컨설팅 / 비대면 원격 컨설팅</td></tr><tr><td>영문 이름·직함</td><td>Sung-Min Moon · Tax Consultant</td></tr></table>
+<h4>규격</h4>
+<table><tr><th>항목</th><th>값</th></tr><tr><td>명함 크기</td><td>90 × 50mm (표준)</td></tr><tr><td>재단여백 (Bleed)</td><td>3mm (각 면) → 인쇄 파일: 96 × 56mm</td></tr><tr><td>재단선</td><td>포함</td></tr></table>
+<h4>인쇄 사양</h4>
+<table><tr><th>항목</th><th>값</th></tr><tr><td>색상 모드</td><td>CMYK</td></tr><tr><td>용지</td><td>250g 스노우 (표준 명함 용지)</td></tr><tr><td>코팅</td><td>무광 (전문직 권장)</td></tr><tr><td>수량 (첫 발주)</td><td>100장</td></tr><tr><td>해상도</td><td>300dpi 이상</td></tr></table>
+<h4>QR 코드 (vCard)</h4>
+<table><tr><th>항목</th><th>값</th></tr><tr><td>형식</td><td>vCard</td></tr><tr><td>포함 정보</td><td>이름·직함·이메일·전화</td></tr><tr><td>오류복원 레벨</td><td>M</td></tr><tr><td>색상</td><td>브랜드 메인 컬러 (또는 검정)</td></tr><tr><td>발주 전 테스트</td><td>실제 폰 스캔 → 연락처 자동 저장 확인</td></tr></table>
+<h4>작성 원칙</h4>
+<ul><li>1인 창업 초기 → 주소 생략, vCard QR로 연락처 저장 편의 제공</li><li>세무사 자격 표기 필수 → 신뢰 구축 핵심 요소</li><li>첫 발주 100장 → 오탈자 확인 후 대량 주문</li></ul>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: 규격과 앞뒷면 구성</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>명함 크기는 어떻게 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>표준 명함 규격: <strong>90 × 50mm</strong></p>
+<p>이게 한국·일본 표준이에요. 지갑·명함 케이스에 다 들어가는 크기예요. 특별한 이유 없으면 이 규격으로 하세요.</p>
+<p>앞뒷면 어떻게 쓸지도 결정해야 해요:</p>
+<ul><li>이름·직함</li><li>연락처 (이메일·전화)</li><li>회사 로고</li><li>QR 코드 (선택)</li></ul>
+<table><tr><th>방법</th><th>예시</th><th>추천 상황</th></tr><tr><td>A. 브랜드 배경 + 슬로건</td><td>딥컬러 배경 + &quot;세금은 미리 알아야 절세입니다&quot;</td><td>인상 남기고 싶을 때</td></tr><tr><td>B. 서비스 키워드 나열</td><td>개인사업자 세금 / 법인세 / 절세 컨설팅</td><td>내가 하는 것 명확히</td></tr><tr><td>C. 비워두기</td><td>뒷면 메모 공간으로 활용</td><td>비용 아끼고 싶을 때</td></tr></table></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>뒷면에 서비스 키워드 넣는 게 좋을 것 같아.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>좋은 선택이에요. 세무사 명함을 받는 사람이 &quot;이 분이 어떤 걸 해주는 분인가&quot;를 한 눈에 볼 수 있어요.</p>
+<p>키워드 예시:</p>
+<ul><li>개인사업자 세금 신고</li><li>소규모 법인 절세</li><li>창업 세금 컨설팅</li><li>비대면 원격 컨설팅</li></ul></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: 인쇄 용어 이해</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>인쇄소 가면 CMYK, 블리드 같은 용어를 쓰던데 그게 뭐야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>인쇄 용어 핵심 3가지만 알면 돼요:</p>
+<ul><li>RGB: 화면(모니터·폰) 색상 방식</li><li>CMYK: 인쇄 색상 방식 (잉크 4가지 혼합)</li></ul>
+<p>중요한 것: <strong>화면에서 예쁜 색이 인쇄에서 다르게 나올 수 있어요.</strong><br>특히 선명한 파랑·보라 계열이 CMYK에서 탁해지는 경우 많아요.</p>
+<p>대처법: 인쇄소에 &quot;색교정(proof) 1회 해주세요&quot;라고 요청하면 인쇄 전에 색상 확인 가능.</p>
+<p>인쇄 후 잘라낼 때 오차가 생겨요. 그래서 디자인을 <strong>3mm 더 크게</strong> 만들어야 해요.</p>
+<p>예: 명함 90×50mm → 인쇄용 파일은 96×56mm (양쪽 3mm씩 추가)</p>
+<p>이 여백 없이 만들면 → 재단 후 가장자리에 흰 선이 생겨요.</p>
+<p>인쇄 후 추가 처리:</p>
+<ul><li><strong>무광 코팅</strong>: 고급스럽고 지문 안 남음</li><li><strong>유광 코팅</strong>: 색상 선명하고 광택</li><li><strong>양각/음각</strong>: 이름이나 로고 튀어나오게 (비쌈)</li></ul>
+<p>세무사 명함은 <strong>무광 코팅</strong>이 전문적인 느낌을 줘요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그거 다 디자이너한테 알려줘야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>맞아요. &quot;명함 사양서&quot;를 디자이너에게 주면 — 이 용어들을 다 알아서 적용해줘요.</p>
+<p>사양서 없이 &quot;예쁘게 해주세요&quot;만 하면 → 나중에 인쇄 문제 생겨도 누구 책임인지 불분명해요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>인쇄 용어를 비전문가가 이해할 수 있게 설명하는 것이 선배 에이전트의 역할이다. CMYK/RGB 차이는 세무사가 세금 신고서 형식을 지켜야 하는 것과 유사한 &quot;규격&quot; 개념으로 연결할 수 있다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: QR 코드</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>QR 코드는 꼭 넣어야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>필수는 아닌데 — 세무사 명함이라면 <strong>강력 권장</strong>해요.</p>
+<p>이유: 고객이 명함 받으면 → 연락처를 폰에 저장해야 해요. 손으로 치는 게 귀찮아서 안 하는 경우가 많아요.</p>
+<p>QR 코드가 있으면: 스캔 → 자동으로 연락처에 저장 → 나중에 &quot;그 세무사 연락처 어디 갔지?&quot; 걱정 없음.</p>
+<p>이런 QR을 <strong>vCard QR</strong>이라고 해요. 명함 정보가 QR에 담겨 있어요.</p>
+<p>만드는 방법: &quot;vCard QR 생성기&quot; 검색 → 정보 입력 → 이미지 다운로드</p>
+<p>무료 사이트: qr.io, vCard QR Generator 등</p>
+<p>중요: 발주 전에 <strong>실제 폰으로 스캔해서 정보 제대로 나오는지 테스트</strong>. 안 되면 고쳐서 넣어야 해요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그거 넣는 거 좋겠다.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>넣으세요. 요즘은 QR 없는 명함이 더 어색할 정도예요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: 인쇄소 선정</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>인쇄소는 어디서 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>두 가지 옵션이에요:</p>
+<ul><li>인쇄24, 프린트링, 레드프린팅, 위라벨</li><li>100장 기준 2~5만원</li><li>PDF 파일 업로드하면 3~5일 내 배송</li><li>1인 창업에 가장 많이 씀</li></ul>
+<ul><li>동네 인쇄소</li><li>색교정·후가공 상담 가능</li><li>처음엔 여기서 색상 확인 후, 이후엔 온라인으로</li></ul>
+<p>처음 명함 만들 때는 — <strong>온라인 인쇄소 100장</strong>으로 시작해요. 써보고 수정할 부분 생기면 2차 발주 시 수정.</p>
+<p>세무사 명함에 권장하는 옵션:</p>
+<ul><li>용지: 250g 스노우 (가장 일반적인 명함 용지)</li><li>코팅: 무광 (전문적 느낌)</li><li>수량: 100~200장 (처음엔 100장)</li></ul></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>맞아요. 명함은 싸게 시작해서 — 수정할 필요 생기면 다시 찍는 게 낫거든요.</p>
+<p>처음부터 1000장 주문해서 오탈자 나오면 다 버려야 해요. 100장씩 테스트 → 확정 후 대량 주문.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 발주 전 최종 체크</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>발주 전에 뭘 확인해야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><p>명함 발주 전 체크 5가지:</p>
+<ol><li><strong>연락처 정확한지</strong> — 이메일, 전화 오탈자 확인</li><li><strong>QR 스캔 테스트</strong> — 실제 폰으로 스캔해서 연락처 저장되는지</li><li><strong>재단여백 3mm 포함됐는지</strong> — 디자이너에게 확인</li><li><strong>색상 모드</strong> — CMYK 변환됐는지 또는 인쇄소가 변환해주는지</li><li><strong>PDF 해상도</strong> — 300dpi 이상인지</li></ol>
+<p>이 중 하나라도 빠뜨리면 인쇄 후 다시 만들어야 해요.</p></div>
+  </div>
+</div>
+
+<div class="output-announce">
+  <span>📄</span>
+  <span>에이전트 생성: <strong>명함_사양_체크리스트.md</strong></span>
+</div>
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">명함_사양_체크리스트.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">명함 사양 체크리스트</div>
+    <p>&gt; 인쇄소 발주 전 이 모든 항목 확인</p>
+<h4>A. 정보 정확성</h4>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>A1</td><td>이름·직함 오탈자 없는지</td><td>☐</td></tr><tr><td>A2</td><td>이메일 주소 정확한지</td><td>☐</td></tr><tr><td>A3</td><td>전화번호 정확한지</td><td>☐</td></tr><tr><td>A4</td><td>홈페이지 주소가 실제로 접속되는지</td><td>☐</td></tr><tr><td>A5</td><td>자격명 표기 정확한지 (세무사, 공인중개사 등)</td><td>☐</td></tr></table>
+<h4>B. QR 코드</h4>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>B1</td><td>vCard QR 생성 완료</td><td>☐</td></tr><tr><td>B2</td><td>실제 폰 (iOS) 스캔 테스트 → 연락처 자동 저장 확인</td><td>☐</td></tr><tr><td>B3</td><td>실제 폰 (Android) 스캔 테스트 확인</td><td>☐</td></tr><tr><td>B4</td><td>QR 이미지 해상도가 인쇄 품질 이상인지 (300dpi)</td><td>☐</td></tr><tr><td>B5</td><td>QR이 너무 작지 않은지 (최소 15×15mm 권장)</td><td>☐</td></tr></table>
+<h4>C. 인쇄 파일</h4>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>C1</td><td>재단여백(Bleed) 3mm 포함됐는지 디자이너에게 확인</td><td>☐</td></tr><tr><td>C2</td><td>재단선(Crop Mark) 포함됐는지</td><td>☐</td></tr><tr><td>C3</td><td>색상 모드 CMYK로 변환됐는지</td><td>☐</td></tr><tr><td>C4</td><td>해상도 300dpi 이상인지</td><td>☐</td></tr><tr><td>C5</td><td>폰트 아웃라인(윤곽선) 처리 또는 폰트 임베딩 됐는지</td><td>☐</td></tr><tr><td>C6</td><td>파일 형식 PDF (인쇄소 요구 형식 확인)</td><td>☐</td></tr></table>
+<h4>D. 디자인 최종 확인</h4>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>D1</td><td>여백 안 쪽에 중요 정보가 들어왔는지 (재단 안전 영역 내)</td><td>☐</td></tr><tr><td>D2</td><td>앞면·뒷면 방향이 맞는지 (인쇄 후 뒤집었을 때 올바른 방향)</td><td>☐</td></tr><tr><td>D3</td><td>로고 해상도가 깨지지 않는지</td><td>☐</td></tr><tr><td>D4</td><td>글자가 너무 작지 않은지 (최소 6pt 이상 권장)</td><td>☐</td></tr></table>
+<h4>E. 발주 직전</h4>
+<table><tr><th>#</th><th>항목</th><th>완료</th></tr><tr><td>E1</td><td>용지·코팅·수량·인쇄소 확인</td><td>☐</td></tr><tr><td>E2</td><td>견적서/주문서 확인</td><td>☐</td></tr><tr><td>E3</td><td>배송 주소 정확한지</td><td>☐</td></tr><tr><td>E4</td><td>결제 완료 확인</td><td>☐</td></tr></table>
+<h4>자주 놓치는 실수</h4>
+<ol><li><strong>재단여백 3mm 누락</strong> → 가장자리에 흰 선 발생. 디자이너에게 반드시 요청.</li><li><strong>QR 스캔 테스트 미실시</strong> → 인쇄 후 안 되면 다 버려야 함.</li><li><strong>화면용 색상(RGB)으로 제출</strong> → CMYK로 변환 필수. 특히 파랑·보라계열 색상 변화 심함.</li><li><strong>폰트 미임베딩</strong> → 인쇄소 PC에 해당 폰트가 없으면 다른 폰트로 출력됨.</li></ol>
+  </div>
+</div>
+
+<div class="output-announce">
+  <span>📄</span>
+  <span>에이전트 생성: <strong>인쇄소_발주_가이드.md</strong></span>
+</div>
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">인쇄소_발주_가이드.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">인쇄소 발주 가이드</div>
+    <p>&gt; 명함 첫 발주 — 온라인 인쇄소 이용 기준</p>
+<h4>인쇄소 유형 비교</h4>
+<table><tr><th>유형</th><th>특징</th><th>비용</th><th>추천 상황</th></tr><tr><td><strong>온라인 인쇄소</strong></td><td>PDF 업로드 → 3~5일 배송</td><td>2~5만원 / 100장</td><td>1인 창업 첫 발주</td></tr><tr><td><strong>오프라인 인쇄소</strong></td><td>색교정·후가공 상담 가능</td><td>5~15만원</td><td>고급 후가공, 처음 색상 확인</td></tr></table>
+<h4>추천 온라인 인쇄소</h4>
+<table><tr><th>사이트</th><th>특징</th></tr><tr><td>인쇄24 (print24.co.kr)</td><td>국내 대형, 템플릿 제공</td></tr><tr><td>프린트링 (printring.co.kr)</td><td>UI 직관적, 빠른 배송</td></tr><tr><td>레드프린팅 (redprinting.co.kr)</td><td>저렴, 명함 전문</td></tr><tr><td>위라벨 (welabel.co.kr)</td><td>소량 주문 가능</td></tr></table>
+<h4>발주 절차</h4>
+<ol><li>인쇄소 사이트 접속</li><li><strong>명함</strong> 카테고리 선택</li><li>용지·코팅·수량 선택</li><li>인쇄 파일(PDF) 업로드</li><li>미리보기 확인 (재단선 위치 체크)</li><li>결제 → 배송 주소 입력</li></ol>
+<h4>권장 사양 (세무사·전문직 명함)</h4>
+<table><tr><th>항목</th><th>권장</th><th>이유</th></tr><tr><td>용지</td><td>250g 스노우</td><td>가장 일반적인 명함 용지, 적당한 두께</td></tr><tr><td>코팅</td><td>무광 (매트)</td><td>전문직 느낌, 지문 덜 남음</td></tr><tr><td>수량 (첫 발주)</td><td>100장</td><td>확인용, 오탈자 발견 시 손실 최소화</td></tr><tr><td>인쇄 방식</td><td>디지털 오프셋</td><td>소량 적합</td></tr></table>
+<h4>비용 예시 (100장 기준)</h4>
+<table><tr><th>항목</th><th>금액</th></tr><tr><td>명함 100장 (양면, 무광 코팅)</td><td>3~5만원</td></tr><tr><td>배송비</td><td>3,000~5,000원</td></tr><tr><td><strong>합계</strong></td><td><strong>약 3.5~5.5만원</strong></td></tr></table>
+<h4>색상 주의 (CMYK 변환)</h4>
+<p>화면(RGB)에서 보이는 색과 인쇄(CMYK) 결과가 다를 수 있음.</p>
+<p>특히 주의:</p>
+<ul><li>선명한 파랑·보라 계열 → 탁해질 수 있음</li><li>검정이 4도(C100 M100 Y100 K100)면 글자가 번짐 → K100만 사용</li></ul>
+<p>처음 발주 시 <strong>색교정(컬러 프루프) 1회</strong> 요청하면 실제 인쇄 색상 미리 확인 가능. (추가 비용 발생)</p>
+<h4>발주 후 확인</h4>
+<table><tr><th>#</th><th>항목</th></tr><tr><td>1</td><td>주문 완료 이메일 확인</td></tr><tr><td>2</td><td>배송 현황 추적</td></tr><tr><td>3</td><td>수령 후 오탈자·인쇄 품질·QR 스캔 최종 확인</td></tr><tr><td>4</td><td>이상 없으면 → 추가 대량 주문 (200~500장)</td></tr></table>
+<h4>다음 단계</h4>
+<p>영업 미팅·행사 참가 전 충분한 재고 확보 (미팅 1건당 5~10장 배포 기준)</p>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">8단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 만든 것 정리해줘.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(총무팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>명함<em>정보</em>정리.md</code></td><td>명함에 들어갈 정보 목록 + 앞뒷면 구성안</td></tr><tr><td><code>명함<em>사양</em>체크리스트.md</code></td><td>발주 전 확인 사항</td></tr><tr><td><code>인쇄소<em>발주</em>가이드.md</code></td><td>온라인 인쇄소 선정 + 발주 방법 + 비용</td></tr></table>
+<p>핵심:</p>
+<ul><li>명함 사양서 = 인쇄소·디자이너에게 전달하는 기술 기준서</li><li>표준 규격: 90×50mm / 재단여백 3mm</li><li>CMYK = 인쇄용 색상 모드 (RGB와 다름)</li><li>QR(vCard) = 연락처 자동 저장 → 강력 권장</li><li>무광 코팅 = 전문직 명함 표준</li><li>첫 발주는 100장 → 확정 후 대량 주문</li></ul>
+<p>다음 시나리오: <strong>수주 원페이저 (B6)</strong> — 명함을 받은 고객이 &quot;조금 더 자세히 알고 싶어&quot;라고 할 때 주는 문서</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>인쇄 용어를 이렇게 설명해주니까 이제 인쇄소 가서 대화할 수 있겠어.</p></div>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">C1. QR 코드 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 2 · B5 (7/9)</div>
+  <button class="nav-btn" onclick="location.href='c1_QR코드.html'">다음 C1 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>

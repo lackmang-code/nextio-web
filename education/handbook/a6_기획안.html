@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A6. 매거진 기획안 — 유니콘랩 실습 핸드북</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --navy:#1B2D6B; --gold:#FBBF24;
+  --text:#1a1a1a; --muted:#777;
+  --bg:#F5F3EE; --border:#E2E8F0;
+  --user-bg:#FEF9EC; --user-bdr:#FBBF24;
+  --agent-bg:#fff; --note-bg:#FFFBEB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px}
+
+.book-header{background:var(--navy);color:#fff}
+.book-header-inner{max-width:780px;margin:0 auto;padding:28px 24px 22px}
+.book-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+.book-title{font-size:24px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.book-meta{font-size:12px;color:rgba(255,255,255,.55);display:flex;gap:16px;flex-wrap:wrap}
+
+.char-card{max-width:780px;margin:20px auto 0;padding:0 24px}
+.char-inner{background:#fff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.char-avatar{width:44px;height:44px;border-radius:50%;background:var(--user-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.char-name{font-weight:700;font-size:14.5px;color:var(--navy)}
+.char-desc{font-size:13px;color:var(--muted);margin-top:3px}
+.char-tag{display:inline-block;background:var(--user-bg);border:1px solid var(--gold);color:#92400E;font-size:11px;padding:2px 8px;border-radius:99px;margin-top:5px}
+
+.prompt-section{margin:20px 0}
+.prompt-label-row{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.prompt-box{background:#F0FDF4;border:1px solid #86EFAC;border-left:4px solid #22C55E;border-radius:0 8px 8px 0;padding:14px 16px;position:relative}
+.prompt-lbl{font-size:11px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:8px}
+.prompt-text{font-size:13.5px;color:#166534;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.copy-btn{position:absolute;top:10px;right:10px;background:#22C55E;color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:#16A34A}
+.copy-btn.copied{background:#64748B}
+
+.book-content{max-width:780px;margin:0 auto;padding:24px 24px 100px}
+
+.step-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px}
+.step-badge{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.3px;white-space:nowrap}
+.step-line{flex:1;height:1px;background:#D1D5DB}
+
+.bubble-row{display:flex;gap:10px;margin-bottom:14px;align-items:flex-end}
+.bubble-col{display:flex;flex-direction:column;max-width:78%}
+.bubble-sender{font-size:11px;font-weight:700;margin-bottom:4px}
+.bubble{padding:13px 16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
+.bubble p{margin:4px 0}
+.bubble ul,.bubble ol{padding-left:20px;margin:6px 0}
+.bubble li{margin-bottom:3px}
+.bubble table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.bubble th{background:#EEF2FF;padding:6px 10px;text-align:left}
+.bubble td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.bubble code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12.5px;font-family:monospace}
+
+.bubble-row.agent{flex-direction:row}
+.bubble-row.agent .bubble-col{align-items:flex-start}
+.bubble-row.agent .bubble-sender{color:var(--agent-team-color,#1D4ED8)}
+.bubble-row.agent .bubble{background:var(--agent-bg);border:1px solid var(--border);border-radius:4px 12px 12px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.bubble-row.user{flex-direction:row-reverse}
+.bubble-row.user .bubble-col{align-items:flex-end}
+.bubble-row.user .bubble-sender{color:#92400E;text-align:right}
+.bubble-row.user .bubble{background:var(--user-bg);border:1px solid var(--user-bdr);border-radius:12px 4px 12px 12px}
+
+.bbl-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.agent .bbl-avatar{background:var(--navy)}
+.user .bbl-avatar{background:var(--gold)}
+
+.instructor-note{background:var(--note-bg);border:1px solid #FDE68A;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:6px 0 22px;cursor:pointer}
+.note-header{font-size:12px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px}
+.note-toggle{font-size:10px;margin-left:auto;color:#B45309}
+.note-body{font-size:13px;color:#78350F;margin-top:8px;line-height:1.65;display:none}
+.note-body.open{display:block}
+.note-body p{margin:4px 0}
+.note-body ul{padding-left:18px}
+
+.output-announce{background:#1E293B;color:#fff;border-radius:8px;padding:10px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:13px}
+.output-announce strong{color:var(--gold)}
+
+.output-card{border:1px solid var(--border);border-radius:8px;margin:0 0 20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.output-card-header{background:#F8FAFC;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.file-name{font-size:12px;font-weight:700;color:var(--navy);font-family:monospace;flex:1}
+.toggle-icon{font-size:11px;color:#94A3B8}
+.output-card-body{padding:16px;font-size:13.5px;line-height:1.7;display:none;background:#fff}
+.output-card-body.open{display:block}
+.output-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.output-card-body h3,.output-card-body h4,.output-card-body h5{font-size:13px;font-weight:700;color:var(--navy);margin:10px 0 5px}
+.output-card-body p{margin:4px 0}
+.output-card-body ul,.output-card-body ol{padding-left:18px;margin:4px 0}
+.output-card-body table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.output-card-body th{background:#EEF2FF;padding:6px 10px;text-align:left;font-weight:600}
+.output-card-body td{padding:6px 10px;border-bottom:1px solid var(--border)}
+.output-card-body code{background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px;font-family:monospace}
+
+.chip{display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:12px;margin:1px 2px;vertical-align:middle}
+.chip-dot{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.chip-code{font-family:monospace;color:var(--navy);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);transition:width .2s;z-index:200}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav-info{font-size:12px;color:var(--muted);text-align:center}
+.nav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.nav-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+@media(max-width:540px){.book-title{font-size:20px}.bubble{font-size:14px}}
+
+.bubble-row.agent .bubble-sender { color: #B45309; }
+.agent .bbl-avatar { background: #B45309; }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="pb"></div>
+
+<div class="book-header">
+  <div class="book-header-inner">
+    <div class="book-label">Day 4 · 편집제작팀 · A6</div>
+    <div class="book-title">매거진 기획안</div>
+    <div class="book-meta">
+      <span>⏱ 42분</span>
+      <span>💬 대화 39회</span>
+      <span>📄 산출물 3개</span>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-inner">
+    <div class="char-avatar">👤</div>
+    <div>
+      <div class="char-name">박낭만 · 유니콘랩 대표</div>
+      <div class="char-desc">온라인 매거진 전문 에이전시 <strong>유니콘랩</strong> 창업 중. 1인 대표로 AI 직원들과 함께 회사를 운영하고 있다.</div>
+      <span class="char-tag">1인 대표 / 매거진 기획안 진행 중</span>
+    </div>
+  </div>
+</div>
+
+<div class="book-content">
+
+<div class="prompt-section">
+  <div class="prompt-label-row">💡 오늘 실습 시작 프롬프트 — 회사명·업종만 바꾸면 됩니다</div>
+  <div class="prompt-box">
+    <div class="prompt-lbl">📋 시작 프롬프트</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+    <div class="prompt-text">나는 [회사명]이라는 [업종] 회사를 운영하고 있어.
+오늘은 매거진 기획안을 진행하려고 해. 단계별로 같이 해줄 수 있어?</div>
+  </div>
+</div>
+
+
+<div class="step-divider">
+  <span class="step-badge">1단계: 기획안이 뭐야?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>에이전트야, 매거진 기획안 써야 한다는데 이게 IT 서비스 기획서랑 뭐가 달라?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>본질적으로 같아요. 둘 다 &quot;이건 누구를 위해, 무엇을, 왜 만드는가&quot;를 설명하는 문서예요.</p>
+<p>IT 기획서로 번역하면:</p>
+<ul><li>PRD(Product Requirements Document) → 매거진 기획안</li><li>타겟 사용자 → 타겟 독자</li><li>핵심 기능 → 고정 코너</li><li>로드맵 → 발행 캘린더</li></ul>
+<p>박낭만 씨가 7년 동안 PO 했으면 — 사실 매거진 기획안 작성 능력이 이미 있는 거예요. 다른 건 형식뿐이에요.</p>
+<p>가장 큰 차이 딱 하나: <strong>IT 기획서는 기능을 설명하지만, 매거진 기획안은 &#x27;독자의 감정 경험&#x27;을 설계</strong>해요. &quot;읽고 나서 어떤 기분이 들었으면 하는가&quot;가 핵심이에요.</p>
+<p>박낭만 씨 요리 매거진, 독자가 읽고 나면 어떤 기분이 들었으면 해요?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>음... 오늘 저녁 뭔가 만들어보고 싶다는 기분? 요리가 어렵지 않다는 느낌?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>바로 그게 이 매거진의 정체성 핵심이에요.</p>
+<p>&quot;요리가 어렵지 않다는 느낌&quot; — 이게 브랜드 포지션이 될 수 있어요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>비전문가가 처음 매거진 기획을 할 때 가장 어려운 건 &quot;콘셉트를 말로 표현하는 것&quot;이다. 에이전트가 사람의 말에서 핵심 키워드를 뽑아주고 확장하는 것이 선배 역할이다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">2단계: 독자를 어떻게 정의해?</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>IT 서비스에서는 페르소나 만들잖아. 매거진도 그렇게 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>완전히 같아요. 매거진도 독자 페르소나 만들어야 해요.</p>
+<p>독자 페르소나에 들어가는 것:</p>
+<ul><li>나이·직업·라이프스타일</li><li>요리와의 관계 (요리를 즐기나? 귀찮아하나?)</li><li>이 매거진을 보는 상황 (퇴근 후? 주말 아침?)</li><li>읽고 나서 갖고 싶은 변화</li></ul>
+<p>박낭만 씨가 생각하는 독자는 어떤 사람이에요?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>훌륭해요. 구체적이에요. 이걸 더 날카롭게 만들면:</p>
+<p>이 한 문장이 독자 페르소나의 핵심이에요.</p>
+<p>특징:</p>
+<ul><li>요리 전문가가 아님 (요리 기술보다 경험 중심)</li><li>외식 경험을 집으로 가져오고 싶음</li><li>레시피보다 &quot;이 요리의 맥락&quot;이 궁금함 (왜 이게 맛있는지, 어떻게 즐기는지)</li><li>주 독자층: 30대 후반 ~ 40대 초반, 소득 있는 직장인</li></ul>
+<p>이걸 문서로 정리해볼까요?</p></div>
+  </div>
+</div>
+
+<div class="output-announce">
+  <span>📄</span>
+  <span>에이전트 생성: <strong>독자_페르소나.md</strong></span>
+</div>
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">독자_페르소나.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">독자 페르소나</div>
+    <p>&gt; 매거진의 모든 편집 결정은 이 페르소나를 기준으로 한다</p>
+<h4>핵심 페르소나 1인</h4>
+<h4>요리와의 관계</h4>
+<table><tr><th>항목</th><th>내용</th></tr><tr><td>요리 빈도</td><td>주 2~3회 (피곤하면 배달)</td></tr><tr><td>요리 실력</td><td>기본 레시피는 가능, 전문 기술 없음</td></tr><tr><td>요리에 대한 감정</td><td>&quot;맛있는 거 먹고 싶은데 만들기 귀찮다&quot;</td></tr><tr><td>외식 습관</td><td>한 달 2~3회 새로운 맛집 탐방</td></tr><tr><td>핵심 동기</td><td>&quot;저번에 먹은 그 파스타, 집에서 흉내라도 내볼 수 있을 것 같아&quot;</td></tr></table>
+<h4>매거진을 읽는 상황</h4>
+<ul><li><strong>언제</strong>: 주말 오전 커피 마시면서 / 평일 퇴근 후 소파에서</li><li><strong>어떻게</strong>: 스마트폰으로 스크롤 (모바일 우선)</li><li><strong>왜</strong>: 레시피 검색이 아니라 &quot;읽는 재미&quot;</li><li><strong>기대</strong>: 읽고 나면 오늘 저녁 뭔가 만들어보고 싶은 기분</li></ul>
+<h4>이 독자가 원하는 것</h4>
+<table><tr><th>원하는 것</th><th>원하지 않는 것</th></tr><tr><td>&quot;나도 할 수 있을 것 같다&quot;는 느낌</td><td>전문가만 할 수 있는 레시피</td></tr><tr><td>요리 배경 이야기 (왜 이게 맛있나)</td><td>지루한 영양 정보</td></tr><tr><td>현실적인 도구·재료 (마트에서 구할 수 있는 것)</td><td>특수 기구 필수 레시피</td></tr><tr><td>맛집 경험을 집에서 흉내낼 수 있다는 확신</td><td>&quot;집에서 절대 못 따라한다&quot;는 자괴감</td></tr></table>
+<h4>이 독자에게 이 매거진이 필요한 이유</h4>
+<p>&gt; &quot;맛집을 좋아하지만 매일 외식할 수는 없다. 하지만 집밥이 맛있으면 된다. 근데 어떻게 하면 되는지 아무도 제대로 안 가르쳐줬다.&quot;</p>
+<h4>페르소나를 어떻게 활용하나</h4>
+<ul><li><strong>기사 기획 시</strong>: &quot;김지원이 이걸 읽고 오늘 저녁 부엌으로 가게 될까?&quot;를 물어볼 것</li><li><strong>레시피 난이도</strong>: 김지원이 포기하지 않을 수준 (단계 5개 이내)</li><li><strong>어투</strong>: 친구가 알려주는 느낌 (전문가가 강의하는 느낌 금지)</li><li><strong>길이</strong>: 모바일 스크롤 5분 이내에 읽히는 분량</li></ul>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">3단계: 제호 정하기</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>매거진 이름은 어떻게 정해? 그냥 멋있어 보이는 거 쓰면 돼?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>멋있어 보이는 것보다 중요한 게 있어요 — <strong>이름에 독자와의 약속이 담겨 있어야</strong> 해요.</p>
+<p>좋은 제호의 조건:</p>
+<ol><li>발음하기 쉬움</li><li>타겟 독자가 &quot;나 얘기구나&quot;라고 느낌</li><li>매거진의 정체성을 암시함</li><li>가능하면 이중 의미 (깊이 있음)</li></ol>
+<p>박낭만 씨 콘셉트 (&quot;맛집 경험을 집으로&quot;)로 몇 가지 제안드릴게요:</p>
+<table><tr><th>제호 후보</th><th>의미</th><th>느낌</th></tr><tr><td><strong>《테이블》</strong></td><td>식탁 위의 경험</td><td>단순·깔끔</td></tr><tr><td><strong>《오늘 저녁》</strong></td><td>매일의 식사</td><td>친근·일상적</td></tr><tr><td><strong>《키친 에디터》</strong></td><td>주방을 편집하는 사람</td><td>도시적·세련</td></tr><tr><td><strong>《이 맛을 집에서》</strong></td><td>핵심 약속을 직접 표현</td><td>명확·소구력 강함</td></tr></table>
+<p>어떤 방향이 좋아요?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>《키친 에디터》 좋은데. 근데 좀 영어 느낌이 강하지 않아?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>좋은 감각이에요. 한글 느낌을 더 원하면 몇 가지 방향:</p>
+<ul><li><strong>《부엌 편집자》</strong> — 직역, 독창적</li><li><strong>《오늘 부엌》</strong> — 친근하고 매일의 느낌</li><li><strong>《식탁 편집장》</strong> — 권위 있으면서 따뜻함</li></ul>
+<p>아니면 영어+한글 혼용: <strong>《Kitchen 편집장》</strong></p>
+<p>한국 온라인 매거진은 영어+한글 혼용 제호가 의외로 많아요 (《AROUND》, 《어라운드》 같은 사례). 타겟이 30대 중후반 세련된 독자라면 영어도 나쁘지 않아요.</p>
+<p>최종 결정은 박낭만 씨가 &quot;이 이름으로 2년 불러도 질리지 않는가&quot;로 판단하면 돼요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>《오늘 부엌》 로 가볼게. 한국적이고 친근한 게 더 맞는 것 같아.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>좋아요. 《오늘 부엌》 — 이름에 이미 &quot;오늘&quot;이라는 시간감과 &quot;부엌&quot;이라는 공간이 있어요. 매일의 식사 경험을 다루겠다는 약속이 제호에 담겨있어요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>제호 선택 과정에서 에이전트가 여러 시안을 제시하고 사람이 선택하게 한다. 이 과정 자체가 &quot;AI는 선택지를 만들고, 인간이 결정한다&quot;는 원칙을 실연하는 것이다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">4단계: 정체성 문장 만들기</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>정체성이라는 게 뭐야? 미션이랑 같은 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>비슷한데 조금 달라요.</p>
+<ul><li><strong>미션</strong>: 우리가 왜 존재하는가 (회사 관점)</li><li><strong>정체성</strong>: 독자에게 우리가 무엇인가 (독자 관점)</li></ul>
+<p>IT로 치면 미션은 회사 미션, 정체성은 product positioning statement예요.</p>
+<p>정체성 문장 공식: <strong>&quot;[타겟 독자]를 위한, [핵심 가치]를 담은 매거진&quot;</strong></p>
+<p>《오늘 부엌》 예시:</p>
+<p>너무 길죠. 핵심만 뽑으면:</p>
+<p>박낭만 씨가 더 다듬고 싶으면 한 단어씩 바꿔보세요. 정체성 문장은 나중에 소개글·투자 피치·광고주 제안서에 다 들어가요. 딱 한 줄이지만 굉장히 중요해요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>&quot;집에서도 맛집처럼&quot;이 더 캐치한 것 같은데?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>훨씬 좋아요. &quot;집에서도 맛집처럼&quot; — 이게 슬로건이 될 수 있어요.</p>
+<ul><li><strong>제호</strong>: 《오늘 부엌》</li><li><strong>슬로건</strong>: &quot;집에서도 맛집처럼&quot;</li><li><strong>정체성</strong>: 집에서 맛집 경험을 만들고 싶은 30대에게 요리 문화와 실전 레시피를 전하는 온라인 매거진</li></ul></div>
+  </div>
+</div>
+
+<div class="output-announce">
+  <span>📄</span>
+  <span>에이전트 생성: <strong>매거진_콘셉트.md</strong></span>
+</div>
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">매거진_콘셉트.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">매거진 콘셉트 문서</div>
+    <p>&gt; 이 문서는 편집 결정, 투자 제안, 광고주 미팅의 기준 문서</p>
+<h4>기본 정보</h4>
+<table><tr><th>항목</th><th>내용</th></tr><tr><td><strong>제호</strong></td><td>《오늘 부엌》</td></tr><tr><td><strong>슬로건</strong></td><td>&quot;집에서도 맛집처럼&quot;</td></tr><tr><td><strong>정체성</strong></td><td>집에서 맛집 경험을 만들고 싶은 30대에게 요리 문화와 실전 레시피를 전하는 온라인 매거진</td></tr><tr><td><strong>발행 형식</strong></td><td>온라인 (모바일 우선 반응형 HTML)</td></tr><tr><td><strong>발행 주기</strong></td><td>월간</td></tr><tr><td><strong>제작 방식</strong></td><td>편집자 1인 + AI 도구 (자기증명형 운영)</td></tr></table>
+<h4>포지셔닝</h4>
+<ul><li>전문 요리사를 위한 레시피집 (×)</li><li>맛집 리뷰 블로그 (×)</li><li>요리 기술 강좌 (×)</li></ul>
+<ul><li>맛집을 좋아하는 사람이 집 부엌으로 돌아오게 하는 매거진 (○)</li><li>요리 경험의 맥락을 알려주는 문화 콘텐츠 (○)</li><li>오늘 저녁 뭔가 만들어보고 싶게 만드는 읽을거리 (○)</li></ul>
+<h4>톤 앤 매너</h4>
+<table><tr><th>항목</th><th>기준</th></tr><tr><td><strong>어투</strong></td><td>친한 친구가 알려주는 느낌 (전문가 강의 어투 금지)</td></tr><tr><td><strong>난이도</strong></td><td>독자가 포기하지 않는 수준 (5단계 이내 레시피)</td></tr><tr><td><strong>길이</strong></td><td>모바일 5분 이내 독서 완료</td></tr><tr><td><strong>이미지</strong></td><td>완벽한 스튜디오 사진보다 &quot;집에서 찍은 것 같은&quot; 따뜻함</td></tr><tr><td><strong>반응</strong></td><td>읽고 나서 &quot;나도 해봐야겠다&quot;는 실행 의지</td></tr></table>
+<h4>자기증명 전략</h4>
+<p>&gt; &quot;이 매거진은 AI 도구를 활용해 편집자 1명이 운영합니다.<br>&gt; &#x27;특별한 도구 없이도 맛집처럼&#x27;이라는 주제와,<br>&gt; &#x27;혼자서도 전문 콘텐츠를&#x27;이라는 제작 철학이 일치합니다.&quot;</p>
+<p>콘텐츠의 주제(집에서도 맛집처럼)와 제작 방식(1인+AI로 전문 매거진)이 같은 철학 위에 있다.</p>
+<h4>수익 모델 (검토 중)</h4>
+<table><tr><th>모델</th><th>특징</th><th>단계</th></tr><tr><td>무료 공개 (창간 초기)</td><td>독자 확보 우선</td><td>1~6호</td></tr><tr><td>광고 (협찬)</td><td>식품·조리기구 브랜드</td><td>독자 500명 이상 확보 후</td></tr><tr><td>유료 구독</td><td>아카이브·심화 레시피</td><td>안정기 (12호 이후)</td></tr></table>
+<h4>결정 필요 사항</h4>
+<ol><li><strong>첫 발행일</strong> — 역산 제작 일정 수립 필요</li><li><strong>창간호 배포 방식</strong> — 지인 공유부터? 소셜 공개부터?</li><li><strong>협찬 기준</strong> — 제품 협찬 수락 기준선 (편집 독립성 원칙)</li></ol>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">5단계: 고정 코너 설계</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>코너는 어떻게 잡아? 매달 같은 코너가 나와야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>매달 같은 코너가 나오는 게 매거진의 힘이에요.</p>
+<p>이유: 독자가 &quot;다음 달에도 이 코너 나오겠지&quot;라고 기대하게 되면 — 그게 구독을 유지하는 이유가 돼요.</p>
+<p>코너 설계의 원칙:</p>
+<ol><li><strong>3개 이내</strong> (창간호는 더 적어도 됨. 많으면 제작 부담)</li><li><strong>독자 니즈 3가지를 커버</strong>: 정보/영감/실용</li><li><strong>매달 유지할 수 있는 것만</strong> (취재 필요한 코너, 매달 가능한지 검토)</li></ol>
+<p>《오늘 부엌》 독자의 니즈:</p>
+<ul><li>정보 → &quot;이 요리가 어디서 왔나&quot; (식문화)</li><li>영감 → &quot;이 사람은 이렇게 요리해&quot; (인물)</li><li>실용 → &quot;오늘 저녁 이거 해봐&quot; (레시피)</li></ul>
+<p>이걸 코너로:</p>
+<table><tr><th>코너</th><th>콘셉트</th><th>담당</th></tr><tr><td><strong>[인터뷰] 이달의 부엌</strong></td><td>요리를 삶의 일부로 만든 사람 — 셰프가 아닌 일반인</td><td>취재 필요</td></tr><tr><td><strong>[칼럼] 오늘 먹은 것</strong></td><td>편집장이 이달에 먹은 것 중 집에서 재현한 것</td><td>자체 제작</td></tr><tr><td><strong>[레시피] 이번 주 저녁</strong></td><td>주 1회 업로드 가능한 실전 레시피</td><td>자체 제작</td></tr></table>
+<p>박낭만 씨 생각엔 어떤 코너가 잘 될 것 같아요?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>&quot;오늘 먹은 것&quot; 칼럼이 제일 좋은 것 같아. 내가 실제로 쓸 수 있고 진짜 경험담이니까.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>맞아요. 가장 중요한 선택 기준이에요 — <strong>&quot;내가 실제로 할 수 있는 것&quot;</strong>.</p>
+<p>매거진을 망치는 가장 흔한 실수: 창간호엔 취재 3개, 인터뷰 2개, 전문가 원고 1개를 넣다가 2호부터 제작 불가능해지는 거예요.</p>
+<p>《오늘 부엌》 창간호 전략:</p>
+<ul><li><strong>자체 제작 가능한 코너 중심</strong>으로 창간</li><li>취재·인터뷰 코너는 2~3호에 추가</li><li>창간호에서 &quot;독자에게 약속한 것&quot;만 완벽하게 이행</li></ul></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>&quot;지속 가능한 것만 기획에 넣어라&quot;는 원칙은 모든 창작 사업에 공통으로 적용된다. 에이전트가 현실적인 제작 가능성을 고려해서 기획을 조율하는 것이 선배 역할이다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">6단계: 목차 설계</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>그러면 창간호 목차를 어떻게 잡아?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>목차는 독자 여정(User Journey)을 설계하는 거예요. IT로 치면 앱의 온보딩 플로우와 같아요.</p>
+<p>좋은 목차의 구조:</p>
+<p>《오늘 부엌》 창간호 목차 초안:</p>
+<table><tr><th>#</th><th>섹션</th><th>내용</th><th>분량</th></tr><tr><td>1</td><td><strong>에디터스 레터</strong></td><td>왜 《오늘 부엌》인가 — 독자에게 보내는 첫인사</td><td>1면</td></tr><tr><td>2</td><td><strong>[커버스토리] 집에서도 맛집처럼</strong></td><td>특별한 주방 도구 없이, 맛집 경험을 집에서 내는 비법 3가지</td><td>3~4면</td></tr><tr><td>3</td><td><strong>[칼럼] 오늘 먹은 것</strong></td><td>편집장의 이달 최고 외식 경험 + 집에서 재현한 버전</td><td>2면</td></tr><tr><td>4</td><td><strong>[심화] 이 요리의 맥락</strong></td><td>창간호 픽 요리의 역사·문화 이야기</td><td>2면</td></tr><tr><td>5</td><td><strong>[레시피] 이번 주 저녁 3종</strong></td><td>실전 레시피 — 시간별 정렬 (20분/40분/1시간)</td><td>3면</td></tr><tr><td>6</td><td><strong>[뷰] 서울의 부엌들</strong></td><td>편집장이 고른 서울 좋은 식재료 마켓 4곳</td><td>1면</td></tr><tr><td>7</td><td><strong>다음 호 예고</strong></td><td>2호 티저 + 독자 참여 방법</td><td>1면</td></tr></table>
+<p>이게 초안이에요. 박낭만 씨 의견은?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>좋은데, 4번 &quot;이 요리의 맥락&quot;이 좀 무거워 보여. 첫 호에는 가볍게 가고 싶어.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>좋은 감각이에요. 무겁게 시작하면 독자가 부담감을 느낄 수 있어요.</p>
+<ul><li><strong>&quot;이 재료, 어디서 왔어?&quot;</strong> — 재료 기원 이야기 (흥미롭고 짧게 가능)</li><li><strong>&quot;맛집 사장님도 쓴다는 그것&quot;</strong> — 도구/재료 픽 (실용적)</li><li><strong>아예 삭제</strong> — 창간호는 5개 섹션으로 가볍게</li></ul>
+<p>어떤 방향이 좋아요?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>재료 기원 이야기로 가자. 짧고 흥미롭게 할 수 있을 것 같아.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>좋아요. 4번을 &quot;이 재료, 어디서 왔어?&quot; 로 바꾸면 — 커버스토리 요리에 쓰인 재료 하나를 골라서 짧게 이야기하면 돼요. 2페이지도 필요 없고, 1페이지에 인포그래픽 형태로 해도 예뻐요.</p></div>
+  </div>
+</div>
+
+<div class="output-announce">
+  <span>📄</span>
+  <span>에이전트 생성: <strong>창간호_목차_초안.md</strong></span>
+</div>
+<div class="output-card">
+  <div class="output-card-header" onclick="toggleOutput(this)">
+    <span style="font-size:14px">📄</span>
+    <span class="file-name">창간호_목차_초안.md</span>
+    <span class="toggle-icon">▼ 보기</span>
+  </div>
+  <div class="output-card-body">
+    <div class="output-title">창간호 목차 초안</div>
+    <p>&gt; 《오늘 부엌》 창간호 (발행일 미정)<br>&gt; 원칙: 자체 제작 가능한 것만 / 지속 가능한 것만 / 독자 여정 중심</p>
+<h4>목차</h4>
+<table><tr><th>#</th><th>섹션</th><th>내용</th><th>분량</th><th>제작 방식</th></tr><tr><td>1</td><td><strong>에디터스 레터</strong></td><td>왜 《오늘 부엌》인가 — 독자에게 보내는 첫인사. &quot;이 매거진이 당신의 부엌으로 데려다드립니다.&quot;</td><td>1면</td><td>자체</td></tr><tr><td>2</td><td><strong>[커버스토리] 집에서도 맛집처럼</strong></td><td>특별한 장비 없이 집에서 맛집 경험을 내는 핵심 3가지. 도구·재료·온도</td><td>3~4면</td><td>자체+AI</td></tr><tr><td>3</td><td><strong>[고정 칼럼] 오늘 먹은 것</strong></td><td>편집장이 이달에 가장 좋았던 외식 경험 → 집 재현 버전. 맛집 이야기 + 따라하기 레시피</td><td>2면</td><td>자체</td></tr><tr><td>4</td><td><strong>[문화] 이 재료, 어디서 왔어?</strong></td><td>커버스토리 핵심 재료 1가지의 기원·여행. 짧고 흥미롭게 (인포그래픽 형태 가능)</td><td>1면</td><td>AI+팩트체크</td></tr><tr><td>5</td><td><strong>[실전] 이번 달 저녁 3종</strong></td><td>실전 레시피 3개 — 20분짜리·40분짜리·1시간짜리로 나눔</td><td>3면</td><td>자체+AI</td></tr><tr><td>6</td><td><strong>[뷰] 서울의 좋은 식재료 마켓</strong></td><td>편집장 픽 서울 식재료 마켓 4곳. 어디서 뭘 사면 좋은지</td><td>1면</td><td>자체</td></tr><tr><td>7</td><td><strong>다음 호 예고 + 독자 참여</strong></td><td>2호 티저 + &quot;여러분이 재현한 요리 공유해주세요&quot;</td><td>1면</td><td>자체</td></tr></table>
+<h4>고정 코너 계획</h4>
+<table><tr><th>코너</th><th>지속 여부</th><th>비고</th></tr><tr><td>에디터스 레터</td><td>✅ 매호</td><td>편집장 목소리 일관성</td></tr><tr><td>오늘 먹은 것 (칼럼)</td><td>✅ 매호</td><td>자체 경험 기반 — 지속 가능</td></tr><tr><td>이 재료, 어디서 왔어?</td><td>✅ 매호</td><td>AI 활용 자체 제작 가능</td></tr><tr><td>이번 달 저녁 레시피</td><td>✅ 매호</td><td>핵심 실용 코너</td></tr><tr><td>다음 호 예고</td><td>✅ 매호</td><td>독자 재방문 유도</td></tr></table>
+<ul><li>[인터뷰] 이달의 부엌 (취재 필요 — 2~3호부터)</li><li>[Q&amp;A] 독자 레시피 제보 (독자 유입 후)</li></ul>
+<h4>편집 원칙</h4>
+<ol><li><strong>독자 여정 순서</strong>: 도입(에디터스 레터) → 핵심(커버스토리) → 경험(칼럼) → 맥락(문화) → 실전(레시피) → 발견(마켓) → 다음 약속(예고)</li><li><strong>모바일 최적화</strong>: 각 섹션 스크롤 2분 이내</li><li><strong>지속 가능성 우선</strong>: 취재가 필요한 코너는 안정기 이후 추가</li><li><strong>AI 제작 투명성</strong>: AI 생성 콘텐츠는 팩트체크 후 발행, 필요 시 고지</li></ol>
+<h4>다음 단계</h4>
+<p>기획안 확정 후:</p>
+<ol><li>발행 목표일 확정 → 역산 일정표 작성</li><li>커버스토리 소재 확정 (어떤 맛집 경험을 집으로 가져올 것인가)</li><li>표지 시안 1종 + 에디터스 레터 1개 샘플 → 대표 확인</li><li>편집 시스템 구축 (콘텐츠↔레이아웃 분리)</li></ol>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">7단계: 자기증명 전략</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>근데 이 매거진이 왜 1인+AI로 만드냐고 광고주한테 설명해야 할 것 같은데.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>오히려 그게 강점이에요. &quot;1인+AI로 만든다&quot;는 것 자체가 이 시대의 이야기예요.</p>
+<p>매거진이 말하는 것: &quot;집에서도 맛집처럼 할 수 있다&quot;<br>매거진을 만드는 방식: &quot;1인이 AI로 전문 매거진을 만든다&quot;</p>
+<p>이게 일치해요. 콘텐츠의 주제와 제작 방식이 같은 철학이에요.</p>
+<p>이걸 기획안에 명시적으로 넣으면:</p>
+<p>광고주한테는 이게 &quot;아직 팀이 없어서 불안정하다&quot;가 아니라 &quot;이 시대의 새로운 미디어 실험&quot;으로 포지셔닝할 수 있어요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오 그 관점은 생각 못 했네. 약점이 강점이 될 수 있는 거야?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>그게 기획의 핵심이에요. 약점을 숨기는 게 아니라, 약점의 맥락을 바꿔서 강점으로 만드는 것.</p>
+<p>&quot;1인이 만든다&quot; = 소규모 → 숨기면 약점<br>&quot;1인+AI가 만든다&quot; = 이 시대의 새로운 실험 → 포지셔닝하면 강점</p>
+<p>이게 기획안의 힘이에요.</p></div>
+  </div>
+</div>
+
+<div class="instructor-note" onclick="toggleNote(this)">
+  <div class="note-header">🎓 강사 노트 <span class="note-toggle">▼ 펼치기</span></div>
+  <div class="note-body"><p>자기증명형 콘텐츠 전략 — 콘텐츠의 주제와 제작 방식이 일치할 때 가장 강력한 메시지가 된다. 박낭만의 &quot;요리 문화 매거진을 1인+AI로 만든다&quot;는 것 자체가 이 매거진의 킬러 콘텐츠 요소가 된다.</p></div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">8단계: 대표 결재 사항 정리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>기획안 다 됐으면 이제 뭘 해야 해?</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>기획안이 나왔으면 혼자만 보지 말고 — 결정권자(박낭만 씨 자신 또는 파트너)한테 검토받는 단계예요.</p>
+<p>기획안에서 반드시 결정해야 할 것:</p>
+<ol><li><strong>발행 시작일</strong> (언제 첫 호를 낼지 → 역산 일정 나옴)</li><li><strong>초기 수익 모델</strong> (무료 공개? 유료 구독? 광고 유치?)</li><li><strong>창간호 테스트 방식</strong> (전체 공개 전 지인 대상 시범 발행?)</li></ol>
+<p>이 세 가지가 결정돼야 다음 단계 (편집 시스템 구축, 디자인 제작)로 넘어갈 수 있어요.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>기획안 만들어놓고 나니까 이제 뭔가 진짜 할 수 있을 것 같아.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><p>맞아요. 그게 기획안의 가장 큰 역할이에요.</p>
+<p>아이디어는 머릿속에 있으면 늘 불안해요. &quot;될까?&quot; &quot;맞나?&quot; &quot;부족한 거 아닌가?&quot; — 이런 생각이 끊이질 않아요. 기획안으로 문서화하는 순간 그 아이디어가 &quot;검토 가능한 것&quot;이 되고, 남한테 설명할 수 있게 되고, 피드백을 받을 수 있게 돼요.</p>
+<p>오늘 만든 것 정리해드릴게요.</p></div>
+  </div>
+</div>
+
+<div class="step-divider">
+  <span class="step-badge">9단계: 마무리</span>
+  <div class="step-line"></div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>오늘 만든 것 정리해줘.</p></div>
+  </div>
+</div>
+
+<div class="bubble-row agent">
+  <div class="bbl-avatar">🤖</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">에이전트(편집제작팀)</div>
+    <div class="bubble"><table><tr><th>파일</th><th>내용</th></tr><tr><td><code>독자_페르소나.md</code></td><td>타겟 독자 정의 (페르소나 1명 + 핵심 특성)</td></tr><tr><td><code>매거진_콘셉트.md</code></td><td>제호·슬로건·정체성·톤앤매너·제작 철학</td></tr><tr><td><code>창간호<em>목차</em>초안.md</code></td><td>7개 섹션 목차 + 고정 코너 설계 + 결정 사항</td></tr></table>
+<p>핵심:</p>
+<ul><li>기획안 = PRD와 같다. IT 기획과 다르지 않음</li><li>독자 페르소나가 모든 결정의 기준이 됨</li><li>고정 코너는 &quot;지속 가능한 것&quot;만 잡는다</li><li>자기증명형 콘텐츠 — 제작 방식과 주제가 일치할 때 가장 강력</li><li>기획안이 있어야 다음 단계(투자, 광고주, 팀 채용)가 가능</li></ul>
+<p>다음 시나리오: <strong>회사 소개글 (A7)</strong> — 만든 매거진 기획안으로 외부에 소개할 글 작성</p></div>
+  </div>
+</div>
+
+<div class="bubble-row user">
+  <div class="bbl-avatar">👤</div>
+  <div class="bubble-col">
+    <div class="bubble-sender">박낭만</div>
+    <div class="bubble"><p>완벽해. 이 정도면 누구한테든 설명할 수 있겠어.</p></div>
+  </div>
+</div>
+
+<div style="background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;margin-top:32px;text-align:center">
+  <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">다음 실습</div>
+  <div style="font-size:17px;font-weight:700;color:var(--gold)">G1. 편집기획 시스템 →</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn ghost" onclick="history.back()">← 이전</button>
+  <div class="nav-info">Day 4 · A6 (7/8)</div>
+  <button class="nav-btn" onclick="location.href='g1_편집기획시스템.html'">다음 G1 →</button>
+</div>
+
+<script>
+function copyPrompt(btn){
+  const t=btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='복사됨 ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='복사';btn.classList.remove('copied');},2000);
+  });
+}
+function toggleNote(el){
+  const b=el.querySelector('.note-body'),t=el.querySelector('.note-toggle');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 접기':'▼ 펼치기';
+}
+function toggleOutput(h){
+  const b=h.nextElementSibling,t=h.querySelector('.toggle-icon');
+  b.classList.toggle('open');t.textContent=b.classList.contains('open')?'▲ 닫기':'▼ 보기';
+}
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=Math.min(pct||0,100)+'%';
+});
+</script>
+</body>
+</html>
