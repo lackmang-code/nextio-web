@@ -23,6 +23,7 @@
     <ul class="nav-links">
       <li><a href="#hero" class="active">HOME</a></li>
       <li><a href="#content-service">위탁제작</a></li>
+      <li><a href="#daily-news">데일리카드</a></li>
       <li><a href="#unicorn">대표프로그램1</a></li>
       <li><a href="#research">대표프로그램2</a></li>
       <li><a href="#contact">CONTACT</a></li>
@@ -102,42 +103,7 @@
   </div>
 </section>
 
-<!-- ①-2 LATEST DAILY NEWS -->
-<section id="daily-news" class="pg pg-light daily-news-section">
-  <div class="deco deco-tr"></div>
-  <div class="deco deco-bl"></div>
-  <div class="daily-news-wrap">
-    <div class="dn-2col">
-      <!-- Left side: Index list -->
-      <div class="dn-sidebar">
-        <div class="dn-sidebar-header">
-          <div class="dn-logo-area">
-            <img src="images/nextio-lockup-reverse.svg" alt="Next I/O" class="dn-lockup">
-          </div>
-          <div class="dn-kick">
-            <div class="k1">DISPLAY DAILY</div>
-            <div class="k2">매일 아침 업데이트</div>
-          </div>
-        </div>
-        <div class="dn-index-box">
-          <ul id="dn-list" class="dn-list">
-            <li class="dn-list-placeholder">뉴스를 불러오는 중...</li>
-          </ul>
-        </div>
-      </div>
-      <!-- Right side: Iframe viewer -->
-      <div class="dn-viewer">
-        <div class="phone-frame">
-          <div class="daily-news-container">
-            <iframe id="dn-iframe" src="display-daily/latest.html" title="Latest Display Daily"></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ③ 콘텐츠 위탁제작 -->
+<!-- ② 콘텐츠 위탁제작 -->
 <section id="content-service" class="pg cs-section">
   <div class="cs-wrap">
     <div class="cs-2col">
@@ -196,25 +162,64 @@
         <a href="#contact" class="cs-contact-btn">서비스 문의 →</a>
       </div>
 
-      <!-- RIGHT: 구독 신청 -->
+      <!-- RIGHT: 데일리카드 티저 -->
       <div class="cs-right reveal reveal-d2">
-        <div class="cs-sub-box">
-          <div class="cs-sub-head">
-            <span class="cs-sub-badge">FREE · 무료 구독</span>
-            <h3 class="cs-sub-title">디스플레이 데일리<br>이메일로 받기</h3>
-            <p class="cs-sub-desc">매일 아침 디스플레이·OLED·반도체 업계 핵심 뉴스를 엄선해 이메일로 보내드립니다.</p>
+        <div class="cs-teaser-card">
+          <div class="cs-teaser-icon">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <rect x="6" y="8" width="44" height="40" rx="4" stroke="#FBBF24" stroke-width="2"/>
+              <line x1="12" y1="18" x2="44" y2="18" stroke="#FBBF24" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="12" y1="26" x2="44" y2="26" stroke="#FBBF24" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="12" y1="34" x2="32" y2="34" stroke="#FBBF24" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="44" cy="40" r="8" fill="#FBBF24"/>
+              <path d="M41 40h6M44 37v6" stroke="#0D1B3E" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
-          <iframe
-            src="https://docs.google.com/forms/d/e/1FAIpQLSefZtEMfa0PaBigZj_AXiW9XMSov8YTTqhtQLJXZ7QQMgKh_w/viewform?embedded=true"
-            frameborder="0"
-            marginheight="0"
-            marginwidth="0"
-            class="cs-gform-iframe">
-            로딩 중...
-          </iframe>
+          <h3 class="cs-teaser-title">AI가 만드는 콘텐츠,<br>직접 받아보세요</h3>
+          <p class="cs-teaser-desc">넥스트아이오가 매일 제작하는 디스플레이 데일리 카드를 무료로 구독하세요. AI 콘텐츠 제작의 품질을 이메일로 직접 확인할 수 있습니다.</p>
+          <a href="#daily-news" class="cs-teaser-btn">무료 데일리 카드 받기 →</a>
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ③ 무료 데일리 카드 -->
+<section id="daily-news" class="pg pg-light daily-news-section">
+  <div class="deco deco-tr"></div>
+  <div class="deco deco-bl"></div>
+  <div class="daily-news-wrap">
+    <div class="dn-2col">
+      <!-- Left side: Index list -->
+      <div class="dn-sidebar">
+        <div class="dn-sub-form">
+          <div class="dn-sub-guide">무료구독을 원하시면 연락처를 남겨주세요</div>
+          <div class="dn-gform-clip">
+            <iframe
+              src="https://docs.google.com/forms/d/e/1FAIpQLSefZtEMfa0PaBigZj_AXiW9XMSov8YTTqhtQLJXZ7QQMgKh_w/viewform?embedded=true"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+              class="dn-gform-iframe">
+              로딩 중...
+            </iframe>
+          </div>
+        </div>
+        <div class="dn-index-box">
+          <ul id="dn-list" class="dn-list">
+            <li class="dn-list-placeholder">뉴스를 불러오는 중...</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Right side: Iframe viewer -->
+      <div class="dn-viewer">
+        <div class="phone-frame">
+          <div class="daily-news-container">
+            <iframe id="dn-iframe" src="display-daily/latest.html" title="Latest Display Daily"></iframe>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
