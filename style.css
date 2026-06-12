@@ -41,9 +41,8 @@ a    { text-decoration: none; color: inherit; }
   height: 100%; padding: 0 24px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.nav-logo { display: flex; align-items: center; gap: 10px; }
-.nav-logo .nav-mark { height: 32px; width: auto; display: block; }
-.nav-logo span { font-family: 'Inter', 'Raleway', sans-serif; font-weight: 800; font-size: 18px; color: #fff; letter-spacing: 0.5px; }
+.nav-logo { display: flex; align-items: center; }
+.nav-logo .nav-lockup { height: 28px; width: auto; display: block; }
 
 /* 모바일: 햄버거만 표시 */
 .nav-links { display: none; list-style: none; }
@@ -923,8 +922,7 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
   border-radius: 20px; margin-bottom: 20px;
   box-shadow: 0 14px 44px rgba(0,0,0,0.25); flex-shrink: 0;
 }
-.dn-logo-area .logo { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; display: inline-block; }
-.dn-logo-area .logo span { color: #4A90D9; }
+.dn-logo-area .dn-lockup { height: 28px; width: auto; display: block; }
 .dn-kick { text-align: right; }
 .dn-kick .k1 { font-size: 13px; font-weight: 700; color: #fbbf24; letter-spacing: 2px; line-height: 1.2; }
 .dn-kick .k2 { font-size: 11px; color: #bbb; margin-top: 4px; }
