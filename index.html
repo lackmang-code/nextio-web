@@ -22,6 +22,7 @@
     </div>
     <ul class="nav-links">
       <li><a href="#hero" class="active">HOME</a></li>
+      <li><a href="#content-service">위탁제작</a></li>
       <li><a href="#unicorn">대표프로그램1</a></li>
       <li><a href="#research">대표프로그램2</a></li>
       <li><a href="#contact">CONTACT</a></li>
@@ -36,6 +37,7 @@
 <div class="mob-drawer" id="mobDrawer">
   <ul>
     <li><a href="#hero">HOME</a></li>
+    <li><a href="#content-service">위탁제작</a></li>
     <li><a href="#unicorn">대표프로그램1</a></li>
     <li><a href="#research">대표프로그램2</a></li>
     <li><a href="#contact">CONTACT</a></li>
@@ -100,39 +102,84 @@
   </div>
 </section>
 
-<!-- ①-2 LATEST DAILY NEWS -->
-<section id="daily-news" class="pg pg-light daily-news-section">
-  <div class="deco deco-tr"></div>
-  <div class="deco deco-bl"></div>
-  <div class="daily-news-wrap">
-    
-    <div class="dn-2col">
-      <!-- Left side: Index list -->
-      <div class="dn-sidebar">
-        <div class="dn-sidebar-header">
-          <div class="dn-logo-area">
-            <img src="images/nextio-lockup-reverse.svg" alt="Next I/O" class="dn-lockup">
+<!-- ② 콘텐츠 위탁제작 -->
+<section id="content-service" class="pg cs-section">
+  <div class="cs-wrap">
+    <div class="cs-2col">
+
+      <!-- LEFT: 서비스 소개 -->
+      <div class="cs-left reveal">
+        <p class="cs-eyebrow">CONTENT AS A SERVICE</p>
+        <h2 class="cs-title">콘텐츠 위탁제작</h2>
+        <p class="cs-lead">AI가 기획·제작·운영하는 맞춤형 디지털 콘텐츠를<br>브랜딩부터 발행까지 대신 맡겨 주세요.</p>
+
+        <div class="cs-svc-list">
+          <div class="cs-svc-item">
+            <div class="cs-svc-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+                <rect x="2" y="4" width="22" height="18" rx="2" stroke="#FBBF24" stroke-width="1.8"/>
+                <line x1="6" y1="9" x2="20" y2="9" stroke="#FBBF24" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="6" y1="13" x2="20" y2="13" stroke="#FBBF24" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="6" y1="17" x2="14" y2="17" stroke="#FBBF24" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="cs-svc-text">
+              <strong>데일리 뉴스카드</strong>
+              <span>매일 아침 AI가 업계 뉴스를 수집·편집해 브랜딩된 HTML 카드로 자동 발행</span>
+            </div>
           </div>
-          <div class="dn-kick">
-            <div class="k1">DISPLAY DAILY</div>
-            <div class="k2">매일 아침 업데이트</div>
+          <div class="cs-svc-item">
+            <div class="cs-svc-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+                <rect x="2" y="7" width="22" height="14" rx="2" stroke="#FBBF24" stroke-width="1.8"/>
+                <polyline points="2,9 13,16 24,9" stroke="#FBBF24" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="cs-svc-text">
+              <strong>학과·부서 뉴스레터</strong>
+              <span>월간·계간 소식을 인터랙티브 HTML 뉴스레터로 제작해 구독자에게 자동 발송</span>
+            </div>
+          </div>
+          <div class="cs-svc-item">
+            <div class="cs-svc-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+                <rect x="2" y="3" width="10" height="20" rx="1.5" stroke="#FBBF24" stroke-width="1.8"/>
+                <rect x="14" y="3" width="10" height="20" rx="1.5" stroke="#FBBF24" stroke-width="1.8"/>
+                <line x1="4" y1="8" x2="10" y2="8" stroke="#FBBF24" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="4" y1="11" x2="10" y2="11" stroke="#FBBF24" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="16" y1="8" x2="22" y2="8" stroke="#FBBF24" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="16" y1="11" x2="22" y2="11" stroke="#FBBF24" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="cs-svc-text">
+              <strong>온라인 매거진</strong>
+              <span>학술지·기관지를 웹 기반 인터랙티브 매거진으로 위탁 기획·운영</span>
+            </div>
           </div>
         </div>
-        <div class="dn-index-box">
-          <ul id="dn-list" class="dn-list">
-            <li class="dn-list-placeholder">뉴스를 불러오는 중...</li>
-          </ul>
+
+        <a href="#contact" class="cs-contact-btn">서비스 문의 →</a>
+      </div>
+
+      <!-- RIGHT: 구독 신청 -->
+      <div class="cs-right reveal reveal-d2">
+        <div class="cs-sub-box">
+          <div class="cs-sub-head">
+            <span class="cs-sub-badge">FREE · 무료 구독</span>
+            <h3 class="cs-sub-title">디스플레이 데일리<br>이메일로 받기</h3>
+            <p class="cs-sub-desc">매일 아침 디스플레이·OLED·반도체 업계 핵심 뉴스를 엄선해 이메일로 보내드립니다.</p>
+          </div>
+          <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSefZtEMfa0PaBigZj_AXiW9XMSov8YTTqhtQLJXZ7QQMgKh_w/viewform?embedded=true"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            class="cs-gform-iframe">
+            로딩 중...
+          </iframe>
         </div>
       </div>
-      
-      <!-- Right side: Iframe viewer -->
-      <div class="dn-viewer">
-        <div class="phone-frame">
-          <div class="daily-news-container">
-            <iframe id="dn-iframe" src="display-daily/latest.html" title="Latest Display Daily"></iframe>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </section>
