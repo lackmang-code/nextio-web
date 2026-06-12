@@ -227,9 +227,17 @@ syncUI();
       }
     }
     draw() {
+      const r = this.radius, x = this.x, y = this.y;
+      const inner = r * 0.38;
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(74,144,217,0.75)';
+      for (let i = 0; i < 8; i++) {
+        const ang = (i * Math.PI / 4) - Math.PI / 2;
+        const cr = i % 2 === 0 ? r : inner;
+        i === 0 ? ctx.moveTo(x + Math.cos(ang)*cr, y + Math.sin(ang)*cr)
+                : ctx.lineTo(x + Math.cos(ang)*cr, y + Math.sin(ang)*cr);
+      }
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255,255,255,0.78)';
       ctx.fill();
     }
   }
@@ -249,7 +257,7 @@ syncUI();
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(74,144,217,${(1 - dist / connectionDist) * 0.22})`;
+          ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / connectionDist) * 0.22})`;
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
@@ -261,7 +269,7 @@ syncUI();
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(74,144,217,${(1 - dist / mouse.radius) * 0.35})`;
+          ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / mouse.radius) * 0.35})`;
           ctx.lineWidth = 1.0;
           ctx.stroke();
         }
@@ -272,8 +280,8 @@ syncUI();
   function drawBackgroundGrid() {
     if (mouse.x !== null && mouse.y !== null) {
       const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, mouse.radius);
-      grad.addColorStop(0, 'rgba(74,144,217,0.04)');
-      grad.addColorStop(1, 'rgba(74,144,217,0)');
+      grad.addColorStop(0, 'rgba(255,255,255,0.04)');
+      grad.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2);
