@@ -177,12 +177,20 @@ syncUI();
     gfForm.action = GF_URL;
     gfForm.target = 'gf-target';
 
-    [[GF.name, form.querySelector('[name="name"]').value],
-     [GF.email, form.querySelector('[name="email"]').value],
-     [GF.org, form.querySelector('[name="organization"]').value],
-     [GF.title, title],
-     [GF.message, form.querySelector('[name="message"]').value]
-    ].forEach(([n, v]) => {
+    const fbzx = Math.floor(Math.random() * 9e18) * -1;
+    const fields = [
+      [GF.name,    form.querySelector('[name="name"]').value],
+      [GF.email,   form.querySelector('[name="email"]').value],
+      [GF.org,     form.querySelector('[name="organization"]').value],
+      [GF.title,   title],
+      [GF.message, form.querySelector('[name="message"]').value],
+      ['fvv',              '1'],
+      ['pageHistory',      '0'],
+      ['fbzx',             String(fbzx)],
+      ['partialResponse',  `[null,null,"${fbzx}"]`],
+      ['submissionTimestamp', '-1']
+    ];
+    fields.forEach(([n, v]) => {
       const inp = document.createElement('input');
       inp.type = 'hidden'; inp.name = n; inp.value = v;
       gfForm.appendChild(inp);
