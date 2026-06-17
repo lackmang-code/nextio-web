@@ -118,6 +118,7 @@ git add -A && git commit -m "..." && git push origin master
 1. 소스 WebFetch — 디일렉 `https://www.thelec.kr/rss/allArticle.xml` + 구글뉴스 KR(디스플레이 OLED, 삼성/LG디스플레이) + `https://www.oled-info.com/rss.xml`. 9시 컷오프 내 기사만.
 2. 직링크 본문 추출 → 외국어는 한글 번역, 재서술·압축 편집본 3~5단락(원문 복붙 금지, 끝에 "── 출처 편집본"). 직링크 잘 되는 곳: 디일렉 `articleView.html?idxno=`, OLED-Info.
 3. **중요도순 정렬**(①원천기술·소재·특허 ②패널 신기술 ③세트제품 ④시황 ⑤거시), 맨 위=그날 임팩트 최대 Top Pick. 본문 못 가져온 외국기사는 맨 뒤.
+   - **Top Pick 제외 항목**: 주가·목표가·투자의견·증권사 리포트 등 주식시장 뉴스는 Top Pick 불가 (일반 기사로만 포함).
 4. JSON 작성 → `C:\Temp\daily_items_<D>.json` (items: title·date·source·url·summary·tag·body)
 5. 생성:
 ```bash
