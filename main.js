@@ -126,16 +126,23 @@ sections.forEach(s => mobileObs.observe(s));
 
 syncUI();
 
-// ── 협력제안 게시판 폼 ──
+// ── 협력제안 게시판 폼 (Google Forms 백엔드) ──
 (function () {
   const form   = document.getElementById('boardForm');
   const btn    = document.getElementById('bf-btn');
-  const privCh = document.getElementById('bf-priv-chk');
-  const subj   = document.getElementById('bf-subject');
   const titleI = document.getElementById('bf-title');
   const done   = document.getElementById('boardDone');
   const again  = document.getElementById('bd-again-btn');
   if (!form) return;
+
+  const GF_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeKenhxndfa-ABL8X9gIDL1VvNdYS6DBNIieSPI5xlI96ZqXw/formResponse';
+  const GF = {
+    name:    'entry.2005620554',
+    email:   'entry.1045781291',
+    org:     'entry.1065046570',
+    title:   'entry.1166974658',
+    message: 'entry.839337160'
+  };
 
   again.addEventListener('click', () => {
     done.hidden = true;
@@ -145,42 +152,24 @@ syncUI();
     btn.disabled = false;
   });
 
-  const EJS = {
-    serviceId:  'service_d3dgl6d',
-    templateId: 'template_rlsvr49',
-    publicKey:  '-hkY5jZrgHffSGU2d'
-  };
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const isPriv   = privCh.checked;
-    const title    = titleI.value.trim() || '제목 없음';
-    subj.value = (isPriv ? '[비공개] ' : '') + '문의: ' + title;
+    const title = titleI.value.trim() || '제목 없음';
 
-    const toEmail = form.querySelector('[name="email"]').value;
-    const toName  = form.querySelector('[name="name"]').value || '고객';
-    const toMsg   = form.querySelector('[name="message"]').value;
+    const body = new URLSearchParams();
+    body.append(GF.name,    form.querySelector('[name="name"]').value);
+    body.append(GF.email,   form.querySelector('[name="email"]').value);
+    body.append(GF.org,     form.querySelector('[name="organization"]').value);
+    body.append(GF.title,   title);
+    body.append(GF.message, form.querySelector('[name="message"]').value);
 
     btn.textContent = '전송 중...';
     btn.disabled = true;
 
     try {
-      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) });
-      const json = await res.json();
-      if (json.success) {
-        emailjs.send(EJS.serviceId, EJS.templateId, {
-          to_email: toEmail,
-          to_name:  toName,
-          inq_title: title,
-          inq_body:  toMsg
-        }, EJS.publicKey).catch(() => {});
-
-        form.hidden = true;
-        done.hidden = false;
-      } else {
-        btn.textContent = '오류 — 다시 시도';
-        btn.disabled = false;
-      }
+      await fetch(GF_URL, { method: 'POST', mode: 'no-cors', body });
+      form.hidden = true;
+      done.hidden = false;
     } catch {
       btn.textContent = '전송 실패 — 다시 시도';
       btn.disabled = false;
