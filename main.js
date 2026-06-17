@@ -166,14 +166,38 @@ syncUI();
     btn.textContent = '전송 중...';
     btn.disabled = true;
 
-    try {
-      await fetch(GF_URL, { method: 'POST', mode: 'no-cors', body });
-      form.hidden = true;
-      done.hidden = false;
-    } catch {
-      btn.textContent = '전송 실패 — 다시 시도';
-      btn.disabled = false;
-    }
+    // 히든 iframe으로 구글폼 제출 (fetch no-cors 대체)
+    const iframe = document.createElement('iframe');
+    iframe.name = 'gf-target';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    const gfForm = document.createElement('form');
+    gfForm.method = 'POST';
+    gfForm.action = GF_URL;
+    gfForm.target = 'gf-target';
+
+    [[GF.name, form.querySelector('[name="name"]').value],
+     [GF.email, form.querySelector('[name="email"]').value],
+     [GF.org, form.querySelector('[name="organization"]').value],
+     [GF.title, title],
+     [GF.message, form.querySelector('[name="message"]').value]
+    ].forEach(([n, v]) => {
+      const inp = document.createElement('input');
+      inp.type = 'hidden'; inp.name = n; inp.value = v;
+      gfForm.appendChild(inp);
+    });
+
+    document.body.appendChild(gfForm);
+    gfForm.submit();
+
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+      document.body.removeChild(gfForm);
+    }, 3000);
+
+    form.hidden = true;
+    done.hidden = false;
   });
 })();
 
