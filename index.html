@@ -409,14 +409,20 @@
       if (!doc.querySelector('#dn-inject')) {
         const style = doc.createElement('style');
         style.id = 'dn-inject';
-        style.innerHTML = `
+        const isMobile = window.innerWidth <= 768;
+        style.innerHTML = isMobile ? `
+          html, body { overflow: hidden !important; }
+          body { padding: 0 !important; margin: 0 !important; }
+          .cta { display: none !important; }
+          .notch { display: none !important; }
+          .sheet { width: 100% !important; max-width: 100% !important; margin: 0 !important; box-shadow: none !important; border-radius: 0 !important; }
+        ` : `
           html, body { overflow: hidden !important; }
           body { background: transparent !important; padding: 0 !important; }
           .sheet { width: 100% !important; height: auto !important; max-width: 100% !important; box-shadow: none !important; border-radius: 0 !important; background: transparent !important; margin: 0 !important; }
           .hd { border-radius: 20px 20px 0 0 !important; }
           .cta { display: none !important; }
           .notch { display: none !important; }
-          /* 기사 풀다운 → 원래 폰 배경색으로 구분 */
           .art { background: #c8bfb0 !important; border-color: #afa79a !important; }
           .art > summary { background: #b8b0a2 !important; color: #1a1a1a !important; }
           .art > summary::before { color: #4a3820 !important; }
@@ -467,6 +473,10 @@
         });
         listEl.appendChild(li);
       });
+      // 최신 카드 자동 로드
+      if (dates.length > 0) {
+        iframeEl.src = `display-daily/card_${dates[0]}.html`;
+      }
     })
     .catch(err => {
       console.error('Failed to load daily news index:', err);

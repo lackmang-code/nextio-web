@@ -74,8 +74,16 @@ section { position: relative; scroll-margin-top: 64px; }
 html, body { height: auto; overflow: auto; }
 footer { display: block; }
 
-#pages { display: block; width: 100%; }
+#pages { display: flex; flex-direction: column; width: 100%; }
 #pages > section { width: 100%; overflow: visible; }
+
+/* 모바일 페이지 순서: contact을 daily-news 앞으로 */
+#hero           { order: 1; }
+#unicorn        { order: 2; }
+#research       { order: 3; }
+#content-service{ order: 4; }
+#contact        { order: 5; }
+#daily-news     { order: 6; }
 
 /* 페이지 네비 요소: 모바일 숨김 */
 .pg-nav { display: none; }
@@ -1308,6 +1316,17 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
   .cs-c-name { font-size: 16px; font-weight: 800; margin: 0; }
   .cs-c-info strong { display: none; }
   .cs-c-info span { display: none; }
+
+  /* 데일리카드 — 모바일: 구글폼·인덱스 숨기고 카드 풀너비 */
+  .dn-sub-form { display: none; }
+  .dn-sidebar { display: none; }
+  .daily-news-section { padding-left: 0 !important; padding-right: 0 !important; }
+  .daily-news-wrap { padding: 0; }
+  .dn-2col { display: block; }
+  .dn-viewer { width: 100%; overflow: visible; }
+  .phone-frame { box-shadow: none !important; background: transparent !important; border-radius: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; border: none !important; }
+  .daily-news-container { width: 100%; height: calc(100vh - 100px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; border-radius: 0; }
+  .daily-news-container iframe { width: 100% !important; height: 1500px; border-radius: 0; }
 
   .io-stage { flex-direction: column; gap: 20px; min-height: auto; }
   .io-col {
