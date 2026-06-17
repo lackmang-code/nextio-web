@@ -75,6 +75,16 @@ function syncUI() {
 prevBtn.addEventListener('click', () => goTo(currentIdx - 1));
 nextBtn.addEventListener('click', () => goTo(currentIdx + 1));
 
+// 창 크기 변경 시 현재 섹션 위치로 가로 스크롤 재보정 (resize 핸들러 부재로 엉뚱한 섹션으로 튕기는 버그 수정)
+let resizeRaf = null;
+window.addEventListener('resize', () => {
+  if (resizeRaf) return;
+  resizeRaf = requestAnimationFrame(() => {
+    resizeRaf = null;
+    if (IS_DESKTOP()) pagesEl.scrollLeft = currentIdx * pagesEl.clientWidth;
+  });
+});
+
 document.addEventListener('keydown', e => {
   if (!IS_DESKTOP()) return;
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(currentIdx + 1);

@@ -64,10 +64,10 @@ img  { display: block; width: 100%; }
   color: var(--gold); text-transform: uppercase; margin-bottom: 16px;
 }
 .hero-h1 {
-  font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.15;
+  font-size: clamp(1.7rem, 4.2vw, 3.2rem); font-weight: 900; line-height: 1.15;
   color: var(--white); margin-bottom: 20px;
 }
-.hero-h1 em { color: var(--gold); font-style: normal; }
+.hero-h1 em { color: var(--gold); font-style: normal; white-space: nowrap; }
 .hero-sub {
   font-size: clamp(.9rem, 1.5vw, 1.1rem); color: rgba(255,255,255,.8);
   line-height: 1.7; margin-bottom: 36px; max-width: 560px;
@@ -223,6 +223,9 @@ img  { display: block; width: 100%; }
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
+  .hero-bg { display: none; }
+  .hero { background: #141A2E; }
+
   .brochure-nav { padding: 0 5vw; }
   .section, .result-strip { grid-template-columns: 1fr; }
   .section.rev { direction: ltr; }
@@ -249,8 +252,8 @@ img  { display: block; width: 100%; }
   <div class="hero-bg"></div>
   <div class="hero-body">
     <p class="hero-eyebrow">Featured Course · 5-Day Intensive</p>
-    <h1 class="hero-h1">5일 후, 당신에게는<br><em>5명의 AI 팀원</em>이 생깁니다</h1>
-    <p class="hero-sub">Claude Code로 AI 팀장을 하루에 한 명씩 채용하며, 혼자서 10명의 역할을 수행하는 5일 실전 과정. 제로베이스 입문 가능, 노트북 1대만 준비하세요.</p>
+    <h1 class="hero-h1">5일 후, 당신에게는<br><em>17명의 AI 팀원</em>이 생깁니다</h1>
+    <p class="hero-sub">Claude Code로 AI 팀장을 하루에 한 명씩 채용하며, 혼자서 17명의 역할을 수행하는 5일 실전 과정. 제로베이스 입문 가능, 노트북 1대만 준비하세요.</p>
     <div class="hero-badges">
       <span class="hero-badge">연속 5일 · 40시간</span>
       <span class="hero-badge">소수정예 · 실습 중심</span>
