@@ -1502,13 +1502,13 @@ footer p { color: #4A5A7B; font-size: 11px; line-height: 1.8; }
 .cs-c-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(27,45,107,0.13); }
 
 .cs-c-thumb {
-  flex: 1 1 auto; min-height: 120px;
+  flex: 1 1 auto; min-height: 140px;
   display: flex; align-items: center; justify-content: center;
   background: linear-gradient(160deg, #eef3fb 0%, #e3eaf7 100%);
-  padding: 14px 0;
+  padding: 6px 0;
 }
 .cs-c-thumb img {
-  max-width: 72%; max-height: 100%; width: auto; height: auto;
+  max-width: 90%; max-height: 100%; width: auto; height: auto;
   object-fit: contain; display: block;
   border-radius: 6px;
   box-shadow: 0 10px 24px rgba(27,45,107,0.18);
