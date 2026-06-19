@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디스플레이 데일리 — 2026-06-19 | Next I/O</title>
+<meta name="description" content="Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;background:#c8bfb0;padding:22px 12px;line-height:1.6}
+.sheet{max-width:800px;margin:0 auto;background:#fdf9f3;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);overflow:hidden}
+/* 다크 로고 헤더 */
+.hd{background:#0a0a0a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hd .logo{height:46px;display:flex;align-items:center}
+.hd .logo svg{height:46px;width:auto;border-radius:4px}
+.hd .kick{text-align:right}
+.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
+.hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
+.inner{padding:26px 30px 22px}
+.title{font-size:1.4rem;line-height:1.3;letter-spacing:-.5px;color:#000;font-weight:700;margin-bottom:4px}
+.date{font-size:.85rem;color:#777;font-weight:600;margin-bottom:16px}
+.date b{color:#b45309}
+.dt{height:1px;background:#e0e0e0;margin:14px 0}
+
+.top{background:#1a1a1a;color:#f0eadf;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.top .tk{font-size:10px;letter-spacing:1.5px;color:#ffd700;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.top .tt{font-size:1.08rem;line-height:1.4;color:#fff;font-weight:700;word-break:keep-all;margin-bottom:7px}
+.top .eye{font-size:.84rem;line-height:1.7;color:#e8e2d6;word-break:keep-all}
+.top .eye b{color:#ffd700;font-weight:700}
+.top .meta{font-size:11px;color:#bbb;margin-top:9px}
+.top .meta a{color:#d9c98a;text-decoration:none}
+
+.item{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #ece7dd}
+.item:last-of-type{border-bottom:none}
+.num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#efe9df;border:1px solid #e0d8c9;color:#3a3228;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ib{flex:1;min-width:0}
+.it{font-size:1rem;line-height:1.4;color:#111;font-weight:700;word-break:keep-all;margin-bottom:4px}
+.eye{font-size:.84rem;line-height:1.65;color:#444;word-break:keep-all}
+.eye .lab{color:#b45309;font-weight:700}
+.meta{font-size:11px;color:#999;margin-top:5px;word-break:break-all}
+.meta a{color:#8a6d3b;text-decoration:none;font-weight:600}
+.dbadge{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:#3a3228;border-radius:4px;padding:1px 6px;margin-right:7px}
+.top .dbadge{background:#fbbf24;color:#1a1a1a}
+/* 기사 본문 아코디언(한글 번역·편집본) */
+.art{margin-top:10px;border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;overflow:hidden}
+.art>summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:.8rem;font-weight:700;color:#3a3228;background:#f1ece2;user-select:none}
+.art>summary::-webkit-details-marker{display:none}
+.art>summary::before{content:"▸ ";color:#b45309}
+.art[open]>summary::before{content:"▾ "}
+.art[open]>summary{border-bottom:1px solid #e3ddd2}
+.bodytext{padding:12px 14px}
+.bodytext p{font-size:.85rem;line-height:1.8;color:#333;word-break:keep-all;text-align:justify;margin-bottom:9px}
+.bodytext p:last-child{margin-bottom:0}
+.top .art{background:#262626;border-color:#3a3a3a;margin-top:11px}
+.top .art>summary{background:#333;color:#e8e2d6}
+.top .art>summary::before{color:#fbbf24}
+.top .bodytext p{color:#ddd6c8}
+
+/* 홍보 푸터 (CTA) */
+.cta{margin-top:20px;background:#fbf6ee;border:1px solid #ecdfca;border-radius:10px;padding:16px 18px;text-align:center}
+.cta .c1{font-size:.92rem;color:#1a1a1a;font-weight:700;word-break:keep-all}
+.cta .c1 b{color:#b45309}
+.cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
+.cta .c3{font-size:.75rem;color:#999;margin-top:8px;padding-top:8px;border-top:1px solid #ecdfca;word-break:keep-all}
+.foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
+
+@media (max-width: 600px) {
+  body { padding: 0 !important; }
+  .sheet { border-radius: 0 !important; box-shadow: none !important; }
+  .hd { padding: 14px 16px !important; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .inner { padding: 20px 16px !important; }
+  .title { font-size: 1.25rem !important; }
+  .row { padding: 10px 12px !important; }
+  .row .d { font-size: 0.95rem !important; }
+  .item { flex-direction: column; gap: 8px; }
+  .num { width: 24px; height: 24px; font-size: 11px; }
+  .it { font-size: 1rem !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="hd">
+    <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
+<g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+<line x1="22" y1="36" x2="60" y2="60"></line><line x1="22" y1="84" x2="60" y2="60"></line><line x1="60" y1="60" x2="100" y2="36"></line><line x1="60" y1="60" x2="100" y2="84"></line></g>
+<circle cx="22" cy="36" r="8" fill="#6FA8FF"></circle><circle cx="22" cy="84" r="8" fill="#6FA8FF"></circle>
+<circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle>
+<circle cx="60" cy="60" r="15" fill="#FBBF24"></circle>
+<text x="150" y="78" font-family="Pretendard, &#39;Apple SD Gothic Neo&#39;, sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text></svg></div>
+    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">AI 큐레이션 · 매일 업데이트</div></div>
+  </div>
+  <div class="inner">
+    <h1 class="title">오늘의 디스플레이 Tech</h1>
+    <div class="date">2026-06-19 · AI가 고른 소식 <b>3건</b></div>
+    <div class="top">
+  <div class="tk">🥇 오늘의 Top Pick</div>
+  <div class="tt">삼성D, XR용 RGB OLEDoS 패널 공개… 4만 니트·0.62형 극소형으로 차세대 XR 공략</div>
+  <div class="eye">삼성디스플레이가 AWE USA 2026에서 XR 기기용 RGB OLEDoS 기술을 공개했다. 실리콘 기판 위 OLED를 구현해 4만 니트 밝기의 1.3형·0.62형 패널을 선보였다. 눈앞 1cm 거리의 XR 특성상 스마트폰 대비 훨씬 높은 사양이 요구되며, 삼성은 글로벌 파트너십 확대로 차세대 XR 생태계 주도권을 노린다. ── 출처 편집본 <b>패널신기술</b></div>
+  <div class="meta"><span class="dbadge">2026-06-18</span>이코노미톡뉴스 · <a href="http://www.economytalk.kr/news/articleView.html?idxno=422034" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+  <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">삼성디스플레이가 미국에서 열린 세계 최대 XR 전시회 AWE USA 2026에서 차세대 XR 기기용 RGB OLEDoS(OLED on Silicon) 기술을 대거 공개했다. OLEDoS는 기존 유리 기판 OLED와 달리 반도체 공정 기반 실리콘 기판 위에 OLED를 구현해 작은 면적에서 극도로 높은 화소 밀도를 달성할 수 있는 것이 핵심이다.
+
+이번 전시에서 삼성디스플레이는 4만 니트(nit) 밝기의 1.3형과 0.62형 RGB OLEDoS 데모를 선보였다. 4만 니트는 일반 스마트폰 패널 대비 수십 배 높은 수치로, 실외 선명도 확보라는 XR 기기 특성을 반영한다.
+
+XR 기기는 디스플레이가 눈앞 약 1cm 거리에 위치하기 때문에 스마트폰보다 훨씬 높은 픽셀 밀도와 색 표현력이 필수다. 해상도가 낮으면 픽셀이 육안으로 보이거나 어지러움·몰입감 저하로 이어진다. 삼성은 RGB 방식 OLEDoS와 글로벌 파트너십 확대를 통해 차세대 XR 생태계 주도권 확보에 나선다. ── 출처 편집본</div>
+</details>
+</div><div class="dt"></div><div class="item">
+  <div class="num">2</div>
+  <div class="ib">
+    <div class="it">예스티, HPSP 상대 HPA 장비 특허 소송 2심 승소… 도어 구조 차이로 비침해 인정</div>
+    <div class="eye">예스티가 HPSP의 고압수소어닐링(HPA) 장비 특허 소송 2심에서 승소했다. 특허법원은 HPSP 특허의 핵심인 &#x27;회전 체결 링&#x27;이 예스티 장비에 없다며 비침해를 인정했다. 3월 글로벌 반도체기업 75매 납품에 이어 8월 125매 추가 예정으로, 법적 불확실성 해소로 시장 확대에 탄력이 붙을 전망이다. ── 출처 편집본 <span class="lab">— 특허·소송</span></div>
+    <div class="meta"><span class="dbadge">2026-06-19</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=58330" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">예스티가 HPSP와의 고압수소어닐링(HPA) 장비 특허 소송 2심에서 승소했다. 특허법원은 '예스티의 잠금장치 구조가 HPSP의 027 특허 권리범위에 속하지 않는다'고 판단, 특허심판원 1심 결정을 유지했다.
+
+핵심 쟁점은 도어 구조 방식의 차이다. HPSP 특허는 '회전 체결 링'을 필수 구성 요소로 요구하지만, 예스티는 외부 도어 자체가 회전하는 방식을 채택해 해당 부품이 필요 없다. 법원은 이 구조적 차이를 명확히 인정했다.
+
+법적 불확실성이 해소된 예스티는 시장 확대에 속도를 낼 전망이다. 올해 3월 글로벌 반도체 기업에 75매 장비를 공급했고, 8월 125매 HPA 장비 추가 납품이 예정돼 있다. 차세대 고압산화공정(HPO) 장비 상용화도 앞두고 있어, HPA 시장 독점 구조 완화와 예스티의 수주 확대가 기대된다. ── 출처 편집본</div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">3</div>
+  <div class="ib">
+    <div class="it">SOAR, 투명 PMOLED 130만 대 출하 돌파… 골프·스포츠 기기에서 투명 디스플레이 대중화</div>
+    <div class="eye">파이오니아 PMOLED 사업부 분사 기업 SOAR Corporation이 투명 PMOLED 누적 출하 130만 대를 돌파했다고 발표했다. 골프 레이저 거리측정기 등에 적용된 풀컬러 투명 PMOLED는 투명 LCD 대비 월등한 선명도를 제공하며, 틈새 특수 디스플레이 시장에서 꾸준히 성장 중이다. ── 출처 편집본 <span class="lab">— PMOLED·출하</span></div>
+    <div class="meta"><span class="dbadge">2026-06-18</span>OLED-Info · <a href="https://www.oled-info.com/soar-announces-it-has-shipped-over-13-million-transparent-pmoled-displays-date" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">SOAR Corporation이 투명 PMOLED(패시브 매트릭스 OLED) 디스플레이 누적 출하량이 130만 대를 넘어섰다고 발표했다. 파이오니아 PMOLED 사업부에서 분사한 SOAR는 웨어러블·차량·소비가전 등 다양한 분야에서 소형 PMOLED를 공급해 왔다.
+
+회사는 골프 레이저 거리측정기를 주요 성공 사례로 제시했다. 풀컬러 투명 PMOLED를 적용한 결과 투명 LCD 대비 훨씬 높은 선명도를 구현해 '투명 PMOLED가 주류 사용자 인터페이스로 부상하고 있다'는 평가가 나온다.
+
+SOAR는 1997년 PMOLED 양산 시작 이후 총 2억 개 이상의 누적 출하 이력을 보유하고 있다. 2024년 9월 2억 대 돌파에 이어, 이번 투명 전용 집계(130만 대)는 특수 투명 디스플레이 세그먼트의 빠른 성장을 보여준다. ── 출처 편집본</div>
+</details>
+  </div>
+</div>
+    <div class="cta">
+      <div class="c1">이 브리핑, <b>Next I/O</b>가 AI로 <b>매일 자동 제작</b>합니다.</div>
+      <div class="c2">학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다.<br><a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
+      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="https://www.nextio.ai.kr/display-daily/" target="_blank" rel="noopener">디스플레이 데일리 아카이브</a></div>
+    </div>
+    <div class="foot">본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 Next I/O가 한 줄 해설을 덧붙인 큐레이션입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.</div>
+  </div>
+</div>
+</body>
+</html>
