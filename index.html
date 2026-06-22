@@ -3,398 +3,2023 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>넥스트아이오 (NextIO) — AI 실무교육 · 학술 콘텐츠</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&family=Raleway:wght@200;300;400;600;700;800;900&family=Noto+Sans+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<title>NextIO - AI & Publishing</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold: #FBBF24;
+  --gold-glow: rgba(251, 191, 36, 0.4);
+  --blue: #6FA8FF;
+  --blue-glow: rgba(111, 168, 255, 0.4);
+  --navy: #1B2D6B;
+  --dark: #050814;
+  --panel-bg: rgba(9, 15, 38, 0.45);
+  --panel-border: rgba(255, 255, 255, 0.08);
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--dark);
+  font-family: 'Pretendard', sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── AURORA BACKGROUND GLOWS ── */
+.glow-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.15;
+  z-index: 0;
+  pointer-events: none;
+  animation: float-glow 20s infinite alternate ease-in-out;
+}
+.blob-1 {
+  width: 500px; height: 500px;
+  background: var(--blue);
+  top: -150px; right: -50px;
+}
+.blob-2 {
+  width: 600px; height: 600px;
+  background: var(--navy);
+  bottom: -200px; left: -100px;
+  animation-duration: 28s;
+  opacity: 0.2;
+}
+.blob-3 {
+  width: 400px; height: 400px;
+  background: #7C3AED;
+  top: 40%; left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.08;
+  animation-duration: 25s;
+}
+@keyframes float-glow {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, 60px) scale(1.15); }
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(5, 8, 20, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--panel-border);
+}
+.logo { display: flex; align-items: center; cursor: pointer; text-decoration: none; }
+.logo svg { height: 34px; width: auto; }
+.nav-contact {
+  font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9);
+  text-decoration: none; border: 1px solid rgba(255,255,255,0.15);
+  padding: 10px 24px; border-radius: 100px; transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(8px);
+}
+.nav-contact:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 20px var(--blue-glow);
+  background: rgba(111, 168, 255, 0.08);
+}
+.logo { flex-shrink: 0; min-width: 140px; }
+.nav-links {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 2px;
+}
+.nav-link {
+  font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.55);
+  text-decoration: none; padding: 7px 11px; border-radius: 8px;
+  transition: color .25s, background .25s;
+  cursor: pointer; white-space: nowrap;
+}
+.nav-link:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.06); }
+.nav-link.active { color: #fff; font-weight: 700; background: rgba(111,168,255,0.12); }
+@media (max-width: 992px) { .nav-links { display: none; } }
+
+/* ── HERO LAYOUT ── */
+.hero {
+  height: 100vh;
+  display: grid !important;
+  grid-template-columns: 1fr 380px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--panel-border);
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+}
+
+/* ── LEFT: 3D 비주얼 영역 ── */
+.hero-visual {
+  position: relative;
+  height: 100vh;
+}
+#three-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 993px) {
+  #three-canvas {
+    transform: translateX(20%);
+  }
+}
+@media (max-width: 992px) {
+  #three-canvas {
+    transform: translateX(10%);
+  }
+}
+
+/* 슬로건 오버레이 (가독성을 위한 글래스 카드 기법 도입) */
+.hero-bottom {
+  position: absolute;
+  top: 50%; left: 64px;
+  transform: translateY(-50%);
+  z-index: 10;
+  max-width: 520px;
+  pointer-events: none;
+  background: rgba(5, 8, 20, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 40px;
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.hero-bottom * {
+  pointer-events: auto;
+}
+.hero-slogan {
+  font-size: clamp(28px, 3.8vw, 44px);
+  font-weight: 900; line-height: 1.35;
+  letter-spacing: -0.04em; margin-bottom: 20px;
+}
+.hero-slogan span {
+  background: linear-gradient(135deg, #fff 30%, #a4b3d6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-slogan .highlight {
+  background: linear-gradient(135deg, var(--blue) 0%, #a855f7 50%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  text-shadow: 0 0 30px rgba(111, 168, 255, 0.2);
+}
+.hero-sub {
+  font-size: 14px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-sub span {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: rgba(9, 15, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.hero-cta { display: flex; gap: 12px; }
+.btn-gold {
+  background: linear-gradient(135deg, #FFE082 0%, var(--gold) 100%);
+  color: #050814;
+  padding: 15px 36px; font-size: 14px; font-weight: 850;
+  border-radius: 14px; border: none; cursor: pointer;
+  text-decoration: none; transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 25px var(--gold-glow);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-gold:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 35px rgba(251, 191, 36, 0.55);
+}
+.btn-ghost {
+  background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.85);
+  padding: 15px 36px; font-size: 14px; font-weight: 600;
+  border-radius: 14px; border: 1px solid rgba(255,255,255,0.12);
+  cursor: pointer; text-decoration: none; transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+}
+.btn-ghost:hover {
+  border-color: var(--blue);
+  color: #fff;
+  background: rgba(111, 168, 255, 0.08);
+}
+
+/* ── RIGHT: 메뉴 패널 ── */
+.hero-menu {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 100px 40px 48px;
+  border-left: 1px solid var(--panel-border);
+  gap: 6px; position: relative; z-index: 10;
+  background: var(--panel-bg);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+}
+
+/* 사업 섹션 헤더 */
+.biz-section { margin-bottom: 12px; }
+
+.biz-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px 8px;
+}
+.biz-label {
+  font-size: 10px; font-weight: 900; letter-spacing: .25em;
+  text-transform: uppercase;
+}
+.biz-line { flex: 1; height: 1px; }
+
+.biz-name {
+  font-size: 17px; font-weight: 800; letter-spacing: -0.02em;
+  padding: 0 16px 14px;
+  display: flex; align-items: center; gap: 8px;
+  color: #fff;
+}
+.biz-name::before {
+  content: ''; display: inline-block;
+  width: 3px; height: 14px; border-radius: 2px; flex-shrink: 0;
+}
+
+/* 교육사업 — 블루 */
+.biz-edu .biz-label { color: var(--blue); }
+.biz-edu .biz-line { background: rgba(111,168,255,0.15); }
+.biz-edu .biz-name::before { background: var(--blue); }
+
+/* 출간사업 — 골드 */
+.biz-pub .biz-label { color: var(--gold); }
+.biz-pub .biz-line { background: rgba(251,191,36,0.15); }
+.biz-pub .biz-name::before { background: var(--gold); }
+
+/* 하위 항목 */
+.nav-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 20px;
+  border-radius: 14px; cursor: pointer; transition: .25s ease;
+  border: 1px solid transparent; position: relative;
+  background: rgba(255, 255, 255, 0.01);
+}
+.nav-item:hover {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.item-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; transition: .25s;
+}
+.biz-edu .item-dot { background: rgba(111,168,255,0.2); border: 1px solid var(--blue); }
+.biz-pub .item-dot { background: rgba(251,191,36,0.2); border: 1px solid var(--gold); }
+
+.biz-edu .nav-item:hover .item-dot {
+  background: var(--blue);
+  box-shadow: 0 0 10px var(--blue);
+  transform: scale(1.2);
+}
+.biz-pub .nav-item:hover .item-dot {
+  background: var(--gold);
+  box-shadow: 0 0 10px var(--gold);
+  transform: scale(1.2);
+}
+
+.item-text { flex: 1; }
+.item-label {
+  display: block; font-size: 17px; font-weight: 700;
+  color: rgba(255,255,255,0.9); letter-spacing: -0.01em;
+  transition: color .2s; line-height: 1.25;
+}
+.item-sub {
+  display: block; font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,0.45); margin-top: 4px; transition: color .2s;
+}
+.biz-edu .nav-item:hover .item-label { color: var(--blue); }
+.biz-edu .nav-item:hover .item-sub  { color: rgba(111,168,255,0.85); }
+.biz-pub .nav-item:hover .item-label { color: var(--gold); }
+.biz-pub .nav-item:hover .item-sub  { color: rgba(251,191,36,0.8); }
+
+.item-arrow { font-size: 14px; color: rgba(255,255,255,0.15); transition: .25s ease; }
+.nav-item:hover .item-arrow { transform: translateX(4px); }
+.biz-edu .nav-item:hover .item-arrow { color: var(--blue); }
+.biz-pub .nav-item:hover .item-arrow { color: var(--gold); }
+
+.menu-divider {
+  height: 1px; background: var(--panel-border);
+  margin: 18px 16px;
+}
+
+/* 문의 버튼 */
+.contact-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin: 16px 16px 0; padding: 15px;
+  border-radius: 14px; border: 1px solid rgba(255,255,255,0.12);
+  cursor: pointer; transition: .25s ease; text-decoration: none;
+  font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.01);
+}
+.contact-btn:hover {
+  border-color: var(--blue);
+  color: #fff;
+  background: rgba(111, 168, 255, 0.08);
+  box-shadow: 0 0 20px var(--blue-glow);
+}
+
+/* ── LOADING ── */
+#loading {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: var(--dark); transition: opacity .6s ease;
+}
+#loading.hidden { opacity: 0; pointer-events: none; }
+.load-bar-wrap { width: 140px; height: 2px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.load-bar { height: 100%; background: linear-gradient(to right, var(--blue), var(--gold)); width: 0%; transition: width .15s ease; }
+.load-text { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: .2em; text-transform: uppercase; font-weight: 700; }
+
+/* ── CONTACT (라이브 index.html 이식) ── */
+.pg-contact {
+  background: #161F38;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 20px 48px; position: relative;
+}
+.board-wrap { max-width: 720px; width: 100%; position: relative; z-index: 1; }
+.contact-tagline { color: rgba(255,255,255,0.85); font-size: 15px; line-height: 1.7; margin-bottom: 20px; }
+.board-form { display: flex; flex-direction: column; gap: 14px; }
+.bf-row { display: flex; flex-direction: column; gap: 14px; }
+.bf-full { display: flex; flex-direction: column; }
+.bf-col { flex: 1; }
+.bf-label { display: block; font-size: 13px; color: rgba(255,255,255,0.9); margin-bottom: 6px; letter-spacing: 0.3px; }
+.bf-req { color: #6FA8FF; }
+.bf-input, .bf-textarea {
+  width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 6px; padding: 11px 14px; font-size: 14px; color: #fff;
+  font-family: inherit; transition: border-color 0.2s, background 0.2s; outline: none;
+}
+.bf-input::placeholder, .bf-textarea::placeholder { color: rgba(255,255,255,0.5); }
+.bf-input:focus, .bf-textarea:focus { border-color: #6FA8FF; background: rgba(74,144,217,0.08); }
+.bf-textarea { resize: vertical; min-height: 120px; }
+.bf-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 4px; }
+.bf-priv { display: flex; align-items: center; gap: 8px; cursor: pointer; color: rgba(255,255,255,0.85); font-size: 13px; user-select: none; }
+.bf-priv input[type=checkbox] { accent-color: #6FA8FF; width: 16px; height: 16px; cursor: pointer; }
+.bf-submit {
+  background: #6FA8FF; color: #050814; border: none; border-radius: 6px;
+  padding: 11px 28px; font-size: 14px; font-weight: 700; cursor: pointer;
+  font-family: inherit; letter-spacing: 0.5px;
+  transition: background 0.2s, transform 0.2s; white-space: nowrap;
+}
+.bf-submit:hover { background: #8cb8ff; transform: translateY(-1px); }
+.bf-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.board-done { text-align: center; padding: 40px 0; }
+.bd-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(74,144,217,0.2); border: 2px solid #6FA8FF; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #6FA8FF; margin: 0 auto 20px; }
+.bd-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.bd-sub { color: rgba(255,255,255,0.6); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+.bd-again { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 9px 22px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; transition: border-color 0.2s, color 0.2s; }
+.bd-again:hover { border-color: #6FA8FF; color: #fff; }
+.deco { display: none; }
+@media (min-width: 993px) {
+  .pg-contact { padding: 36px 80px; align-items: center; }
+  .bf-row { flex-direction: row; gap: 16px; }
+  .deco { display: block; position: absolute; pointer-events: none; overflow: hidden; }
+  .deco-tr { top: 0; right: 0; width: 130px; height: 90px; }
+  .deco-tr::before, .deco-tr::after { content: ''; position: absolute; height: 120%; }
+  .deco-tr::before { width: 48px; background: rgba(27,45,107,0.75); right: 48px; top: -10px; transform: skewX(-16deg); }
+  .deco-tr::after  { width: 38px; background: #6FA8FF; opacity: 0.85; right: 4px; top: -10px; transform: skewX(-16deg); }
+  .deco-bl { bottom: 0; left: 0; width: 130px; height: 90px; }
+  .deco-bl::before, .deco-bl::after { content: ''; position: absolute; height: 120%; bottom: -10px; }
+  .deco-bl::before { width: 48px; background: rgba(27,45,107,0.75); left: 48px; transform: skewX(-16deg); }
+  .deco-bl::after  { width: 38px; background: #6FA8FF; opacity: 0.85; left: 4px; transform: skewX(-16deg); }
+}
+
+/* 배경 파티클 */
+#bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* ── PAGE SNAP CONTROLLER COMMON STYLES ── */
+#pages { display: block; width: 100%; }
+#pages > section { width: 100%; }
+.pg-nav { display: none; }
+
+/* ── CONTENT SECTIONS (Scroll Targets) ── */
+section {
+  padding: 120px 48px;
+  min-height: 70vh;
+  border-bottom: 1px solid var(--panel-border);
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+section h2 {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+}
+section .section-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+section p {
+  color: rgba(255,255,255,0.6);
+  font-size: 17px;
+  max-width: 600px;
+  margin-bottom: 48px;
+}
+.edu-highlight { color: var(--blue); }
+.pub-highlight { color: var(--gold); }
+
+/* 그리드 카드 디자인 */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.feature-card {
+  padding: 36px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--panel-border);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.feature-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+.feature-card h3 {
+  font-size: 19px;
+  margin-bottom: 10px;
+  font-weight: 750;
+}
+.feature-card p {
+  font-size: 13px;
+  margin-bottom: 0;
+  color: rgba(255,255,255,0.45);
+}
+
+/* 문의하기 섹션 스타일 */
+#contact-form {
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: rgba(9, 15, 38, 0.4);
+  border: 1px solid var(--panel-border);
+  padding: 48px;
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+}
+.form-group input, .form-group textarea {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 14px 18px;
+  border-radius: 10px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+}
+.form-group input:focus, .form-group textarea:focus {
+  border-color: var(--blue);
+  outline: none;
+  background: rgba(255,255,255,0.06);
+}
+.form-submit-btn {
+  background: var(--blue);
+  color: var(--dark);
+  font-weight: 700;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: .25s ease;
+  margin-top: 10px;
+}
+.form-submit-btn:hover {
+  background: #8cb8ff;
+  box-shadow: 0 4px 20px var(--blue-glow);
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 60px 48px;
+  background: #03050c;
+  border-top: 1px solid var(--panel-border);
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+}
+
+.mob-hero-title { display: none; }
+.mob-hero-slogan { display: none; }
+
+/* ── 모바일 반응형 (완벽한 디자인 오버홀) ── */
+@media (max-width: 992px) {
+  #pages {
+    display: block;
+    width: 100%; height: auto;
+    overflow: visible;
+  }
+  #pages > section {
+    width: 100%; min-width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    height: 100vh;
+    min-height: -webkit-fill-available;
+    position: relative;
+  }
+  .hero-visual {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  #three-canvas {
+    pointer-events: none !important;
+  }
+  .mob-hero-title {
+    display: block !important;
+    position: absolute;
+    top: 96px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    background: rgba(9, 15, 38, 0.6);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    padding: 6px 18px;
+    border-radius: 100px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.15);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .mob-hero-slogan {
+    display: block !important;
+    position: absolute;
+    top: 136px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    font-size: 19px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    letter-spacing: -0.02em;
+    pointer-events: none;
+  }
+  .hero-bottom {
+    position: absolute !important;
+    top: 62% !important;
+    bottom: auto !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: calc(100% - 48px);
+    max-width: 400px;
+    z-index: 10;
+    background: rgba(5, 8, 20, 0.75);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 28px 24px;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-align: center;
+    pointer-events: auto;
+  }
+  .hero-slogan {
+    font-size: 28px;
+    line-height: 1.35;
+  }
+  .mob-only { display: inline; }
+  .desk-only { display: none; }
+  .hero-sub {
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .hero-cta {
+    justify-content: center;
+  }
+  .hero-cta .btn-gold, .hero-cta .btn-ghost {
+    padding: 13px 28px;
+    font-size: 13px;
+  }
+
+  .hero-menu {
+    border-left: none;
+    border-top: 1px solid var(--panel-border);
+    padding: 64px 24px 80px;
+    z-index: 10;
+    position: relative;
+    background: var(--dark);
+    margin-top: 100vh; /* 풀스크린 히어로 아래로 배치 */
+  }
+  .nav-item {
+    padding: 14px 18px;
+  }
+  .item-label { font-size: 16px; }
+  .item-sub { font-size: 12px; }
+  .biz-name { font-size: 16px; padding: 0 16px 10px; }
+  .contact-btn { margin: 16px 16px 0; }
+
+  /* Page 2 Unicorn Mobile styles */
+  .pu1-bg { display: none; }
+  .pg-u1 { background: #161F38; }
+
+  /* 모바일 화살표 버튼 — 하단 중앙 고정 */
+  .pg-nav {
+    display: flex;
+    position: fixed;
+    top: auto;
+    bottom: 20px;
+    transform: none;
+    width: 44px; height: 44px;
+    font-size: 22px;
+  }
+  .pg-nav:hover { transform: none; }
+  .pg-prev { left: calc(50% - 50px); }
+  .pg-next { right: calc(50% - 50px); }
+
+  /* 데일리 등 pub 섹션 제목 한국어 단어 끊김 방지 */
+  .pub-h2 { word-break: keep-all; }
+  .pu1-eyebrow { word-break: keep-all; }
+
+  /* 모바일: 위탁 콘텐츠제작 1·2·3 상단 글박스 숨김 */
+  .pu1-top { display: none; }
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 14px 24px;
+  }
+  .logo svg { height: 28px; }
+  .nav-contact {
+    padding: 8px 18px;
+    font-size: 12px;
+  }
+  section {
+    padding: 80px 24px;
+  }
+  section h2 {
+    font-size: 28px;
+  }
+  #contact-form {
+    padding: 32px 24px;
+  }
+}
+
+/* ── PUBLISHING BUSINESS (PAGES 4, 5, 6) STYLES ── */
+.pg-pub-layout {
+  position: relative;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: 120px 48px 52px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--dark);
+}
+
+.pub-bg-effect {
+  position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(111,168,255,0.06) 0%, rgba(5,8,20,0) 70%);
+  pointer-events: none;
+}
+
+.pub-container {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 40px;
+  width: 100%;
+}
+
+.pub-left {
+  display: flex; flex-direction: column;
+}
+
+.pub-eyebrow {
+  font-size: 11px; font-weight: 800; letter-spacing: .2em;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+
+.pub-h2 {
+  font-size: clamp(28px, 3.8vw, 42px); font-weight: 900;
+  color: #fff; line-height: 1.3; margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.pub-h2 em { color: var(--gold); font-style: normal; text-shadow: 0 0 20px var(--gold-glow); }
+.pub-h2 span { color: var(--blue); }
+
+.pub-desc {
+  font-size: 0.92rem; color: rgba(255,255,255,0.75);
+  line-height: 1.7; margin-bottom: 30px;
+  max-width: 580px;
+}
+
+/* 4페이지 데일리 아카이브 목록 스타일 */
+.daily-archive {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px; padding: 20px;
+  max-width: 520px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.archive-title {
+  font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.45);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 14px; padding-left: 4px;
+}
+
+.dn-list {
+  list-style: none; display: flex; flex-direction: column; gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.dn-list::-webkit-scrollbar {
+  width: 4px;
+}
+.dn-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.01);
+}
+.dn-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+.dn-list::-webkit-scrollbar-thumb:hover {
+  background: var(--blue);
+}
+
+.dn-list-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dn-list-item:hover {
+  background: rgba(111, 168, 255, 0.08);
+  border-color: rgba(111, 168, 255, 0.3);
+  transform: translateX(4px);
+}
+
+.dn-list-item.active {
+  background: rgba(111, 168, 255, 0.15);
+  border-color: var(--blue);
+  box-shadow: 0 0 15px rgba(111, 168, 255, 0.2);
+}
+
+.dn-list-item .d {
+  font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.9);
+}
+
+.dn-list-item .go {
+  font-size: 12px; font-weight: 600; color: var(--blue);
+}
+
+.dn-list-item.active .d { color: #fff; }
+.dn-list-item.active .go { color: var(--gold); }
+
+.dn-badge {
+  display: inline-block; font-size: 10px; font-weight: 800;
+  background: var(--gold); color: var(--dark);
+  padding: 1px 6px; border-radius: 4px; margin-left: 8px;
+  vertical-align: middle;
+}
+
+.dn-list-placeholder {
+  font-size: 13px; color: rgba(255,255,255,0.4); text-align: center; padding: 10px;
+}
+
+/* ── 스마트폰 목업 (세로로 긴 날씬한 비율) ── */
+.phone-frame {
+  width: 100%;
+  max-width: 432px; /* 기존 360px에서 1.2배인 432px로 넓혀 시원한 화면 구성 */
+  border-radius: 40px;
+  border: 1.5px solid rgba(255, 255, 255, 0.15); /* 은은한 크롬 메탈 테두리로 상단 곡면 시각화 */
+  box-shadow: 0 0 0 12px #2d2d2d, /* 베젤 색상을 더 밝게 보강하여 윤곽 인식 개선 */
+              0 0 0 14px rgba(74,144,217,0.6),
+              0 0 50px 15px rgba(74,144,217,0.4),
+              0 0 80px 20px rgba(74,144,217,0.15),
+              0 20px 40px rgba(0,0,0,0.45);
+  position: relative; overflow: hidden; background: #0a0a0a; flex-shrink: 0;
+  margin: 0 auto;
+}
+
+.daily-news-container {
+  width: 100%;
+  height: 580px; /* 세로로 길게 보여주기 위해 높이를 580px로 조정 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 24px; /* 로고가 상단 곡률에 잘리지 않도록 패딩 부여 */
+  background: #0a0a0a;
+}
+
+.daily-news-container iframe {
+  width: 100%; height: 1500px; border: none; display: block;
+}
+
+/* 화면 높이가 작은 데스크톱 브라우저 대응 */
+@media (max-height: 850px) and (min-width: 993px) {
+  .pg-pub-layout {
+    padding: 80px 48px 40px;
+  }
+  #daily.pg-pub-layout {
+    padding-top: 115px; /* 소형 화면에서도 네비바 아래 여백 유지 */
+    padding-bottom: 20px;
+  }
+}
+
+
+/* ── 고해상도 출간 썸네일 공통 스타일 ── */
+.pub-thumbnail {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+}
+.pub-thumbnail:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+.pub-thumbnail.blue-glow {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6), 
+              0 0 60px 15px rgba(111, 168, 255, 0.45),
+              0 0 100px 30px rgba(111, 168, 255, 0.2);
+}
+.pub-thumbnail.blue-glow:hover {
+  box-shadow: 0 30px 50px rgba(0,0,0,0.7), 
+              0 0 80px 25px rgba(111, 168, 255, 0.65),
+              0 0 120px 40px rgba(111, 168, 255, 0.35);
+}
+.pub-thumbnail.gold-glow {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6), 
+              0 0 60px 15px rgba(251, 191, 36, 0.45),
+              0 0 100px 30px rgba(251, 191, 36, 0.2);
+}
+.pub-thumbnail.gold-glow:hover {
+  box-shadow: 0 30px 50px rgba(0,0,0,0.7), 
+              0 0 80px 25px rgba(251, 191, 36, 0.65),
+              0 0 120px 40px rgba(251, 191, 36, 0.35);
+}
+
+/* 잡지 및 책 썸네일 개별 크기 및 오프셋 조정 */
+.mag-thumbnail, .book-thumbnail {
+  max-width: 336px;
+  margin-top: 24px;
+}
+
+/* 데스크탑 2단 반응형 배치 */
+@media (min-width: 993px) {
+  nav {
+    padding-left: 96px;
+    padding-right: 96px;
+  }
+  #pages > section {
+    padding-left: 96px !important;
+    padding-right: 96px !important;
+  }
+
+  .pub-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 60px;
+  }
+  .pub-left {
+    flex: 1.1;
+  }
+  .pub-right {
+    flex: 0.9;
+  }
+  
+  /* #daily 섹션 전용 데스크톱 레이아웃 조율 */
+  #daily.pg-pub-layout {
+    justify-content: flex-start;
+    padding-top: 115px; /* 헤더 네비게이션 아래로 안전하게 배치 */
+  }
+  #daily .pub-container {
+    align-items: flex-start;
+  }
+  #daily .pub-left {
+    margin-top: 32px; /* 좌측 텍스트와 우측 폰 상단 정렬 조율 */
+  }
+  #daily .daily-news-container {
+    height: 680px; /* 스마트폰처럼 더 세로로 긴 형태로 변경 */
+  }
+  
+  .pub-thumbnail {
+    max-width: 340px;
+  }
+  .mag-thumbnail, .book-thumbnail {
+    max-width: 408px;
+    margin-top: 80px;
+  }
+}
+
+/* ── SCROLL REVEAL STYLES ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease; 
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-d1 { transition-delay: 0.12s; }
+.reveal-d2 { transition-delay: 0.24s; }
+.reveal-d3 { transition-delay: 0.36s; }
+
+/* ── REPRESENTATIVE EDUCATION PROGRAM 1 (UNICORN) COMMON STYLES ── */
+.pg-u1 {
+  position: relative;
+  min-height: 70vh;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 120px 48px 52px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pu1-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: url('education/images/hero.png') center/cover no-repeat;
+}
+
+.pu1-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(8,12,32,.45) 0%,
+    rgba(8,12,32,.55) 35%,
+    rgba(8,12,32,.88) 75%,
+    rgba(8,12,32,.96) 100%
+  );
+}
+
+.pu1-top {
+  position: relative; z-index: 1;
+  padding: 18px 24px 0;
+  text-align: center;
+}
+
+.pu1-label {
+  display: inline-block;
+  font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: #FBBF24;
+  border: 1.5px solid rgba(251,191,36,.9);
+  background: rgba(251,191,36,.12);
+  padding: 5px 16px; border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.pu1-panel {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 32px;
+  padding: 24px 24px 36px;
+}
+
+.pu1-eyebrow {
+  font-size: .7rem; font-weight: 600; letter-spacing: .14em;
+  color: rgba(255,255,255,.95); text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.pu1-h2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: clamp(26px, 6vw, 32px); font-weight: 900;
+  color: #fff; line-height: 1.2; margin-bottom: 12px;
+}
+
+.pu1-h2 em { color: var(--gold); font-style: normal; }
+
+.pu1-desc {
+  font-size: .88rem; color: rgba(255,255,255,.92);
+  line-height: 1.65; margin-bottom: 18px;
+}
+
+.pu1-chips {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px;
+}
+
+.pu1-chips span {
+  font-size: .72rem; font-weight: 600;
+  background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.6);
+  color: #fff; padding: 4px 12px; border-radius: 14px;
+}
+
+.pu1-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.pu1-btn-gold {
+  display: inline-block; background: var(--gold); color: var(--navy);
+  font-weight: 700; font-size: .9rem; padding: 11px 24px;
+  border-radius: 22px; text-decoration: none;
+  transition: opacity .2s;
+}
+
+.pu1-btn-gold:hover { opacity: .85; }
+
+.pu1-btn-ghost {
+  display: inline-block; color: #fff; font-weight: 600; font-size: .9rem;
+  padding: 10px 22px; border-radius: 22px;
+  border: 1.5px solid rgba(255,255,255,.35); text-decoration: none;
+  transition: background .2s;
+}
+
+.pu1-btn-ghost:hover { background: rgba(255,255,255,.1); }
+
+.pu1-timeline {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 16px;
+}
+
+.pu1-arrow { display: none; }
+
+.pu1-day {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px; padding: 12px 10px;
+  text-align: center;
+  backdrop-filter: blur(6px);
+}
+
+.pu1-day-num {
+  display: inline-block; font-size: .65rem; font-weight: 700;
+  letter-spacing: .06em; color: #fff;
+  padding: 2px 10px; border-radius: 10px; margin-bottom: 6px;
+}
+
+.pu1-day-icon { font-size: 1.4rem; margin-bottom: 4px; }
+
+.pu1-day-name {
+  font-size: .8rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+}
+
+.pu1-day-sub { font-size: .68rem; color: rgba(200,216,240,.7); line-height: 1.4; }
+
+.pu1-stats {
+  display: flex; gap: 0; align-items: center;
+  background: rgba(251,191,36,.08);
+  border: 1px solid rgba(251,191,36,.2);
+  border-radius: 10px; padding: 14px 0;
+}
+
+.pu1-stat {
+  flex: 1; text-align: center;
+}
+
+.pu1-stat strong {
+  display: block; font-size: 1.6rem; font-weight: 900; color: var(--gold); line-height: 1;
+}
+
+.pu1-stat span { font-size: .68rem; color: rgba(255,255,255,.95); }
+
+.pu1-divider {
+  width: 1px; height: 32px;
+  background: rgba(251,191,36,.25);
+  flex-shrink: 0;
+}
+
+/* ── REPRESENTATIVE EDUCATION PROGRAM 1 (UNICORN) PC STYLES ── */
+@media (min-width: 993px) {
+  /* 가로 페이지 스냅 스크롤 활성화 */
+  html, body { overflow: hidden; height: 100%; }
+  footer { display: none; }
+
+  #pages {
+    display: flex;
+    width: 100vw; height: 100vh;
+    overflow-x: scroll; overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none; scrollbar-width: none;
+  }
+  #pages::-webkit-scrollbar { display: none; }
+
+  #pages > section {
+    flex: 0 0 100vw; min-width: 100vw;
+    height: 100vh; scroll-snap-align: start;
+    overflow-y: hidden; overflow-x: hidden;
+  }
+
+  /* PC 페이지 네비 버튼 */
+  .pg-nav {
+    display: flex;
+    position: fixed; top: 50%; transform: translateY(-50%);
+    z-index: 600; width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(27, 45, 107, 0.55); color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 24px; cursor: pointer;
+    align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .pg-nav:hover { background: var(--navy); transform: translateY(-50%) scale(1.1); }
+  .pg-nav:disabled { opacity: 0.2; pointer-events: none; }
+  .pg-prev { left: 20px; }
+  .pg-next { right: 20px; }
+
+  .pg-u1 { padding: 120px 56px 52px; justify-content: flex-end; }
+  .pu1-top { position: absolute; top: 80px; left: 0; right: 0; }
+  .pu1-panel {
+    flex-direction: column; align-items: flex-start;
+    padding: 0; gap: 32px;
+  }
+  .pu1-left { flex: 1; max-width: 680px; }
+  .pu1-h2 { font-size: clamp(32px, 3.2vw, 46px); }
+  .pu1-desc { font-size: .95rem; }
+  .pu1-timeline {
+    display: flex; align-items: stretch; gap: 0;
+    margin-bottom: 20px;
+  }
+  .pu1-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(251,191,36,.6); font-size: 1.2rem;
+    padding: 0 4px; flex-shrink: 0;
+  }
+  .pu1-day {
+    flex: 1; padding: 16px 10px;
+    border-radius: 0;
+  }
+  .pu1-day:first-child { border-radius: 10px 0 0 10px; }
+  .pu1-day:last-child  { border-radius: 0 10px 10px 0; }
+  .pu1-day-icon { font-size: 1.6rem; }
+  .pu1-day-name { font-size: .82rem; }
+  .pu1-stat strong { font-size: 2rem; }
+  .pu1-stat span   { font-size: .75rem; }
+}
+</style>
 </head>
 <body>
 
-<!-- PC 페이지 이동 버튼 -->
-<button class="pg-nav pg-prev" id="pgPrev">&#8249;</button>
-<button class="pg-nav pg-next" id="pgNext">&#8250;</button>
+<!-- 백그라운드 오로라 빛샘 효과 -->
+<div class="glow-blob blob-1"></div>
+<div class="glow-blob blob-2"></div>
+<div class="glow-blob blob-3"></div>
 
-<!-- NAV -->
-<nav id="navbar">
-  <div class="nav-inner">
-    <div class="nav-logo">
-      <img src="images/nextio-lockup-reverse.svg" alt="Next I/O" class="nav-lockup">
-    </div>
-    <ul class="nav-links">
-      <li><a href="#hero" class="active">HOME</a></li>
-      <li><a href="#unicorn">위탁교육 사례1</a></li>
-      <li><a href="#research">위탁교육 사례2</a></li>
-      <li><a href="#content-service">콘텐츠 위탁제작/발행</a></li>
-      <li><a href="#daily-news">데일리카드</a></li>
-      <li><a href="#contact">CONTACT</a></li>
-    </ul>
-    <button class="hamburger" aria-label="메뉴 열기">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
+<canvas id="bg-canvas"></canvas>
 
-<!-- 모바일 드로어 -->
-<div class="mob-drawer" id="mobDrawer">
-  <ul>
-    <li><a href="#hero">HOME</a></li>
-    <li><a href="#unicorn">위탁교육 사례1</a></li>
-    <li><a href="#research">위탁교육 사례2</a></li>
-    <li><a href="#content-service">콘텐츠 위탁제작/발행</a></li>
-    <li><a href="#daily-news">데일리카드</a></li>
-    <li><a href="#contact">CONTACT</a></li>
-  </ul>
+<!-- 로딩 화면 -->
+<div id="loading">
+  <div class="load-text">Initializing AI Core</div>
+  <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
 </div>
 
+<!-- 헤더 -->
+<nav>
+  <a href="#" class="logo" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" height="34">
+      <g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+        <line x1="22" y1="36" x2="60" y2="60"/><line x1="22" y1="84" x2="60" y2="60"/>
+        <line x1="60" y1="60" x2="100" y2="36"/><line x1="60" y1="60" x2="100" y2="84"/>
+      </g>
+      <circle cx="22" cy="36" r="8" fill="#6FA8FF"/>
+      <circle cx="22" cy="84" r="8" fill="#6FA8FF"/>
+      <circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"/>
+      <circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"/>
+      <circle cx="60" cy="60" r="15" fill="#FBBF24"/>
+      <text x="150" y="78" font-family="Pretendard,'Apple SD Gothic Neo',sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text>
+    </svg>
+  </a>
+  <nav class="nav-links">
+    <span class="nav-link active" onclick="goTo(0)">HOME</span>
+    <span class="nav-link" onclick="goTo(1)">위탁교육프로그램1</span>
+    <span class="nav-link" onclick="goTo(2)">위탁교육프로그램2</span>
+    <span class="nav-link" onclick="goTo(3)">위탁콘텐츠제작1</span>
+    <span class="nav-link" onclick="goTo(4)">위탁콘텐츠제작2</span>
+    <span class="nav-link" onclick="goTo(5)">위탁콘텐츠제작3</span>
+    <a class="nav-link" href="display-daily/" target="_blank" style="text-decoration:none;">디스플레이 데일리</a>
+  </nav>
+  <span class="nav-contact" onclick="goTo(6)" style="cursor:pointer;">문의하기</span>
+</nav>
+
+<!-- PC 페이지 이동 버튼 -->
+<button class="pg-nav pg-prev" id="pgPrev" disabled>&#8249;</button>
+<button class="pg-nav pg-next" id="pgNext">&#8250;</button>
+
 <div id="pages">
-<!-- ① HERO -->
-<section id="hero" class="pg">
-  <canvas id="hero-canvas"></canvas>
-  <div class="deco deco-tr"></div>
-  <div class="deco deco-bl"></div>
-  <div class="hero-io-wrap">
-    <p class="io-eyebrow">AI EDUCATION SPECIALIST</p>
 
-    <div class="io-stage">
-      <canvas id="io-flow-canvas"></canvas>
+  <!-- ① HERO -->
+  <section id="hero" class="hero">
 
-      <!-- INPUT -->
-      <div class="io-col io-in">
-        <div class="io-col-label">INPUT</div>
-        <div class="io-chip">🔬 연구 · 논문</div>
-        <div class="io-chip">💡 산업현장경험</div>
-        <div class="io-chip">📊 공학 데이터</div>
-        <div class="io-chip">🎓 대학 강의</div>
+  <!-- 왼쪽: 3D 비주얼 영역 (Three.js 렌더러) -->
+  <div class="hero-visual">
+    <canvas id="three-canvas"></canvas>
+
+    <!-- 모바일 전용 상단 배지 -->
+    <div class="mob-hero-title">AI 실무교육 · 위탁콘텐츠 자동화</div>
+    <!-- 모바일 전용 슬로건 한 줄 -->
+    <div class="mob-hero-slogan">AI가 일하는 회사, 5일이면 당신도</div>
+
+    <!-- 슬로건 글래스 카드 (모바일/데스크탑 레이아웃 개별 보강) -->
+    <div class="hero-bottom">
+      <div class="hero-slogan">
+        <span>AI가 일하는 회사,<br></span>
+        <span class="highlight">5일이면 당신도</span><br>
+        <span>만들 수 있습니다.</span>
       </div>
-
-      <!-- AI CORE -->
-      <div class="io-center">
-        <div class="io-mark-wrap">
-          <div class="io-ring io-ring-1"></div>
-          <div class="io-ring io-ring-2"></div>
-          <div class="io-ring io-ring-3"></div>
-          <svg class="io-mark-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-            <g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
-              <line x1="22" y1="36" x2="60" y2="60"/><line x1="22" y1="84" x2="60" y2="60"/>
-              <line x1="60" y1="60" x2="100" y2="36"/><line x1="60" y1="60" x2="100" y2="84"/>
-            </g>
-            <circle cx="22" cy="36" r="8" fill="#6FA8FF"/>
-            <circle cx="22" cy="84" r="8" fill="#6FA8FF"/>
-            <circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"/>
-            <circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"/>
-            <circle cx="60" cy="60" r="15" fill="#FBBF24"/>
-          </svg>
-        </div>
-        <div class="io-center-label">AI AGENT CORE</div>
+      <div class="hero-sub">
+        <span>코딩 없이</span>
+        <span>팀 없이</span>
       </div>
-
-      <!-- OUTPUT -->
-      <div class="io-col io-out">
-        <div class="io-col-label">OUTPUT</div>
-        <div class="io-chip">📚 AI 실무교육</div>
-        <div class="io-chip">📰 학술 매거진</div>
-        <div class="io-chip">⚡ 연구 자동화</div>
-        <div class="io-chip">🚀 맞춤형 콘텐츠</div>
+      <div class="hero-cta">
+        <a href="#unicorn" class="btn-gold">과정 보기 &darr;</a>
       </div>
-    </div>
-
-    <div class="io-bottom">
-      <p class="io-slogan">공학적 통찰, AI로 확장하다</p>
     </div>
   </div>
-</section>
 
-<!-- ② 대표교육프로그램1 — 인포그래픽 1페이지 -->
-<section id="unicorn" class="pg-u1">
-  <div class="pu1-bg"></div>
+  <!-- 오른쪽: 네비게이션 메뉴 패널 -->
+  <div class="hero-menu">
 
-  <!-- 상단 레이블 -->
-  <div class="pu1-top">
-    <span class="pu1-label">위탁 교육프로그램 1</span>
-  </div>
+    <!-- 위탁교육사업 -->
+    <div class="biz-section biz-edu">
+      <div class="biz-header">
+        <span class="biz-label">Education</span>
+        <div class="biz-line"></div>
+      </div>
+      <div class="biz-name">위탁교육사업</div>
 
-  <!-- 하단 패널: 좌(제목+버튼) + 우(타임라인) -->
-  <div class="pu1-panel">
+      <div class="nav-item" onclick="goto('unicorn')">
+        <div class="item-dot"></div>
+        <div class="item-text">
+          <span class="item-label">AI 유니콘 과정</span>
+          <span class="item-sub">5일 집중 · 핸즈온 · 34개 산출물</span>
+        </div>
+        <span class="item-arrow">→</span>
+      </div>
 
-    <div class="pu1-left reveal">
-      <p class="pu1-eyebrow">FEATURED COURSE · 5-DAY INTENSIVE</p>
-      <h2 class="pu1-h2">AI 직원을 이용한<br><em>1인 유니콘</em> 첫발 딛기</h2>
-      <div class="pu1-btns">
-        <a href="education/unicorn.html" target="_blank"
-           style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
-          과정 상세 보기 →
-        </a>
-        <a href="#contact"
-           style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
-          교육 문의
-        </a>
+      <div class="nav-item" onclick="goto('research')">
+        <div class="item-dot"></div>
+        <div class="item-text">
+          <span class="item-label">AI 연구역량 과정</span>
+          <span class="item-sub">2일 집중 · 논문 특화</span>
+        </div>
+        <span class="item-arrow">→</span>
       </div>
     </div>
 
-    <div class="pu1-right reveal reveal-d2">
-      <!-- Day 타임라인 -->
-      <div class="pu1-timeline">
-        <div class="pu1-day">
-          <div class="pu1-day-num" style="background:#3B5BDB">Day 1</div>
-          <div class="pu1-day-icon">🏢</div>
-          <div class="pu1-day-name">회사 창립</div>
-          <div class="pu1-day-sub">Claude 설치<br>조직도 설계</div>
+    <div class="menu-divider"></div>
+
+    <!-- 위탁출간사업 -->
+    <div class="biz-section biz-pub">
+      <div class="biz-header">
+        <span class="biz-label">Publishing</span>
+        <div class="biz-line"></div>
+      </div>
+      <div class="biz-name">위탁출간사업</div>
+
+      <div class="nav-item" onclick="goto('daily')">
+        <div class="item-dot"></div>
+        <div class="item-text">
+          <span class="item-label">데일리카드</span>
+          <span class="item-sub">매일 8시 · AI 자동 발행</span>
         </div>
-        <div class="pu1-arrow">→</div>
-        <div class="pu1-day">
-          <div class="pu1-day-num" style="background:#1B2D6B">Day 2</div>
-          <div class="pu1-day-icon">🎨</div>
-          <div class="pu1-day-name">총무팀장</div>
-          <div class="pu1-day-sub">브랜드·홈페이지<br>명함 완성</div>
-        </div>
-        <div class="pu1-arrow">→</div>
-        <div class="pu1-day">
-          <div class="pu1-day-num" style="background:#7C3AED">Day 3</div>
-          <div class="pu1-day-icon">⚖️</div>
-          <div class="pu1-day-name">법무팀장</div>
-          <div class="pu1-day-sub">계약서·NDA<br>독소조항 검토</div>
-        </div>
-        <div class="pu1-arrow">→</div>
-        <div class="pu1-day">
-          <div class="pu1-day-num" style="background:#059669">Day 4</div>
-          <div class="pu1-day-icon">📈</div>
-          <div class="pu1-day-name">영업팀장</div>
-          <div class="pu1-day-sub">리드DB·제안서<br>이메일 발송</div>
-        </div>
-        <div class="pu1-arrow">→</div>
-        <div class="pu1-day">
-          <div class="pu1-day-num" style="background:#B45309">Day 5</div>
-          <div class="pu1-day-icon">📰</div>
-          <div class="pu1-day-name">편집·마케팅</div>
-          <div class="pu1-day-sub">매거진·SNS<br>발행 체크리스트</div>
-        </div>
+        <span class="item-arrow">→</span>
       </div>
 
-      <!-- 수치 바 -->
-      <div class="pu1-stats">
-        <div class="pu1-stat"><strong>34</strong><span>개 실전 산출물</span></div>
-        <div class="pu1-divider"></div>
-        <div class="pu1-stat"><strong>40</strong><span>시간 집중 실습</span></div>
-        <div class="pu1-divider"></div>
-        <div class="pu1-stat"><strong>17</strong><span>AI 직원</span></div>
+      <div class="nav-item" onclick="goto('magazine')">
+        <div class="item-dot"></div>
+        <div class="item-text">
+          <span class="item-label">온라인 매거진</span>
+          <span class="item-sub">학과·기업 맞춤 위탁 제작</span>
+        </div>
+        <span class="item-arrow">→</span>
+      </div>
+
+      <div class="nav-item" onclick="goto('book')">
+        <div class="item-dot"></div>
+        <div class="item-text">
+          <span class="item-label">단행본 프로젝트</span>
+          <span class="item-sub">기획부터 출간까지 AI 협업</span>
+        </div>
+        <span class="item-arrow">→</span>
       </div>
     </div>
 
   </div>
-</section>
 
-<!-- ③ AI 연구역량 강화 과정 -->
-<section id="research" class="pg-unicorn">
-  <div class="unicorn-header">
-    <p class="unicorn-section-label">위탁 교육프로그램 2</p>
-  </div>
-  <div class="two-col">
-    <div class="col-text reveal">
-      <p class="eyebrow" style="color:rgba(255,255,255,.95)">RESEARCH COURSE · 2-DAY INTENSIVE</p>
-      <h2 class="sec-h" style="color:#fff; font-weight:700">논문 읽기부터<br>투고 초안까지<br class="mob-only"> AI 조교와</h2>
-      <p class="sec-body" style="color:#C8D8F0">문헌 조사·발표 준비·논문 작성, 반복적인 연구 루틴을 AI가 대신합니다. 실제 완성된 AI 연구 파이프라인을 사례로, 수강 당일 본인 연구에 바로 적용할 수 있도록 설계했습니다.</p>
-      <div class="day-badges">
-        <span class="db" style="background:#5B9BD5">Step 1<span>논문 속독·분석</span></span>
-        <span class="db" style="background:#4CA86A">Step 2<span>데이터 자동 수집</span></span>
-        <span class="db" style="background:#E88A4A">Step 3<span>발표자료 자동화</span></span>
-        <span class="db" style="background:#9B82C8">Step 4<span>논문 초안 생성</span></span>
-      </div>
-      <div class="prog-list" style="margin-bottom:20px">
-        <div class="prog-item" style="color:#C8D8F0"><span class="pm">✓</span> 수강 당일 본인 연구에 즉시 적용 가능</div>
-        <div class="prog-item" style="color:#C8D8F0"><span class="pm">✓</span> 실제 완성된 AI 연구 파이프라인으로 전 과정 시연</div>
-        <div class="prog-item" style="color:#C8D8F0"><span class="pm">✓</span> AI 구독 1개월 지원 · 실습 비중 60% · 소수정예</div>
-      </div>
-    </div>
-    <div class="col-img reveal reveal-d2">
-      <div class="unicorn-card">
-        <p class="uc-tag">이공계 연구자를 위한 과정</p>
-        <p class="uc-h">읽고, 찾고,<br>쓰는 모든 연구<br>AI와 함께</p>
-        <p class="uc-sub">2일 집중 실습<br>14시간 · 소수정예</p>
-        <div class="uc-meta">
-          <span>2일 집중</span>
-          <span>14시간</span>
-          <span>실습 60%</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+</section> <!-- /#hero -->
 
-<!-- ④ 온라인 콘텐츠 제작 -->
-<section id="content-service" class="pg cs-section">
-  <div class="cs-c-wrap">
+  <!-- Education Sections -->
+  <!-- ② 대표교육프로그램1 — 인포그래픽 1페이지 -->
+  <section id="unicorn" class="pg-u1">
+    <div class="pu1-bg"></div>
 
-    <!-- 헤더 -->
-    <div class="cs-c-header reveal">
-      <p class="cs-c-eyebrow">CONTENT AS A SERVICE</p>
-      <h2 class="cs-c-title">콘텐츠로 완성하는 귀사의 브랜드</h2>
-      <p class="cs-c-lead">매일의 접점부터 권위 있는 자산까지 — 세 형식으로 귀사를 알립니다</p>
+    <!-- 상단 레이블 -->
+    <div class="pu1-top">
+      <span class="pu1-label">위탁 교육프로그램 1</span>
     </div>
 
-    <!-- 발행주기 타임라인 -->
-    <div class="cs-c-timeline reveal reveal-d1">
-      <div class="cs-c-tl-labels">
-        <span>매일</span><span>월간 · 계간</span><span>단행본 프로젝트</span>
-      </div>
-      <div class="cs-c-tl-track">
-        <span class="cs-c-tl-dot"></span><span class="cs-c-tl-dot"></span><span class="cs-c-tl-dot"></span>
-      </div>
-    </div>
+    <!-- 하단 패널: 좌(제목+버튼) + 우(타임라인) -->
+    <div class="pu1-panel">
 
-    <!-- 3개 서비스 -->
-    <div class="cs-c-list reveal reveal-d2">
-
-      <div class="cs-c-card">
-        <div class="cs-c-thumb"><img src="images/cs-daily.png" alt="데일리 뉴스카드"></div>
-        <div class="cs-c-info">
-          <p class="cs-c-name">데일리 카드</p>
-          <strong>귀 기관 브랜드로,<br>매일 업계 뉴스 자동 발송</strong>
-          <span>매일 8시 AI가 수집·편집, 자사 브랜딩 카드로 발행</span>
-        </div>
-      </div>
-
-      <div class="cs-c-card">
-        <div class="cs-c-thumb"><img src="images/cs-mag-cover.png" alt="온라인 매거진"></div>
-        <div class="cs-c-info">
-          <p class="cs-c-name">온라인 매거진</p>
-          <strong>조직의 홍보와 위상을<br>높이는 가장 쉬운 방법</strong>
-          <span>학술지·기관지를 웹 매거진·뉴스레터로 위탁 기획·제작·운영</span>
-        </div>
-      </div>
-
-      <div class="cs-c-card">
-        <div class="cs-c-thumb"><img src="images/cs-book-hd.png" alt="단행본 출판"></div>
-        <div class="cs-c-info">
-          <p class="cs-c-name">단행본 발간</p>
-          <strong>당신의 지식을<br>책으로 만드는 AI 파이프라인</strong>
-          <span>기획·집필·편집·발행 전 과정을 AI와 함께 위탁 진행</span>
+      <div class="pu1-left reveal">
+        <p class="pu1-eyebrow">FEATURED COURSE · 5-DAY INTENSIVE</p>
+        <h2 class="pu1-h2">AI 직원을 이용한<br><em>1인 유니콘</em> 첫발 딛기</h2>
+        <div class="pu1-btns">
+          <a href="education/unicorn.html" target="_blank"
+             style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
+            과정 상세 보기 →
+          </a>
+          <a href="#contact" onclick="goTo(6); return false;"
+             style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
+            교육 문의
+          </a>
         </div>
       </div>
 
     </div>
+  </section>
 
-  </div>
-</section>
+  <!-- ③ AI 연구역량 과정 -->
+  <section id="research" class="pg-u1">
+    <div class="pu1-bg" style="background: url('education/images/hero2.png') center/cover no-repeat;"></div>
 
-<!-- ⑤ 무료 데일리 카드 -->
-<section id="daily-news" class="daily-news-section">
-  <div class="deco deco-tr"></div>
-  <div class="deco deco-bl"></div>
-  <div class="daily-news-wrap">
-    <div class="dn-2col">
-      <!-- Left side: Index list -->
-      <div class="dn-sidebar">
-        <div class="dn-sub-form">
-          <div class="dn-sub-guide">무료구독을 원하시면 연락처를 남겨주세요</div>
-          <div class="dn-gform-clip">
-            <iframe
-              src="https://docs.google.com/forms/d/e/1FAIpQLSefZtEMfa0PaBigZj_AXiW9XMSov8YTTqhtQLJXZ7QQMgKh_w/viewform?embedded=true"
-              frameborder="0"
-              marginheight="0"
-              marginwidth="0"
-              class="dn-gform-iframe">
-              로딩 중...
-            </iframe>
-          </div>
+    <!-- 상단 레이블 -->
+    <div class="pu1-top">
+      <span class="pu1-label">위탁 교육프로그램 2</span>
+    </div>
+
+    <!-- 하단 패널: 2페이지와 동일한 1단 레이아웃 -->
+    <div class="pu1-panel">
+
+      <div class="pu1-left reveal">
+        <p class="pu1-eyebrow">RESEARCH COURSE · 2-DAY INTENSIVE</p>
+        <h2 class="pu1-h2">논문 읽기부터<br>투고 초안까지<br class="mob-only"> AI 조교와</h2>
+        <p class="pu1-desc" style="color: rgba(255,255,255,0.92); max-width: 680px;">
+          문헌 조사·발표 준비·논문 작성, 반복적인 연구 루틴을 AI가 대신합니다. 실제 완성된 AI 연구 파이프라인을 사례로, 수강 당일 본인 연구에 바로 적용할 수 있도록 설계했습니다.
+        </p>
+        <div class="pu1-btns">
+          <a href="education/research.html" target="_blank"
+             style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
+            과정 상세 보기 →
+          </a>
+          <a href="#contact" onclick="goTo(6); return false;"
+             style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
+            교육 문의
+          </a>
         </div>
-        <div class="dn-index-box">
-          <ul id="dn-list" class="dn-list">
-            <li class="dn-list-placeholder">뉴스를 불러오는 중...</li>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ④ 데일리카드 (BM1 위탁발행 + 실시간 연동) -->
+  <section id="daily" class="pg-pub-layout">
+    <div class="pub-bg-effect"></div>
+
+    <!-- 상단 레이블 -->
+    <div class="pu1-top">
+      <span class="pu1-label">위탁 콘텐츠제작 1</span>
+    </div>
+
+    <div class="pub-container">
+      <!-- 좌측: 비즈니스 소구 카피 & 날짜 아카이브 -->
+      <div class="pub-left reveal">
+        <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 01 · DAILY CARD</p>
+        <h2 class="pub-h2">에디터·디자이너 없이,<br><em>월 20만 원</em>으로 가동하는<br>자사 미디어 에이전트</h2>
+        <p class="pub-desc" style="margin-bottom: 32px;">
+          로고와 희망 키워드만 등록해 두세요. AI 에이전트 팀이 매일 아침 업계 뉴스나 트렌드를 분석·제작하여 귀사의 이름으로 고객에게 자동 도달시킵니다.
+        </p>
+
+        <!-- 날짜 아카이브 목록 (V6의 아카이브 리스트로 복구) -->
+        <div class="daily-archive">
+          <p class="archive-title">최신 발행 브리핑 아카이브</p>
+          <ul class="dn-list" id="dailyList">
+            <li class="dn-list-placeholder">리스트를 불러오는 중...</li>
           </ul>
         </div>
       </div>
-      <!-- Right side: Iframe viewer -->
-      <div class="dn-viewer">
+
+      <!-- 우측: 스마트폰 목업 프레임 (V1 스타일 및 비율 패치) -->
+      <div class="pub-right reveal reveal-d2">
         <div class="phone-frame">
           <div class="daily-news-container">
-            <iframe id="dn-iframe" src="display-daily/latest.html" title="Latest Display Daily"></iframe>
+            <iframe id="dailyIframe" src="display-daily/latest.html"></iframe>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ⑥ CONTACT / 협력제안 게시판 -->
-<section id="contact" class="pg-contact">
-  <div class="deco deco-tr"></div>
-  <div class="deco deco-bl"></div>
-  <div class="board-wrap reveal">
-    <p class="eyebrow white">CONTACT US</p>
-    <h2 class="sec-h white">문의 게시판</h2>
-    <p class="contact-tagline">무엇이든 편하게 문의해 주세요.</p>
+  <!-- ⑤ 온라인 매거진 -->
+  <section id="magazine" class="pg-pub-layout">
+    <div class="pub-bg-effect"></div>
 
-    <form id="boardForm" class="board-form" novalidate>
-
-      <div class="bf-row">
-        <div class="bf-col">
-          <label class="bf-label">이름 <span class="bf-req">*</span></label>
-          <input class="bf-input" type="text" name="name" placeholder="성함" required>
-        </div>
-        <div class="bf-col">
-          <label class="bf-label">이메일 <span class="bf-req">*</span></label>
-          <input class="bf-input" type="email" name="email" placeholder="답장받을 이메일 주소" required>
-        </div>
-      </div>
-
-      <div class="bf-full">
-        <label class="bf-label">소속 / 기관</label>
-        <input class="bf-input" type="text" name="organization" placeholder="회사 · 학교 · 기관명 (선택)">
-      </div>
-
-      <div class="bf-full">
-        <label class="bf-label">제목 <span class="bf-req">*</span></label>
-        <input class="bf-input" id="bf-title" type="text" name="title" placeholder="문의 제목" required>
-      </div>
-
-      <div class="bf-full">
-        <label class="bf-label">내용 <span class="bf-req">*</span></label>
-        <textarea class="bf-textarea" name="message" placeholder="문의 내용을 자유롭게 작성해 주세요." required></textarea>
-      </div>
-
-      <div class="bf-actions">
-        <label class="bf-priv">
-          <input type="checkbox" id="bf-priv-chk">
-          <span>🔒 비공개 처리</span>
-        </label>
-        <button type="submit" class="bf-submit" id="bf-btn">게시하기 →</button>
-      </div>
-    </form>
-
-    <div id="boardDone" class="board-done" hidden>
-      <div class="bd-icon">✓</div>
-      <p class="bd-title">제안이 접수되었습니다</p>
-      <p class="bd-sub">빠른 시일 내에 연락드리겠습니다.</p>
-      <button class="bd-again" id="bd-again-btn">다시 작성하기</button>
+    <!-- 상단 레이블 -->
+    <div class="pu1-top">
+      <span class="pu1-label">위탁 콘텐츠제작 2</span>
     </div>
-  </div>
-</section>
+
+    <div class="pub-container">
+      <!-- 좌측: 비즈니스 가치 소구 카피 & 매거진 설명 -->
+      <div class="pub-left reveal">
+        <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 02 · ONLINE MAGAZINE</p>
+        <h2 class="pub-h2">에디터와 디자이너 없이<br>조직의 성과를<br><em>트렌디한 매거진</em>으로</h2>
+        <p class="pub-desc">
+          고비용의 종이 인쇄물이나 복잡한 레이아웃 조율 작업이 필요하지 않습니다. 정제되지 않은 인터뷰 기록과 사내 소식, 성과 자료만 전달해 주시면, AI 공동 에디팅 시스템을 통해 최신 모바일 트렌드에 걸맞은 웹 매거진으로 신속하게 디자인 및 브랜딩해 드립니다. 대학 학과 및 기업의 성과를 가장 빠르고 경제적으로 전파하십시오.
+        </p>
+      </div>
+
+      <!-- 우측: 잡지 표지 고해상도 썸네일 -->
+      <div class="pub-right reveal reveal-d2">
+        <img src="images/cs-mag-cover.png" alt="온라인 매거진 표지 데모" class="pub-thumbnail blue-glow mag-thumbnail">
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ 단행본 프로젝트 -->
+  <section id="book" class="pg-pub-layout">
+    <div class="pub-bg-effect"></div>
+
+    <!-- 상단 레이블 -->
+    <div class="pu1-top">
+      <span class="pu1-label">위탁 콘텐츠제작 3</span>
+    </div>
+
+    <div class="pub-container">
+      <!-- 좌측: 비즈니스 가치 소구 카피 & 출간 설명 -->
+      <div class="pub-left reveal">
+        <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 03 · BOOK PROJECT</p>
+        <h2 class="pub-h2">원고 기획부터 서점 유통까지<br>귀사의 지식 자산을<br><em>권위 있는 책</em>으로 완성</h2>
+        <p class="pub-desc">
+          구술 인터뷰 기록과 분산된 내부 자료만 준비해 주십시오. AI 팩트체크 및 문체 교정 에이전트와 함께 귀사만의 독창적인 스토리를 고품격 단행본으로 기획 및 정교하게 다듬어 드립니다. 정식 ISBN 발급부터 전국 온·오프라인 서점 유통까지 올인원으로 서포트하며, 귀사의 전문성을 입증하는 가장 신뢰도 높은 책 브랜딩 에셋을 경제적으로 전달합니다.
+        </p>
+      </div>
+
+      <!-- 우측: 단행본 표지 고해상도 썸네일 -->
+      <div class="pub-right reveal reveal-d2">
+        <img src="images/cs-book-coauthored.png" alt="단행본 표지 이미지" class="pub-thumbnail gold-glow book-thumbnail">
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑦ CONTACT / 협력제안 게시판 (라이브 index.html 그대로 이식) -->
+  <section id="contact" class="pg-contact">
+    <div class="deco deco-tr"></div>
+    <div class="deco deco-bl"></div>
+    <div class="board-wrap">
+      <p class="eyebrow white">CONTACT US</p>
+      <h2 class="sec-h white">문의 게시판</h2>
+      <p class="contact-tagline">무엇이든 편하게 문의해 주세요.</p>
+
+      <form id="boardForm" class="board-form" novalidate>
+        <div class="bf-row">
+          <div class="bf-col">
+            <label class="bf-label">이름 <span class="bf-req">*</span></label>
+            <input class="bf-input" type="text" name="name" placeholder="성함" required>
+          </div>
+          <div class="bf-col">
+            <label class="bf-label">이메일 <span class="bf-req">*</span></label>
+            <input class="bf-input" type="email" name="email" placeholder="답장받을 이메일 주소" required>
+          </div>
+        </div>
+        <div class="bf-full">
+          <label class="bf-label">소속 / 기관</label>
+          <input class="bf-input" type="text" name="organization" placeholder="회사 · 학교 · 기관명 (선택)">
+        </div>
+        <div class="bf-full">
+          <label class="bf-label">제목 <span class="bf-req">*</span></label>
+          <input class="bf-input" id="bf-title" type="text" name="title" placeholder="문의 제목" required>
+        </div>
+        <div class="bf-full">
+          <label class="bf-label">내용 <span class="bf-req">*</span></label>
+          <textarea class="bf-textarea" name="message" placeholder="문의 내용을 자유롭게 작성해 주세요." required></textarea>
+        </div>
+        <div class="bf-actions">
+          <label class="bf-priv">
+            <input type="checkbox" id="bf-priv-chk">
+            <span>🔒 비공개 처리</span>
+          </label>
+          <button type="submit" class="bf-submit" id="bf-btn">게시하기 →</button>
+        </div>
+      </form>
+
+      <div id="boardDone" class="board-done" hidden>
+        <div class="bd-icon">✓</div>
+        <p class="bd-title">제안이 접수되었습니다</p>
+        <p class="bd-sub">빠른 시일 내에 연락드리겠습니다.</p>
+        <button class="bd-again" id="bd-again-btn">다시 작성하기</button>
+      </div>
+    </div>
+  </section>
 
 </div><!-- /#pages -->
 
 <footer>
-  <p>넥스트아이오 (NextIO) &nbsp;|&nbsp; 경기도 용인시 수지구 &nbsp;|&nbsp; 사업자등록번호 824-04-03769</p>
+  <p>&copy; 2026 NextIO. All rights reserved.</p>
 </footer>
 
-<script src="main.js"></script>
 <script>
-  // ?edit=1 일 때만 편집 도구 로드
-  if (new URLSearchParams(location.search).has('edit')) {
-    const l = document.createElement('link');
-    l.rel = 'stylesheet'; l.href = 'editor.css';
-    document.head.appendChild(l);
-    const s = document.createElement('script');
-    s.src = 'editor.js'; s.defer = true;
-    document.body.appendChild(s);
+(function () {
+  const form   = document.getElementById('boardForm');
+  const btn    = document.getElementById('bf-btn');
+  const titleI = document.getElementById('bf-title');
+  const done   = document.getElementById('boardDone');
+  const again  = document.getElementById('bd-again-btn');
+  if (!form) return;
+
+  const GF_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeKenhxndfa-ABL8X9gIDL1VvNdYS6DBNIieSPI5xlI96ZqXw/formResponse';
+  const GF = {
+    name:    'entry.2005620554',
+    email:   'entry.1045781291',
+    org:     'entry.1065046570',
+    title:   'entry.1166974658',
+    message: 'entry.839337160'
+  };
+
+  again.addEventListener('click', () => {
+    done.hidden = true;
+    form.hidden = false;
+    form.reset();
+    btn.textContent = '게시하기 →';
+    btn.disabled = false;
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const title = titleI.value.trim() || '제목 없음';
+
+    const iframe = document.createElement('iframe');
+    iframe.name = 'gf-target';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    const gfForm = document.createElement('form');
+    gfForm.method = 'POST';
+    gfForm.action = GF_URL;
+    gfForm.target = 'gf-target';
+
+    const fbzx = Math.floor(Math.random() * 9e18) * -1;
+    const fields = [
+      [GF.name,    form.querySelector('[name="name"]').value],
+      [GF.email,   form.querySelector('[name="email"]').value],
+      [GF.org,     form.querySelector('[name="organization"]').value],
+      [GF.title,   title],
+      [GF.message, form.querySelector('[name="message"]').value],
+      ['fvv',             '1'],
+      ['pageHistory',     '0'],
+      ['fbzx',            String(fbzx)],
+      ['partialResponse', '[null,null,"' + fbzx + '"]'],
+      ['submissionTimestamp', '-1']
+    ];
+    fields.forEach(function(pair) {
+      const inp = document.createElement('input');
+      inp.type = 'hidden'; inp.name = pair[0]; inp.value = pair[1];
+      gfForm.appendChild(inp);
+    });
+
+    document.body.appendChild(gfForm);
+    gfForm.submit();
+
+    setTimeout(function() {
+      try { document.body.removeChild(iframe); } catch(e) {}
+      try { document.body.removeChild(gfForm); } catch(e) {}
+    }, 3000);
+
+    form.hidden = true;
+    done.hidden = false;
+  });
+})();
+</script>
+
+<!-- Import maps polyfill -->
+<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ── 1. 배경 미세 먼지 파티클 (Canvas 2D) ──
+const bg = document.getElementById('bg-canvas');
+const bctx = bg.getContext('2d');
+let pts = [];
+function initBg() {
+  bg.width = window.innerWidth;
+  bg.height = window.innerHeight;
+  pts = Array.from({length: 60}, () => ({
+    x: Math.random()*bg.width, y: Math.random()*bg.height,
+    vx:(Math.random()-.5)*.12, vy:(Math.random()-.5)*.12,
+    r:Math.random()*1.2+.4,
+    color: Math.random() > 0.5 ? 'rgba(251,191,36,' : 'rgba(111,168,255,',
+    a:Math.random()*.25+.05
+  }));
+}
+function drawBg() {
+  bctx.clearRect(0,0,bg.width,bg.height);
+  pts.forEach(p => {
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>bg.width) p.vx*=-1;
+    if(p.y<0||p.y>bg.height) p.vy*=-1;
+    bctx.beginPath(); bctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    bctx.fillStyle=`${p.color}${p.a})`; bctx.fill();
+  });
+  requestAnimationFrame(drawBg);
+}
+initBg(); drawBg();
+
+// ── 2. Three.js: 프리미엄 AI 코어 (Central Core & Orbiting Rings) ──
+const container = document.querySelector('.hero-visual');
+const canvas = document.getElementById('three-canvas');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+
+// 카메라 시프트 (데스크탑 기준 우측 편향 정렬)
+const isDesktop = window.innerWidth > 992;
+camera.position.set(isDesktop ? -0.8 : 0, 0, 7.5);
+
+function resizeThree() {
+  const w = container.clientWidth, h = container.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w/h;
+  const isMobile = window.innerWidth <= 992;
+  if (isMobile) {
+    coreGroup.scale.setScalar(0.58);
+    coreGroup.position.set(0, 1.25, 0);
+    camera.position.set(0, 0, 7.2);
+  } else {
+    coreGroup.scale.setScalar(1.0);
+    coreGroup.position.set(0, 0, 0);
+    camera.position.set(-0.8, 0, 7.5);
+  }
+  camera.updateProjectionMatrix();
+}
+
+const orbit = new OrbitControls(camera, canvas);
+orbit.enablePan = false;
+orbit.enableZoom = false;
+orbit.autoRotate = true;
+orbit.autoRotateSpeed = 0.6;
+orbit.target.set(0, 0, 0);
+
+// 모바일 스크롤 간섭 문제 완벽히 비활성화
+if (window.innerWidth <= 992) {
+  orbit.enabled = false;
+}
+
+// ── 고화질 AI 코어 요소 설계 ──
+
+// 모든 3D 오브젝트를 묶는 루트 그룹 (모바일 스케일/위치 일괄 제어용)
+const coreGroup = new THREE.Group();
+scene.add(coreGroup);
+
+// A. 중앙의 펄싱하는 네온 구체 (AI Core)
+const coreGeom = new THREE.SphereGeometry(0.7, 32, 32);
+const coreMat = new THREE.MeshBasicMaterial({
+  color: 0x6FA8FF,
+  transparent: true,
+  opacity: 0.15,
+  wireframe: true
+});
+const coreMesh = new THREE.Mesh(coreGeom, coreMat);
+coreGroup.add(coreMesh);
+
+// B. 코어를 감싸는 외각 오로라 글로우 포인트 구체
+const glowGeom = new THREE.SphereGeometry(0.72, 16, 16);
+const glowMat = new THREE.PointsMaterial({
+  color: 0xFBBF24,
+  size: 0.08,
+  transparent: true,
+  opacity: 0.4
+});
+const glowPoints = new THREE.Points(glowGeom, glowMat);
+coreGroup.add(glowPoints);
+
+// C. 회전하는 위성 궤도 데이터 고리 (Planet-like Data Dust Rings)
+const ringsGroup = new THREE.Group();
+coreGroup.add(ringsGroup);
+
+const buildRing = (radius, count, color, rotX, rotZ) => {
+  const geom = new THREE.BufferGeometry();
+  const pos = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2 + Math.random() * 0.1;
+    const r = radius + (Math.random() - 0.5) * 0.15;
+    pos[i * 3] = Math.cos(angle) * r;
+    pos[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
+    pos[i * 3 + 2] = Math.sin(angle) * r;
+  }
+  geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const mat = new THREE.PointsMaterial({
+    size: 0.05,
+    color: new THREE.Color(color),
+    transparent: true,
+    opacity: 0.5,
+    blending: THREE.AdditiveBlending
+  });
+  const points = new THREE.Points(geom, mat);
+  points.rotation.x = rotX;
+  points.rotation.z = rotZ;
+  ringsGroup.add(points);
+  return points;
+};
+
+const r1 = buildRing(1.6, 100, '#6FA8FF', Math.PI/4, Math.PI/8);
+const r2 = buildRing(2.1, 140, '#FBBF24', -Math.PI/6, -Math.PI/5);
+const r3 = buildRing(2.5, 80, '#a855f7', Math.PI/3, Math.PI/12);
+
+// D. 3D 신경망 메쉬 노드 (Neural Network)
+const nodeCount = 55;
+const netRadius = 2.2;
+const nodes = [];
+
+for (let i = 0; i < nodeCount; i++) {
+  const u = Math.random();
+  const v = Math.random();
+  const theta = u * 2.0 * Math.PI;
+  const phi = Math.acos(2.0 * v - 1.0);
+  const d = Math.cbrt(Math.random()) * netRadius;
+
+  nodes.push({
+    pos: new THREE.Vector3(
+      d * Math.sin(phi) * Math.cos(theta),
+      d * Math.sin(phi) * Math.sin(theta),
+      d * Math.cos(phi)
+    ),
+    vel: new THREE.Vector3(
+      (Math.random() - 0.5) * 0.003,
+      (Math.random() - 0.5) * 0.003,
+      (Math.random() - 0.5) * 0.003
+    ),
+    color: Math.random() > 0.55 ? new THREE.Color('#6FA8FF') : new THREE.Color('#FBBF24')
+  });
+}
+
+const netGeom = new THREE.BufferGeometry();
+const netPos = new Float32Array(nodeCount * 3);
+const netColor = new Float32Array(nodeCount * 3);
+
+nodes.forEach((n, i) => {
+  netPos[i * 3] = n.pos.x;
+  netPos[i * 3 + 1] = n.pos.y;
+  netPos[i * 3 + 2] = n.pos.z;
+  netColor[i * 3] = n.color.r;
+  netColor[i * 3 + 1] = n.color.g;
+  netColor[i * 3 + 2] = n.color.b;
+});
+
+netGeom.setAttribute('position', new THREE.BufferAttribute(netPos, 3));
+netGeom.setAttribute('color', new THREE.BufferAttribute(netColor, 3));
+
+const netMaterial = new THREE.PointsMaterial({
+  size: 0.12,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.75,
+  blending: THREE.AdditiveBlending
+});
+const netPoints = new THREE.Points(netGeom, netMaterial);
+coreGroup.add(netPoints);
+
+// 연결선 생성
+const lineGeom = new THREE.BufferGeometry();
+const lineMat = new THREE.LineBasicMaterial({
+  transparent: true,
+  opacity: 0.12,
+  blending: THREE.AdditiveBlending
+});
+const netLines = new THREE.LineSegments(lineGeom, lineMat);
+coreGroup.add(netLines);
+
+// 로딩 시뮬레이션
+let pct = 0;
+const loadInt = setInterval(() => {
+  pct += Math.random() * 25 + 10;
+  if (pct >= 100) {
+    pct = 100;
+    clearInterval(loadInt);
+    document.getElementById('loading').style.opacity = '0';
+    setTimeout(() => document.getElementById('loading').classList.add('hidden'), 600);
+  }
+  document.getElementById('load-bar').style.width = pct + '%';
+}, 80);
+
+// ── 애니메이션 루프 ──
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const time = clock.getElapsedTime();
+
+  // 중앙 코어의 미세한 크기 맥동
+  const pulse = 1.0 + Math.sin(time * 2.0) * 0.08;
+  coreMesh.scale.setScalar(pulse);
+  glowPoints.scale.setScalar(pulse * 1.03);
+
+  // 위성 궤도 링 회전
+  r1.rotation.y = time * 0.08;
+  r2.rotation.y = -time * 0.06;
+  r3.rotation.z = time * 0.05;
+
+  // 신경망 노드 이동 및 바운더리 검사
+  const positions = netGeom.attributes.position.array;
+  nodes.forEach((n, i) => {
+    n.pos.add(n.vel);
+    if (n.pos.length() > netRadius) {
+      n.vel.multiplyScalar(-1);
+    }
+    positions[i * 3] = n.pos.x;
+    positions[i * 3 + 1] = n.pos.y;
+    positions[i * 3 + 2] = n.pos.z;
+  });
+  netGeom.attributes.position.needsUpdate = true;
+
+  // 신경망 연결선 최신화
+  const lPos = [];
+  const lColors = [];
+  for (let i = 0; i < nodeCount; i++) {
+    for (let j = i + 1; j < nodeCount; j++) {
+      const d = nodes[i].pos.distanceTo(nodes[j].pos);
+      if (d < 1.15) {
+        lPos.push(
+          nodes[i].pos.x, nodes[i].pos.y, nodes[i].pos.z,
+          nodes[j].pos.x, nodes[j].pos.y, nodes[j].pos.z
+        );
+        const col = nodes[i].color.clone().lerp(nodes[j].color, 0.5);
+        lColors.push(col.r, col.g, col.b, col.r, col.g, col.b);
+      }
+    }
   }
 
+  lineGeom.setAttribute('position', new THREE.Float32BufferAttribute(lPos, 3));
+  lineGeom.setAttribute('color', new THREE.Float32BufferAttribute(lColors, 3));
+  lineMat.vertexColors = true;
 
+  // 라인 투명도 오실레이션
+  lineMat.opacity = 0.1 + Math.sin(time * 1.5) * 0.04;
 
-  // 디스플레이 데일리
-  const listEl  = document.getElementById('dn-list');
-  const iframeEl = document.getElementById('dn-iframe');
+  netPoints.rotation.y = time * 0.03;
+  netLines.rotation.y = time * 0.03;
 
-  // iframe 내부 스크롤바 제거 + 높이 자동 조정
+  orbit.update();
+  renderer.render(scene, camera);
+}
+
+resizeThree();
+animate();
+
+window.addEventListener('resize', () => {
+  initBg();
+  resizeThree();
+});
+
+// ── 가로 스냅 슬라이더 네비게이션 제어 스크립트 ──
+const IS_DESKTOP = () => window.innerWidth >= 993;
+
+const pagesEl    = document.getElementById('pages');
+const sections   = Array.from(pagesEl.querySelectorAll(':scope > section'));
+const prevBtn    = document.getElementById('pgPrev');
+const nextBtn    = document.getElementById('pgNext');
+const sectionIds = sections.map(s => s.id);
+
+let currentIdx = 0;
+
+function activateReveals(section) {
+  section.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+}
+
+function goTo(idx) {
+  currentIdx = Math.max(0, Math.min(idx, sections.length - 1));
+  if (IS_DESKTOP()) {
+    pagesEl.scrollTo({ left: currentIdx * pagesEl.clientWidth, behavior: 'smooth' });
+  } else {
+    sections[currentIdx].scrollIntoView({ behavior: 'smooth' });
+  }
+  activateReveals(sections[currentIdx]);
+  syncUI();
+}
+window.goTo = goTo;
+
+const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+function syncUI() {
+  if (prevBtn) prevBtn.disabled = currentIdx === 0;
+  if (nextBtn) nextBtn.disabled = currentIdx === sections.length - 1;
+  navLinks.forEach((el, i) => el.classList.toggle('active', i === currentIdx));
+}
+
+if (prevBtn) prevBtn.addEventListener('click', () => goTo(currentIdx - 1));
+if (nextBtn) nextBtn.addEventListener('click', () => goTo(currentIdx + 1));
+
+// 창 크기 변경 시 스크롤 리사이징 보정
+let resizeRaf = null;
+window.addEventListener('resize', () => {
+  if (resizeRaf) return;
+  resizeRaf = requestAnimationFrame(() => {
+    resizeRaf = null;
+    if (IS_DESKTOP()) pagesEl.scrollLeft = currentIdx * pagesEl.clientWidth;
+  });
+});
+
+document.addEventListener('keydown', e => {
+  if (!IS_DESKTOP()) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(currentIdx + 1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(currentIdx - 1);
+});
+
+// 스냅 스크롤에 따른 currentIdx 동기화 (데스크탑)
+const snapObs = new IntersectionObserver((entries) => {
+  if (!IS_DESKTOP()) return;
+  entries.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio >= 0.5) {
+      currentIdx = sections.indexOf(e.target);
+      syncUI();
+      activateReveals(e.target);
+    }
+  });
+}, { root: pagesEl, threshold: 0.5 });
+sections.forEach(s => snapObs.observe(s));
+
+// 모바일에서의 스냅 감지
+const mobileObs = new IntersectionObserver((entries) => {
+  if (IS_DESKTOP()) return;
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      currentIdx = sections.indexOf(e.target);
+      syncUI();
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sections.forEach(s => mobileObs.observe(s));
+
+// 앵커 이동 및 메뉴 오버라이드
+window.goto = function(id) {
+  const idx = sectionIds.indexOf(id);
+  if (idx >= 0) {
+    goTo(idx);
+  }
+};
+
+// ── Scroll Reveal Script ──
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── 데일리카드 비즈니스 로직 연동 ──
+const listEl = document.getElementById('dailyList');
+const iframeEl = document.getElementById('dailyIframe');
+
+if (listEl && iframeEl) {
   function applyIframeStyles(el) {
     try {
       const doc = el.contentDocument || el.contentWindow.document;
@@ -402,28 +2027,11 @@
       if (!doc.querySelector('#dn-inject')) {
         const style = doc.createElement('style');
         style.id = 'dn-inject';
-        const isMobile = window.innerWidth <= 768;
-        style.innerHTML = isMobile ? `
+        style.innerHTML = `
           html, body { overflow: hidden !important; }
-          body { padding: 0 !important; margin: 0 !important; }
-          .cta { display: none !important; }
-          .notch { display: none !important; }
+          body { padding: 0 !important; margin: 0 !important; background: transparent !important; }
           .sheet { width: 100% !important; max-width: 100% !important; margin: 0 !important; box-shadow: none !important; border-radius: 0 !important; }
-        ` : `
-          html, body { overflow: hidden !important; }
-          body { background: transparent !important; padding: 0 !important; }
-          .sheet { width: 100% !important; height: auto !important; max-width: 100% !important; box-shadow: none !important; border-radius: 0 !important; background: transparent !important; margin: 0 !important; }
-          .hd { border-radius: 20px 20px 0 0 !important; }
-          .cta { display: none !important; }
-          .notch { display: none !important; }
-          .art { background: #c8bfb0 !important; border-color: #afa79a !important; }
-          .art > summary { background: #b8b0a2 !important; color: #1a1a1a !important; }
-          .art > summary::before { color: #4a3820 !important; }
-          .bodytext p { color: #1a1a1a !important; }
-          .top .art { background: #1a1a1a !important; border-color: #3a3a3a !important; }
-          .top .art > summary { background: #2a2a2a !important; color: #e8e2d6 !important; }
-          .top .art > summary::before { color: #fbbf24 !important; }
-          .top .bodytext p { color: #ddd6c8 !important; }
+          .cta, .notch { display: none !important; }
         `;
         doc.head.appendChild(style);
       }
@@ -436,16 +2044,13 @@
     } catch (e) {
       console.warn('Iframe CSS injection failed:', e);
     }
-    setTimeout(() => el.classList.remove('fading'), 50);
   }
 
   iframeEl.addEventListener('load', () => applyIframeStyles(iframeEl));
-  // 이미 로드 완료된 경우 즉시 적용
   if (iframeEl.contentDocument && iframeEl.contentDocument.readyState === 'complete') {
     applyIframeStyles(iframeEl);
   }
 
-  // 인덱스 목록 렌더링
   fetch('display-daily/index.json')
     .then(r => r.json())
     .then(dates => {
@@ -458,23 +2063,21 @@
         li.addEventListener('click', () => {
           document.querySelectorAll('.dn-list-item').forEach(el => el.classList.remove('active'));
           li.classList.add('active');
-          iframeEl.classList.add('fading');
-          setTimeout(() => {
-            iframeEl.style.height = '1500px'; // 새 카드 로드 전 높이 초기화
-            iframeEl.src = `display-daily/card_${dateStr}.html`;
-          }, 200);
+          iframeEl.src = `display-daily/card_${dateStr}.html`;
         });
         listEl.appendChild(li);
       });
-      // 최신 카드 자동 로드
       if (dates.length > 0) {
         iframeEl.src = `display-daily/card_${dates[0]}.html`;
       }
     })
     .catch(err => {
       console.error('Failed to load daily news index:', err);
-      listEl.innerHTML = '<li class="dn-list-placeholder">리스트를 불러올 수 없습니다.</li>';
+      listEl.innerHTML = '<li class="dn-list-placeholder">발행 리스트를 불러오지 못했습니다.</li>';
     });
+}
+
+syncUI();
 </script>
 </body>
 </html>
