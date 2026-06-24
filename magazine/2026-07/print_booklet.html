@@ -1,0 +1,999 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성균관대학교 첨단디스플레이공학과 월간 Letter 창간호 (책자 인쇄용)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;background:#c8bfb0;display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 0 48px}
+.serif{font-family:'Noto Serif KR',serif}
+h1,h2,h3{font-weight:700;color:#000}
+
+.db{height:4px;background:#111;margin-bottom:10px}
+.dt{height:1px;background:#e0e0e0;margin:12px 0}
+.label{font-size:11px;font-weight:700;color:#d93025;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:10px}
+.body-txt{font-size:13px;line-height:1.8;color:#333;word-break:keep-all;text-align:justify}
+.body-txt p{margin-bottom:12px}
+.body-txt p:last-child{margin-bottom:0}
+.cs-body{line-height:1.62}
+.cs-body p{margin-bottom:9px}
+.note{padding-left:12px;border-left:3px solid #111}
+.note h3{font-size:1rem;margin-bottom:6px;color:#333}
+.img-portrait{aspect-ratio:3/4;object-fit:cover;border-radius:4px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.acc-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:#f7f5f1;border-radius:7px;cursor:pointer;user-select:none;border:1px solid #e8e4de;margin-bottom:4px}
+.acc-hdr span:first-child{font-size:14px;font-weight:700;color:#111}
+.acc-body{display:none;border:1px solid #e8e4de;border-top:none;border-radius:0 0 7px 7px;overflow:hidden;margin-bottom:4px}
+/* 실적 페이지 어코디언 빈공간 채움 (접힘 상태) */
+.acc-wrap{flex:1;display:flex;flex-direction:column;gap:8px}
+.acc-wrap>div{flex:1;display:flex;flex-direction:column}
+.acc-wrap .acc-hdr{flex:1;margin-bottom:0}
+.acc-row{padding:7px 11px;border-bottom:1px solid #f5f3ef;background:#fff}
+.acc-row:last-child{border-bottom:none}
+.sum-cards{display:flex;gap:6px;margin-bottom:12px}
+.sum-card{flex:1;border-radius:7px;padding:9px;text-align:center}
+.sum-num{font-size:18px;font-weight:700}
+.sum-lbl{font-size:10px;margin-top:2px}
+.pat-card{background:#fff;border:1px solid #e8e4de;border-radius:8px;padding:10px 12px;margin-bottom:7px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.pat-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;margin-right:4px;margin-bottom:5px}
+.bpg{position:absolute;bottom:12px;width:26px;height:26px;border-radius:50%;background:#111;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.bpg-l{left:14px}
+.bpg-r{right:14px}
+
+/* ══ 스프레드 (인쇄 미리보기용 화면 표시) ══ */
+.spread{display:flex;align-items:stretch;width:1088px;height:770px;filter:drop-shadow(0 12px 40px rgba(0,0,0,.45)) drop-shadow(0 4px 12px rgba(0,0,0,.25))}
+.page-left{flex:1;background:#fdf9f3;overflow:hidden;position:relative;border-radius:4px 0 0 4px;box-shadow:inset -10px 0 20px rgba(0,0,0,.08),2px 0 6px rgba(0,0,0,.12);display:flex;flex-direction:column;height:770px}
+.page-right{flex:1;background:#fdf9f3;overflow:hidden;position:relative;border-radius:0 4px 4px 0;box-shadow:inset 10px 0 20px rgba(0,0,0,.08),-2px 0 6px rgba(0,0,0,.12);display:flex;flex-direction:column;height:770px}
+.page-placeholder{flex:1;background:#b8af9f;border-radius:4px 0 0 4px;box-shadow:inset -8px 0 16px rgba(0,0,0,.06);height:770px}
+.page-placeholder-r{flex:1;background:#b8af9f;border-radius:0 4px 4px 0;box-shadow:inset 8px 0 16px rgba(0,0,0,.06);height:770px}
+.cover-front{flex:1;border-radius:0 4px 4px 0;background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);display:flex;flex-direction:column;padding:0;position:relative;height:770px;overflow:hidden}
+.cover-back{flex:1;border-radius:4px 0 0 4px;background:linear-gradient(135deg,#000 0%,#1a1a1a 100%);display:flex;flex-direction:column;padding:0;position:relative;height:770px;overflow:hidden}
+.cover-inner{flex:1;padding:24px 44px 48px;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.mh-pub{font-size:11px;letter-spacing:1px;color:#bdb3a0}
+.mh-title{display:flex;align-items:center;justify-content:center;gap:9px;font-weight:900;font-size:1.9rem;letter-spacing:1px;color:#fff;margin:7px 0 7px}
+.mh-desc{font-size:9px;letter-spacing:4px;color:#ffd700;text-transform:uppercase;font-weight:700}
+.tog-on, .tog-on * {box-shadow:none!important;text-shadow:none!important}
+.tog-on{display:inline-flex;align-items:center;gap:4px;background:#ffd700;border-radius:12px;padding:2px 3px 2px 8px;vertical-align:middle;margin-bottom:7px}
+.tog-on .t{color:#111;font-weight:900;font-size:.55em;letter-spacing:1.2px;font-family:'Pretendard',sans-serif}
+.tog-on .knob{width:0.5em;height:0.5em;border-radius:50%;background:#111}
+.cv-frame{flex:1;min-height:0;margin:4px 0;border:1.5px solid rgba(255,215,0,.5);border-radius:3px;overflow:hidden;position:relative}
+.cv-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.spine{width:0;flex-shrink:0}
+.bp{padding:24px 44px 48px;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start}
+.b-portrait{width:88px}
+
+/* ══ 풀블리드 표지 (A안: 제호 상단 + 커버라인 하단) ══ */
+.cv-full{padding:0; font-family:'Outfit',sans-serif; background:#000; position:relative; overflow:hidden}
+.cv-hero{position:absolute;right:0;top:4%;width:78%;height:92%;object-fit:contain;object-position:right center;display:block;z-index:0;background:transparent}
+.cv-grad-left{position:absolute;left:0;top:0;bottom:0;width:65%;z-index:1;background:linear-gradient(90deg, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.4) 75%, transparent 100%);pointer-events:none}
+.cv-top-left{position:absolute;left:40px;top:42px;text-align:left;z-index:2}
+.cv-top-right{position:absolute;right:40px;top:42px;text-align:right;z-index:2}
+.cv-top-right .cv-reg-num{font-size:10px;color:#888;letter-spacing:0.5px;margin-bottom:6px;text-shadow:0 1px 2px rgba(0,0,0,0.5)}
+.cv-top-info{display:flex;justify-content:flex-end;align-items:center;gap:10px}
+.cv-top-info .badge{background:#ffd700;color:#000;padding:3px 10px;border-radius:2px;font-size:10.5px;font-weight:800}
+.cv-top-info .date{color:#cfc7ba;font-size:11.5px;letter-spacing:.5px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.cv-left-content{position:absolute;left:40px;top:90px;bottom:120px;width:48%;z-index:2;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start}
+.cv-mh-left{text-align:left;width:100%}
+.cv-mh-left .mh-title-left{text-shadow:0 3px 16px rgba(0,0,0,0.95);font-size:3.4rem;font-weight:900;letter-spacing:3px;color:#fff;margin:0 0 6px;display:flex;align-items:flex-end;gap:12px;white-space:nowrap}
+.cv-mh-left .mh-title-left span{text-shadow:0 3px 16px rgba(0,0,0,0.95)}
+.cv-mh-left .mh-desc-left{font-size:11px;letter-spacing:8px;color:#ffd700;text-transform:uppercase;font-weight:700;opacity:0.95;text-shadow:0 1px 4px rgba(0,0,0,.8);margin-top:2px}
+.cv-articles{display:flex;flex-direction:column;gap:11px;width:100%;margin-top:24px;margin-bottom:0}
+.cv-article-item{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+.cv-art-label{font-size:11px;font-weight:700;color:#ffd700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;text-shadow:0 1px 2px rgba(0,0,0,0.5)}
+.cv-art-title{font-size:16px;font-weight:800;color:#fff;line-height:1.4;word-break:keep-all;text-shadow:0 2px 5px rgba(0,0,0,0.95);font-family:'Pretendard',sans-serif}
+.cv-art-divider{height:1px;width:100%;background:linear-gradient(90deg, rgba(255, 215, 0, 0.3), transparent);margin:2px 0}
+.cv-bottom-bar{position:absolute;left:40px;right:40px;bottom:42px;display:flex;align-items:flex-end;justify-content:space-between;z-index:2}
+.cv-pub-block{text-align:left}
+.cv-pub-block .pub-kr{font-family:'Pretendard',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:#bdb3a0;text-shadow:0 1px 4px rgba(0,0,0,.9);margin-bottom:3px}
+.cv-pub-block .pub-en{font-family:'Outfit',sans-serif;font-size:8px;font-weight:400;letter-spacing:1px;color:rgba(255,215,0,0.75);text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,.8);line-height:1.3}
+.cv-qr-box{background:#fff;padding:4px;border-radius:4px;box-shadow:0 4px 10px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;transition:transform 0.2s}
+.cv-qr-box img{width:42px;height:42px;display:block}
+/* ══ 제목형 사진 페이지 (헤더 고정 + 아래 사진 가득) ══ */
+.photo-fill{flex:1;min-height:0;position:relative;overflow:hidden;background:#222;border-radius:6px;display:flex}
+.photo-fill img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-fill.fit-contain{background:#f7f5f0}
+.photo-fill.fit-contain img{object-fit:contain}
+/* ══ 전체 페이지 사진 (표준 5:7) ══ */
+.full-photo{flex:1;min-height:0;position:relative;overflow:hidden;background:#222;display:flex}
+.full-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.full-photo.fit-contain{background:#fdf9f3}
+.full-photo.fit-contain img{object-fit:contain}
+.fp-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 18px 14px;background:linear-gradient(transparent,rgba(0,0,0,.62));color:#fff;font-size:12px;line-height:1.5;word-break:keep-all}
+
+/* ══ 인쇄 모드 ══ */
+@media print{
+  @page{size:A3 landscape;margin:0}
+  body{background:#fff;gap:0;padding:0;display:block}
+  /* 기본 spread는 한 페이지에 강제 (표지·목차·인사말 등) */
+  .spread{width:100%;filter:none;page-break-after:always;break-after:page;display:flex;height:100vh}
+  .spread:last-child{page-break-after:auto;break-after:auto}
+  /* 콘텐츠가 많은 spread는 자동 분할 허용 */
+  .spread.has-overflow{height:auto;min-height:100vh;page-break-inside:auto;break-inside:auto}
+  .spread.has-overflow .page-left,.spread.has-overflow .page-right{height:auto;min-height:100vh}
+  .spread.has-overflow .bp{overflow:visible}
+  /* 일반 spread는 strict */
+  .spread:not(.has-overflow){page-break-inside:avoid;break-inside:avoid}
+  .page-left,.page-right{border-radius:0;box-shadow:none;height:100vh}
+  .cover-front,.cover-back{border-radius:0;height:100vh}
+  .page-placeholder,.page-placeholder-r{border-radius:0;box-shadow:none;height:100vh}
+  .spine{display:none}
+  .bpg{display:none}
+  /* 실적(논문·학술대회) 인쇄 시 접은 형태(요약 카드 + 헤더)로만 출력 */
+  .acc-body{display:none !important}
+  .page-left,.page-right,.cover-front,.cover-back,.page-placeholder,.page-placeholder-r{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* ══ 인쇄 안내 바 (화면에서만 표시) ══ */
+.print-bar{position:fixed;top:0;left:0;right:0;background:#3a3228;color:#f5f0e8;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100;font-size:13px;letter-spacing:0.05em;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.print-bar button{background:#ffd700;color:#000;border:none;border-radius:4px;padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:0.05em;font-family:inherit;transition:background .2s}
+.print-bar button:hover{background:#f5d000}
+@media print{.print-bar{display:none}}
+
+/* ── 이달의 논문 피처 전용(추가) ── */
+.feat-title{font-size:1.7rem;line-height:1.25;letter-spacing:-.5px;margin:2px 0 8px}
+.feat-sub{font-size:.95rem;color:#555;font-weight:500;line-height:1.5;word-break:keep-all;margin-bottom:14px}
+.feat-h{font-size:1.15rem;color:#111;margin:4px 0 10px}
+.meta-box{border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;padding:11px 13px;font-size:14px;line-height:1.65;color:#333;word-break:keep-all}
+.meta-box>div{padding:3px 0}
+.meta-box>div+div{border-top:1px solid #ece7dd}
+.meta-box .mk{display:inline-block;min-width:34px;font-weight:700;color:#d93025;margin-right:6px}
+.meta-box em{font-style:italic;color:#222}
+.steps{display:flex;flex-direction:column;gap:7px;margin:6px 0 12px}
+.step{display:flex;gap:9px;align-items:flex-start;background:#fff;border:1px solid #e8e4de;border-radius:8px;padding:9px 11px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.step .sn{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:#111;color:#ffd700;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step .stx{font-size:12px;line-height:1.55;color:#333;word-break:keep-all}
+.step .stx b{color:#111}
+.figbox{position:relative;width:100%;background:#fff;border:1px solid #ece7dd;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.figbox img{width:100%;height:100%;object-fit:contain;display:block;transform-origin:0 0}
+.cap{font-size:10.5px;color:#888;line-height:1.5;font-style:italic;margin:6px 2px 0;word-break:keep-all}
+.term{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid #ece8e0;font-size:12px;line-height:1.55;word-break:keep-all}
+.term:last-child{border-bottom:none}
+.term .tk{flex-shrink:0;width:74px;font-weight:700;color:#111}
+.term .tv{flex:1;color:#444}
+.recap{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px}
+.recap td{border:1px solid #e8e2d6;padding:8px 10px;vertical-align:top;word-break:keep-all;line-height:1.5}
+.recap td.rk{background:#faf7f1;font-weight:700;color:#d93025;width:88px;white-space:nowrap}
+.closebox{background:linear-gradient(135deg,#000,#1a1a1a);border-radius:9px;padding:16px 18px;color:#fff;margin-top:4px}
+.closebox .cq-k{font-size:11px;font-style:italic;color:#bdb3a0;line-height:1.5;margin-bottom:9px}
+.closebox .cq-c{font-size:11px;color:#cbb86a;line-height:1.55;word-break:keep-all}
+.closebox .cq-c .g{color:#fff;font-weight:700}
+.closebox .cq-h{font-size:14px;font-weight:800;color:#ffd700;line-height:1.45;margin-top:10px;word-break:keep-all}
+.cta-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.cta-btn{display:inline-block;background:#ffd700;color:#1a1a1a;font-size:12px;font-weight:800;letter-spacing:.2px;padding:8px 14px;border-radius:6px;text-decoration:none}
+.cta-qr{flex-shrink:0;line-height:0}
+.cta-qr img{width:48px;height:48px;background:#fff;padding:3px;border-radius:4px;display:block}
+@media print{.cta-btn::after{content:" (" attr(href) ")";font-weight:400;color:#7a6a2e}}
+
+@media print{.bk-lbl{display:none!important}}
+</style>
+</head>
+<body>
+
+<div class="print-bar">
+  <span>📚 책자 인쇄용 — A3 양면 인쇄 후 중앙 접어 스테이플. 앞면→뒷면 순 인쇄.</span>
+  <button onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+</div>
+
+<div style="height:50px"></div>
+
+<script>
+/* ════════════════ 콘텐츠 데이터 (빌드 시 주입) ════════════════ */
+const META = {"client": "성균관대학교 첨단디스플레이공학과", "client_short": "첨단디스플레이공학과", "client_en": "Sungkyunkwan University", "issue_type": "monthly", "issue_number": "창간호", "issue_label": "첨디공레터", "date_label": "2026. 7", "iso_date": "2026-07", "title_full": "성균관대학교 첨단디스플레이공학과 월간 Letter 창간호", "cover_image": "hero.png", "cover_story_label": "광각 노트", "cover_story_title": "OLED 패널의 투과정보를 읽는 눈<br>: ALS(Ambient Light Sensor)", "cover_kicker": "", "cover_headline": "화면 아래,<br>사라진 센서들", "cover_subline": "", "cover_slogan": "바라보는 시각이 다르면, 또 다른 것이 보입니다.", "cover_feature_title": "창간 특집 · 투과 관점에서 본 OLED", "back_cover_quote_html": "“바라보는 시각이 다르면, 또 다른 것이 보입니다.<br>첨디공人은 Display를 새로운 시각으로 연구합니다.\"", "back_cover_city": "Suwon, Korea", "quarter_label": "2026년 1분기", "publish_date": "2026. 7. 1.", "address": "(16419) 경기도 수원시 장안구 서부로 2066 제1공학관 23129호", "address_org": "성균관대학교 정보통신대학 일반대학원 첨단디스플레이공학과", "directions": "수도권 전철 1호선 성균관대역 · 자연과학캠퍼스", "map_url": "https://map.naver.com/p/search/%EC%84%B1%EA%B7%A0%EA%B4%80%EB%8C%80%ED%95%99%EA%B5%90%20%EC%9E%90%EC%97%B0%EA%B3%BC%ED%95%99%EC%BA%A0%ED%8D%BC%EC%8A%A4%20%EC%A0%9C1%EA%B3%B5%ED%95%99%EA%B4%80"};
+const PAPERS = [{"title": "A deep learning model for inferring the reverse intersystem crossing rate of TADF organic light-emitting diodes", "journal": "Materials Horizons", "author": "Junseop Lim", "cor": "이준엽", "issue": "13", "date": "2026-02"}, {"title": "Bicarbazole Derived High Triplet Energy P-type Host for Blue TADF OLEDs", "journal": "Advanced Optical Materials", "author": "Chaeyeon Lee", "cor": "이준엽", "issue": "14", "date": "2026-03"}, {"title": "Materials and Systems for Closed-Loop Optical Actuation with Integrated Sensing Pathways", "journal": "ACS Applied Optical Materials", "author": "Janghoon Joo", "cor": "원상민", "issue": "4(1)", "date": "2026-01"}, {"title": "Surface-Interaction-Driven Polarity Switching in II–V Cd3P2 Colloidal Quantum Dots for Infrared Photodiodes", "journal": "Advanced Science", "author": "THa-Chi V. ran", "cor": "정소희", "issue": "e00061", "date": "2026-03"}, {"title": "Fiber laser-assisted room-temperature crystallization of solution-processed indium-rich IGO thin films for high-performance TFTs", "journal": "Journal of Materials Chemistry C", "author": "Jae-Hyeok Cho", "cor": "김명길", "issue": "14", "date": "2026-01"}, {"title": "Enhanced stability and linearly polarized emission from CsPbI₃ perovskite nanoplatelets through A-site cation engineering", "journal": "Light-Science & Applications", "author": "Woo Hyeon Jeong", "cor": "이보람", "issue": "15(22)", "date": "2026-01"}, {"title": "Nitric oxide plasma treatment effect on SiO2 gate insulator for the stability improvement of InGaZnO TFTs", "journal": "Materials Science in Semiconductor Processing", "author": "Yunhui Jang", "cor": "이준신", "issue": "205", "date": "2026-04"}, {"title": "Advances and Future Challenges in Monolithic 3D Integrated Logic, Power, and Optoelectronics Technologies", "journal": "ACS Nano", "author": "Haksoon Jung", "cor": "전종욱", "issue": "Accepted", "date": "2026"}, {"title": "Micro-supercapacitors of exceptionally high capacitance fabricated using intrinsically stable MXene inks", "journal": "Materials Science and Engineering: R", "author": "Ali Shahzaib", "cor": "변도영", "issue": "168", "date": "2026-01"}, {"title": "Photopolymerization of field-induced patterned alignment of 2D nanoparticles in nano-colloidal liquid crystals", "journal": "Journal of Molecular Liquids", "author": "P.A.N.S. Priyadharshana", "cor": "송장근", "issue": "441", "date": "2026-01"}, {"title": "Silver chalcogenide colloidal quantum dots for NIR-to-MWIR photodetection", "journal": "Nano Today", "author": "Vishwa Bhatt", "cor": "최민재", "issue": "67", "date": "2026-02"}, {"title": "Ligand-Driven Tuning of Adsorption Energy in Nanocrystals for High-Performance H2O2 Electrosynthesis", "journal": "Journal of the American Chemical Society", "author": "Jeong-Gyu Lee", "cor": "최민재", "issue": "148(9)", "date": "2026-03"}, {"title": "Iodide-Coated CsPbBr3 Perovskite Nanowires for Resistive-Switching Memory in Neuromorphic Systems", "journal": "Nano Letters", "author": "Jooyoung Uhm", "cor": "최민재", "issue": "26(10)", "date": "2026-03"}, {"title": "Integrated carbon nanotube fiber free-standing cathode for efficient metal-free H2O2 electrosynthesis", "journal": "Carbon", "author": "Jae Won Kim", "cor": "최민재", "issue": "252", "date": "2026-03"}, {"title": "From vulnerability to robustness: Radiation-hard isolation for BPR-enabled stacked nanosheet CFETs", "journal": "Nuclear Engineering and Technology", "author": "Dongwook Kim", "cor": "전종욱", "issue": "58(5)", "date": "2026-05"}, {"title": "Hot carrier degradation in p-MOSFETs at extremely low to room temperatures (77–370 K)", "journal": "Semiconductor Science and Technology", "author": "Hayoung Bang", "cor": "전종욱", "issue": "41(3)", "date": "2026-03"}, {"title": "Asymmetry-Aware Compact Modeling of Ferroelectric Devices for Circuit-Level Simulation", "journal": "ACS Applied Electronic Materials", "author": "Joonhyeok Lee", "cor": "전종욱", "issue": "8(4)", "date": "2026-02"}, {"title": "Machine Learning-Based Standard Compact Model Binning Parameter Extraction Methodology", "journal": "Advanced Intelligent Systems", "author": "Joonhan Kang", "cor": "전종욱", "issue": "8(2)", "date": "2026-02"}, {"title": "Dual-Doped Cylindrical Bit-Line Pad for High-Efficiency Bulk Erase in V-NAND Flash", "journal": "IEEE Access", "author": "Choasub Kim", "cor": "전종욱", "issue": "14", "date": "2026-01"}, {"title": "Lateral Leakage Suppression Using H₂ Plasma-Treated SiNₓ for High-Resolution Organic Displays", "journal": "IEEE Electron Device Letters", "author": "Joohee Oh", "cor": "전종욱", "issue": "47(3)", "date": "2026-03"}, {"title": "Line-Type Tall Via Structures for CFET: Superior Scalability and Manufacturability", "journal": "Semiconductor Science and Technology", "author": "Jimyoung Lee", "cor": "전종욱", "issue": "41(1)", "date": "2026-01"}, {"title": "Chemically durable and cost-efficient N-doped SnO2 transparent electrodes for full-color perovskite LEDs", "journal": "Materials Today", "author": "So Mang Park", "cor": "이보람", "issue": "103173", "date": "2026-03"}, {"title": "Strong-Binding Small-Molecule Passivator for Two-Dimensional Tin-Based Perovskite Field-Effect Transistors", "journal": "Advanced Functional Materials", "author": "Hyeonmin Choi", "cor": "이보람", "issue": "e74094", "date": "2026-01"}, {"title": "Room Temperature Processed Amorphous Sn-Excess-ITO Electrodes for High Performance Perovskite LEDs", "journal": "Small Methods", "author": "Ye-Seo Lee", "cor": "이보람", "issue": "e02264", "date": "2026-03"}, {"title": "Polymer Network Modified Perovskite for High-Performance Pure Blue Light-Emitting Diodes", "journal": "Advanced Functional Materials", "author": "Zhongkai Yu", "cor": "이보람", "issue": "e74731", "date": "2026-03"}, {"title": "Enhanced stability and linearly polarized emission from CsPbI3 perovskite nanoplatelets through A-site cation engineering", "journal": "Light-Science & Applications", "author": "Woo Hyeon Jeong", "cor": "이보람", "issue": "22", "date": "2026-01"}];
+const CONFS = [{"title": "Modulation of Electrical Properties in RF-Sputtered Indium-Gallium Oxide Thin-Film Transistors", "conf": "KMiD 2026", "presenter": "최유나", "date": "2026-01-20", "prof": "조형균"}, {"title": "Tuning the HTL-CQD Interface for High-Performance Inverted InAs SWIR Photodetectors", "conf": "KMiD 2026", "presenter": "조휘선", "date": "2026-01-19", "prof": "정소희"}, {"title": "Enhanced Photoluminescence Efficiency of InAs Core/Shell Quantum Dots via Zn-Based Interfacial Engineering", "conf": "KMiD 2026", "presenter": "신다솜", "date": "2026-01-19", "prof": "정소희"}, {"title": "Compositionally Engineered Heavy-Metal-Free Quantum Dots for Short-Wave Infrared Sensing", "conf": "KMiD 2026", "presenter": "윤지선", "date": "2026-01-19", "prof": "정소희"}, {"title": "Room-Temperature Deposition of Al-Doped SiCN Thin Films with High Hardness and Refractive Index for Advanced AR Coatings", "conf": "KMiD 2026", "presenter": "이현석", "date": "2026-01-20", "prof": "김한기"}, {"title": "Enhanced Electrical Stability in In-Situ Hydrogen-Doped In2O3 TFTs Fabricated via RF Magnetron Sputtering", "conf": "KMiD 2026", "presenter": "심예진", "date": "2026-01-20", "prof": "김한기"}, {"title": "Oxygen-Controlled p-Type Tellurium Oxide Thin Films Deposited via Isolated Plasma Soft Deposition System", "conf": "KMiD 2026", "presenter": "김민서", "date": "2026-01-20", "prof": "김한기"}, {"title": "Optical and Electrical Properties of Advanced InZnO Transparent Electrodes for Flexible Devices", "conf": "KMiD 2026", "presenter": "박시훈", "date": "2026-01-20", "prof": "김한기"}, {"title": "Stabilizing Halide Perovskites with Exfoliated Zirconium Phosphate", "conf": "KMiD 2026", "presenter": "최유진", "date": "2026-01-21", "prof": "송장근"}, {"title": "Linking synthesis-condition-dependent optical/electrical properties of ZnMgO nanoparticles to QLED performance", "conf": "KMiD 2026", "presenter": "김태현", "date": "2026-01-19", "prof": "송장근"}, {"title": "Analysis of Charge Injection and Emission Imbalance Driven by Injection-Interface Asymmetry in Tandem QD-LEDs", "conf": "KMiD 2026", "presenter": "이태규", "date": "2026-01-19", "prof": "송장근"}, {"title": "역구조 3-스택 텐덤 QD-LED에서의 순차 활성화 기반 전압 구동 색 조절", "conf": "KMiD 2026", "presenter": "정하림", "date": "2026-01-19", "prof": "송장근"}, {"title": "PEDOT:PSS-induced Interfacial Deformation as the Origin of Inter-Unit Efficiency Imbalance in AC-Driven EOD Tandem QLEDs", "conf": "KMiD 2026", "presenter": "오성민", "date": "2026-01-19", "prof": "송장근"}, {"title": "Enhanced photostability of cesium-based perovskites/quantum dots via an Exf-ZrP matrix–PMMA composite and surface processing", "conf": "KMiD 2026", "presenter": "유병현", "date": "2026-01-19", "prof": "송장근"}, {"title": "Sensing Margin Characterization in 2T0C DRAM Using a GAA IGZO FET and a GAA 2D FET Under WTR/RTR Variations", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김건", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Analysis of Alpha-Particle-Induced Single Event Effects and Evaluation of Radiation Tolerance of AlGaN/GaN HEMTs", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김수민", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Automated, Physics-Guided AI Framework for Asymmetry-Aware Ferroelectric Compact Models", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김준한", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Machine Learning-Accelerated Single Event Effect (SEE) Modeling for Nanosheet FETs", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김준한, 김동욱", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Automated Layout Optimization for Planar MOSFETs Considering Local Layout Effects (LLE)", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "유지혜", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Development of a Next-Generation CFET PDK Considering BackSide Power Delivery Network (BSPDN)", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "이준엽", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Scalable Solvothermal Synthesis of Ti3C2TX MXene Quantum Dots with Near UV Violet Emission", "conf": "제 2회 한국정보디스플레이 학술대회", "presenter": "이승규", "date": "2026-01-19", "prof": "변도영"}, {"title": "Development of High-Efficiency and High-Absorption AIGS/AGS/ZnS Core-Multishell Quantum Dots for Next-Generation Display Applications", "conf": "2026 ICDT", "presenter": "채종아", "date": "2026-04-02", "prof": "배완기"}, {"title": "From Vulnerability to Robustness: Radiation Hard Isolation for BPR Enabled Stacked Nanosheet CFETs", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김동욱", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Electro-Thermal Analysis of Trap-Induced Degradation in GaN HEMTs Using TCAD", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김동찬", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Optimization of DRAM Sense Amplifier Delay–Power Trade-Off Using LUT-Based Retarget Model and NSGA-II Framework", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김수연", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Modeling Large-Signal RF Behavior Considering Self-Heating and Trap Effects", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김원우", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Optimization of the Electrical Characteristics of Two-Dimensional TMDC Channel GAA Devices through R, C Segmentation Analysis", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "김호진", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Device-Aware Nonlinear Neural-Network Training Framework for Analog In-Memory Computing", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "박주환", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Ferroelectric Capacitor Compact Model Development for Processing-in-Memory", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "박준서", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Performance Benchmarking of 2D-Based FETs with Fully-Gated, Carbon Nanotube, and Mirror Twin Boundary Architectures", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "유지원", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Thermal Performance Analysis of BPR-based Complementary Field-Effect Transistor according to Packaging Method", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "윤재훈", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Electrical Characteristics of 2D Channel based Impact Ionization FET", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "이동기", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Analysis of Z-Interference Mitigation through Switching WL Voltage Engineering in HCI-Based Programming", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "이예원", "date": "2026-01-27", "prof": "전종욱"}, {"title": "2D Material-Based Low Height Complementary Field-Effect Transistor", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "이준열", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Comparative Electro-Thermal Analysis of CFET Structures with Frontside BPR and Backside BSC Configurations", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "이지성", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Selective Erase Operation Utilizing Hot Hole Injection for 3D VNAND Flash Memory", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "주병준", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Agent-Driven LLM Framework for Interactive Parasitic Capacitance Prediction in CFETs via Model Context Protocol", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "최우석", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Total Ionizing Dose Effects in Fin- and GAA-FETs", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "허동욱", "date": "2026-01-27", "prof": "전종욱"}, {"title": "OLEDoS Pixel Transistor Optimization through the AI-Based TCAD Optimization Method Framework", "conf": "제33회 한국반도체학술대회 (KCS 2026)", "presenter": "황수영, 손재경", "date": "2026-01-27", "prof": "전종욱"}, {"title": "Perovskites LEDs: Ready to convert", "conf": "2026년도 분자전자 부문위원회 심층토론회", "presenter": "이보람", "date": "2026-02-04", "prof": "이보람"}];
+const PATENTS = [{"title": "스택 구조체 및 그 제조 방법, 그리고 이를 적용한 커패시터, 트랜지스터, 염료 감응 태양전지, 창문 유리 코팅용 건축 필름", "country": "대한민국", "applicant": "성균관대학교산학협력단", "applicationDate": "2024", "registrationDate": "", "status": "출원"}, {"title": "AI을 기반으로 하는 소자 특성 예측 방법 및 장치", "country": "대한민국", "applicant": "주식회사 알세미", "applicationDate": "2024-10-11", "registrationDate": "", "status": "출원"}, {"title": "스택 구조체 및 그 제조 방법, 그리고 이를 적용한 커패시터, 트랜지스터, 염료 감응 태양전지, 창문 유리 코팅용 건축 필름", "country": "대한민국", "applicant": "성균관대학교산학협력단", "applicationDate": "2024-02-27", "registrationDate": "2026-02-26", "status": "등록"}];
+const INTROS = [{"id":"head","label":"학과장 인사말","title":"학과장 인사말","portrait":"head.png","subtitle":"첨단디스플레이공학과 첨디공레터 창간과 더불어\n여러분의 지속적인 관심과 성원을 부탁드립니다.","signer":"첨단디스플레이공학과 송장근 학과장","body_md":"우리 첨단디스플레이공학과는 2024년 9월, 국내 최초의 정부지원 디스플레이 특성화 대학원으로 출범하여, 빠르게 변화하는 디스플레이 산업 환경 속에서 미래 기술을 선도할 핵심 인재를 양성하기 위한 체계적인 교육 및 연구 기반을 구축해 왔습니다. 디스플레이 산업은 단순한 시각 정보 전달을 넘어, 인간과 디지털 세계를 연결하는 핵심 인터페이스로 진화하고 있으며, 소재, 소자, 공정, 시스템, 그리고 AI까지 아우르는 융합적 접근이 필수적인 분야가 되었습니다.\n\n우리 학과는 OLED, micro-display, QDLED, 투명 디스플레이와 같은 차세대 디스플레이 기술뿐 아니라, AI for display, XR optics, flexible & stretchable electronics, oxide/LTPS TFT, DDI 및 영상처리 등 폭넓은 연구 분야를 포괄하는 교육과정을 운영하고 있습니다.\n\n특히, 삼성디스플레이와 LG디스플레이를 비롯한 60여 개 참여기업과의 긴밀한 산학협력 체계는 우리 학과의 가장 큰 강점 중 하나입니다. 여러분의 지속적인 관심과 성원을 부탁드립니다. 감사합니다."},{"id":"dean","label":"학장님 축사","title":"정보통신대학장 축사","portrait":"dean.png","subtitle":"첨단디스플레이공학과 첨디공레터의 창간을\n진심으로 축하드립니다.","signer":"정보통신대학 전정훈 학장","body_md":"정보통신대학은 빠르게 변화하는 기술 환경 속에서 미래 산업을 선도할 융합형 인재를 양성하는 것을 핵심 목표로 삼고 있으며, 이러한 관점에서 첨단디스플레이공학과의 출범과 성장은 매우 중요한 의미를 지니고 있습니다.\n\n첨단디스플레이공학과는 이러한 산업적·기술적 흐름에 선제적으로 대응하여, 정부 지원을 기반으로 한 체계적인 교육 프로그램과 산학협력 중심의 연구 환경을 구축하고 있습니다. 특히, 다수의 기업과 협력하여 실질적인 연구와 교육을 동시에 수행하는 모델은 정보통신대학이 지향하는 실용적이고 혁신적인 공학교육의 모범 사례라 할 수 있습니다.\n\n또한, 디스플레이 분야는 최근 메타버스, AI 기반 인터페이스 기술과 결합되면서 새로운 성장 국면에 진입하고 있습니다. 정보통신대학은 앞으로도 첨단디스플레이공학과가 글로벌 수준의 교육 및 연구 거점으로 성장할 수 있도록 적극적으로 지원할 것입니다.\n\n다시 한번 첨디공레터 창간을 진심으로 축하드립니다. 감사합니다."},{"id":"lab-kim-1","label":"연구실 소개","title":"김세정 교수 연구실<br>NoVA Lab","portrait":"prof_kim.png","subtitle":"Nanophotonics for Versatile Applications Laboratory","signer":"","body_md":"지난 2025년 9월에 부임한 전기전자공학부 김세정 교수 연구실은 빛을 이용한 소자 제작 및 물리 연구를 수행하고 있다. 이 연구실에서 진행 중인 연구는 크게 네 가지 분야로 나눌 수 있다.\n\n먼저 '광집적회로' 연구이다. 전자기기의 눈부신 발전은 전자집적회로(IC)의 등장과 집적도의 비약적인 향상에 기반하고 있다. 현재 우리가 사용하는 랩탑은 불과 수십 년 전의 슈퍼컴퓨터에 필적하는 성능을 구현할 수 있다. 그러나 전자회로의 근본적인 한계인 발열 문제와 무어의 법칙의 둔화로 인해, 광을 이용한 정보 처리 기술이 차세대 대안으로 부상하고 있다. 광집적회로는 전자회로와 결합하여 일부 기능을 대체하거나, 독립적인 정보처리 플랫폼으로 활용될 것으로 기대된다. 이러한 광집적회로 구현을 위해서는 전자를 대체하는 광원과 전선을 대신하는 광도파로 등 다양한 광소자가 필수적이다. 김세정 교수 연구실에서는 초소형 레이저, 광도파로, 광변조기 등 핵심 광소자의 설계 및 구현 연구를 수행하고 있다.\n\n광집적회로에서 한 단계 더 나아가, 최근에는 양자 광집적회로에 대한 관심이 크게 증가하고 있다. 양자광기술은 양자통신, 양자센싱 등 다양한 응용 가능성을 지니며, 김세정 교수 연구실에서는 특히 '양자 광원 개발'에 집중하고 있다. 이 중에서도 2차원 물질을 활용한 단광자원 소자 연구가 활발히 진행되고 있다. 단광자원은 광자를 하나씩 방출하는 특성을 가지며, 양자암호통신 및 초정밀 센싱에 핵심적으로 활용된다. 김세정 교수 연구실은 특히 2차원 상온 양자광원을 광공진기 및 광도파로와 결합한 사례를 세계 최초로 보고하였으며, 이를 기반으로 양자 광집적회로로의 확장을 추진하고 있다."},{"id":"lab-kim-2","label":"연구실 소개","title":"","portrait":"","feature_image":"prof_kim_lab.jpg","subtitle":"","signer":"","body_md":"세 번째로는 고차원 광자빔 연구이다. 광자가 정보 전달 매체로 활용될 때 가지는 중요한 장점 중 하나는 자유도가 매우 크다는 점이다. 전자의 경우 많음(HIGH, 1)과 적음(LOW, 0)의 이진 신호로 정보를 전달하는 반면, 광자는 파장, 편광, 위상, 각운동량 등 다양한 물리량을 활용하여 정보를 표현할 수 있다. 이는 하나의 채널을 통해 동시에 더 많은 정보를 전송할 수 있음을 의미한다. 김세정 교수 연구실에서는 특히 위상이 나선형으로 꼬인 구조를 갖는 광보텍스 연구가 활발히 진행되고 있다. 2025년에는 복굴절 물질을 활용하여 복잡한 공정 없이 광보텍스를 생성할 수 있는 방법을 제시하였으며(Light: Science & Applications, 2025), 이를 확장한 후속 연구가 진행 중이다. 또한 고차원 광자빔을 이용해 물질의 카이럴리티를 분석하는 Helical dichroism 연구는 바이오 및 제약 분야로의 응용 가능성을 보여주고 있다. 2026년 4월에는 광보텍스보다 더 복잡한 구조를 지닌 광스커미온을 역설계 기법을 통해 구현한 프로젝트를 완료했다.\n\n마지막으로 최근 새롭게 확장하고 있는 연구 분야로 AI 광학이 있다. 딥러닝에서 뉴런과 시냅스 가중치가 전기적 신호 연산으로 구현되는 것과 달리, 광학 시스템에서는 빛의 간섭, 회절, 위상 변조와 같은 물리 현상으로 동일한 연산을 초고속·병렬 수행할 수 있다. 이는 기존 전자 기반 AI 연산이 직면한 전력 소모 증가와 처리 속도 한계를 동시에 극복할 수 있는 유망한 대안으로 평가된다."},{"id":"lab-kim-3","label":"연구실 소개","title":"","portrait":"","feature_image":"prof_kim_work.jpg","subtitle":"","signer":"","body_md":"현재 연구실에서는 공간광변조기를 기반으로 연산 정확도와 속도를 향상시키는 연구를 진행 중이다. 나아가 이를 광집적회로 및 양자광학 플랫폼과 결합하여, 초고속·저전력 기반의 차세대 지능형 광정보처리 시스템으로 발전시키는 것을 목표로 한다.\n\n이러한 나노광학·광집적 기술은 차세대 디스플레이 분야에도 다양한 방식으로 활용될 수 있다. 예를 들어, 초소형 레이저와 광공진기 기반 광원 기술은 고해상도·고휘도 마이크로 LED 디스플레이의 핵심 요소로 적용될 수 있다. 또한 메타표면 및 위상 제어 기술은 얇고 가벼우면서도 높은 광효율을 가지는 AR/VR용 평면 광학소자(메타렌즈, 홀로그램 디스플레이) 구현에 기여할 수 있다. 나아가, 광자의 위상과 편광을 활용한 고차원 광자 제어 기술은 기존 디스플레이의 해상도 한계를 넘어서는 새로운 정보 표현 방식으로 확장될 가능성도 있다. 이러한 연구는 궁극적으로 초고해상도, 초박형, 저전력 특성을 동시에 만족하는 차세대 디스플레이 기술 개발로 이어질 수 있다."}];
+const TOC = [{"num": "01", "title": "이달의 첨디공 논문", "key": "fp1"}, {"num": "02", "title": "AI가 주목한 Display Tech", "key": "ai1"}, {"num": "03", "title": "광각 노트", "key": "cs1"}, {"num": "04", "title": "연구실 소개 — 김세정 교수", "key": "prof1"}, {"num": "05", "title": "학과 현황", "key": "status"}, {"num": "06", "title": "학과 주요 행사", "key": "events"}, {"num": "07", "title": "1분기 논문 실적", "key": "p06"}, {"num": "08", "title": "1분기 학술대회 실적", "key": "p07"}, {"num": "09", "title": "1분기 특허 실적", "key": "p08"}];
+const COVER_STORY = {"title": "OLED 패널을 투과(透過) 관점에서 보면", "image": "", "label": "첨디공의 廣角노트", "series": "📖 연재테마 ① · 투과(透過) 관점 시리즈", "pages": ["첨디공 廣角노트의 첫 번째 연재테마는 OLED 패널 뒤에서 동작하는 센서들과, 이들 센서와 직간접적으로 상관관계가 있는 OLED 패널의 투과정보·연동기술을 다룹니다. 백라이트가 필요한 LCD 패널에서 투과정보를 분석하는 것은 너무나 당연하지만, 전면발광 OLED 패널을 '투과의 관점'에서 분석하는 것은 꽤나 흥미롭습니다. 우리가 미처 생각하지 못한 이슈를 발견하게 되고, 나아가 새로운 차별화 기술 개발의 시발점이 될 수 있습니다.\n\n이번 호의 주인공은 OLED 뒤에 숨은 작은 눈, ALS(조도센서)입니다.\n\n<h3 style=\"font-size:1.1rem; color:#1A2A4A; margin-top:14px; margin-bottom:10px; border-bottom:2px solid #B08A2E; padding-bottom:3px; font-weight:700; margin-top:2px;\">1. ALS란 무엇인가?</h3>\n\n<div style=\"float:right; width:118px; margin:2px 0 6px 14px;\"><div class=\"figbox zoomable\" style=\"width:100%; height:286px;\"><img src=\"assets_print/als_chip.png\" alt=\"ALS 센서 실물 단면\"><div class=\"zoom-hint\" style=\"font-size:8px; padding:2px 4px;\">🔍</div></div><div class=\"cap\" style=\"text-align:center; font-size:8.5px; margin:3px 0 0;\">▲ ALS 센서 실물 단면</div></div>\n\n화면 밝기를 알아서 맞춰 주는 그 눈을 조도센서(ALS, Ambient Light Sensor)라고 부릅니다. 그런데 ALS를 '밝기만 재는 센서'로 생각하면 절반만 아는 겁니다. 사실 ALS는 작은 컬러 카메라에 가깝습니다. 요즘 behind-OLED용 ALS는 Red·Green·Blue·Clear, 즉 RGB+C 네 채널을 동시에 읽습니다.\n\n이 네 채널의 조합에서 세 가지 정보를 뽑아냅니다.\n\n- 주변 밝기(조도, lux) — Clear 채널로 빛의 양을 잰다. 어두우면 화면을 낮춰 눈을 보호·절전하고, 밝으면 화면을 키운다.\n- 색온도(CCT) — RGB 채널 비율로 '햇빛인지·형광등인지·백열등인지'를 읽어 화이트밸런스·색감을 자동 조정한다.\n- 플리커(깜빡임) — 조명이 눈에 안 보이게 깜빡이는 주파수를 읽어 카메라 줄무늬(밴딩)를 막는다.\n\n즉 ALS는 주변광의 양·색·리듬을 한꺼번에 읽는 다채널 광센서입니다. 게다가 이 눈은 원래 베젤에 앉아 있었는데, '풀스크린' 시대가 오면서 자리를 잃고 화면 밑으로(behind-OLED) 숨어들어야 했습니다. 바로 그 순간부터, 이 이야기는 센서가 아니라 OLED의 이야기가 됩니다.", "<h3 style=\"font-size:1.1rem; color:#1A2A4A; margin-top:8px; margin-bottom:10px; border-bottom:2px solid #B08A2E; padding-bottom:3px; font-weight:700;\">2. ALS는 OLED와 어떻게 연동되는가?</h3>\n\n우리에겐 OLED가 스스로 빛을 내는 화려한 화면이지만, 그 아래 센서의 눈높이에서 보면 OLED는 여러 겹으로 쌓인 불투명한 막입니다. 외부광이 센서에 닿으려면 커버글라스·편광판·봉지막·화소층을 모두 투과해야 하는데, 화소와 금속 배선 사이 그물 같은 틈새로 새어드는 빛의 추정 투과율은 수 % 안팎에 불과합니다. 화소전극(Anode)은 전반사막이라 투과율이 zero에 가깝지만, 전극 사이 하부배선이 만든 미세한 그물망으로 빛이 새어 나갑니다. 그래서 ALS에게 가장 중요한 단어는 OLED의 투과특성입니다.\n\n<div class=\"figbox zoomable\" style=\"max-width:430px; height:223px; margin:10px auto 6px;\"><img src=\"assets_print/oled_refl_trans.png\" alt=\"OLED 패널 반사·투과 이미지\"><div class=\"zoom-hint\">🔍 휠·더블클릭 확대</div></div>\n\n<p class=\"cap\" style=\"text-align:center;\">▲ 같은 OLED 패널을 반사(좌)·투과(우)로 본 실제 이미지 — 배선 사이로만 빛이 통과</p>\n\nOLED의 관점에서 보면, ALS가 풀어야 할 숙제는 셋이고, 셋 다 'OLED가 어떤 특성을 가져야 하는가'로 되돌아옵니다.\n\n① 투과 광량이 너무 약하다 → OLED는 더 투명해져야 한다. 1% 남짓의 빛으로 작동하려면 센서 감도만으론 한계가 있습니다. 화소 배치·캐소드 패턴·터치 전극 구조를 투과율이 높아지는 방향으로 설계하는 일이 OLED 개발자의 몫입니다.\n\n② OLED 빛 자체가 노이즈다. 센서 바로 위 화소는 영상에 맞춰 늘 변하는데, 이는 ALS 입장에선 최악의 잡음입니다. 그래서 디스플레이가 꺼지는 찰나(블랭킹 구간)에 맞춰 센싱해 순수 주변광만 취득합니다. 이를 위해 DDI는 발광 타이밍을 ALS에 전달해야 합니다.", "<div style=\"display:flex;align-items:flex-end;gap:12px;margin:9px 0 6px\"><div class=\"figbox zoomable\" style=\"flex-shrink:0;width:fit-content\"><img src=\"assets_print/blanking_sync.png\" alt=\"블랭킹 동기화 타이밍\" style=\"height:230px;width:auto;display:block;\"><div class=\"zoom-hint\">🔍 휠·더블클릭 확대</div></div><p class=\"cap\" style=\"flex:1;font-size:0.8rem;word-break:keep-all;margin-top:4px;line-height:1.5;text-align:left\">←화면이 꺼지는 블랭킹 구간에만 '외광'을 측정해 누적한다.</p></div>\n\n③ 손가락 가림·그늘짐을 판단해야 한다. 모바일 환경은 사용 상태에 따라 주변광이 쉽게 변합니다. ALS는 센서를 덮거나 그림자 지는 급격한 변화를 스스로 판정해 그 값에 꼬리표를 답니다.\n\n정리하면, ALS를 품으려면 OLED는 ① 높은 투과율을 위한 화소배치·배선·캐소드·터치전극 재설계 ② 저반사 표면처리 ③ DDI와의 타이밍 연동 구동을 갖춰야 합니다. 즉 패널·터치·구동회로·센서가 한 몸처럼 연동되도록 시스템을 이해하고 설계해야 합니다.\n\n<h3 style=\"font-size:1.1rem; color:#1A2A4A; margin-top:12px; margin-bottom:10px; border-bottom:2px solid #B08A2E; padding-bottom:3px; font-weight:700;\">3. 또 다른 ALS의 이슈들</h3>\n\n<h4 style=\"font-size:1rem; color:#B08A2E; margin:8px 0 6px; font-weight:700;\">➀ POL-less OLED는 ALS를 포기해야 하는가?</h4>\n\nFlexible OLED는 CF와 BM으로 편광판을 제거하는 POL-less 기술을 도입하고 있습니다. 그런데 OLED의 유일한 투과 경로인 Anode 사이 망상공간이 POL-less에서는 BM·블랙 PDL로 모두 가려져 투과율이 사실상 zero가 됩니다.\n\n그렇다면 POL-less OLED는 ALS가 불가능할까요? 결론은 아닙니다. 저반사 광학특성(명암비·시인성)은 그대로 유지하면서, 센서 영역에서만 ALS가 쓸 만큼의 투과율을 따로 확보하는 ‘특별한 패널 구조’를 만드는 것입니다. 반사는 눌러야 하고 투과는 살려야 하는 — 정면으로 충돌하는 두 요구를 양립시켜야 하는, 아직 정답이 없는 살아 있는 연구 주제입니다.", "<div class=\"figbox zoomable\" style=\"max-width:430px; margin:5px auto 9px;\"><img src=\"assets_print/polless_layers.png?v=3\" alt=\"일반 OLED와 POL-less OLED 적층 구조 비교\" style=\"width:100%;height:auto;display:block\"><div class=\"zoom-hint\">🔍 휠·더블클릭 확대</div></div>\n\n<p class=\"cap\" style=\"text-align:center;\">▲ 일반 OLED(좌)와 POL-less OLED(우) — 우측은 BM·블랙 PDL이 투과창을 차단한다</p>\n\n<h4 style=\"font-size:1rem; color:#B08A2E; margin:14px 0 6px; font-weight:700;\">➁ ALS 기능을 패널에 내장할 수는 없을까?</h4>\n\n별도의 ALS 칩을 화면 밑에 숨기느라 고생하느니, 아예 패널이 스스로 주변광을 센싱하면 어떨까요? 그나마 투과창으로 활용할 수 있는 화소와 화소 사이의 공간은 블랙PDL, Pol-less 기술, 시야각제어 기술 등이 점차 도입되면서 더이상 OLED 패널에서 투과율을 올리기 위한 노력은 어쩌면 불가능해질 지도 모릅니다.\n\n다행히 OLED 패널내에는 실제 광센서로 사용할 수 있는 LTPS/a-Si/Oxide TFT소자들이 이미 있습니다. 최근 활발히 연구되고 있는 OPD도 좋은 광센서 소자입니다. 이들를 활용하면 화면의 특정 지점이 아닌 패널 전체를 통해 주변광을 실시간으로 감지하는 정교한 밝기 제어가 가능해집니다. 나아가 별도의 센서 부품과 조립 공정도 생략할 수 있습니다. 결국, ALS를 OLED 패널에 내장하는 연구는 디스플레이 회사가 타사와 차별화할 수 있는 훌륭한 테마입니다.\n\n<div class=\"closebox reveal\"><div style=\"font-size:13px;color:#ddd5c4;line-height:1.7;word-break:keep-all\">성균관대 첨단디스플레이공학과는 다양한 각도에서 이러한 이슈들을 함께 고민하고 독창적인 솔루션을 함께 개발할 좋은 파트너입니다.<br><span style=\"color:#ffd700;font-weight:800\">첨디공의 문은 언제나 열려 있습니다.</span></div><div style=\"display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px\"><a href=\"mailto:nackmann@skku.edu\" style=\"display:inline-block;background:#ffd700;color:#1a1a1a;font-size:12px;font-weight:800;padding:9px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;animation:ctaGlow 2.2s ease-in-out infinite\">산학협력 · 공동연구 문의 (✉ nackmann@skku.edu)</a><a href=\"mailto:nackmann@skku.edu\" style=\"flex-shrink:0;text-align:center;text-decoration:none\"><img src=\"assets_print/contact_qr.png\" alt=\"문의 QR\" style=\"width:52px;height:52px;background:#fff;padding:4px;border-radius:5px;display:block\"><div style=\"font-size:8px;color:#cfc7ba;margin-top:3px;white-space:nowrap\">스캔하면 메일 문의</div></a></div></div>"], "body": "첨디공 廣角노트의 첫 번째 연재테마는 OLED 패널 뒤에서 동작하는 센서들과, 이들 센서와 직간접적으로 상관관계가 있는 OLED 패널의 투과정보·연동기술을 다룹니다. 백라이트가 필요한 LCD 패널에서 투과정보를 분석하는 것은 너무나 당연하지만, 전면발광 OLED 패널을 '투과의 관점'에서 분석하는 것은 꽤나 흥미롭습니다. 우리가 미처 생각하지 못한 이슈를 발견하게 되고, 나아가 새로운 차별화 기술 개발의 시발점이 될 수 있습니다.\n\n이번 호의 주인공은 OLED 뒤에 숨은 작은 눈, ALS(조도센서)입니다.\n\n<h3 style=\"font-size:1.1rem; color:#1A2A4A; margin-top:14px; margin-bottom:10px; border-bottom:2px solid #B08A2E; padding-bottom:3px; font-weight:700; margin-top:2px;\">1. ALS란 무엇인가?</h3>\n\n<div style=\"float:right; width:118px; margin:2px 0 6px 14px;\"><div class=\"figbox zoomable\" style=\"width:100%; height:286px;\"><img src=\"assets_print/als_chip.png\" alt=\"ALS 센서 실물 단면\"><div class=\"zoom-hint\" style=\"font-size:8px; padding:2px 4px;\">🔍</div></div><div class=\"cap\" style=\"text-align:center; font-size:8.5px; margin:3px 0 0;\">▲ ALS 센서 실물 단면</div></div>\n\n화면 밝기를 알아서 맞춰 주는 그 눈을 조도센서(ALS, Ambient Light Sensor)라고 부릅니다. 그런데 ALS를 '밝기만 재는 센서'로 생각하면 절반만 아는 겁니다. 사실 ALS는 작은 컬러 카메라에 가깝습니다. 요즘 behind-OLED용 ALS는 Red·Green·Blue·Clear, 즉 RGB+C 네 채널을 동시에 읽습니다.\n\n이 네 채널의 조합에서 세 가지 정보를 뽑아냅니다.\n\n- 주변 밝기(조도, lux) — Clear 채널로 빛의 양을 잰다. 어두우면 화면을 낮춰 눈을 보호·절전하고, 밝으면 화면을 키운다.\n- 색온도(CCT) — RGB 채널 비율로 '햇빛인지·형광등인지·백열등인지'를 읽어 화이트밸런스·색감을 자동 조정한다.\n- 플리커(깜빡임) — 조명이 눈에 안 보이게 깜빡이는 주파수를 읽어 카메라 줄무늬(밴딩)를 막는다.\n\n즉 ALS는 주변광의 양·색·리듬을 한꺼번에 읽는 다채널 광센서입니다. 게다가 이 눈은 원래 베젤에 앉아 있었는데, '풀스크린' 시대가 오면서 자리를 잃고 화면 밑으로(behind-OLED) 숨어들어야 했습니다. 바로 그 순간부터, 이 이야기는 센서가 아니라 OLED의 이야기가 됩니다.\n\n<!-- page -->\n\n<h3 style=\"font-size:1.1rem; color:#1A2A4A; margin-top:8px; margin-bottom:10px; border-bottom:2px solid #B08A2E; padding-bottom:3px; font-weight:700;\">2. ALS는 OLED와 어떻게 연동되는가?</h3>\n\n우리에겐 OLED가 스스로 빛을 내는 화려한 화면이지만, 그 아래 센서의 눈높이에서 보면 OLED는 여러 겹으로 쌓인 불투명한 막입니다. 외부광이 센서에 닿으려면 커버글라스·편광판·봉지막·화소층을 모두 투과해야 하는데, 화소와 금속 배선 사이 그물 같은 틈새로 새어드는 빛의 추정 투과율은 수 % 안팎에 불과합니다. 화소전극(Anode)은 전반사막이라 투과율이 zero에 가깝지만, 전극 사이 하부배선이 만든 미세한 그물망으로 빛이 새어 나갑니다. 그래서 ALS에게 가장 중요한 단어는 OLED의 투과특성입니다.\n\n<div class=\"figbox zoomable\" style=\"max-width:430px; height:223px; margin:10px auto 6px;\"><img src=\"assets_print/oled_refl_trans.png\" alt=\"OLED 패널 반사·투과 이미지\"><div class=\"zoom-hint\">🔍 휠·더블클릭 확대</div></div>\n\n<p class=\"cap\" style=\"text-align:center;\">▲ 같은 OLED 패널을 반사(좌)·투과(우)로 본 실제 이미지 — 배선 사이로만 빛이 통과</p>\n\nOLED의 관점에서 보면, ALS가 풀어야 할 숙제는 셋이고, 셋 다 'OLED가 어떤 특성을 가져야 하는가'로 되돌아옵니다.\n\n① 투과 광량이 너무 약하다 → OLED는 더 투명해져야 한다. 1% 남짓의 빛으로 작동하려면 센서 감도만으론 한계가 있습니다. 화소 배치·캐소드 패턴·터치 전극 구조를 투과율이 높아지는 방향으로 설계하는 일이 OLED 개발자의 몫입니다.\n\n② OLED 빛 자체가 노이즈다. 센서 바로 위 화소는 영상에 맞춰 늘 변하는데, 이는 ALS 입장에선 최악의 잡음입니다. 그래서 디스플레이가 꺼지는 찰나(블랭킹 구간)에 맞춰 센싱해 순수 주변광만 취득합니다. 이를 위해 DDI는 발광 타이밍을 ALS에 전달해야 합니다.\n\n<!-- page -->\n\n<div style=\"display:flex;align-items:flex-end;gap:12px;margin:9px 0 6px\"><div class=\"figbox zoomable\" style=\"flex-shrink:0;width:fit-content\"><img src=\"assets_print/blanking_sync.png\" alt=\"블랭킹 동기화 타이밍\" style=\"height:230px;width:auto;display:block;\"><div class=\"zoom-hint\">🔍 휠·더블클릭 확대</div></div><p class=\"cap\" style=\"flex:1;font-size:0.8rem;word-break:keep-all;margin-top:4px;line-height:1.5;text-align:left\">←화면이 꺼지는 블랭킹 구간에만 '외광'을 측정해 누적한다.</p></div>\n\n③ 손가락 가림·그늘짐을 판단해야 한다. 모바일 환경은 사용 상태에 따라 주변광이 쉽게 변합니다. ALS는 센서를 덮거나 그림자 지는 급격한 변화를 스스로 판정해 그 값에 꼬리표를 답니다.\n\n정리하면, ALS를 품으려면 OLED는 ① 높은 투과율을 위한 화소배치·배선·캐소드·터치전극 재설계 ② 저반사 표면처리 ③ DDI와의 타이밍 연동 구동을 갖춰야 합니다. 즉 패널·터치·구동회로·센서가 한 몸처럼 연동되도록 시스템을 이해하고 설계해야 합니다.\n\n<h3 style=\"font-size:1.1rem; color:#1A2A4A; margin-top:12px; margin-bottom:10px; border-bottom:2px solid #B08A2E; padding-bottom:3px; font-weight:700;\">3. 또 다른 ALS의 이슈들</h3>\n\n<h4 style=\"font-size:1rem; color:#B08A2E; margin:8px 0 6px; font-weight:700;\">➀ POL-less OLED는 ALS를 포기해야 하는가?</h4>\n\nFlexible OLED는 CF와 BM으로 편광판을 제거하는 POL-less 기술을 도입하고 있습니다. 그런데 OLED의 유일한 투과 경로인 Anode 사이 망상공간이 POL-less에서는 BM·블랙 PDL로 모두 가려져 투과율이 사실상 zero가 됩니다.\n\n<!-- page -->\n\n<div class=\"figbox zoomable\" style=\"max-width:430px; margin:5px auto 9px;\"><img src=\"assets_print/polless_layers.png?v=3\" alt=\"일반 OLED와 POL-less OLED 적층 구조 비교\" style=\"width:100%;height:auto;display:block\"><div class=\"zoom-hint\">🔍 휠·더블클릭 확대</div></div>\n\n<p class=\"cap\" style=\"text-align:center;\">▲ 일반 OLED(좌)와 POL-less OLED(우) — 우측은 BM·블랙 PDL이 투과창을 차단한다</p>\n\n<h4 style=\"font-size:1rem; color:#B08A2E; margin:14px 0 6px; font-weight:700;\">➁ ALS 기능을 패널에 내장할 수는 없을까?</h4>\n\n별도의 ALS 칩을 화면 밑에 숨기느라 고생하느니, 아예 패널이 스스로 주변광을 센싱하면 어떨까요? 그나마 투과창으로 활용할 수 있는 화소와 화소 사이의 공간은 블랙PDL, Pol-less 기술, 시야각제어 기술 등이 점차 도입되면서 더이상 OLED 패널에서 투과율을 올리기 위한 노력은 어쩌면 불가능해질 지도 모릅니다.\n\n다행히 OLED 패널내에는 실제 광센서로 사용할 수 있는 LTPS/a-Si/Oxide TFT소자들이 이미 있습니다. 최근 활발히 연구되고 있는 OPD도 좋은 광센서 소자입니다. 이들를 활용하면 화면의 특정 지점이 아닌 패널 전체를 통해 주변광을 실시간으로 감지하는 정교한 밝기 제어가 가능해집니다. 나아가 별도의 센서 부품과 조립 공정도 생략할 수 있습니다. 결국, ALS를 OLED 패널에 내장하는 연구는 디스플레이 회사가 타사와 차별화할 수 있는 훌륭한 테마입니다.\n\n<div class=\"closebox reveal\"><div style=\"font-size:13px;color:#ddd5c4;line-height:1.7;word-break:keep-all\">성균관대 첨단디스플레이공학과는 다양한 각도에서 이러한 이슈들을 함께 고민하고 독창적인 솔루션을 함께 개발할 좋은 파트너입니다.<br><span style=\"color:#ffd700;font-weight:800\">첨디공의 문은 언제나 열려 있습니다.</span></div><div style=\"display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px\"><a href=\"mailto:nackmann@skku.edu\" style=\"display:inline-block;background:#ffd700;color:#1a1a1a;font-size:12px;font-weight:800;padding:9px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;animation:ctaGlow 2.2s ease-in-out infinite\">산학협력 · 공동연구 문의 (✉ nackmann@skku.edu)</a><a href=\"mailto:nackmann@skku.edu\" style=\"flex-shrink:0;text-align:center;text-decoration:none\"><img src=\"assets_print/contact_qr.png\" alt=\"문의 QR\" style=\"width:52px;height:52px;background:#fff;padding:4px;border-radius:5px;display:block\"><div style=\"font-size:8px;color:#cfc7ba;margin-top:3px;white-space:nowrap\">스캔하면 메일 문의</div></a></div></div>"};
+const PHOTOS = [];
+const FEATURED_PAPER = {"title": "빛의 잔상에서 RISC의 속도를 읽다", "subtitle": "탠덤 딥러닝으로 TADF 소자 내부의 RISC 속도를 비파괴로 추정하다", "paper_info": {"title": "A deep learning model for inferring the reverse intersystem crossing rate of TADF OLEDs", "authors": "Junseop Lim, Seungwon Han, 김재민(교신·중앙대), 이준엽(교신·성균관대 첨단디스플레이공학과)", "journal": "Materials Horizons (英 RSC), 2026, 13, 272–282 · DOI 10.1039/D5MH01156F", "url": "https://doi.org/10.1039/D5MH01156F"}, "intro_text": "OLED의 효율과 수명은 발광층 안 엑시톤 동역학에 달려 있다. 그중 삼중항 에너지를 다시 빛으로 되돌리는 역계간전이(RISC) 속도는 소자 설계의 핵심 지표지만, 정작 정확히 알아내기가 까다롭다. 성균관대·중앙대 공동 연구진은 딥러닝으로, 구동 중인 소자의 과도 전계발광(trEL) 곡선 하나만으로 이 속도를 추정하는 모델을 제시했다.", "challenge_title": "왜 어려운 문제였나", "challenge_text": "TADF(열활성지연형광) 소자의 trEL(과도 전계발광) 분석은 전압이 끊긴 후 찰나의 순간 동안 벌어지는 복합적인 물리 현상을 다룬다. 이 곡선에는 폴라론 재결합, 계간전이(ISC/RISC), 삼중항 소멸(TTA/TPA) 등 다차원적 과정이 한꺼번에 얽혀 있다.\n이 감쇠 곡선을 역으로 추적해 각 속도상수를 구하려 하면, 서로 다른 변수 조합이 거의 완벽하게 동일한 곡선을 도출하는 '다중 해(multiple solutions)' 난제에 부딪힌다. 특히 박막의 무질서도에 따라 변동 폭이 매우 넓은 폴라론 재결합 속도(γ)의 불확실성이 연쇄 반응의 마지막 결과물인 RISC 추정을 방해하는 핵심 요인이었다. 족적이 복잡하게 뒤엉킨 현장에서, 흐릿한 지문 하나만으로 진범을 특정해야 하는 상황이었던 셈이다.", "steps_title": "발상의 전환 — 문제를 두 단계로", "steps_intro": "물리 기반 미분방정식으로 trEL 곡선 2만 개를 합성해 학습했다. 핵심은 모든 상수를 한 번에 풀지 않고, 물리적 인과를 모델의 순서로 옮긴 탠덤(tandem) 구조다.", "steps": ["가장 큰 교란 요인인 재결합 속도(γ)를 먼저 예측해 해 공간을 좁힌다", "γ 값에 따라 구간별로 전문화된 27개 모델 중 하나가 자동 선택된다", "좁혀진 범위에서 RISC 속도를 정밀하게 추론한다"], "fig1": {"image": "f4_tandem.png", "caption": "탠덤 아키텍처 — 1단계가 재결합 속도 γ를 예측하면, 구간별 전용 모델이 자동 선택돼 RISC를 추론한다."}, "results_title": "결과 — 단일 모델의 한계를 넘어", "results_text": "효과는 분명했다. 단일 모델에서 0.775에 머물던 RISC 예측 정확도(R²)가 탠덤 구조에서 0.985까지 상승했다. 검증은 실제 소자로 이뤄졌다. 청색 TADF 소자(최대 EQE 22.5%)의 trEL을 입력하자, 예측값이 정밀 실험값과 사실상 일치했다.", "summary_cards": [{"value": "0.985", "label": "탠덤 R² (단일 0.775)"}, {"value": "22.5%", "label": "검증 소자 EQE"}, {"value": "예측≈실측", "label": "γ·k_RISC 일치"}], "fig2": {"image": "f7_results.png", "caption": "γ는 예측 7.28 vs 실측 7.27(×10⁻¹¹), k_RISC는 예측 3.19 vs 실측 3.01(×10⁵). 오차 범위 내 일치."}, "meaning_title": "의미 — 소자 분석의 패러다임 전환", "meaning_text": "기존에는 후보 물질마다 박막을 만들어 여러 측정과 수치 피팅을 거쳐야 했고, 그마저 다중 해 문제로 신뢰도가 흔들렸다. 이 방법은 실제 구동 소자의 trEL 한 번으로 핵심 물성을 즉시 추출한다. 디스플레이 소재 개발이 반복 실험에서 데이터 기반 설계로 옮겨가는 흐름을 보여준다.", "recap_table": {"한 줄 요약": "trEL 곡선 하나로 OLED의 RISC 속도를 딥러닝으로 추정 (R²=0.985)", "핵심 성과": "단일 모델 0.775 → 탠덤 모델 0.985 · 검증 소자 EQE 22.5%", "강점": "박막 측정 불필요, 실제 구동 소자에서 비파괴 분석", "게재": "Materials Horizons (RSC), 2026"}, "terms": [{"key": "TADF", "val": "열에너지로 삼중항을 단일항으로 끌어올려 발광에 활용, 중금속 없이 고효율을 내는 발광 방식."}, {"key": "RISC", "val": "삼중항 → 단일항으로 에너지를 되돌리는 과정. 빠를수록 지연형광 효율이 높다."}, {"key": "다중 해 문제", "val": "서로 다른 변수 조합이 동일한 곡선을 내, 유일한 해를 특정할 수 없는 역문제의 난점."}, {"key": "trEL", "val": "펄스 구동 후 빛이 감쇠하는 곡선. 소자 내부 동역학의 ‘지문’에 해당."}], "closing_quote": "“소자 내부를 더 깊이 이해하는 것에서, 다음 디스플레이가 시작됩니다.”", "closing_author": "성균관대 첨단디스플레이공학과 이준엽 교수", "closing_text": "물리 모델과 딥러닝으로 OLED 내부를 비파괴로 읽어낸 본 논문은 성균관대 첨단디스플레이공학과 이준엽 교수 연구진의 성과입니다.", "closing_sub": "첨단디스플레이공학과가 함께 연구할 대학원생을 기다립니다.", "cta": {"text": "첨단디스플레이공학과 대학원 둘러보기 →", "url": "https://display.skku.edu/"}};
+const AI_TECH = {"label": "AI가 주목한 Display Tech", "title": "SID 2026에서 AI가 주목한 OLED 5대 핵심 기술", "subtitle": "성능, 폼팩터, 그리고 제조 패러다임의 완벽한 진화", "intro": "세계 최대 디스플레이 학회 SID Display Week 2026에서 OLED는 또 한 번 진화했다. 올해의 핵심은 단순한 ‘더 밝은 화면’이 아니다. AI가 디스플레이를 설계하고, 마스크 없이 노광으로 픽셀을 형성하며, 잉크젯이 진공 증착을 대체하기 시작했다. 제미나이, 클로드, 챗GPT 3대 AI가 협의하여 AI의 시선으로 이번 전시에서 파급력이 클 OLED 5대 핵심 기술을 골랐다.", "items": [{"num": "01", "title": "Tandem OLED 전방위 확산", "text": "", "ai_view": "탠덤 구조는 더 이상 특수 용도의 기술이 아니다. 저전력 최적화와 수명 보장을 동시에 달성함으로써, LCD가 장악하던 IT 기기와 차량용 디스플레이 시장을 OLED로 완전히 전환시키는 핵심 동력이 되었다. 모바일에서 IT/Automotive로의 '체급 상승'이다.", "image": "ai_tech/image1.png"}, {"num": "02", "title": "초고휘도의 한계 돌파: 15,000 Nits의 세계", "text": "", "ai_view": "15,000 nits는 단순한 숫자 과시가 아니다. PLP(편광판 생략) 기술과 결합해 광 효율을 극대화하고 전력 소모를 크게 낮춘다. 야외 환경에서 동작할 차세대 폼팩터의 필수 조건이 될 것이다.", "image": "ai_tech/image2.png"}, {"num": "03", "title": "EL-QD 기술의 부상", "text": "", "ai_view": "IJP의 성숙은 제조 단가 하락을 넘어 거대 폼팩터의 대중화를 이끈다. 스스로 빛을 내는 EL-QD가 잉크젯과 결합되면 색 편이 없는 궁극의 디스플레이가 가까워진다.", "image": "ai_tech/image3.jpeg"}, {"num": "04", "title": "폴더블 주름(Crease) 완벽 개선 솔루션", "text": "", "ai_view": "주름은 폴더블 사용자가 가장 민감하게 반응하는 장벽이다. 제거는 상온 30만 회 폴딩과 극한(-40도) 내구성을 보장하는 진정한 폼팩터 혁신이다.", "image": "ai_tech/image4.png"}, {"num": "05", "title": "마스크의 한계를 넘다: FMM-Free ViP 및 CIE 기술", "text": "", "ai_view": "FMM의 물리적 제약은 OLED 고해상도·대면적화의 걸림돌이었다. ViP 기술은 증착의 한계를 우회해 차세대 IT·모빌리티로 진출하는 제조 패러다임의 전환이다.", "image": "ai_tech/image5.png"}], "conclusion": {"title": "AI 종합 진단", "text": "SID 2026의 진정한 혁신은 개별 기술의 성취에 머물지 않는다. 제조(FMM-Free, IJP)의 한계 돌파가 압도적 성능(Tandem)을 뒷받침하고, 이것이 다시 새로운 폼팩터(Creaseless, Micro OLED)로 이어지는 거대한 시너지다. 화면(Screen)의 시대를 지나 주변 환경과 조화롭게 소통하는 완벽한 인텔리전트 인터페이스의 시대가 도래했다."}, "hero_image": "ai_tech/2026_디스플레이_기술_혁신_리포트.png"};
+const ASSETS = 'assets_print/';
+/* ═════════════════════════════════════════════════════════════ */
+
+function mdToParas(md){
+  return md.split(/\n\s*\n/).map(p=>{
+    const t=p.trim();
+    if(!t) return '';
+    const html=t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    return /^</.test(t) ? html : `<p>${html}</p>`;
+  }).join('');
+}
+
+function buildAccHTML(grouped,isConf){
+  let html='<div class="acc-wrap">';
+  Object.keys(grouped).sort().forEach(key=>{
+    const items=grouped[key];
+    html+=`<div><div class="acc-hdr">
+      <span>${key}</span>
+      <span style="font-size:14px;font-weight:700;color:#111">${items.length}건</span>
+    </div><div class="acc-body">`;
+    items.forEach(item=>{
+      const meta=isConf?`발표자: ${item.presenter} · ${item.conf} · ${item.date}`:`${item.journal} · ${item.issue} · ${item.date}`;
+      const badge=isConf
+        ?`<span style="font-size:8px;padding:1px 5px;background:#e6f4ea;color:#1a7a3a;border-radius:3px;border:1px solid #a8d8b8;flex-shrink:0;margin-top:2px">발표</span>`
+        :`<span style="font-size:8px;padding:1px 5px;background:#e8f0fb;color:#1a56a0;border-radius:3px;border:1px solid #b3ccf0;flex-shrink:0;margin-top:2px">SCIE</span>`;
+      const titleEl=`<span style="font-size:10px;font-weight:600;color:#333;line-height:1.4;word-break:break-word">${item.title}</span>`;
+      html+=`<div class="acc-row"><div style="display:flex;gap:4px;align-items:flex-start;margin-bottom:2px">${badge}${titleEl}</div><div style="font-size:9px;color:#888;padding-left:25px;line-height:1.4">${meta}</div></div>`;
+    });
+    html+=`</div></div>`;
+  });
+  html+='</div>';
+  return html;
+}
+
+function patentCardsHTML(){
+  let h='';
+  PATENTS.forEach(p=>{
+    const sc=p.status==='등록'?{bg:'#e6f4ea',c:'#111'}:{bg:'#f0f4ff',c:'#111'};
+    const scBorder=p.status==='등록'?'#a8d8b8':'#c5d7f7';
+    h+=`<div class="pat-card">
+      <div><span class="pat-badge" style="background:#f0f0f0;color:#111;border:1px solid #ccc;font-size:12px">${p.country}</span><span class="pat-badge" style="background:${sc.bg};color:${sc.c};border:1px solid ${scBorder};font-size:12px">${p.status}</span></div>
+      <div style="font-size:14px;font-weight:700;color:#111;line-height:1.6;margin-bottom:10px;word-break:keep-all">${p.title}</div>
+      <div style="font-size:13px;color:#666;display:flex;flex-direction:column;gap:5px">
+        <div><span style="color:#aaa;min-width:42px;display:inline-block">출원인</span>${p.applicant}</div>
+        <div><span style="color:#aaa;min-width:42px;display:inline-block">출원일</span>${p.applicationDate}</div>
+        ${p.registrationDate?`<div><span style="color:#aaa;min-width:42px;display:inline-block">등록일</span>${p.registrationDate}</div>`:''}
+      </div>
+    </div>`;
+  });
+  return h;
+}
+
+function bCoverFront(){
+  return `<div class="cover-front cv-full">
+  <img class="cv-hero" src="${ASSETS}${META.cover_image}" alt="표지" onerror="this.style.display='none';this.parentElement.style.background='#000'">
+  <div class="cv-grad-left"></div>
+  
+  <div class="cv-top-left">
+    <div class="cv-pub-block">
+      <div class="pub-kr">성균관대학교 첨단디스플레이공학과</div>
+      <div style="display:inline-block;margin-top:5px;font-size:9px;font-weight:700;letter-spacing:.2px;color:#0a0a0a;background:#ffd700;padding:3px 8px;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.4)">산업통상부 지정 디스플레이 특성화대학원</div>
+    </div>
+  </div>
+  
+  <div class="cv-top-right">
+    <div class="cv-reg-num">등록: 첨디공레터-01호</div>
+    <div class="cv-top-info">
+      <span class="badge">${META.issue_number}</span>
+      <span class="date">${META.date_label}</span>
+    </div>
+  </div>
+  
+  <div class="cv-left-content">
+    <div class="cv-mh-left">
+      <div class="mh-title-left"><span>첨디공</span> <span class="tog-on"><span class="t">On</span><span class="knob"></span></span></div>
+      <div class="mh-desc-left">Monthly Letter</div>
+    </div>
+    
+    <div class="cv-articles">
+      <div class="cv-article-item">
+        <div class="cv-art-label">1. 이달의 첨디공 논문</div>
+        <div class="cv-art-title">"빛의 잔상에서 RISC의 속도를 읽다."</div>
+      </div>
+      <div class="cv-art-divider"></div>
+      <div class="cv-article-item">
+        <div class="cv-art-label">2. 첨디공의 廣角노트</div>
+        <div class="cv-art-title">OLED 패널의 투과정보를 읽는 눈<br>: ALS(Ambient Light Sensor)</div>
+      </div>
+      <div class="cv-art-divider"></div>
+      <div class="cv-article-item">
+        <div class="cv-art-label">3. AI가 주목한 Display Tech.</div>
+        <div class="cv-art-title">SID2026 7대 OLED 혁신</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="cv-bottom-bar">
+    <div class="cv-pub-block">
+      <div class="pub-en">SUNGKYUNKWAN UNIVERSITY<br>DEPARTMENT OF DISPLAY ENGINEERING</div>
+    </div>
+    <a href="https://display.skku.edu/" target="_blank" class="cv-qr-box" title="첨단디스플레이공학과 홈페이지">
+      <img src="${ASSETS}qr.png" alt="홈페이지 QR">
+    </a>
+  </div>
+</div>`;}
+
+function bCoverBack(pageNum){return `<div class="cover-back">
+  <div class="cover-inner">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-size:11px;letter-spacing:3px;color:#ffd700;text-transform:uppercase;margin-bottom:10px;font-weight:700">${META.client_en}</div>
+        <div style="height:3px;width:60px;background:#ffd700;margin-bottom:14px"></div>
+        <h2 style="font-size:1.6rem;color:#fff;margin-bottom:6px">성균관대학교</h2>
+        <h2 style="font-size:1.3rem;color:#ffd700">${META.client_short}</h2>
+      </div>
+    </div>
+    <div style="text-align:center;padding:16px 0">
+      <div class="serif" style="font-size:1.15rem;color:#fff;line-height:2.1;font-weight:500;word-break:keep-all">${META.back_cover_quote_html}</div>
+    </div>
+    ${META.address?`<div style="display:flex;gap:14px;align-items:center;border-top:1px solid rgba(255,215,0,.22);padding-top:13px;margin-bottom:14px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:10px;letter-spacing:2px;color:#ffd700;font-weight:700;margin-bottom:6px">찾아오는 길 · DIRECTIONS</div>
+        ${META.address_org?`<div style="font-size:11px;color:#fff;font-weight:600;margin-bottom:3px;word-break:keep-all">${META.address_org}</div>`:''}
+        <div style="font-size:11px;color:#cfc7ba;line-height:1.6;word-break:keep-all">${META.address}</div>
+        ${META.directions?`<div style="font-size:10.5px;color:#9a8e80;margin-top:3px;word-break:keep-all">${META.directions}</div>`:''}
+      </div>
+      ${META.map_url?`<a href="${META.map_url}" target="_blank" rel="noopener" title="지도 길찾기" style="flex-shrink:0;text-align:center;text-decoration:none"><img src="${ASSETS}map_qr.png" alt="지도 QR" style="width:58px;height:58px;background:#fff;padding:4px;border-radius:5px;display:block"><div style="font-size:8.5px;color:#cfc7ba;margin-top:4px;letter-spacing:.2px;white-space:nowrap">스캔하면 길찾기</div></a>`:''}
+    </div>`:''}
+    <div>
+      <div style="height:2px;width:100%;background:linear-gradient(90deg,#ffd700,transparent);margin-bottom:14px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px">
+        <div style="font-size:13px;color:#ccc;padding-bottom:4px">
+          <span style="font-size:14px;color:#ffd700;font-weight:700;margin-right:8px">${META.issue_number}</span>
+          <span style="margin-right:8px">${META.date_label}</span>
+          <span style="font-size:12px;opacity:0.75">${META.back_cover_city}</span>
+        </div>
+        <div style="text-align:right;font-size:10px;color:#999;line-height:1.7">
+          ${META.publish_date?`<div><strong>발행일</strong> | ${META.publish_date}</div>`:''}
+          <div><strong>발행처</strong> | 성균관대학교 첨단디스플레이공학과</div>
+          <div><strong>발행인</strong> | 첨단디스플레이공학과 학과장</div>
+          <div><strong>편집인</strong> | 박원상 산학교수</div>
+          <div><strong>제작사</strong> | Next I/O</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;}
+
+function bCS(pageNum, idx) {
+  if (!COVER_STORY.pages || idx >= COVER_STORY.pages.length) return '';
+  const content = COVER_STORY.pages[idx];
+  const pageLabel = COVER_STORY.label || '광각 노트';
+  const pgCls = pageNum % 2 === 0 ? 'bpg-l' : 'bpg-r';
+
+  if (idx === 0) {
+    return `<div class="bp">
+      <div class="db"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px">
+        <span class="label" style="margin-bottom:0">${pageLabel}</span>
+        ${COVER_STORY.series ? `<span style="font-size:12px;font-weight:700;color:#B08A2E;white-space:nowrap;flex-shrink:0">${COVER_STORY.series}</span>` : ''}
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px">
+        <h2 style="font-size:${COVER_STORY.image ? '1.5rem' : '1.25rem'};line-height:1.3;flex:1;min-width:0;${COVER_STORY.image ? '' : 'white-space:nowrap'}">${COVER_STORY.title.replace(/ /g,'<br>')}</h2>
+        ${COVER_STORY.image ? `<div class="figbox zoomable" style="width:55%;aspect-ratio:16/9;flex-shrink:0;border-radius:7px;box-shadow:0 3px 12px rgba(0,0,0,.18)">
+          <img src="${ASSETS}${COVER_STORY.image}" alt="${COVER_STORY.title}" onerror="this.parentElement.style.display='none'" style="object-fit:cover;">
+          <div class="zoom-hint" style="font-size:9px;padding:2px 6px;">🔍 휠·더블클릭 확대</div>
+        </div>` : ''}
+      </div>
+      <div class="dt"></div>
+      <div class="body-txt cs-body">${mdToParas(content)}</div>
+      <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+    </div>`;
+  } else {
+    return `<div class="bp">
+      <div class="db"></div><span class="label">${pageLabel}</span>
+      <div class="body-txt cs-body">${mdToParas(content)}</div>
+      <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+    </div>`;
+  }
+}
+
+function bP03(pageNum){
+  const rows=TOC.map(it=>{
+    let pageStr = '—';
+    if (it.key) {
+      const idx = flatPages.indexOf(it.key);
+      if (idx >= 0) pageStr = String(idx + 2).padStart(2, '0');
+    }
+    return `
+    <li style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #ece8e0">
+      <span style="background:#111;color:#fff;font-size:14px;font-weight:700;padding:4px 9px;border-radius:3px;flex-shrink:0;letter-spacing:.5px">${it.num}</span>
+      <span style="flex:1;font-size:16px;color:#222;word-break:keep-all">${it.title}</span>
+      <span style="background:#f5f0e8;border:1px solid #ddd;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#333;flex-shrink:0">${pageStr}</span>
+    </li>`;
+  }).join('');
+  return `<div class="bp" style="position:relative;overflow:hidden">
+  <div style="position:absolute;top:-10px;right:-8px;font-size:7rem;font-weight:900;color:rgba(0,0,0,.04);letter-spacing:-4px;line-height:1;pointer-events:none;user-select:none">CONTENTS</div>
+  <div class="db"></div>
+  <div style="margin:10px 0 18px">
+    <div style="font-size:10px;letter-spacing:3px;color:#d93025;font-weight:700;text-transform:uppercase;margin-bottom:4px">Index</div>
+    <h2 style="font-size:1.8rem;font-weight:900;color:#111;letter-spacing:-1px;line-height:1">Contents</h2>
+    <div style="height:3px;width:48px;background:#111;margin-top:8px"></div>
+  </div>
+  <ul style="list-style:none">${rows}</ul>
+  <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+</div>`;}
+
+function bIntroPage(intro, pageNum){
+  const pgCls = pageNum % 2 === 0 ? 'bpg-l' : 'bpg-r';
+  const headerHtml = (intro.portrait || intro.title || intro.subtitle) ? `<div style="display:flex;gap:18px;align-items:flex-start;margin-bottom:16px">
+      ${intro.portrait ? `<img src="${ASSETS}${intro.portrait}" alt="${intro.title}" style="width:107px;height:133px;object-fit:cover;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.15);flex-shrink:0" onerror="this.style.display='none'">` : ''}
+      <div class="note" style="flex:1">
+        ${intro.title ? `<h2 style="font-size:1.45rem;margin-bottom:6px;color:#111;font-weight:800;letter-spacing:-0.5px;word-break:keep-all;line-height:1.3">${intro.title}</h2>` : ''}
+        ${intro.subtitle ? `<div class="dt" style="margin:8px 0"></div><p style="font-size:13.5px;font-style:italic;color:#555;line-height:1.7;word-break:keep-all">${intro.subtitle.replace(/\n/g,'<br>')}</p>` : ''}
+      </div>
+    </div>` : '';
+  const featureImgHtml = intro.feature_image ? `<div class="photo-fill" style="height:240px;flex:none;margin-bottom:14px;border-radius:6px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.15)">
+      <img src="${ASSETS}${intro.feature_image}" alt="${intro.title||'연구실'}" onerror="this.parentElement.style.display='none'">
+    </div>` : '';
+  const inlineImgHtml = intro.inline_image ? `<img src="${ASSETS}${intro.inline_image}" alt="${intro.title||'연구실'}" style="float:right;width:120px;height:150px;object-fit:cover;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.15);margin:0 0 8px 14px" onerror="this.style.display='none'">` : '';
+  return `<div class="bp" style="display:flex;flex-direction:column">
+    <div class="db"></div><span class="label">${intro.label}</span>
+    ${headerHtml}
+    ${featureImgHtml}
+    <div class="dt"></div>
+    <div class="body-txt" style="overflow:hidden">${inlineImgHtml}${mdToParas(intro.body_md)}</div>
+    ${intro.signer ? `<div class="dt"></div><div style="text-align:right;font-size:13.5px;color:#777;font-weight:600">${intro.signer}</div>` : ''}
+    <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+function bP04(pageNum){ return bIntroPage(INTROS[1], pageNum); }
+function bP05(pageNum){ return bIntroPage(INTROS[0], pageNum); }
+
+function bP06(pageNum){
+  const g={};PAPERS.forEach(p=>{const k=p.cor.trim();if(!g[k])g[k]=[];g[k].push(p);});
+  return `<div class="bp">
+    <div class="db"></div><span class="label">${META.quarter_label}</span>
+    <h2 style="font-size:1.4rem;margin-bottom:10px">논문 실적 <span style="font-size:1rem;color:#aaa;font-weight:400">(총 <strong style="color:#d93025">${PAPERS.length}</strong>건)</span></h2>
+    <div class="sum-cards">
+      <div class="sum-card" style="background:#fef3f0;border:1px solid #fdd9ce"><div class="sum-num" style="color:#111">${PAPERS.length}</div><div class="sum-lbl" style="color:#aaa">전체 논문</div></div>
+      <div class="sum-card" style="background:#e8f0fb;border:1px solid #b3ccf0"><div class="sum-num" style="color:#111">${PAPERS.length}</div><div class="sum-lbl" style="color:#aaa">SCIE</div></div>
+      <div class="sum-card" style="background:#f7f5f1;border:1px solid #e8e4de"><div class="sum-num" style="color:#333">${Object.keys(g).length}</div><div class="sum-lbl" style="color:#aaa">참여 교수</div></div>
+    </div>
+    ${buildAccHTML(g,false)}
+    <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;}
+
+function bP07(pageNum){
+  const g={};CONFS.forEach(c=>{const k=c.prof.trim();if(!g[k])g[k]=[];g[k].push(c);});
+  return `<div class="bp">
+    <div class="db"></div><span class="label">${META.quarter_label}</span>
+    <h2 style="font-size:1.4rem;margin-bottom:10px">학술대회 실적 <span style="font-size:1rem;color:#aaa;font-weight:400">(총 <strong style="color:#d93025">${CONFS.length}</strong>건)</span></h2>
+    <div class="sum-cards">
+      <div class="sum-card" style="background:#fef3f0;border:1px solid #fdd9ce"><div class="sum-num" style="color:#111">${CONFS.length}</div><div class="sum-lbl" style="color:#aaa">전체 발표</div></div>
+      <div class="sum-card" style="background:#e6f4ea;border:1px solid #a8d8b8"><div class="sum-num" style="color:#111">${new Set(CONFS.map(c=>c.conf)).size}</div><div class="sum-lbl" style="color:#aaa">학술대회</div></div>
+      <div class="sum-card" style="background:#f7f5f1;border:1px solid #e8e4de"><div class="sum-num" style="color:#333">${new Set(CONFS.map(c=>c.prof)).size}</div><div class="sum-lbl" style="color:#aaa">참여 교수</div></div>
+    </div>
+    ${buildAccHTML(g,true)}
+    <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;}
+
+function bP08(pageNum){
+  const reg=PATENTS.filter(p=>p.status==='등록').length;
+  const app=PATENTS.filter(p=>p.status==='출원').length;
+  return `<div class="bp">
+  <div class="db"></div><span class="label">${META.quarter_label}</span>
+  <h2 style="font-size:1.4rem;margin-bottom:10px">특허 실적 <span style="font-size:1rem;color:#aaa;font-weight:400">(총 <strong style="color:#d93025">${PATENTS.length}</strong>건)</span></h2>
+  <div class="sum-cards">
+    <div class="sum-card" style="background:#fef3f0;border:1px solid #fdd9ce"><div class="sum-num" style="color:#111">${PATENTS.length}</div><div class="sum-lbl" style="color:#aaa">전체</div></div>
+    <div class="sum-card" style="background:#f0f4ff;border:1px solid #c5d7f7"><div class="sum-num" style="color:#111">${app}</div><div class="sum-lbl" style="color:#aaa">출원</div></div>
+    <div class="sum-card" style="background:#e6f4ea;border:1px solid #a8d8b8"><div class="sum-num" style="color:#111">${reg}</div><div class="sum-lbl" style="color:#aaa">등록</div></div>
+  </div>
+  ${patentCardsHTML()}
+  <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+</div>`;}
+
+function bfP1(pageNum){
+  if(!FEATURED_PAPER) return '';
+  return `<div class="bp" style="display:flex;flex-direction:column">
+    <div class="db"></div><span class="label">이달의 논문</span>
+    <h2 style="font-size:1.45rem;line-height:1.2;margin:10px 0 6px;letter-spacing:-0.5px;word-break:keep-all;font-weight:800;color:#111">${FEATURED_PAPER.title}</h2>
+    <p style="font-size:12px;color:#555;font-weight:600;margin-bottom:10px;line-height:1.4">${FEATURED_PAPER.subtitle}</p>
+    <div class="meta-box">
+      <div><span class="mk">논문</span>${FEATURED_PAPER.paper_info.url?`<a href="${FEATURED_PAPER.paper_info.url}" target="_blank" rel="noopener" style="color:#1a56a0;text-decoration:underline"><em>${FEATURED_PAPER.paper_info.title}</em></a>`:`<em>${FEATURED_PAPER.paper_info.title}</em>`}</div>
+      <div><span class="mk">저자</span>${FEATURED_PAPER.paper_info.authors}</div>
+      <div><span class="mk">게재</span>${FEATURED_PAPER.paper_info.journal}</div>
+    </div>
+    <div class="dt"></div>
+    <div class="body-txt">
+      <p>${FEATURED_PAPER.intro_text}</p>
+    </div>
+    <div class="dt"></div>
+    <h3 class="feat-h">${FEATURED_PAPER.challenge_title}</h3>
+    <div class="body-txt">
+      <p>${FEATURED_PAPER.challenge_text}</p>
+    </div>
+    <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+function bfP2(pageNum){
+  if(!FEATURED_PAPER) return '';
+  const steps = FEATURED_PAPER.steps.map((st, i) => `
+    <div class="step">
+      <span class="sn">${['①','②','③','④','⑤'][i] || (i+1)}</span>
+      <span class="stx">${st}</span>
+    </div>
+  `).join('');
+  return `<div class="bp" style="display:flex;flex-direction:column">
+    <div class="db"></div><span class="label">이달의 논문</span>
+    <h3 class="feat-h">${FEATURED_PAPER.steps_title}</h3>
+    <p class="body-txt" style="margin-bottom:9px">${FEATURED_PAPER.steps_intro}</p>
+    <div class="steps">
+      ${steps}
+    </div>
+    <div class="figbox zoomable" style="height:394px">
+      <img src="${ASSETS}${FEATURED_PAPER.fig1.image}" alt="${FEATURED_PAPER.fig1.caption.replace(/['"\\]/g,'')}" onerror="this.parentElement.style.background='#f7f5f0'">
+      <div class="zoom-hint">🔍 휠·더블클릭 (모바일: 핀치) 확대</div>
+    </div>
+    <div class="cap">${FEATURED_PAPER.fig1.caption}</div>
+    <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+function bfP3(pageNum){
+  if(!FEATURED_PAPER) return '';
+  const styles = [
+    { bg: '#fef3f0', border: '#fdd9ce' },
+    { bg: '#e8f0fb', border: '#b3ccf0' },
+    { bg: '#e6f4ea', border: '#a8d8b8' }
+  ];
+  const cards = FEATURED_PAPER.summary_cards.map((c, i) => {
+    const s = styles[i % styles.length];
+    return `
+      <div class="sum-card" style="background:${s.bg};border:1px solid ${s.border}">
+        <div class="sum-num" style="color:#111">${c.value}</div>
+        <div class="sum-lbl" style="color:#aaa">${c.label}</div>
+      </div>
+    `;
+  }).join('');
+  return `<div class="bp" style="display:flex;flex-direction:column">
+    <div class="db"></div><span class="label">이달의 논문</span>
+    <h3 class="feat-h">${FEATURED_PAPER.results_title}</h3>
+    <div class="body-txt" style="margin-bottom:10px">
+      <p>${FEATURED_PAPER.results_text}</p>
+    </div>
+    <div class="sum-cards">
+      ${cards}
+    </div>
+    <div class="figbox zoomable" style="height:230px">
+      <img src="${ASSETS}${FEATURED_PAPER.fig2.image}" alt="${FEATURED_PAPER.fig2.caption.replace(/['"\\]/g,'')}" onerror="this.parentElement.style.background='#f7f5f0'">
+      <div class="zoom-hint">🔍 휠·더블클릭 (모바일: 핀치) 확대</div>
+    </div>
+    <div class="cap">${FEATURED_PAPER.fig2.caption}</div>
+    <div class="dt"></div>
+    <h3 class="feat-h">${FEATURED_PAPER.meaning_title}</h3>
+    <div class="body-txt">
+      <p>${FEATURED_PAPER.meaning_text}</p>
+    </div>
+    <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+function bfP4(pageNum){
+  if(!FEATURED_PAPER) return '';
+  let rows = '';
+  for (const [k, v] of Object.entries(FEATURED_PAPER.recap_table)) {
+    rows += `<tr><td class="rk">${k}</td><td>${v}</td></tr>`;
+  }
+  const terms = FEATURED_PAPER.terms.map(t => `
+    <div class="term"><span class="tk">${t.key}</span><span class="tv">${t.val}</span></div>
+  `).join('');
+  return `<div class="bp" style="display:flex;flex-direction:column">
+    <div class="db"></div><span class="label">이달의 논문</span>
+    <h3 class="feat-h">한눈 요약</h3>
+    <table class="recap">
+      ${rows}
+    </table>
+    <h3 class="feat-h" style="margin-top:14px">핵심 용어</h3>
+    <div style="margin-bottom:14px">
+      ${terms}
+    </div>
+    <div class="closebox" style="margin-top:auto">
+      ${FEATURED_PAPER.closing_quote?`<div class="cq-k">${FEATURED_PAPER.closing_quote}</div>`:''}
+      <div class="cq-c">${FEATURED_PAPER.closing_text.replace(FEATURED_PAPER.closing_author, `<span class="g">${FEATURED_PAPER.closing_author}</span>`)}</div>
+      <div class="cq-h">${FEATURED_PAPER.closing_sub}</div>
+      ${FEATURED_PAPER.cta?`<div class="cta-row"><a class="cta-btn" href="${FEATURED_PAPER.cta.url}">${FEATURED_PAPER.cta.text}</a><a class="cta-qr" href="${FEATURED_PAPER.cta.url}" title="홈페이지 QR"><img src="${ASSETS}qr.png" alt="QR"></a></div>`:''}
+    </div>
+    <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;}
+
+// 사진 페이지 — title 있으면 제목형, 없으면 전체 가득형
+function bFullPhoto(photo){
+  const fit = photo.fit==='contain' ? ' fit-contain' : '';
+  const safe = (photo.caption||'').replace(/['"\\]/g,'');
+  const label = (photo.label!==undefined ? photo.label : (META.quarter_label||''));
+  const cap = photo.caption ? `<div class="fp-cap">${photo.caption}</div>` : '';
+  return `<div class="bp" style="display:flex;flex-direction:column;overflow:hidden">
+    <div class="db"></div>${label?`<span class="label">${label}</span>`:''}
+    <h2 style="font-size:1.4rem;line-height:1.3;margin-bottom:12px;word-break:keep-all">${photo.title}</h2>
+    <div class="photo-fill${fit}">
+      <img src="${ASSETS}${photo.image}" alt="${safe||photo.title}" onerror="this.parentElement.style.background='#f7f5f0';this.style.display='none'">${cap}
+    </div>
+  </div>`;
+}
+function bBleedPhoto(photo){
+  const fit = photo.fit==='contain' ? ' fit-contain' : '';
+  const safe = (photo.caption||'').replace(/['"\\]/g,'');
+  const cap = photo.caption ? `<div class="fp-cap">${photo.caption}</div>` : '';
+  return `<div class="full-photo${fit}">
+    <img src="${ASSETS}${photo.image}" alt="${safe||'사진'}" onerror="this.parentElement.style.background='#fdf9f3';this.style.display='none'">${cap}
+  </div>`;
+}
+
+/* ════════════════ 모든 spread를 한꺼번에 렌더링 (인쇄 모드) ════════════════ */
+
+// AI 주목 기술 렌더링 함수들
+function bAiItem(item) {
+  let imgHtml = '';
+  if(item.image) {
+     imgHtml = `<div class="figbox zoomable" style="width:100%;background:#fff;margin-bottom:6px;border-radius:4px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);"><img src="${ASSETS}${item.image}" style="width:100%;height:auto;display:block;max-height:360px;object-fit:contain;"><div class="zoom-hint" style="font-size:9px;padding:2px 6px;">🔍 확대</div></div>`;
+  }
+  return `
+    <div style="margin-bottom:5px;">
+      <h3 style="font-size:1.05rem;color:#111;margin-bottom:3px;display:flex;align-items:flex-start;">
+        <span style="display:inline-block;background:#333;color:#fff;border-radius:50%;width:16px;height:16px;text-align:center;line-height:16px;font-size:9.5px;margin-right:6px;flex-shrink:0;margin-top:1px">${item.num}</span>
+        <span style="word-break:keep-all;line-height:1.2;font-weight:700">${item.title}</span>
+      </h3>
+      ${imgHtml}
+      ${item.text ? `<p style="font-size:12px;line-height:1.35;margin-bottom:3px;color:#444">${item.text}</p>` : ''}
+      <div style="border-left:3px solid #d93025;background:#fdf9f9;padding:4px 8px;border-radius:0 4px 4px 0;margin-top:1px">
+        <p style="font-size:11px;line-height:1.3;color:#222;margin:0;font-style:italic"><span style="font-weight:700;color:#d93025;font-style:normal;letter-spacing:0.5px">AI의 시선 · </span>${item.ai_view}</p>
+      </div>
+    </div>
+  `;
+}
+
+function bAiP1(pageNum) {
+  if(!AI_TECH) return '';
+  const pgCls = pageNum % 2 === 0 ? 'bpg-l' : 'bpg-r';
+  return `<div class="bp">
+    <div class="db"></div><span class="label">${AI_TECH.label}</span>
+    <h2 style="font-size:1.45rem;line-height:1.2;margin:10px 0 6px;letter-spacing:-0.5px;word-break:keep-all;font-weight:800;color:#111">${AI_TECH.title.replace(/\n/g,'<br>')}</h2>
+    <p style="font-size:12px;color:#555;font-weight:600;margin-bottom:10px;line-height:1.4">${AI_TECH.subtitle}</p>
+    <div class="dt" style="margin-top:10px;margin-bottom:10px"></div>
+    <div class="body-txt" style="margin-bottom:12px">
+      <p style="font-weight:600;font-size:12.5px;line-height:1.4">${AI_TECH.intro}</p>
+    </div>
+    <div style="background:#fdfaf0;border:1px solid #eaddba;padding:12px;border-radius:6px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.04)">
+      <h3 style="font-size:1rem;color:#b07800;margin-bottom:6px;font-weight:800;display:flex;align-items:center;gap:6px">
+        <span style="display:inline-block;width:4px;height:12px;background:#b07800;border-radius:2px"></span>
+        ${AI_TECH.conclusion.title}
+      </h3>
+      <p style="font-size:12px;line-height:1.45;color:#333;margin:0;font-weight:600">${AI_TECH.conclusion.text}</p>
+    </div>
+    ${bAiItem(AI_TECH.items[0])}
+    <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+function bAiP2(pageNum) {
+  if(!AI_TECH) return '';
+  const pgCls = pageNum % 2 === 0 ? 'bpg-l' : 'bpg-r';
+  return `<div class="bp">
+    <div class="db"></div><span class="label">${AI_TECH.label}</span>
+    ${bAiItem(AI_TECH.items[1])}
+    <div style="height:7px"></div>
+    ${bAiItem(AI_TECH.items[2])}
+    <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+function bAiP3(pageNum) {
+  if(!AI_TECH) return '';
+  const pgCls = pageNum % 2 === 0 ? 'bpg-l' : 'bpg-r';
+  return `<div class="bp">
+    <div class="db"></div><span class="label">${AI_TECH.label}</span>
+    ${bAiItem(AI_TECH.items[3])}
+    <div style="height:7px"></div>
+    ${bAiItem(AI_TECH.items[4])}
+    <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+const STATUS = {"stat_cards":[{"value":"151","unit":"명","label":"누적 지원","bg":"#f0f4ff","color":"#1A56A0"},{"value":"114","unit":"명","label":"누적 등록","bg":"#e6f4ea","color":"#1a7a4a"},{"value":"116","unit":"명","label":"누적 수혜","bg":"#fff8e6","color":"#b08a2e"},{"value":"2","unit":"명","label":"취업 확정","bg":"#fdecea","color":"#d93025"}],"admission":{"rows":[{"year":"2024","semester":"2학기","applied":37,"admitted":35,"enrolled":30,"benefited":"35*","note":"미등록 5명 / 자퇴 7명(수혜3·비수혜4) / 외국인 1명(비수혜)"},{"year":"2025","semester":"1학기","applied":44,"admitted":34,"enrolled":31,"benefited":30,"note":"미등록 3명 / 자퇴 1명(비수혜)"},{"year":"2025","semester":"2학기","applied":29,"admitted":26,"enrolled":18,"benefited":18,"note":"미등록 8명 / 자퇴 1명(수혜)"},{"year":"2026","semester":"1학기","applied":41,"admitted":39,"enrolled":35,"benefited":"33**","note":"미등록 4명 / 자퇴 1명(비수혜)"}],"total":{"applied":151,"admitted":134,"enrolled":114,"benefited":116},"total_note":"배출 6명 포함된 수치 (2025-2학기 기준)","notes":["* 전과생 10명 포함, 외국인 1명 제외","** 비수혜 1명 제외 (LGD 학술연수 1인)"]},"output":{"note":"2026년 배출목표 60명 · 취업목표 54명 / 2025년 배출 6명 中 취업 2명","rows":[{"year":"2025년","out_target":"-","out_actual":6,"job_target":"-","job_actual":2},{"year":"2026년","out_target":60,"out_actual":"-","job_target":54,"job_actual":"-"}]}};
+function bStatus(pageNum){
+  if(!STATUS) return bPlaceholder('학과 현황','학과 현황',pageNum);
+  const pgCls = pageNum % 2 === 0 ? 'bpg-l' : 'bpg-r';
+  const S = STATUS;
+  const td = 'padding:5px 6px;border:1px solid #e0d8cc;text-align:center;line-height:1.6;font-size:13px';
+  const cardsHtml = (S.stat_cards||[]).map(c=>
+    `<div class="sum-card" style="background:${c.bg}">
+      <div class="sum-num" style="color:${c.color};font-size:20px">${c.value}<span style="font-size:12px">${c.unit}</span></div>
+      <div class="sum-lbl" style="color:${c.color};font-size:10px">${c.label}</div>
+    </div>`).join('');
+  const tableRows = (S.admission?.rows||[]).map(r=>
+    `<tr>
+      <td style="${td}">${r.year}</td><td style="${td}">${r.semester}</td>
+      <td style="${td}">${r.applied}</td><td style="${td}">${r.admitted}</td><td style="${td}">${r.enrolled}</td>
+      <td style="${td};background:#fff8f0;font-weight:600">${r.benefited??''}</td>
+    </tr>`).join('');
+  const tot = S.admission?.total||{};
+  const notes = (S.admission?.notes||[]).map(n=>`<div style="font-size:11px;color:#aaa;line-height:1.5;margin-top:2px">${n}</div>`).join('');
+  const outputRows = (S.output?.rows||[]).map(r=>
+    `<tr>
+      <td style="${td}">${r.year}</td>
+      <td style="${td}">${r.out_target}</td><td style="${td}">${r.out_actual}</td>
+      <td style="${td}">${r.job_target}</td><td style="${td}">${r.job_actual}</td>
+    </tr>`).join('');
+  return `<div class="bp" style="position:relative;overflow:hidden">
+    <div class="db"></div><span class="label">학과 현황</span>
+    <h2 style="font-size:1.3rem;margin:4px 0 6px;color:#111;font-weight:800;letter-spacing:-0.5px;word-break:keep-all">학기별 모집 · 취업 현황</h2>
+    <div class="dt"></div>
+    <div class="sum-cards" style="margin-bottom:12px">${cardsHtml}</div>
+    <div style="margin-bottom:10px">
+      <div style="margin-bottom:14px">
+        <div style="font-size:1.1rem;font-weight:700;color:#555;letter-spacing:0.5px;margin-bottom:6px">가. 학기별 신입생 모집 현황</div>
+        <table style="width:100%;border-collapse:collapse;">
+          <thead><tr style="background:#f7f4ef">${['연도','학기','지원','합격','등록','수혜'].map(h=>`<th style="${td};font-weight:700;color:#555;background:#f7f4ef">${h}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${tableRows}
+            <tr style="background:#faf7f1">
+              <td colspan="2" style="${td};font-weight:700;color:#d93025">누적</td>
+              <td style="${td};font-weight:700">${tot.applied||''}</td>
+              <td style="${td};font-weight:700">${tot.admitted||''}</td>
+              <td style="${td};font-weight:700">${tot.enrolled||''}</td>
+              <td style="${td};font-weight:700;background:#fff8f0">${tot.benefited||''}</td>
+            </tr>
+          </tbody>
+        </table>
+        ${S.admission?.total_note?`<div style="font-size:11px;color:#aaa;line-height:1.5;margin-top:2px">※ 누적 수혜 ${tot.benefited}명 = ${S.admission.total_note}</div>`:''}
+        ${notes}
+      </div>
+      <div>
+        <div style="font-size:1.1rem;font-weight:700;color:#555;letter-spacing:0.5px;margin-bottom:6px">나. 배출 현황</div>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:4px">
+          <thead>
+            <tr style="background:#f7f4ef">
+              <th style="${td};font-weight:700;color:#555;background:#f7f4ef" rowspan="2">구분</th>
+              <th style="${td};font-weight:700;color:#555;background:#f7f4ef" colspan="2">배출인원</th>
+              <th style="${td};font-weight:700;color:#555;background:#f7f4ef" colspan="2">취업인원</th>
+            </tr>
+            <tr style="background:#f7f4ef">
+              <th style="${td};font-size:9.5px;color:#666;background:#f7f4ef">목표</th>
+              <th style="${td};font-size:9.5px;color:#666;background:#f7f4ef">실적</th>
+              <th style="${td};font-size:9.5px;color:#666;background:#f7f4ef">목표</th>
+              <th style="${td};font-size:9.5px;color:#666;background:#f7f4ef">실적</th>
+            </tr>
+          </thead>
+          <tbody>${outputRows}</tbody>
+        </table>
+        <div style="font-size:11px;color:#aaa;line-height:1.45">${S.output?.note||''}</div>
+      </div>
+    </div>
+    <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+const EVENTS = {sections:[
+  {title:"가. 1분기 실시 행사",rows:[
+    {date:"’26.1.19",  place:"강릉 세인트존스호텔",  event:"2026 디스플레이 산학교류회",         desc:"연세대 디스플레이특성화대학원과 공동 주관"},
+    {date:"’26.3.16",  place:"성균관<br>대학교",         event:"AI 기반 디스플레이 초가속 연구개발 포럼", desc:"SDC·LGD 등 전문가 초청, AI 활용 R&D 혁신 사례 공유 및 미래 연구 방향 논의"},
+    {date:"’26.3.23",  place:"성균관<br>대학교",         event:"2026년 상반기 진학설명회",           desc:"본교·타 대 3·4학년 대상, 학과 지원 혜택 및 교육과정 소개"}
+  ]},
+  {title:"나. 2분기 실시 예정행사",rows:[
+    {date:"’26.04.24",       place:"충남테크노파크",   event:"충남TP 현장실습",                    desc:"디스플레이 공정 기본과정 이론·실습"},
+    {date:"’26.05.03<br>~05.08", place:"미국 LA",         event:"국제 아카데미",                    desc:"SID 국제디스플레이학술대회 참석, 해외 인력 초청 강연·간담회"},
+    {date:"’26.05.18",       place:"성균관<br>대학교",     event:"양자점 분야 석학 초청 강연회",      desc:"양자점 기반 광전자 소자 기술 초격차 확보 및 산학연 협력 방안 논의"},
+    {date:"’26.05",          place:"성균관<br>대학교",     event:"학과 홍보 세미나",                 desc:"학부생 대상 특성화 대학원 소개, 학석사연계과정 지원 유도"},
+    {date:"’26.06",          place:"성균관<br>대학교",     event:"2026학년도 1학기 산학프로젝트 결과보고회", desc:"산학프로젝트 6개 과제 결과 발표 및 심사위원 피드백"}
+  ]}
+]};
+function bEvents(pageNum){
+  if(!EVENTS) return bPlaceholder('학과 주요 행사','학과 주요 행사',pageNum);
+  const pgCls = pageNum % 2 === 0 ? 'bpg-l' : 'bpg-r';
+  const td  = 'padding:5px 6px;border:1px solid #e0d8cc;line-height:1.5;vertical-align:top;font-size:12px;text-align:left';
+  const tdc = 'padding:5px 6px;border:1px solid #e0d8cc;line-height:1.5;vertical-align:top;font-size:12px;text-align:center;white-space:nowrap';
+  const th  = 'padding:5px 6px;border:1px solid #e0d8cc;font-weight:700;color:#555;background:#f7f4ef;text-align:center;font-size:12px';
+  const sectionsHtml = (EVENTS.sections||[]).map(sec=>{
+    const rows = sec.rows.map(r=>`<tr>
+      <td style="${td};text-align:center;white-space:nowrap">${r.date}</td>
+      <td style="${td}">${r.place}</td>
+      <td style="${td};font-weight:600;word-break:keep-all">${r.event}</td>
+      <td style="${td}">${r.desc}</td>
+    </tr>`).join('');
+    return `<div style="font-size:1.1rem;font-weight:700;color:#555;letter-spacing:0.5px;margin:10px 0 5px">${sec.title}</div>
+    <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+      <colgroup><col style="width:15%"><col style="width:15%"><col style="width:25%"><col style="width:35%"></colgroup><thead><tr><th style="${th}">일자</th><th style="${th}">장소</th><th style="${th}">행사명</th><th style="${th}">주요 내용</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }).join('');
+  return `<div class="bp" style="position:relative;overflow:hidden">
+    <div class="db"></div><span class="label">학과 주요 행사</span>
+    <h2 style="font-size:1.3rem;margin:4px 0 6px;color:#111;font-weight:800;letter-spacing:-0.5px;word-break:keep-all">학과 주요 행사</h2>
+    <div class="dt"></div>
+    ${sectionsHtml}
+    <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+// 학과 제공 예정 — 빈자리(placeholder) 페이지
+function bPlaceholder(label, title, pageNum){
+  const pgCls = pageNum % 2 === 0 ? 'bpg-l' : 'bpg-r';
+  return `<div class="bp">
+    <div class="db"></div><span class="label">${label}</span>
+    <h2 style="font-size:1.45rem;margin:6px 0 4px;color:#111;font-weight:800;letter-spacing:-0.5px;word-break:keep-all;line-height:1.3">${title}</h2>
+    <div class="dt"></div>
+    <div style="height:560px;display:flex;align-items:center;justify-content:center;border:2px dashed #d8cfbe;border-radius:12px;background:repeating-linear-gradient(45deg,#faf7f1,#faf7f1 14px,#f5f0e6 14px,#f5f0e6 28px);margin-top:12px">
+      <div style="text-align:center;color:#b3a890">
+        <div style="font-size:30px;margin-bottom:8px">📋</div>
+        <div style="font-size:14px;font-weight:700;color:#9a8e78">학과 제공 자료 대기 중</div>
+        <div style="font-size:11.5px;margin-top:7px;line-height:1.6;color:#b3a890">학과에서 자료를 받는 대로<br>이 자리에 게재됩니다</div>
+      </div>
+    </div>
+    <div class="bpg ${pgCls}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+const bBuilders={
+  status:(p)=>bStatus(p), events:(p)=>bEvents(p),
+  cf:bCoverFront, cb:bCoverBack,
+  p03:bP03, p04:bP04, p05:bP05, p06:bP06, p07:bP07, p08:bP08,
+  fp1:bfP1, fp2:bfP2, fp3:bfP3, fp4:bfP4,
+  ai1:bAiP1, ai2:bAiP2, ai3:bAiP3,
+  blank:()=>`<div style="height:100%;background:#fdf9f3"></div>`
+};
+INTROS.slice(2).forEach((intro, i) => {
+  bBuilders['prof' + (i + 1)] = (pageNum) => bIntroPage(intro, pageNum);
+});
+
+const hasMultiCS = (COVER_STORY.pages && COVER_STORY.pages.length > 1);
+let csOffset = 0;
+if (hasMultiCS) {
+  const numPages = COVER_STORY.pages.length;
+  csOffset = numPages % 2 === 1 ? numPages + 1 : numPages;
+  COVER_STORY.pages.forEach((_, idx) => {
+    bBuilders['cs' + (idx + 1)] = (pageNum) => bCS(pageNum, idx);
+  });
+} else {
+  bBuilders['cs1'] = (pageNum) => `<div class="bp">
+    <div class="db"></div><span class="label">${COVER_STORY.label || '광각 노트'}</span>
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px">
+      <h2 style="font-size:1.5rem;line-height:1.3;flex:1;min-width:0">${COVER_STORY.title.replace(/ /g,'<br>')}</h2>
+      <img src="${ASSETS}${COVER_STORY.image}" alt="${COVER_STORY.title}" style="width:55%;aspect-ratio:16/9;object-fit:cover;border-radius:7px;flex-shrink:0;box-shadow:0 3px 12px rgba(0,0,0,.18)" onerror="this.style.display='none'">
+    </div>
+    <div class="dt"></div>
+    <div class="body-txt">${mdToParas(COVER_STORY.body)}</div>
+    <div class="bpg ${pageNum%2===0?'bpg-l':'bpg-r'}">${String(pageNum).padStart(2,'0')}</div>
+  </div>`;
+}
+
+// ═══════════ 평면 페이지 목록 (표지·뒤표지 제외) ═══════════
+const flatPages = [];
+if (INTROS && INTROS.length >= 2) {
+  flatPages.push('p04','p05','p03');
+} else {
+  flatPages.push('p03');
+}
+if (FEATURED_PAPER) flatPages.push('fp1','fp2','fp3','fp4');
+if (AI_TECH) flatPages.push('ai1', 'ai2', 'ai3');
+if (hasMultiCS) {
+  COVER_STORY.pages.forEach((_,idx)=>flatPages.push('cs'+(idx+1)));
+} else {
+  flatPages.push('cs1');
+}
+if (INTROS && INTROS.length >= 4) { for(let k=2;k<INTROS.length;k++) flatPages.push('prof'+(k-1)); }
+flatPages.push('status','events');
+flatPages.push('p06','p07','p08');
+PHOTOS.forEach((ph,i)=>{bBuilders['photo'+i]=bFullPhoto(ph);flatPages.push('photo'+i);});
+
+// ═══════════ spreads 구성 ═══════════
+const spreads=[{left:null,right:'cf'}];
+for(let i=0;i<flatPages.length;i+=2){
+  const lk=flatPages[i],rk=(i+1<flatPages.length)?flatPages[i+1]:'blank';
+  spreads.push({left:lk,right:rk});
+}
+spreads.push({left:'cb',right:null});
+
+/* ══ 칼럼별 시각 구분 — 라벨·상단바 칼럼 고유색 틴팅 ══ */
+const COL_ACCENT=[['廣角','#B08A2E'],['광각','#B08A2E'],['이달의 논문','#C0392B'],['Display Tech','#1A56A0'],['연구실','#1A7A4A'],['인사말','#2C3E70'],['축사','#2C3E70'],['1분기','#5B6770'],['학과 현황','#5B6770'],['학과 주요 행사','#5B6770']];
+const EDGE_COLS=['廣角','광각','이달의 논문','Display Tech','연구실'];  // 엣지 인덱스 적용 칼럼(인사말·축사·실적·현황/행사 제외)
+function accentFor(t){if(!t)return null;for(const[k,c]of COL_ACCENT){if(t.indexOf(k)>=0)return c;}return null;}
+function isEdgeCol(t){if(!t)return false;for(const k of EDGE_COLS){if(t.indexOf(k)>=0)return true;}return false;}
+function tintColumns(root){
+  root.querySelectorAll('.db').forEach(db=>{
+    let accent=null,matched='',sib=db.nextElementSibling,hops=0;
+    while(sib&&hops<3&&!accent){const t=(sib.textContent||'').trim();if(t.length<60){accent=accentFor(t);if(accent)matched=t;}sib=sib.nextElementSibling;hops++;}
+    if(!accent)return;
+    db.style.background=accent;
+    const page=db.parentElement;if(!page)return;
+    page.querySelectorAll('.label').forEach(l=>l.style.color=accent);
+    page.querySelectorAll('span,div').forEach(s=>{if(s.style&&/rgb\(217,\s*48,\s*37\)/.test(s.style.color))s.style.color=accent;});
+    page.querySelectorAll('.bpg').forEach(b=>{b.style.background=accent;});
+    if(isEdgeCol(matched)){
+      const box=db.closest('.page-left, .page-right');
+      if(box&&!box.querySelector('.edge-idx')){
+        const side=box.classList.contains('page-right')?'right':'left';
+        const bar=document.createElement('div');bar.className='edge-idx';
+        bar.style.cssText='position:absolute;top:0;'+side+':0;width:7px;height:72px;background:'+accent+';z-index:4;border-radius:0 0 3px 3px';
+        box.appendChild(bar);
+      }
+    }
+  });
+}
+
+// 콘텐츠가 많아 한 페이지에 안 들어가는 spread (논문/학술대회 등) 식별
+const OVERFLOW_PAGES = ['p06','p07'];
+
+
+// === Booklet Imposition ===
+function buildBooklet(src) {
+  var pages = [];
+  src.querySelectorAll('.spread').forEach(function(spread) {
+    Array.from(spread.children)
+      .filter(function(c){ return !c.classList.contains('spine'); })
+      .forEach(function(c){ pages.push(c.cloneNode(true)); });
+  });
+  // remove leading placeholder -> pages[0] = cover front
+  if (pages.length && pages[0].classList.contains('page-placeholder')) pages.shift();
+  // remove trailing placeholder-r -> last = cover back
+  if (pages.length && pages[pages.length-1].classList.contains('page-placeholder-r')) pages.pop();
+  // pad to multiple of 4
+  while (pages.length % 4 !== 0) {
+    var b = document.createElement('div');
+    b.style.cssText = 'flex:1;background:#fdf9f3;height:100%';
+    pages.push(b);
+  }
+  var N = pages.length;
+  var sheetCount = N / 4;
+
+  function mkLabel(txt) {
+    var d = document.createElement('div');
+    d.className = 'bk-lbl';
+    d.style.cssText = 'position:absolute;top:6px;left:50%;transform:translateX(-50%);' +
+      'font-size:11px;color:rgba(255,255,255,.9);background:rgba(0,0,0,.6);' +
+      'padding:3px 12px;border-radius:10px;z-index:99;white-space:nowrap;pointer-events:none';
+    d.textContent = txt;
+    return d;
+  }
+
+  function mkHalf(src, side) {
+    var d = src ? src.cloneNode(true) : document.createElement('div');
+    if (!src) d.style.cssText = 'flex:1;background:#fdf9f3;height:100%';
+    // placeholder 클래스만 제거 - cover-front/cover-back 배경 스타일 유지
+    d.classList.remove('page-left','page-right','page-placeholder','page-placeholder-r');
+    d.classList.add(side === 'L' ? 'page-left' : 'page-right');
+    d.style.flex = '1';
+    return d;
+  }
+
+  function mkSheet(pL, pR, labelTxt) {
+    var sheet = document.createElement('div');
+    sheet.className = 'spread';
+    sheet.style.position = 'relative';
+    sheet.appendChild(mkLabel(labelTxt));
+    sheet.appendChild(mkHalf(pL, 'L'));
+    sheet.appendChild(mkHalf(pR, 'R'));
+    return sheet;
+  }
+
+  // saddle-stitch: sheet s (1..sheetCount)
+  //   Side A: LEFT=pages[N-2s+1], RIGHT=pages[2s-2]
+  //   Side B: LEFT=pages[2s-1],   RIGHT=pages[N-2s]
+  for (var s = 1; s <= sheetCount; s++) {
+    var A = mkSheet(
+      pages[N - 2*s + 1], pages[2*s - 2],
+      '시트 ' + s + '/' + sheetCount + ' ▶ 앞면 (먼저 인쇄)'
+    );
+    var B = mkSheet(
+      pages[2*s - 1], pages[N - 2*s],
+      '시트 ' + s + '/' + sheetCount + ' ▶ 뒷면 (뒤집어 인쇄)'
+    );
+    document.body.appendChild(A);
+    document.body.appendChild(B);
+  }
+
+  var bar = document.querySelector('.print-bar span');
+  if (bar) bar.textContent =
+    '📚 첵자 인쇄용 (' + sheetCount + '장 A3 양면) — 앞면부터 순서대로 인쇄 → 중앙 접기 → 스테이플';
+}
+
+// render spreads in hidden container, then reorder as booklet
+var _hidden = document.createElement('div');
+_hidden.style.display = 'none';
+document.body.appendChild(_hidden);
+
+spreads.forEach((s, i)=>{
+  const div=document.createElement('div');
+  const hasOverflow = OVERFLOW_PAGES.includes(s.left) || OVERFLOW_PAGES.includes(s.right);
+  div.className = 'spread' + (hasOverflow ? ' has-overflow' : '');
+  if(s.left===null)
+    div.innerHTML=`<div class="page-placeholder"></div><div class="spine"></div>${bBuilders[s.right](1)}`;
+  else if(s.right===null)
+    div.innerHTML=`${bBuilders[s.left](2 * i)}<div class="spine"></div><div class="page-placeholder-r"></div>`;
+  else
+    div.innerHTML=`<div class="page-left">${bBuilders[s.left](2 * i)}</div><div class="spine"></div><div class="page-right">${bBuilders[s.right](2 * i + 1)}</div>`;
+  _hidden.appendChild(div);
+});
+buildBooklet(_hidden);
+tintColumns(document.body);
+</script>
+</body>
+</html>
