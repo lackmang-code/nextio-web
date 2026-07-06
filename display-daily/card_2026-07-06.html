@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디스플레이 데일리 — 2026-07-06 | Next I/O</title>
+<meta name="description" content="Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;background:#c8bfb0;padding:22px 12px;line-height:1.6}
+.sheet{max-width:800px;margin:0 auto;background:#fdf9f3;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);overflow:hidden}
+/* 다크 로고 헤더 */
+.hd{background:#0a0a0a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hd .logo{height:46px;display:flex;align-items:center}
+.hd .logo svg{height:46px;width:auto;border-radius:4px}
+.hd .kick{text-align:right}
+.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
+.hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
+.inner{padding:26px 30px 22px}
+.title{font-size:1.4rem;line-height:1.3;letter-spacing:-.5px;color:#000;font-weight:700;margin-bottom:4px}
+.date{font-size:.85rem;color:#777;font-weight:600;margin-bottom:16px}
+.date b{color:#b45309}
+.dt{height:1px;background:#e0e0e0;margin:14px 0}
+
+.top{background:#1a1a1a;color:#f0eadf;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.top .tk{font-size:10px;letter-spacing:1.5px;color:#ffd700;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.top .tt{font-size:1.08rem;line-height:1.4;color:#fff;font-weight:700;word-break:keep-all;margin-bottom:7px}
+.top .eye{font-size:.84rem;line-height:1.7;color:#e8e2d6;word-break:keep-all}
+.top .eye b{color:#ffd700;font-weight:700}
+.top .meta{font-size:11px;color:#bbb;margin-top:9px}
+.top .meta a{color:#d9c98a;text-decoration:none}
+
+.item{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #ece7dd}
+.item:last-of-type{border-bottom:none}
+.num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#efe9df;border:1px solid #e0d8c9;color:#3a3228;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ib{flex:1;min-width:0}
+.it{font-size:1rem;line-height:1.4;color:#111;font-weight:700;word-break:keep-all;margin-bottom:4px}
+.eye{font-size:.84rem;line-height:1.65;color:#444;word-break:keep-all}
+.eye .lab{color:#b45309;font-weight:700}
+.meta{font-size:11px;color:#999;margin-top:5px;word-break:break-all}
+.meta a{color:#8a6d3b;text-decoration:none;font-weight:600}
+.dbadge{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:#3a3228;border-radius:4px;padding:1px 6px;margin-right:7px}
+.top .dbadge{background:#fbbf24;color:#1a1a1a}
+/* 기사 본문 아코디언(한글 번역·편집본) */
+.art{margin-top:10px;border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;overflow:hidden}
+.art>summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:.8rem;font-weight:700;color:#3a3228;background:#f1ece2;user-select:none}
+.art>summary::-webkit-details-marker{display:none}
+.art>summary::before{content:"▸ ";color:#b45309}
+.art[open]>summary::before{content:"▾ "}
+.art[open]>summary{border-bottom:1px solid #e3ddd2}
+.bodytext{padding:12px 14px}
+.bodytext p{font-size:.85rem;line-height:1.8;color:#333;word-break:keep-all;text-align:justify;margin-bottom:9px}
+.bodytext p:last-child{margin-bottom:0}
+.top .art{background:#262626;border-color:#3a3a3a;margin-top:11px}
+.top .art>summary{background:#333;color:#e8e2d6}
+.top .art>summary::before{color:#fbbf24}
+.top .bodytext p{color:#ddd6c8}
+
+/* 홍보 푸터 (CTA) */
+.cta{margin-top:20px;background:#fbf6ee;border:1px solid #ecdfca;border-radius:10px;padding:16px 18px;text-align:center}
+.cta .c1{font-size:.92rem;color:#1a1a1a;font-weight:700;word-break:keep-all}
+.cta .c1 b{color:#b45309}
+.cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
+.cta .c3{font-size:.75rem;color:#999;margin-top:8px;padding-top:8px;border-top:1px solid #ecdfca;word-break:keep-all}
+.foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
+
+@media (max-width: 600px) {
+  body { padding: 0 !important; }
+  .sheet { border-radius: 0 !important; box-shadow: none !important; }
+  .hd { padding: 14px 16px !important; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .inner { padding: 20px 16px !important; }
+  .title { font-size: 1.25rem !important; }
+  .row { padding: 10px 12px !important; }
+  .row .d { font-size: 0.95rem !important; }
+  .item { flex-direction: column; gap: 8px; }
+  .num { width: 24px; height: 24px; font-size: 11px; }
+  .it { font-size: 1rem !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="hd">
+    <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
+<g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+<line x1="22" y1="36" x2="60" y2="60"></line><line x1="22" y1="84" x2="60" y2="60"></line><line x1="60" y1="60" x2="100" y2="36"></line><line x1="60" y1="60" x2="100" y2="84"></line></g>
+<circle cx="22" cy="36" r="8" fill="#6FA8FF"></circle><circle cx="22" cy="84" r="8" fill="#6FA8FF"></circle>
+<circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle>
+<circle cx="60" cy="60" r="15" fill="#FBBF24"></circle>
+<text x="150" y="78" font-family="Pretendard, &#39;Apple SD Gothic Neo&#39;, sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text></svg></div>
+    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">AI 큐레이션 · 매일 업데이트</div></div>
+  </div>
+  <div class="inner">
+    <h1 class="title">오늘의 디스플레이 Tech</h1>
+    <div class="date">2026-07-06 · AI가 고른 소식 <b>4건</b></div>
+    <div class="top">
+  <div class="tk">🥇 오늘의 Top Pick</div>
+  <div class="tt">삼성디스플레이, 아산·천안에 67조원 투자 확정…&quot;디스플레이 클러스터 완성&quot;</div>
+  <div class="eye">이청 삼성디스플레이 사장이 충청권 국민보고회에서 아산·천안 67조원 투자 계획을 직접 발표, AI 시대 스마트글라스·엣지 디바이스 확산에 대비한 초대형 승부수 <b>설비투자</b></div>
+  <div class="meta"><span class="dbadge">2026-07-05</span>메트로신문 · <a href="https://www.metroseoul.co.kr/article/20260705500247" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+  <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>삼성디스플레이가 충남 아산·천안 일대에 67조원을 투입해 차세대 디스플레이 클러스터를 완성한다. 이청 삼성디스플레이 대표이사 사장은 지난 2일 충청권 첨단산업 발전 비전 국민보고회에서 이 같은 투자 계획을 직접 발표했다. 이는 삼성 계열사 전체 충청권 투자 140조원 가운데 절반에 가까운 규모로, 삼성전자(56조원)·삼성SDI(9조원)·삼성전기(8조원) 투자와 함께 지역 산업 지형을 바꿀 전망이다.</p><br><p>투자 배경에는 인공지능(AI) 시대 스마트글라스·엣지 디바이스 확산에 따라 향후 10년간 디스플레이 시장이 다시 10배 이상 커질 것이라는 판단이 깔려 있다. 아산캠퍼스는 2004년 LCD 공장 가동을 시작으로 세계 1위 디스플레이 생산거점으로 성장한 곳으로, 이번 투자로 스마트폰·IT용은 물론 XR·자동차·웨어러블용 고부가 OLED 라인이 순차 증설된다.</p><br><p>34년간 디스플레이 외길을 걸어온 엔지니어 출신인 이청 사장은 2019년 세계 최초 폴더블 OLED 양산과 무편광판 기술 'LEAD' 개발을 주도한 인물로, 이번 발표는 그가 대표이사 취임 후 던진 두 번째 대형 승부수로 평가된다. 남은 과제는 중국 추격 저지다. BOE의 청두 8.6세대 라인(월 3만2000장)이 하반기 양산을 예고한 가운데, 삼성디스플레이는 기술 초격차로 대응한다는 방침이다.</p><br><p>── 출처 편집본</p></div>
+</details>
+</div><div class="dt"></div><div class="item">
+  <div class="num">2</div>
+  <div class="ib">
+    <div class="it">노트북 시장 OLED 침투율, 2026년 6%→2030년 19%로 확대 전망</div>
+    <div class="eye">시그마인텔, 대화면 노트북 중심으로 OLED가 새 성장동력…1분기 출하량 전년비 69% 증가 <span class="lab">— 시장동향</span></div>
+    <div class="meta"><span class="dbadge">2026-07-05</span>지디넷코리아 · <a href="https://zdnet.co.kr/view/?no=20260705095752" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>시장조사업체 시그마인텔이 5일 전 세계 노트북 시장의 OLED 침투율이 2026년 6%에서 2030년 19%까지 확대될 것이라는 전망을 내놨다. 15인치 이상 대화면 노트북에서 게이밍·콘텐츠 제작 수요가 늘면서 OLED가 새로운 성장 동력으로 자리잡고 있다는 분석이다.</p><br><p>올해 1분기 전 세계 노트북용 OLED 출하량은 전년 동기 대비 69% 증가한 360만대를 기록했으며, 2분기 출하량은 420만대에 이를 것으로 전망된다. 중국 상반기 최대 쇼핑축제인 '618 행사' 기간에도 OLED 게이밍 노트북 출하량이 5월 기준 전년 대비 507% 급증하는 등 구조적 수요 전환이 뚜렷하다는 평가다.</p><br><p>BOE가 최근 양산을 시작한 8.6세대 IT용 OLED 'B16' 라인과 삼성디스플레이의 8.6세대 OLED 'A6' 라인 가동이 이 같은 출하량 증가를 뒷받침할 것으로 보인다. 이에 따라 비정질실리콘(a-Si) LCD 비중은 2026년 75%에서 2030년 44%로 줄고, 산화물(옥사이드) LCD 비중은 13%에서 33%로 늘어날 전망이다.</p><br><p>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">3</div>
+  <div class="ib">
+    <div class="it">LG디스플레이, 2분기 일시적 적자 속에도 하반기 반등 기대</div>
+    <div class="eye">4월 희망퇴직 비용 반영으로 2분기 적자 전망…증권가는 하반기 아이폰18向 OLED 확대로 연간 흑자 유지 관측 <span class="lab">— 실적·시황</span></div>
+    <div class="meta"><span class="dbadge">2026-07-05</span>뉴스핌 · <a href="https://www.newspim.com/news/view/20260618000907" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>LG디스플레이가 2분기 희망퇴직 관련 일회성 비용 영향으로 적자를 기록할 가능성이 커지고 있다. 금융정보업체 에프앤가이드 컨센서스 기준 2분기 매출은 5조6925억원, 영업손실은 350억원 수준으로 집계돼 지난해 3분기부터 이어진 3개 분기 연속 흑자 흐름이 일단 멈출 것으로 보인다.</p><br><p>LG디스플레이는 지난 4월 근속 5년 이상 기능직과 근속 20년 이상 또는 만 45세 이상 사무직을 대상으로 희망퇴직을 실시했으며, 퇴직자에게는 최대 3년치 급여 수준의 위로금이 지급된 것으로 알려졌다. 증권가는 이를 구조적 수익성 악화가 아닌 일시적 비용 부담으로 보고 있다.</p><br><p>iM증권은 희망퇴직 관련 일회성 비용이 애초 추정치(1000억~1500억원)를 웃돌 가능성이 있지만, 이를 제외한 실질 영업이익은 대형 OLED 중심 수익성 개선에 힘입어 약 1280억원 흑자 수준일 것으로 분석했다. 하반기 아이폰18 출시와 함께 모바일 OLED 출하량이 늘고, 광저우 LCD 공장 매각 이후 대형 OLED 사업 수익성도 개선되고 있어 연간 흑자 기조는 유지될 것이라는 전망이다.</p><br><p>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">4</div>
+  <div class="ib">
+    <div class="it">카지노 디스플레이 토비스, 인적분할 완료…독립경영체제 출범</div>
+    <div class="eye">차량용 전장 디스플레이 사업 &#x27;네오뷰&#x27;로 분리, 카지노·산업용 디스플레이 사업 가치 재평가 추진 <span class="lab">— 기업동향</span></div>
+    <div class="meta"><span class="dbadge">2026-07-05</span>서울경제 · <a href="https://www.sedaily.com/article/20063189" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>카지노·산업용 디스플레이 전문기업 토비스가 인적분할 절차를 마무리하고 독립경영체제에 들어갔다. 이번 분할로 기존 카지노·산업용 디스플레이 사업과 차량용 전장 디스플레이 사업(신설법인 '네오뷰')이 공식 분리됐으며, 변경상장과 재상장은 이달 20일 예정이다.</p><br><p>토비스는 복합기업 디스카운트를 해소하고 카지노 디스플레이 사업의 기업가치를 온전히 평가받겠다는 목표로 분할을 추진해왔다. 그동안 글로벌 슬롯머신·카지노 장비 제조사에 커브드 모니터, 스마트 버튼덱, 디지털 사이니지 등 고부가가치 디스플레이 제품을 공급해왔다.</p><br><p>국내외 카지노 시장이 회복세를 보이면서 카지노 운영사의 실적 개선과 시설 고도화에 따라 슬롯머신 모니터 등 후방 장비 교체·신규 투자 수요도 늘어날 것으로 기대된다. 토비스는 앞으로 카지노 모니터 고도화와 함께 LED·디지털 사이니지로 라인업을 다각화해 카지노 실내 전반을 아우르는 통합 솔루션 기업으로 영역을 넓힐 계획이다.</p><br><p>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+    <div class="cta">
+      <div class="c1">이 브리핑, <b>Next I/O</b>가 AI로 <b>매일 자동 제작</b>합니다.</div>
+      <div class="c2">학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다.<br><a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
+      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="https://www.nextio.ai.kr/display-daily/" target="_blank" rel="noopener">디스플레이 데일리 아카이브</a></div>
+    </div>
+    <div class="foot">본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 Next I/O가 한 줄 해설을 덧붙인 큐레이션입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.</div>
+  </div>
+</div>
+</body>
+</html>
