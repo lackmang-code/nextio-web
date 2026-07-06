@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디스플레이 데일리 — 2026-06-23 | Next I/O</title>
+<meta name="description" content="Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;background:#c8bfb0;padding:22px 12px;line-height:1.6}
+.sheet{max-width:800px;margin:0 auto;background:#fdf9f3;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);overflow:hidden}
+/* 다크 로고 헤더 */
+.hd{background:#0a0a0a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hd .logo{height:46px;display:flex;align-items:center}
+.hd .logo svg{height:46px;width:auto;border-radius:4px}
+.hd .kick{text-align:right}
+.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
+.hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
+.inner{padding:26px 30px 22px}
+.title{font-size:1.4rem;line-height:1.3;letter-spacing:-.5px;color:#000;font-weight:700;margin-bottom:4px}
+.date{font-size:.85rem;color:#777;font-weight:600;margin-bottom:16px}
+.date b{color:#b45309}
+.dt{height:1px;background:#e0e0e0;margin:14px 0}
+
+.top{background:#1a1a1a;color:#f0eadf;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.top .tk{font-size:10px;letter-spacing:1.5px;color:#ffd700;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.top .tt{font-size:1.08rem;line-height:1.4;color:#fff;font-weight:700;word-break:keep-all;margin-bottom:7px}
+.top .eye{font-size:.84rem;line-height:1.7;color:#e8e2d6;word-break:keep-all}
+.top .eye b{color:#ffd700;font-weight:700}
+.top .meta{font-size:11px;color:#bbb;margin-top:9px}
+.top .meta a{color:#d9c98a;text-decoration:none}
+
+.item{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #ece7dd}
+.item:last-of-type{border-bottom:none}
+.num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#efe9df;border:1px solid #e0d8c9;color:#3a3228;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ib{flex:1;min-width:0}
+.it{font-size:1rem;line-height:1.4;color:#111;font-weight:700;word-break:keep-all;margin-bottom:4px}
+.eye{font-size:.84rem;line-height:1.65;color:#444;word-break:keep-all}
+.eye .lab{color:#b45309;font-weight:700}
+.meta{font-size:11px;color:#999;margin-top:5px;word-break:break-all}
+.meta a{color:#8a6d3b;text-decoration:none;font-weight:600}
+.dbadge{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:#3a3228;border-radius:4px;padding:1px 6px;margin-right:7px}
+.top .dbadge{background:#fbbf24;color:#1a1a1a}
+/* 기사 본문 아코디언(한글 번역·편집본) */
+.art{margin-top:10px;border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;overflow:hidden}
+.art>summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:.8rem;font-weight:700;color:#3a3228;background:#f1ece2;user-select:none}
+.art>summary::-webkit-details-marker{display:none}
+.art>summary::before{content:"▸ ";color:#b45309}
+.art[open]>summary::before{content:"▾ "}
+.art[open]>summary{border-bottom:1px solid #e3ddd2}
+.bodytext{padding:12px 14px}
+.bodytext p{font-size:.85rem;line-height:1.8;color:#333;word-break:keep-all;text-align:justify;margin-bottom:9px}
+.bodytext p:last-child{margin-bottom:0}
+.top .art{background:#262626;border-color:#3a3a3a;margin-top:11px}
+.top .art>summary{background:#333;color:#e8e2d6}
+.top .art>summary::before{color:#fbbf24}
+.top .bodytext p{color:#ddd6c8}
+
+/* 홍보 푸터 (CTA) */
+.cta{margin-top:20px;background:#fbf6ee;border:1px solid #ecdfca;border-radius:10px;padding:16px 18px;text-align:center}
+.cta .c1{font-size:.92rem;color:#1a1a1a;font-weight:700;word-break:keep-all}
+.cta .c1 b{color:#b45309}
+.cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
+.cta .c3{font-size:.75rem;color:#999;margin-top:8px;padding-top:8px;border-top:1px solid #ecdfca;word-break:keep-all}
+.foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
+
+@media (max-width: 600px) {
+  body { padding: 0 !important; }
+  .sheet { border-radius: 0 !important; box-shadow: none !important; }
+  .hd { padding: 14px 16px !important; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .inner { padding: 20px 16px !important; }
+  .title { font-size: 1.25rem !important; }
+  .row { padding: 10px 12px !important; }
+  .row .d { font-size: 0.95rem !important; }
+  .item { flex-direction: column; gap: 8px; }
+  .num { width: 24px; height: 24px; font-size: 11px; }
+  .it { font-size: 1rem !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="hd">
+    <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
+<g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+<line x1="22" y1="36" x2="60" y2="60"></line><line x1="22" y1="84" x2="60" y2="60"></line><line x1="60" y1="60" x2="100" y2="36"></line><line x1="60" y1="60" x2="100" y2="84"></line></g>
+<circle cx="22" cy="36" r="8" fill="#6FA8FF"></circle><circle cx="22" cy="84" r="8" fill="#6FA8FF"></circle>
+<circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle>
+<circle cx="60" cy="60" r="15" fill="#FBBF24"></circle>
+<text x="150" y="78" font-family="Pretendard, &#39;Apple SD Gothic Neo&#39;, sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text></svg></div>
+    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">AI 큐레이션 · 매일 업데이트</div></div>
+  </div>
+  <div class="inner">
+    <h1 class="title">오늘의 디스플레이 Tech</h1>
+    <div class="date">2026-06-23 · AI가 고른 소식 <b>5건</b></div>
+    <div class="top">
+  <div class="tk">🥇 오늘의 Top Pick</div>
+  <div class="tt">삼성디스플레이, 애플 폴더블 OLED 모듈 양산 시작</div>
+  <div class="eye">삼성D가 애플로부터 폴더블 OLED 모듈 제조 승인(수율 80%↑)을 받고 베트남 후공정 라인에서 초기 양산 돌입. 3년 독점 계약·올해 300만 대 목표. <b>삼성디스플레이 · 폴더블 · 애플OLED</b></div>
+  <div class="meta"><span class="dbadge">2026-06-22</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=58424" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+  <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>삼성디스플레이가 애플로부터 폴더블 스마트폰용 OLED 모듈 제조 승인을 획득하고, 베트남 후공정 시설에서 초기 양산에 돌입했다. 올해 공급 목표는 300만 대다.</p><p>삼성디스플레이는 3년 독점 공급 계약에 따라 애플 폴더블 OLED 전량을 단독 공급한다. 애플의 양산 승인 기준 수율은 70%이지만 삼성디스플레이는 80%를 상회해 이를 통과했다. 현재 베트남 시설 80개 라인 중 50개가 가동 중이다.</p><p>이번 폴더블 OLED에는 CoE(Color filter on Encapsulation) 기술과 최신 M16 유기물 재료 세트가 적용됐다. 애플 폴더블폰은 9월 출시가 예상되며, 힌지 모듈 양산 안정성이 최종 출시 일정의 변수로 남아 있다.</p><p>── 출처 편집본</p></div>
+</details>
+</div><div class="dt"></div><div class="item">
+  <div class="num">2</div>
+  <div class="ib">
+    <div class="it">LG디스플레이, 대형 OLED 색·밝기 정확도 100% 세계 최초 인증</div>
+    <div class="eye">인터텍(Intertek) 500럭스 조건 테스트에서 색상·밝기 정확도 100% 및 색상 혼선 없음(Crosstalk-Free) 기준 모두 달성. LCD는 동일 조건에서 미충족. <span class="lab">— LG디스플레이 · WOLED · 인증</span></div>
+    <div class="meta"><span class="dbadge">2026-06-22</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=58413" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>LG디스플레이가 자사 대형 OLED 전 제품(모니터·TV)에 대해 영국 인증기관 인터텍(Intertek)으로부터 '색상·밝기 정확도' 글로벌 인증을 세계 최초로 획득했다고 22일 발표했다.</p><p>인터텍은 500럭스 시청 환경에서 OLED와 LCD 패널에 다양한 테스트 패턴을 적용해 색·밝기 편차를 측정했다. LGD OLED 패널은 색상 정확도 100%, 밝기 정확도 100%, Crosstalk-Free 기준을 모두 통과했다. 반면 LCD는 백라이트 구조적 한계(빛 누설·색 간섭)로 동일 기준을 충족하지 못했다.</p><p>이현우 LG디스플레이 대형사업부문장은 &quot;OLED가 수백만 개 픽셀이 독립 발광하는 자발광 구조를 통해 크리에이터의 의도대로 화질을 정확히 구현한다는 사실을 객관적으로 증명했다&quot;고 밝혔다.</p><p>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">3</div>
+  <div class="ib">
+    <div class="it">[기자수첩] BOE 8.6G OLED 납품식…&#x27;근자감&#x27;에 빠진 한국 디스플레이</div>
+    <div class="eye">BOE가 청두에서 8.6세대 OLED 납품식 개최. BOE·TCL CSOT·비전옵토닉스가 동시 진격하는 동안 한국은 삼성D 단독 투자. 韓 2026년 디스플레이 R&amp;D 예산은 반도체의 1/6 수준. <span class="lab">— BOE · 중국OLED · 산업동향</span></div>
+    <div class="meta"><span class="dbadge">2026-06-22</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=58353" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>지난주 BOE가 중국 청두에서 8.6세대 OLED 납품식을 열고 레노버·ASUS·MSI·OPPO·Vivo 등 10여 개 고객사를 초청했다. 한국 디스플레이 기업이 주도해 왔던 형식의 행사를 중국 업체가 먼저 연 것은 상징적인 전환점이다.</p><p>BOE의 현재 수율은 삼성디스플레이에 비해 크게 낮고, 업계에서는 '세계 최초 양산' 타이틀 선점을 위해 서두른 측면이 있다는 평가도 있다. 그러나 한국이 불가능하다고 여겼던 중국의 차세대 OLED 진입이 현실화됐다는 사실 자체가 중요하다.</p><p>8.6세대 IT OLED 라인 투자에서 BOE·TCL CSOT·비전옵토닉스가 동시에 진격하는 동안, 한국에서는 삼성디스플레이만이 투자에 나섰다. 비전옵토닉스는 훙치 차량에 롤러블 디스플레이를 탑재하고 FMM 없는 ViP OLED를 Honor 웨어러블에 적용하는 등 혁신을 가속화하고 있다.</p><p>한국 정부의 2026년 디스플레이 R&D 예산은 776억 원으로 반도체(4,685억 원)의 약 6분의 1 수준에 불과하다. LCD를 잃은 뒤 OLED마저 빼앗기면 한국 전자산업 공급망 전체가 흔들릴 수 있다는 경고가 이어지고 있다.</p><p>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">4</div>
+  <div class="ib">
+    <div class="it">우리이앤엘하루틴, 북미 AI 노트북에 초박형 미니LED 백라이트 공급</div>
+    <div class="eye">월 1.5만 개 규모 양산 공급 중. 1,000개 이상 LED 칩 로컬 디밍, 최대 2,000니트 밝기, 국내·일본 특허 등록 완료. <span class="lab">— 미니LED · AI노트북 · 소재부품</span></div>
+    <div class="meta"><span class="dbadge">2026-06-22</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=58428" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>우리그룹 계열사 우리이앤엘하루틴이 북미 대형 IT 기업의 AI 노트북에 초박형 미니LED 백라이트 솔루션을 양산 공급 중이라고 밝혔다. 올해 상반기 양산을 시작해 현재 월 1만5,000개 규모로 공급하고 있다.</p><p>공급 제품에는 수천 개의 초소형 LED 칩을 고밀도로 배열해 독립 구동하는 로컬 디밍 기술이 적용됐다. 노트북 크기에서 1,000개 이상의 LED 칩이 분할 구동하며, 자체 개발한 필름 봉지재 기법과 광학 구조 최적화로 모듈을 얇게 설계했다. 관련 기술은 올해 한국과 일본에서 특허 등록을 완료했다.</p><p>제품은 최대 2,000니트 밝기를 제공하며 야외 시인성을 확보했다. OLED 수준의 색재현율·소비전력·휘도 균일도도 갖췄다. 회사는 향후 생산능력 확대 투자와 신규 글로벌 고객사 확보를 동시에 추진할 계획이다.</p><p>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">5</div>
+  <div class="ib">
+    <div class="it">LG전자 상업용 디스플레이, 인포컴 2026 북미 최고 제품상 수상</div>
+    <div class="eye">마이크로LED 사이니지 &#x27;LG Magnit&#x27;이 설치·디지털 사이니지 부문 최고상. TAA 기준 제품으로 미국 정부 고객 시장도 공략. <span class="lab">— LG전자 · 마이크로LED · 상업용디스플레이</span></div>
+    <div class="meta"><span class="dbadge">2026-06-22</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=58396" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>LG전자가 북미 최대 디스플레이 전시회 인포컴(Infocom) 2026에서 마이크로LED 사이니지 'LG Magnit'으로 설치·디지털 사이니지 부문 최고 제품상을 수상했다. 행사는 6월 17~19일 라스베이거스에서 열렸다.</p><p>LG전자는 'Solutions Beyond Display'를 주제로 다양한 상업용 디스플레이 제품과 솔루션을 전시했다. LG Magnit은 초고화질 이미지, 화면 확장성, 편리한 설치를 특징으로 하며 전시관·대형 강당·회의실·프리미엄 리테일·방송국·관제실 등 다양한 환경에 적용 가능하다.</p><p>이번 전시에서 LG전자는 미국 무역협정법(TAA) 기준을 충족한 제품 라인도 공개하며 미국 정부 고객 시장을 겨냥했다.</p><p>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+    <div class="cta">
+      <div class="c1">이 브리핑, <b>Next I/O</b>가 AI로 <b>매일 자동 제작</b>합니다.</div>
+      <div class="c2">학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다.<br><a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
+      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="https://www.nextio.ai.kr/display-daily/" target="_blank" rel="noopener">디스플레이 데일리 아카이브</a></div>
+    </div>
+    <div class="foot">본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 Next I/O가 한 줄 해설을 덧붙인 큐레이션입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.</div>
+  </div>
+</div>
+</body>
+</html>
