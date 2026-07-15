@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디스플레이 데일리 — undefined | Next I/O</title>
+<meta name="description" content="Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;background:#c8bfb0;padding:22px 12px;line-height:1.6}
+.sheet{max-width:800px;margin:0 auto;background:#fdf9f3;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);overflow:hidden}
+/* 다크 로고 헤더 */
+.hd{background:#0a0a0a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hd .logo{height:46px;display:flex;align-items:center}
+.hd .logo svg{height:46px;width:auto;border-radius:4px}
+.hd .kick{text-align:right}
+.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
+.hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
+.inner{padding:26px 30px 22px}
+.title{font-size:1.4rem;line-height:1.3;letter-spacing:-.5px;color:#000;font-weight:700;margin-bottom:4px}
+.date{font-size:.85rem;color:#777;font-weight:600;margin-bottom:16px}
+.date b{color:#b45309}
+.dt{height:1px;background:#e0e0e0;margin:14px 0}
+
+.top{background:#1a1a1a;color:#f0eadf;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.top .tk{font-size:10px;letter-spacing:1.5px;color:#ffd700;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.top .tt{font-size:1.08rem;line-height:1.4;color:#fff;font-weight:700;word-break:keep-all;margin-bottom:7px}
+.top .eye{font-size:.84rem;line-height:1.7;color:#e8e2d6;word-break:keep-all}
+.top .eye b{color:#ffd700;font-weight:700}
+.top .meta{font-size:11px;color:#bbb;margin-top:9px}
+.top .meta a{color:#d9c98a;text-decoration:none}
+
+.item{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #ece7dd}
+.item:last-of-type{border-bottom:none}
+.num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#efe9df;border:1px solid #e0d8c9;color:#3a3228;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ib{flex:1;min-width:0}
+.it{font-size:1rem;line-height:1.4;color:#111;font-weight:700;word-break:keep-all;margin-bottom:4px}
+.eye{font-size:.84rem;line-height:1.65;color:#444;word-break:keep-all}
+.eye .lab{color:#b45309;font-weight:700}
+.meta{font-size:11px;color:#999;margin-top:5px;word-break:break-all}
+.meta a{color:#8a6d3b;text-decoration:none;font-weight:600}
+.dbadge{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:#3a3228;border-radius:4px;padding:1px 6px;margin-right:7px}
+.top .dbadge{background:#fbbf24;color:#1a1a1a}
+/* 기사 본문 아코디언(한글 번역·편집본) */
+.art{margin-top:10px;border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;overflow:hidden}
+.art>summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:.8rem;font-weight:700;color:#3a3228;background:#f1ece2;user-select:none}
+.art>summary::-webkit-details-marker{display:none}
+.art>summary::before{content:"▸ ";color:#b45309}
+.art[open]>summary::before{content:"▾ "}
+.art[open]>summary{border-bottom:1px solid #e3ddd2}
+.bodytext{padding:12px 14px}
+.bodytext p{font-size:.85rem;line-height:1.8;color:#333;word-break:keep-all;text-align:justify;margin-bottom:9px}
+.bodytext p:last-child{margin-bottom:0}
+.top .art{background:#262626;border-color:#3a3a3a;margin-top:11px}
+.top .art>summary{background:#333;color:#e8e2d6}
+.top .art>summary::before{color:#fbbf24}
+.top .bodytext p{color:#ddd6c8}
+
+/* 홍보 푸터 (CTA) */
+.cta{margin-top:20px;background:#fbf6ee;border:1px solid #ecdfca;border-radius:10px;padding:16px 18px;text-align:center}
+.cta .c1{font-size:.92rem;color:#1a1a1a;font-weight:700;word-break:keep-all}
+.cta .c1 b{color:#b45309}
+.cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
+.cta .c3{font-size:.75rem;color:#999;margin-top:8px;padding-top:8px;border-top:1px solid #ecdfca;word-break:keep-all}
+.foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
+
+@media (max-width: 600px) {
+  body { padding: 0 !important; }
+  .sheet { border-radius: 0 !important; box-shadow: none !important; }
+  .hd { padding: 14px 16px !important; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .inner { padding: 20px 16px !important; }
+  .title { font-size: 1.25rem !important; }
+  .row { padding: 10px 12px !important; }
+  .row .d { font-size: 0.95rem !important; }
+  .item { flex-direction: column; gap: 8px; }
+  .num { width: 24px; height: 24px; font-size: 11px; }
+  .it { font-size: 1rem !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="hd">
+    <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
+<g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+<line x1="22" y1="36" x2="60" y2="60"></line><line x1="22" y1="84" x2="60" y2="60"></line><line x1="60" y1="60" x2="100" y2="36"></line><line x1="60" y1="60" x2="100" y2="84"></line></g>
+<circle cx="22" cy="36" r="8" fill="#6FA8FF"></circle><circle cx="22" cy="84" r="8" fill="#6FA8FF"></circle>
+<circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle>
+<circle cx="60" cy="60" r="15" fill="#FBBF24"></circle>
+<text x="150" y="78" font-family="Pretendard, &#39;Apple SD Gothic Neo&#39;, sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text></svg></div>
+    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">AI 큐레이션 · 매일 업데이트</div></div>
+  </div>
+  <div class="inner">
+    <h1 class="title">오늘의 디스플레이 Tech</h1>
+    <div class="date">undefined · AI가 고른 소식 <b>6건</b></div>
+    <div class="top">
+  <div class="tk">🥇 오늘의 Top Pick</div>
+  <div class="tt">피에스케이홀딩스, 대만發 리플로우 장비 300대 수주…최대 6000억원 규모</div>
+  <div class="eye">피에스케이홀딩스가 대만 후공정 업체로부터 HBM·CoWoS 패키징용 리플로우 장비 300여 대를 수주, 규모가 최대 6000억원에 달한다. <b>원천기술</b></div>
+  <div class="meta"><span class="dbadge">2026-07-14</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=59547" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+  <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">피에스케이홀딩스가 대만의 반도체 후공정 기업들로부터 리플로우 장비 300여 대를 수주했다. 수주 규모는 최대 6000억원으로 추산되며, 이는 지난해 생산량의 3배에 달하는 물량이다. 주요 고객사는 세계 최대 반도체 패키징·테스트 업체인 대만 ASE(Advanced Semiconductor Engineering)로 알려졌다.
+
+리플로우 장비는 HBM(고대역폭메모리)과 TSMC의 CoWoS 첨단 패키징 공정에 쓰이는 핵심 후공정 장비다. 웨이퍼나 기판 위 미세 금속 범프(돌기)에 150~300도의 열을 정밀하게 가해 접합을 형성하는 역할을 하며, 최근 HBM·2.5D/3D 패키징 수요 급증과 맞물려 장비 발주가 크게 늘고 있다.
+
+장비 단가는 대당 15억~20억원 수준이며, 납품은 내년부터 순차적으로 이뤄질 예정이다. 현재 리드타임(주문부터 납품까지 걸리는 기간)은 약 7개월로, 생산능력이 이미 포화 상태에 이르면서 국내 반도체 기업들의 추가 발주 요청도 일부 거절하고 있는 상황이다.
+
+회사는 상대적으로 이윤률이 높은 리플로우 장비 생산에 역량을 집중하는 전략을 취하고 있다. 이번 대규모 수주는 HBM·첨단 패키징 시장의 성장세가 장비 공급망 전반으로 확산되고 있음을 보여주는 사례로 평가된다.
+
+── 출처 편집본</div>
+</details>
+</div><div class="dt"></div><div class="item">
+  <div class="num">2</div>
+  <div class="ib">
+    <div class="it">中 OLED 추격 거세지는데…삼성디스플레이, 8.6세대 IT OLED로 초격차 수성</div>
+    <div class="eye">중국 BOE·비저녹스·CSOT의 OLED 합산 점유율이 삼성디스플레이(37%)에 근접한 38%까지 올라온 가운데, 삼성디스플레이가 8.6세대 IT용 OLED 양산을 앞세워 기술 초격차를 지키려는 전략을 다룬 기사. <span class="lab">— 패널신기술</span></div>
+    <div class="meta"><span class="dbadge">2026-07-14</span>이지경제 · <a href="https://www.ezyeconomy.com/news/articleView.html?idxno=228297" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">중국 디스플레이 3사(BOE·비저녹스·CSOT)의 글로벌 OLED 합산 점유율이 38%까지 올라서며 삼성디스플레이(37%)를 근소하게 앞지른 것으로 나타났다. 업계에서는 중국이 프리미엄 OLED에서도 소형·대형을 가리지 않고 빠르게 추격하고 있다는 평가가 나온다.
+
+이에 맞서 삼성디스플레이는 태블릿·노트북·모니터 등 IT 기기용 8.6세대 OLED 양산을 승부수로 던졌다. 6세대 원판 대비 약 2.2배 큰 8.6세대 원판을 활용하면 장당 생산 패널 수가 늘어 생산성이 높아지고, OLED의 약점으로 꼽혀온 가격 경쟁력도 상당 부분 확보할 수 있다는 설명이다. 회사는 2026년 3분기 중 8.6세대 IT OLED 양산에 들어간다는 목표를 제시했다.
+
+지식재산권 측면에서도 성과가 있었다. 삼성디스플레이는 BOE와 향후 OLED 생산분에 대해 러닝 로열티를 받는 조건의 라이선스 계약을 체결하며 특허 분쟁에서 유리한 고지를 점했다.
+
+다만 중국은 2027년까지 전 세계 OLED 장비 투자의 83%를 차지할 것으로 전망될 만큼 공격적인 증설을 이어가고 있다. 업계 관계자는 "중국이 프리미엄 OLED에서도 빠르게 추격하고 있지만, 삼성디스플레이는 글로벌 프리미엄 시장에서의 검증된 이력과 확대되는 기술 격차로 우위를 지키고 있다"고 말했다.
+
+── 출처 편집본</div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">3</div>
+  <div class="ib">
+    <div class="it">삼성SDS, 퓨리오사AI NPU 품은 &#x27;패브릭스·브리티웍스&#x27; 16일 가동</div>
+    <div class="eye">삼성SDS가 퓨리오사AI 2세대 NPU &#x27;레니게이드&#x27; 기반 NPUaaS를 7월 16일 출시, 패브릭스·브리티웍스 서비스에 적용한다. <span class="lab">— 세트제품</span></div>
+    <div class="meta"><span class="dbadge">2026-07-14</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=59567" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">삼성SDS가 국내 팹리스 퓨리오사AI의 2세대 NPU 칩 '레니게이드(RNGD)'를 활용한 NPU 서비스형 인프라(NPUaaS)를 7월 16일 정식 출시한다고 밝혔다. 최정진 삼성SDS 그룹장은 레니게이드 기반 NPUaaS가 이미 고객사를 확보한 상태이며, 이를 통해 자사 서비스인 패브릭스와 브리티웍스를 가동한다고 설명했다.
+
+패브릭스는 정부 민원 처리 등에 활용되는 기업용 생성형 AI 서비스이며, 브리티웍스는 문서 검색·이메일 정리·모바일 회의 지원 등 공공·행정 업무에 최적화된 협업 솔루션이다. 삼성SDS는 이들 서비스를 서울 상암과 경기 화성 동탄 데이터센터에 탑재하고, 연말까지 인프라 규모를 지속 확대할 계획이다.
+
+퓨리오사AI의 레니게이드는 엔비디아 RTX 프로 6000 대비 7.4배 많은 사용자를 처리할 수 있는 전력효율을 갖춘 것으로 알려졌다. 삼성SDS는 향후 RX(로봇전환) 사업에서도 GPU 대신 NPU 활용을 검토 중이라고 밝혔다.
+
+퓨리오사AI는 2027년 말 3세대 칩을 양산할 예정이며, 2세대 대비 성능이 10~30배 향상될 것으로 전망된다. 이번 삼성SDS의 채택은 국내 AI 반도체 생태계 내 팹리스-대기업 협력 사례로 주목된다.
+
+── 출처 편집본</div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">4</div>
+  <div class="ib">
+    <div class="it">닌텐도, 스위치2 OLED 버전 개발 검토 중</div>
+    <div class="eye">닌텐도가 2025년 출시한 스위치2의 OLED 버전 개발을 검토 중이며, 확정 시 2026년 안에 개발이 시작될 전망이다. <span class="lab">— 시황</span></div>
+    <div class="meta"><span class="dbadge">2026-07-14</span>OLED-Info · <a href="https://www.oled-info.com/nintendo-may-soon-begin-developing-oled-version-its-popular-switch-2-gaming" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">닌텐도가 자사 인기 콘솔 '스위치2'의 OLED 디스플레이 탑재 버전 개발을 검토하고 있는 것으로 알려졌다. 2021년 출시된 초대 '스위치 OLED' 모델은 2024년까지 누적 2,000만 대 이상 판매되며 상업적으로 큰 성공을 거둔 바 있어, 닌텐도가 이번에도 같은 전략을 이어갈 가능성이 제기된다.
+
+현재 시판 중인 스위치2(2025년 출시)는 샤프가 생산하는 7.9인치 1920×1080 해상도, 120Hz 재생률의 LCD 패널을 탑재하고 있다. 만약 OLED 버전이 실제로 개발된다면 동일한 1920×1080 해상도의 AMOLED 패널이 적용될 것으로 예상되며, 이는 2021년 초대 스위치 OLED가 채택했던 1280×720 해상도 대비 크게 향상된 사양이다.
+
+다만 아직 개발 착수 여부는 최종 확정되지 않은 상태다. 만약 닌텐도가 개발을 진행하기로 결정할 경우, 2026년 안에 프로젝트가 시작될 것으로 전망된다. 구체적인 출시 시점이나 패널 공급사에 대한 정보는 아직 공개되지 않았다.
+
+닌텐도의 OLED 콘솔 전략은 게임기 시장에서 AMOLED 채택 확대 흐름을 보여주는 사례로, 삼성디스플레이·LG디스플레이 등 국내 패널사들의 중소형 OLED 게이밍 기기向 수요 확대 기대감으로 이어질 수 있다.
+
+── 출처 편집본</div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">5</div>
+  <div class="ib">
+    <div class="it">디스플레이 시장 승부처는 어디…유비리서치, &#x27;Display Next 2027&#x27; 개최</div>
+    <div class="eye">유비리서치가 8월 12일 &#x27;디스플레이 넥스트(Display Next) 2027&#x27; 세미나를 열고 글로벌 공급망 재편과 차세대 성장축(IT OLED·차량용·XR·Micro-LED) 전략을 조망한다고 예고한 기사. <span class="lab">— 시황</span></div>
+    <div class="meta"><span class="dbadge">2026-07-14</span>이비엔(EBN)/뉴스탭 · <a href="https://news.google.com/rss/articles/CBMibEFVX3lxTFBZVnVEMzFUT1hZVWxkbGU2ZFFYZFEwZkVXYnUxQ3dyV0hoM2FINHRDbUtjaG50VVdxckJCdlAxWTJmeFYyTHBhcWxaTy1PLTg5Zy1TckNQNVJwTzN4LTZuYWxwbnV3WUJRQXRSNg?oc=5" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">시장조사업체 유비리서치가 오는 8월 12일 '디스플레이 넥스트(Display Next) 2027' 세미나를 개최한다고 예고했다. 스마트폰 중심의 전통적 디스플레이 시장이 성장 한계에 부딪힌 가운데, 산업의 무게중심이 IT용 OLED, 차량용(Auto) 디스플레이, AR·VR을 포함한 XR, 차세대 기술인 Micro-LED로 빠르게 옮겨가고 있다는 문제의식에서 마련된 자리다.
+
+세미나에서는 한국 디스플레이 산업의 재도약 방안, OLED 산업 전망과 글로벌 트렌드, 차량용 디스플레이 산업 인사이트, AR 디스플레이 기술 동향 등이 주요 의제로 다뤄질 예정이다. 특히 중국 OLED 산업이 저가 경쟁과 정부 정책 지원을 등에 업고 빠르게 성장하면서 글로벌 공급망 재편이 가속화되고 있다는 점이 핵심 논의 축으로 꼽힌다.
+
+업계에서는 스마트폰 시장에서의 기술 추격과 가격 경쟁이 심화되는 만큼, 국내 디스플레이 업계가 IT·차량용·XR 등 신성장 응용처로 사업 포트폴리오를 다변화해야 한다는 목소리가 커지고 있다.
+
+── 출처 편집본</div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">6</div>
+  <div class="ib">
+    <div class="it">반도체 공장 전력의 10~15%, 용수 펌프가 쓴다…고효율 전환 필요성 부상</div>
+    <div class="eye">그런포스·아서디리틀 백서에 따르면 냉각수·초순수·폐수 처리 펌프가 반도체 공장 전력의 10~15%를 소비, VFD 전환 시 20~50% 절감 가능하다. <span class="lab">— 거시</span></div>
+    <div class="meta"><span class="dbadge">2026-07-14</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=59576" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext">덴마크 펌프 업체 그런포스와 컨설팅사 아서디리틀이 공동 발간한 백서에 따르면, 냉각수·초순수·폐수 처리에 쓰이는 펌프가 반도체 공장 전체 전력 소비의 약 10~15%를 차지하는 것으로 나타났다.
+
+백서는 공정 장비(식각·증착·노광 등)가 전체 전력의 45~50%를 사용하며, HVAC(냉난방공조) 시스템이 20~25%, 초순수 시스템이 약 4%를 소비한다고 분석했다. 특히 공정 냉각수 시스템 내에서는 펌프가 전력 사용의 80~90%를 차지해, 펌프 효율화가 전체 에너지 절감의 관건으로 지목됐다.
+
+개선 방안으로는 기존의 정속 펌프를 가변주파수 드라이브(VFD) 적용 펌프로 교체하는 방식이 제시됐다. VFD 펌프는 필요한 유량과 압력에 맞춰 모터 회전속도를 자동 조절함으로써 펌프 전력 사용량을 20~50%까지 절감할 수 있다는 설명이다.
+
+백서는 미세공정 전환에 따른 전력 수요 증가도 함께 짚었다. 2나노 공정은 28나노 대비 약 3.5배 많은 전력을 필요로 하며, 주요 5개 반도체 업체의 에너지 소비량은 2019년 83TWh에서 2023년 113TWh로 늘어난 것으로 집계됐다. 미세화가 가속화될수록 유틸리티 설비의 고효율화가 반도체 업계의 핵심 과제로 부상하고 있다.
+
+── 출처 편집본</div>
+</details>
+  </div>
+</div>
+    <div class="cta">
+      <div class="c1">이 브리핑, <b>Next I/O</b>가 AI로 <b>매일 자동 제작</b>합니다.</div>
+      <div class="c2">학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다.<br><a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
+      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="https://www.nextio.ai.kr/display-daily/" target="_blank" rel="noopener">디스플레이 데일리 아카이브</a></div>
+    </div>
+    <div class="foot">본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 Next I/O가 한 줄 해설을 덧붙인 큐레이션입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.</div>
+  </div>
+</div>
+</body>
+</html>
