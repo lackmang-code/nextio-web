@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디스플레이 데일리 — 2026-07-07 | Next I/O</title>
+<meta name="description" content="Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased;background:#c8bfb0;padding:22px 12px;line-height:1.6}
+.sheet{max-width:800px;margin:0 auto;background:#fdf9f3;border-radius:8px;box-shadow:0 14px 44px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);overflow:hidden}
+/* 다크 로고 헤더 */
+.hd{background:#0a0a0a;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hd .logo{height:46px;display:flex;align-items:center}
+.hd .logo svg{height:46px;width:auto;border-radius:4px}
+.hd .kick{text-align:right}
+.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
+.hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
+.inner{padding:26px 30px 22px}
+.title{font-size:1.4rem;line-height:1.3;letter-spacing:-.5px;color:#000;font-weight:700;margin-bottom:4px}
+.date{font-size:.85rem;color:#777;font-weight:600;margin-bottom:16px}
+.date b{color:#b45309}
+.dt{height:1px;background:#e0e0e0;margin:14px 0}
+
+.top{background:#1a1a1a;color:#f0eadf;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.top .tk{font-size:10px;letter-spacing:1.5px;color:#ffd700;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.top .tt{font-size:1.08rem;line-height:1.4;color:#fff;font-weight:700;word-break:keep-all;margin-bottom:7px}
+.top .eye{font-size:.84rem;line-height:1.7;color:#e8e2d6;word-break:keep-all}
+.top .eye b{color:#ffd700;font-weight:700}
+.top .meta{font-size:11px;color:#bbb;margin-top:9px}
+.top .meta a{color:#d9c98a;text-decoration:none}
+
+.item{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #ece7dd}
+.item:last-of-type{border-bottom:none}
+.num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#efe9df;border:1px solid #e0d8c9;color:#3a3228;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ib{flex:1;min-width:0}
+.it{font-size:1rem;line-height:1.4;color:#111;font-weight:700;word-break:keep-all;margin-bottom:4px}
+.eye{font-size:.84rem;line-height:1.65;color:#444;word-break:keep-all}
+.eye .lab{color:#b45309;font-weight:700}
+.meta{font-size:11px;color:#999;margin-top:5px;word-break:break-all}
+.meta a{color:#8a6d3b;text-decoration:none;font-weight:600}
+.dbadge{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:#3a3228;border-radius:4px;padding:1px 6px;margin-right:7px}
+.top .dbadge{background:#fbbf24;color:#1a1a1a}
+/* 기사 본문 아코디언(한글 번역·편집본) */
+.art{margin-top:10px;border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;overflow:hidden}
+.art>summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:.8rem;font-weight:700;color:#3a3228;background:#f1ece2;user-select:none}
+.art>summary::-webkit-details-marker{display:none}
+.art>summary::before{content:"▸ ";color:#b45309}
+.art[open]>summary::before{content:"▾ "}
+.art[open]>summary{border-bottom:1px solid #e3ddd2}
+.bodytext{padding:12px 14px}
+.bodytext p{font-size:.85rem;line-height:1.8;color:#333;word-break:keep-all;text-align:justify;margin-bottom:9px}
+.bodytext p:last-child{margin-bottom:0}
+.top .art{background:#262626;border-color:#3a3a3a;margin-top:11px}
+.top .art>summary{background:#333;color:#e8e2d6}
+.top .art>summary::before{color:#fbbf24}
+.top .bodytext p{color:#ddd6c8}
+
+/* 홍보 푸터 (CTA) */
+.cta{margin-top:20px;background:#fbf6ee;border:1px solid #ecdfca;border-radius:10px;padding:16px 18px;text-align:center}
+.cta .c1{font-size:.92rem;color:#1a1a1a;font-weight:700;word-break:keep-all}
+.cta .c1 b{color:#b45309}
+.cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
+.cta .c3{font-size:.75rem;color:#999;margin-top:8px;padding-top:8px;border-top:1px solid #ecdfca;word-break:keep-all}
+.foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
+
+@media (max-width: 600px) {
+  body { padding: 0 !important; }
+  .sheet { border-radius: 0 !important; box-shadow: none !important; }
+  .hd { padding: 14px 16px !important; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .inner { padding: 20px 16px !important; }
+  .title { font-size: 1.25rem !important; }
+  .row { padding: 10px 12px !important; }
+  .row .d { font-size: 0.95rem !important; }
+  .item { flex-direction: column; gap: 8px; }
+  .num { width: 24px; height: 24px; font-size: 11px; }
+  .it { font-size: 1rem !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="hd">
+    <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" width="470" height="120">
+<g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+<line x1="22" y1="36" x2="60" y2="60"></line><line x1="22" y1="84" x2="60" y2="60"></line><line x1="60" y1="60" x2="100" y2="36"></line><line x1="60" y1="60" x2="100" y2="84"></line></g>
+<circle cx="22" cy="36" r="8" fill="#6FA8FF"></circle><circle cx="22" cy="84" r="8" fill="#6FA8FF"></circle>
+<circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle><circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"></circle>
+<circle cx="60" cy="60" r="15" fill="#FBBF24"></circle>
+<text x="150" y="78" font-family="Pretendard, &#39;Apple SD Gothic Neo&#39;, sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text></svg></div>
+    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">AI 큐레이션 · 매일 업데이트</div></div>
+  </div>
+  <div class="inner">
+    <h1 class="title">오늘의 디스플레이 Tech</h1>
+    <div class="date">2026-07-07 · AI가 고른 소식 <b>7건</b></div>
+    <div class="top">
+  <div class="tk">🥇 오늘의 Top Pick</div>
+  <div class="tt">디엠에스, 중국 HKC와 412억원 규모 디스플레이 장비 공급 계약</div>
+  <div class="eye">지난 5월 CSOT향 677억원 OLED 장비 수주에 이어 두 달 만에 中 HKC향 LCD 장비 계약까지 — 한국 장비社의 중국 캐파 확장 올라타기가 본궤도에 올랐다. <b>장비수주</b></div>
+  <div class="meta"><span class="dbadge">2026-07-06</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=59116" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+  <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>디엠에스(DMS)가 중국 디스플레이 업체 HKC와 412억원 규모의 LCD 장비 공급 계약을 체결했다. 계약일은 7월 6일이며, 공급 장비는 HKC가 중국 쓰촨성 몐양시에 건설 중인 6세대 LCD 공장(H7)에 반입될 예정이다.</p><p>디엠에스가 공급하는 것은 세정·현상·박리·식각 등 LCD 패널 생산의 핵심 공정에 쓰이는 습식 장비다. 이번 계약으로 회사는 중국 주요 패널 업체 대상 공급 실적을 한 번 더 늘렸다.</p><p>특히 지난 5월 CSOT와 체결한 677억원 규모 OLED 제조 장비 계약에 이어 두 달 만에 중국 시장에서 연속 수주를 확보했다는 점이 눈에 띈다. 회사 관계자는 중국 디스플레이 업체들의 장비 발주 확대에 맞춰 수주를 이어가고 있다고 밝혔다.</p><p>디엠에스는 여기에 그치지 않고 반도체용 유리 기판 장비와 올레도스(OLEDoS) 장비 개발도 병행 추진 중이라고 덧붙였다.<br>── 출처 편집본</p></div>
+</details>
+</div><div class="dt"></div><div class="item">
+  <div class="num">2</div>
+  <div class="ib">
+    <div class="it">라온텍, 해외 고객사와 AR 안경용 LCoS 개발 계약</div>
+    <div class="eye">메타·스냅이 잇달아 LCoS 방식 AR 안경을 택하는 흐름 속에서, 국내 유일 LCoS·마이크로OLED·마이크로LED 3종 상용화 기업 라온텍에 볕이 들었다. <span class="lab">— 신기술·계약</span></div>
+    <div class="meta"><span class="dbadge">2026-07-06</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=59135" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>라온텍이 해외 고객사와 AR 안경용 LCoS(액정 실리콘) 마이크로디스플레이 개발 계약을 체결했다. 계약은 두 단계로 구성된다. 1차 제품 개발·생산 규모는 300만달러(약 46억원)이며, 1차 제품 검증이 끝나면 발동하는 2차 제품 개발 옵션이 190만달러(약 31억원)로, 옵션 포함 총 계약 규모는 77억원 수준이다.</p><p>핵심 기술은 초고속 강유전체 액정 실리콘, 이른바 FLCoS다. 기존 LCoS보다 구동 속도를 높인 방식으로, 초소형 화소와 초고속 구동 회로를 결합해 초당 수천 번 화면을 렌더링하는 마이크로디스플레이 구현이 가능하다.</p><p>라온텍은 LCoS, 마이크로 OLED, 마이크로 LED 세 가지 마이크로디스플레이 기술을 모두 상용화한 국내 유일의 팹리스 기업이다. 메타와 스냅의 최신 AR 안경이 나란히 LCoS 방식을 채택한 만큼, 이번 계약은 차세대 AR 시장에서 회사의 입지를 한 단계 넓히는 계기가 될 전망이다.<br>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">3</div>
+  <div class="ib">
+    <div class="it">아바코 구미 공장, 中 수주 대응에 &#x27;즐거운 비명&#x27; — 협력사 공장까지 가동</div>
+    <div class="eye">2020~2027년 누적 디스플레이 장비 지출의 83%가 중국 — 아바코 수주잔고 5046억원 중 4038억원이 디스플레이 몫이라 자체 공장 2곳으로도 부족한 상황이다. <span class="lab">— 시황·장비</span></div>
+    <div class="meta"><span class="dbadge">2026-07-06</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=59041" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>아바코의 2026년 1분기 말 기준 수주잔고는 5046억원이며, 이 중 디스플레이 관련 장비가 약 4038억원으로 대부분을 차지한다. 배터리 장비는 약 1009억원 수준이다.</p><p>시장조사업체 카운터포인트리서치에 따르면 2020~2027년 누적 디스플레이 장비 지출에서 중국이 차지하는 비중은 83%에 달할 것으로 전망된다. 중국 패널사들의 투자가 국내 장비社 수주의 절대적 비중을 차지하는 구조가 굳어지고 있다는 뜻이다.</p><p>문제는 생산 능력이다. 구미 1공장(약 1만3300평)과 구미 2공장(약 5800평)을 합쳐도 대형 장비 물량을 감당하기 어려워, 아바코는 협력사 공장까지 활용하고 있다고 밝혔다. 구매주문서(PO) 수령 후 첫 출하까지 약 8개월, 전체 대응 기간은 10~12개월에 이른다.</p><p>겉으로는 단일 장비로 보이지만 실제로는 수십 개 이상의 장비가 결합된 복합 시스템이라, 캐파 확충이 말처럼 쉽지 않다는 게 회사 설명이다.<br>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">4</div>
+  <div class="ib">
+    <div class="it">中 게이밍 노트북 시장 부진에도 OLED 모델 판매량 507% 급증</div>
+    <div class="eye">전체 게이밍노트북 시장은 GPU 품귀로 30% 역성장했지만, OLED 모델은 &#x27;고화질&#x27; 프리미엄 수요를 등에 업고 나 홀로 역주행 중이다. <span class="lab">— 시장동향</span></div>
+    <div class="meta"><span class="dbadge">2026-07-06</span>디일렉 · <a href="https://www.thelec.kr/news/articleView.html?idxno=59083" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>시장조사업체 시그마인텔에 따르면 2026년 1~5월 중국 게이밍 노트북 중 OLED 패널 탑재 제품 판매량이 전년 동기 대비 507% 증가했다. OLED 제품의 시장 비중도 2025년 2%에서 2026년 6%로 세 배 뛰었다.</p><p>전체 게이밍 노트북 시장은 GPU 공급 부족과 할인율 감소 여파로 전년 대비 30% 줄었다. 그럼에도 OLED 모델만 성장한 배경에는 고화질·고성능 디스플레이를 향한 소비자 수요가 있다. 소비자들이 가장 많이 검색한 키워드는 'OLED', '240Hz', '300Hz'였다.</p><p>브랜드별로는 레노버가 59%로 압도적 1위를 지켰고, 메크레보 17%, 에이수스 13%가 뒤를 이었다.</p><p>글로벌 시장도 같은 흐름이다. OLED 노트북 패널 출하량은 2025년 1분기 210만장에서 2026년 1분기 360만장으로 69% 늘었고, 2030년에는 글로벌 노트북 패널 시장에서 OLED 침투율이 19%에 이를 것으로 전망된다.<br>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">5</div>
+  <div class="ib">
+    <div class="it">中 지린 OLED머티리얼테크, 상반기 순이익 500~600% 급증</div>
+    <div class="eye">中 OLED 소재기업의 순이익이 1년 만에 6배로 뛰었다 — 중국 OLED 소재 국산화 속도가 시장 예상보다 빠르게 진행되고 있다는 신호다. <span class="lab">— 소재·실적</span></div>
+    <div class="meta"><span class="dbadge">2026-07-06</span>OLED-Info · <a href="https://www.oled-info.com/jilin-oled-material-tech-reports-sharp-increase-revenue-and-profit-first-half" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>중국 OLED 소재기업 지린 OLED머티리얼테크(OMT)가 2026년 상반기 실적을 발표했다. 순이익은 2025년 상반기 2700만위안(약 4백만달러)에서 2026년 상반기 1억6000만~1억9000만위안(약 2300만~2800만달러)으로, 500~600% 급증했다.</p><p>일회성 항목을 제외한 조정 순이익도 1억500만~1억2500만위안 수준으로 예상돼, 실적 개선이 일시적 요인이 아닌 본업 성장에 기반한 것임을 시사한다.</p><p>중국 정부의 디스플레이 소재 국산화 드라이브 속에서 현지 소재 업체의 실적이 눈에 띄게 개선되고 있다는 점은, 한국 소재·부품 업체들이 주시해야 할 대목이다.<br>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">6</div>
+  <div class="ib">
+    <div class="it">시그마인텔, OLED 노트북 패널 수요 급증 — 2030년 점유율 19% 전망</div>
+    <div class="eye">2분기 OLED 노트북 패널 출하 420만장 — 시그마인텔은 이를 일시적 유행이 아닌 구조적 전환으로 진단했다. 中 게이밍노트북 507% 급증 통계와 같은 방향이다. <span class="lab">— 시장전망</span></div>
+    <div class="meta"><span class="dbadge">2026-07-06</span>OLED-Info · <a href="https://www.oled-info.com/sigmaintell-demand-oled-laptop-panels-increasing-sharply-market-share-reach-19" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>시장조사업체 시그마인텔에 따르면 중국 내 게이밍 노트북 수요 자체는 둔화되고 있지만, OLED 탑재 게이밍 노트북 패널 출하량은 오히려 가파르게 늘고 있다. 2026년 1분기 출하량은 360만장으로 전년 대비 69% 증가했고, 2분기에는 420만장을 기록했다.</p><p>시그마인텔은 이 같은 확대를 일시적 유행이 아닌 지속적 흐름으로 규정했다. OLED 노트북 패널 수요는 단기 트렌드가 아니라 앞으로도 계속 늘어날 것이라는 게 회사의 진단이다.</p><p>이 전망대로라면 2030년 OLED는 글로벌 노트북 패널 시장에서 19%의 점유율을 차지하게 된다.<br>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+<div class="item">
+  <div class="num">7</div>
+  <div class="ib">
+    <div class="it">LG이노텍·LX세미콘, 애플 아이패드 OLED DDI 공급망 진입</div>
+    <div class="eye">아이패드 OLED DDI, 삼성 시스템LSI 단독 공급에서 LG진영(LX세미콘 DDI + LG이노텍 CoF) 이원화로 — 다만 OLED 아이패드 판매 자체는 기대 이하다. <span class="lab">— 공급망</span></div>
+    <div class="meta"><span class="dbadge">2026-07-06</span>지디넷코리아 · <a href="https://zdnet.co.kr/view/?no=20260706170215" target="_blank" rel="noopener">원문 보기 ↗</a></div>
+    <details class="art">
+  <summary>📄 기사 본문 보기 (한글 번역·편집본)</summary>
+  <div class="bodytext"><p>LG이노텍과 LX세미콘이 애플로부터 아이패드 OLED용 부품 승인을 받았다. LX세미콘은 디스플레이 드라이버 IC(DDI)를, LG이노텍은 칩온필름(CoF)을 공급하는 역할을 맡는다.</p><p>LX세미콘은 이르면 4분기부터 아이패드 OLED용 DDI를 양산해 LG디스플레이에 납품할 예정이며, 해당 제품은 내년 출시될 것으로 예상된다.</p><p>기존에는 삼성전자 시스템LSI가 아이패드 OLED DDI를 전량 공급했지만, 이번 승인으로 공급망이 이원화된다. LG 계열사들은 LG디스플레이에, 삼성전자 시스템LSI는 삼성디스플레이에 각각 DDI를 공급하는 구도다.</p><p>다만 기사는 OLED 아이패드의 판매 자체가 기대에 못 미치고 있다며, 높은 가격이 약점으로 지적된다고 전했다.<br>── 출처 편집본</p></div>
+</details>
+  </div>
+</div>
+    <div class="cta">
+      <div class="c1">이 브리핑, <b>Next I/O</b>가 AI로 <b>매일 자동 제작</b>합니다.</div>
+      <div class="c2">학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다.<br><a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
+      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="https://www.nextio.ai.kr/display-daily/" target="_blank" rel="noopener">디스플레이 데일리 아카이브</a></div>
+    </div>
+    <div class="foot">본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 Next I/O가 한 줄 해설을 덧붙인 큐레이션입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.</div>
+  </div>
+</div>
+</body>
+</html>
