@@ -1322,7 +1322,7 @@ footer {
     <span class="nav-link" onclick="goTo(3)">위탁콘텐츠제작1</span>
     <span class="nav-link" onclick="goTo(4)">위탁콘텐츠제작2</span>
     <span class="nav-link" onclick="goTo(5)">위탁콘텐츠제작3</span>
-    <a class="nav-link" href="display-daily/" target="_blank" style="text-decoration:none;">디스플레이 데일리</a>
+    <a class="nav-link nav-link-external" href="display-daily/" target="_blank" style="text-decoration:none;">디스플레이 데일리</a>
   </nav>
   <span class="nav-contact" onclick="goTo(6)" style="cursor:pointer;">문의하기</span>
 </nav>
@@ -2051,7 +2051,7 @@ function goTo(idx) {
 }
 window.goTo = goTo;
 
-const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+const navLinks = Array.from(document.querySelectorAll('.nav-link:not(.nav-link-external)'));
 function syncUI() {
   if (prevBtn) prevBtn.disabled = currentIdx === 0;
   if (nextBtn) nextBtn.disabled = currentIdx === sections.length - 1;
