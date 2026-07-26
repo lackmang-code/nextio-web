@@ -17,22 +17,27 @@
 - 브랜치: `master`
 - 푸시 즉시 자동 배포 (~1분)
 
-## 🗂️ 파일 구성
+## 🗂️ 파일 구성 (2026-06-23 v2 전면 개편 기준)
+
+> ⚠️ 2026-06-23: index.html이 nextio-hero-v2로 전면 교체됨. style.css·main.js·editor.* 는 더 이상 index.html에서 사용하지 않음 (단일 파일 구조).
+
 | 파일 | 역할 |
 |---|---|
-| `index.html` | 6섹션 (hero / about / services / profile+stats / program / contact) |
-| `style.css` | 라이트블루(#F0F4FA) 배경 + 다크네이비(#1B2D6B) 포인트 |
-| `main.js` | 가로 페이지 전환 + 카운트업 애니메이션 |
-| `editor.css` / `editor.js` | WYSIWYG 편집 오버레이 (`?edit=1` URL 진입) |
+| `index.html` | **7페이지 단일파일** (hero / unicorn / research / daily / magazine / book / contact) — nextio-hero-v2 |
+| `education/unicorn.html` | AI 유니콘 과정 상세페이지 |
+| `education/research.html` | AI 연구역량 강화 과정 상세페이지 ← 2026-06-23 추가 |
+| `education/images/` | 과정 상세페이지 이미지 (hero.png, hero2.png, research_*.png 등) |
+| `images/` | 로컬 이미지 자산 (로고·cs-*.png 등) |
+| `display-daily/` | 디스플레이 데일리 아카이브 |
+| `magazine/` | 매거진 프리뷰 |
 | `CNAME` | `www.nextio.ai.kr` (커스텀 도메인) |
-| `images/` | 로컬 이미지 자산 |
+| `style.css` / `main.js` / `editor.*` | 구버전 파일 — index.html에서 미사용, 삭제 검토 가능 |
 
-## 🎨 디자인 결정 (2026-05-16 기준)
-- 컨테이너 max-width: two-col 1100px, split-icons 1300px, contact-wrap 1300px
-- `.split-icons`는 `width: 100% + box-sizing: border-box` 필수 (flex-column 안에서 콘텐츠 너비로 축소되는 이슈)
-- 본문 폰트: sec-body 16px, program/contact만 1.5× override
-- 페이지 상단 패딩: about 44px, services/profile/program 64px
-- Hero 폰트: Raleway 700, 서브 17px
+**v2 주요 설계:**
+- 3D 글로브 Three.js 히어로 (coreGroup scale/position 반응형)
+- 모바일: `.pu1-bg` 숨김, `.pu1-top` 글박스 숨김, 배지+슬로건 상단 배치
+- 구글폼 문의 (GF_URL: `1FAIpQLSeKenhxndfa-ABL8X9gIDL1VvNdYS6DBNIieSPI5xlI96ZqXw`)
+- 테스트 파일: `02_Education\테스트_랜딩페이지\nextio-hero-v2.html`
 
 ## 🤝 에이전트(안티그라비티 & 클로드코드) 협업 및 R&R 규정
 
@@ -103,19 +108,19 @@ git add -A && git commit -m "..." && git push origin master
 세션에서 "데일리카드" 관련 대화가 시작되면, 오늘 고품질판이 아직 없는 경우 자동으로 업그레이드를 진행한다. 소요 시간: 약 15~25분.
 
 **엔진 위치(외부 폴더, 절대경로로 접근)** `C:\Users\nackm\NEXTIO\_automation\display_daily\`
-- `fetch_basic.py`(무인 RSS 수집) · `make_promo.py`(카드 생성기) · `make_index.py`(목차) · `run_basic.ps1`(무인 래퍼=스케줄러 `NextIO_DisplayDaily`, 매일 8시) · `run_log.txt`
+- `fetch_basic.py`(무인 RSS 수집) · `make_promo.py`(카드 생성기) · `make_index.py`(목차) · `run_basic.ps1`(무인 래퍼=스케줄러 `NextIO_DisplayDaily`, 매일 10:35) · `run_log.txt`
 - 로고(검정 헤더용 반전 락업) 영문 사본: `_automation\display_daily\assets\nextio_logo.svg` (원본 `회사공용자료\로고\svg\nextio-lockup-reverse.svg` — 한글 경로라 직접 인자전달 금지, 바뀌면 이 사본 재복사)
 - 출력: `_automation\display_daily\public\card_YYYY-MM-DD.html` + `index.html`
 - PY = `C:\Users\nackm\AppData\Local\Programs\Python\Python313\python.exe`
 
-**★수집 마감 = 당일 오전 9시(KST).** 각 아침판 = **[전날 09:00, 당일 09:00) 24시간 창**. 9시 이후 기사는 다음날 건. (무인 fetch_basic은 자동 적용 / 고품질 업그레이드 때도 같은 컷오프 준수)
+**★수집 마감 = 당일 오전 10시 30분(KST).** 각 아침판 = **[전날 10:30, 당일 10:30) 24시간 창**. 10:30 이후 기사는 다음날 건. (무인 fetch_basic은 자동 적용 / 고품질 업그레이드 때도 같은 컷오프 준수) — [2026-07-26] 9시→10:30 변경: 9~10시대 발행되는 당일 기사를 포함 + 점심시간대 게시 타이밍 확보 목적.
 
 **★휴일 운영 규칙 (한국 기준)**
 - **토·일·공휴일**: 고품질 카드 생성 없음
-- **다음 평일**: 직전 휴일 기간 전체의 기사를 모아서 카드 1장 발행 (예: 월요일이면 토~월 09:00, 연휴 뒤 첫 평일이면 연휴 전날 09:00~당일 09:00 전체)
+- **다음 평일**: 직전 휴일 기간 전체의 기사를 모아서 카드 1장 발행 (예: 월요일이면 토~월 10:30, 연휴 뒤 첫 평일이면 연휴 전날 10:30~당일 10:30 전체)
 
 **고품질 업그레이드 절차 (세션에서)**
-1. 소스 WebFetch — 아래 소스에서 9시 컷오프 내 기사만 수집.
+1. 소스 WebFetch — 아래 소스에서 10:30 컷오프 내 기사만 수집.
    **✅ 사용 가능한 소스:**
    - 디일렉(한국어): `https://www.thelec.kr/rss/allArticle.xml`
    - OLED-Info(영문): `https://www.oled-info.com/rss.xml` — BOE·Visionox·TCL 등 중국 기업 뉴스도 커버
@@ -146,7 +151,7 @@ LOGO="$A/assets/nextio_logo.svg"
 **주의**
 - 무인 엔진(`run_basic.ps1`·스케줄러)은 인프라 — 멋대로 수정 금지. 한글 든 `.ps1`은 BOM 포함 UTF-8 저장.
 - **다운그레이드 방지**: 오늘 `card_<D>.html`이 이미 있으면 무인은 스킵. 세션 고품질판이 무인 기본판을 덮는 건 정상(같은 파일 재생성).
-- **디스플레이 데일리 무인 실행 전담 지침**: 매일 8시 무인 스케줄러로 호출될 경우, **승인 대기, 질문, 타 폴더 접근 등 다른 액션을 절대 금지**합니다. 오직 기사 본문 스크래핑, 번역/요약, JSON 및 HTML 출력(WebFetch 및 C:\Temp 파일 쓰기 등) 작업만 최우선으로 막힘없이 수행하고 즉시 완료해야 합니다.
+- **디스플레이 데일리 무인 실행 전담 지침**: 매일 10:35(기본)/10:50(고품질) 무인 스케줄러로 호출될 경우, **승인 대기, 질문, 타 폴더 접근 등 다른 액션을 절대 금지**합니다. 오직 기사 본문 스크래핑, 번역/요약, JSON 및 HTML 출력(WebFetch 및 C:\Temp 파일 쓰기 등) 작업만 최우선으로 막힘없이 수행하고 즉시 완료해야 합니다.
 - 상세·이력: 메모리 `project_display_daily_automation.md`.
 
 ## 메모리 저장 규칙
