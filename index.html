@@ -751,8 +751,9 @@ footer {
     margin-top: 8px !important;
   }
 
-  /* 모바일: 데일리카드 — 폰 목업 포기, 실제 카드 썸네일 + 링크로 전면 교체 */
+  /* 모바일: 데일리카드 — 폰 목업 포기, 실제 카드 썸네일 + 링크로 전면 교체 (PC는 그대로 유지) */
   #daily .pub-right { display: none !important; }
+  #daily .daily-archive { display: none !important; }
   .pub-mobile-thumb {
     display: block !important;
     width: 100%;
@@ -1536,6 +1537,14 @@ footer {
           로고와 키워드만 등록하면, AI 에이전트가 매일 아침 업계 뉴스를 선별·제작해 귀사 이름으로 발행합니다.
         </p>
 
+        <!-- 날짜 아카이브 목록 (PC 전용) -->
+        <div class="daily-archive">
+          <p class="archive-title">최신 발행 브리핑 아카이브</p>
+          <ul class="dn-list" id="dailyList">
+            <li class="dn-list-placeholder">리스트를 불러오는 중...</li>
+          </ul>
+        </div>
+
         <!-- 모바일 전용: 실제 카드 미리보기 이미지 + 최신 브리핑 링크 -->
         <img class="pub-mobile-thumb" src="images/daily-card-thumb.jpg" alt="오늘의 디스플레이 데일리 카드 미리보기">
         <a href="display-daily/latest.html" target="_blank" class="pub-mobile-link">최신 브리핑 보기 →</a>
@@ -2122,6 +2131,7 @@ const revealObs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
 // ── 데일리카드 비즈니스 로직 연동 ──
+const listEl = document.getElementById('dailyList');
 const iframeEl = document.getElementById('dailyIframe');
 
 if (iframeEl) {
@@ -2154,6 +2164,30 @@ if (iframeEl) {
   iframeEl.addEventListener('load', () => applyIframeStyles(iframeEl));
   if (iframeEl.contentDocument && iframeEl.contentDocument.readyState === 'complete') {
     applyIframeStyles(iframeEl);
+  }
+
+  if (listEl) {
+    fetch('display-daily/index.json')
+      .then(r => r.json())
+      .then(dates => {
+        listEl.innerHTML = '';
+        dates.forEach((dateStr, index) => {
+          const li = document.createElement('li');
+          li.className = 'dn-list-item' + (index === 0 ? ' active' : '');
+          const isNew = index === 0 ? '<span class="dn-badge">최신</span>' : '';
+          li.innerHTML = `<span class="d">${dateStr}${isNew}</span><span class="go">브리핑 보기 →</span>`;
+          li.addEventListener('click', () => {
+            document.querySelectorAll('.dn-list-item').forEach(el => el.classList.remove('active'));
+            li.classList.add('active');
+            iframeEl.src = `display-daily/card_${dateStr}.html`;
+          });
+          listEl.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error('Failed to load daily news index:', err);
+        listEl.innerHTML = '<li class="dn-list-placeholder">발행 리스트를 불러오지 못했습니다.</li>';
+      });
   }
 }
 
