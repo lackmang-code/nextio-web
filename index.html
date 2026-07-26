@@ -537,6 +537,12 @@ footer {
 
 .mob-hero-title { display: none; }
 .mob-hero-slogan { display: none; }
+.hero-mob-video-wrap { display: none; }
+.hero-mob-desc { display: none; }
+.hero-quicknav { display: none; }
+.pu1-mobile-img { display: none; }
+.pub-mobile-thumb { display: none; }
+.pub-mobile-link { display: none; }
 
 /* ── 모바일 반응형 (완벽한 디자인 오버홀) ── */
 @media (max-width: 992px) {
@@ -551,28 +557,37 @@ footer {
     overflow: visible;
   }
 
+  /* 모바일: 세로 스크롤이지만 섹션 단위로 딱딱 넘어가는 스냅 효과 */
+  html {
+    scroll-snap-type: y mandatory;
+  }
+  #pages > section {
+    scroll-snap-align: start;
+    scroll-margin-top: 64px;
+  }
+
   .hero {
     grid-template-columns: 1fr;
-    height: 100vh;
-    min-height: -webkit-fill-available;
+    grid-template-rows: 100dvh auto;
+    height: auto;
     position: relative;
   }
   .hero-visual {
     position: absolute;
-    inset: 0;
+    top: 0; left: 0; right: 0;
     width: 100%;
-    height: 100%;
+    height: 100dvh;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
   }
   #three-canvas {
-    pointer-events: none !important;
+    display: none;
   }
   .mob-hero-title {
-    display: block !important;
-    position: absolute;
-    top: 96px;
-    left: 50%;
-    transform: translateX(-50%);
+    display: inline-block !important;
+    position: static;
+    transform: none;
     z-index: 15;
     font-size: 10px;
     font-weight: 800;
@@ -587,52 +602,64 @@ footer {
     -webkit-backdrop-filter: blur(8px);
     box-shadow: 0 4px 15px rgba(251, 191, 36, 0.15);
     white-space: nowrap;
-    pointer-events: none;
+    margin: 68px auto 10px;
   }
   .mob-hero-slogan {
     display: block !important;
-    position: absolute;
-    top: 136px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
+    transform: none;
     z-index: 15;
     font-size: 19px;
     font-weight: 800;
     color: #fff;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
     white-space: nowrap;
     letter-spacing: -0.02em;
-    pointer-events: none;
+    text-align: center;
+    flex: 0 0 auto;
+  }
+  .hero-mob-video-wrap {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  #hero-mobile-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
   }
   .hero-bottom {
-    position: absolute !important;
-    top: 62% !important;
+    position: relative !important;
+    top: auto !important;
     bottom: auto !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: calc(100% - 48px);
-    max-width: 400px;
+    left: auto !important;
+    transform: none !important;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: none;
     z-index: 10;
-    background: rgba(5, 8, 20, 0.75);
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 28px 24px;
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    background: var(--dark);
+    padding: 18px 24px 26px;
     text-align: center;
     pointer-events: auto;
   }
-  .hero-slogan {
-    font-size: 28px;
-    line-height: 1.35;
+  .hero-mob-desc {
+    display: block;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 10px 0 20px;
   }
   .mob-only { display: inline; }
   .desk-only { display: none; }
   .hero-sub {
     justify-content: center;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
   }
   .hero-cta {
     justify-content: center;
@@ -643,13 +670,30 @@ footer {
   }
 
   .hero-menu {
-    border-left: none;
-    border-top: 1px solid var(--panel-border);
-    padding: 64px 24px 80px;
-    z-index: 10;
-    position: relative;
+    display: none;
+  }
+  .hero-quicknav {
+    grid-row: 2;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 18px 24px;
     background: var(--dark);
-    margin-top: 100vh; /* 풀스크린 히어로 아래로 배치 */
+    border-top: 1px solid var(--panel-border);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .hero-quicknav::-webkit-scrollbar { display: none; }
+  .hero-quicknav button {
+    flex: 0 0 auto;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 100px;
+    white-space: nowrap;
   }
   .nav-item {
     padding: 14px 18px;
@@ -662,18 +706,21 @@ footer {
   /* Page 2 Unicorn Mobile styles */
   .pu1-bg { display: none; }
   .pg-u1 { background: #161F38; }
-
-  /* 모바일 화살표 버튼 — 하단 중앙 고정 */
-  .pg-nav {
-    display: flex;
-    position: fixed;
-    top: auto;
-    bottom: 20px;
-    transform: none;
-    width: 44px; height: 44px;
-    font-size: 22px;
+  .pu1-mobile-img {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    margin: 4px auto 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
-  .pg-nav:hover { transform: none; }
+
+  /* 모바일: 페이지 넘김 화살표 버튼 숨김 (일반 스크롤 + 퀵내비로 대체됨) */
+  .pg-nav {
+    display: none;
+  }
   .pg-prev { left: calc(50% - 50px); }
   .pg-next { right: calc(50% - 50px); }
 
@@ -683,6 +730,41 @@ footer {
 
   /* 모바일: 위탁 콘텐츠제작 1·2·3 상단 글박스 숨김 */
   .pu1-top { display: none; }
+
+  /* 모바일: 위탁콘텐츠제작 1·2·3 페이지 길이 압축 (풀스크린 강제 높이 제거 + 여백 축소) */
+  .pg-pub-layout {
+    min-height: 0 !important;
+    padding: 72px 24px 28px !important;
+  }
+  .pub-container { gap: 20px !important; }
+  .pub-desc { margin-bottom: 14px !important; }
+  .daily-news-container { height: 260px !important; }
+  .pub-thumbnail, .mag-thumbnail, .book-thumbnail {
+    max-width: 220px !important;
+    margin-top: 8px !important;
+  }
+
+  /* 모바일: 데일리카드 — 폰 목업 포기, 실제 카드 썸네일 + 링크로 전면 교체 */
+  #daily .pub-right { display: none !important; }
+  .pub-mobile-thumb {
+    display: block !important;
+    width: 100%;
+    max-width: 320px;
+    margin: 4px auto 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+  .pub-mobile-link {
+    display: inline-block !important;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 11px 22px;
+    border-radius: 20px;
+    text-decoration: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1256,9 +1338,14 @@ footer {
     <!-- 모바일 전용 슬로건 한 줄 -->
     <div class="mob-hero-slogan">AI가 일하는 회사, 5일이면 당신도</div>
 
+    <!-- 모바일 전용 히어로 영상 (제미나이 생성, AI 로봇 캐릭터) -->
+    <div class="hero-mob-video-wrap">
+      <video id="hero-mobile-video" src="videos/hero-mobile-robot.mp4" autoplay muted loop playsinline></video>
+    </div>
+
     <!-- 슬로건 글래스 카드 (모바일/데스크탑 레이아웃 개별 보강) -->
     <div class="hero-bottom">
-      <div class="hero-slogan">
+      <div class="hero-slogan desk-only">
         <span>AI가 일하는 회사,<br></span>
         <span class="highlight">5일이면 당신도</span><br>
         <span>만들 수 있습니다.</span>
@@ -1267,6 +1354,7 @@ footer {
         <span>코딩 없이</span>
         <span>팀 없이</span>
       </div>
+      <p class="hero-mob-desc">AI 직원으로 운영되는 회사,<br>5일 만에 완성됩니다.</p>
       <div class="hero-cta">
         <a href="#unicorn" class="btn-gold">과정 보기 &darr;</a>
       </div>
@@ -1343,6 +1431,15 @@ footer {
 
   </div>
 
+  <!-- 모바일 전용 퀵 내비게이션 (사이트맵 hero-menu를 가로 스크롤 칩으로 압축) -->
+  <div class="hero-quicknav">
+    <button type="button" onclick="goto('unicorn')">AI 유니콘 과정</button>
+    <button type="button" onclick="goto('research')">AI 연구역량 과정</button>
+    <button type="button" onclick="goto('daily')">데일리카드</button>
+    <button type="button" onclick="goto('magazine')">온라인 매거진</button>
+    <button type="button" onclick="goto('book')">단행본 프로젝트</button>
+  </div>
+
 </section> <!-- /#hero -->
 
   <!-- Education Sections -->
@@ -1361,6 +1458,10 @@ footer {
       <div class="pu1-left reveal">
         <p class="pu1-eyebrow">FEATURED COURSE · 5-DAY INTENSIVE</p>
         <h2 class="pu1-h2">AI 직원을 이용한<br><em>1인 유니콘</em> 첫발 딛기</h2>
+        <p class="pu1-desc" style="color: rgba(255,255,255,0.92); max-width: 680px;">
+          브랜딩·법무·영업·콘텐츠 제작까지, 반복적인 창업 실무를 AI 팀원이 대신합니다. 실제 완성된 34개 산출물을 사례로, 5일 안에 본인 사업에 바로 적용할 수 있도록 설계했습니다.
+        </p>
+        <img class="pu1-mobile-img" src="education/images/unicorn-mobile.jpg" alt="1인 창업가가 AI로 브랜딩·법무·영업·콘텐츠까지 처리하는 모습">
         <div class="pu1-btns">
           <a href="education/unicorn.html" target="_blank"
              style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
@@ -1394,6 +1495,7 @@ footer {
         <p class="pu1-desc" style="color: rgba(255,255,255,0.92); max-width: 680px;">
           문헌 조사·발표 준비·논문 작성, 반복적인 연구 루틴을 AI가 대신합니다. 실제 완성된 AI 연구 파이프라인을 사례로, 수강 당일 본인 연구에 바로 적용할 수 있도록 설계했습니다.
         </p>
+        <img class="pu1-mobile-img" src="education/images/research-mobile.jpg" alt="AI 홀로그램 어시스턴트와 함께 연구하는 모습">
         <div class="pu1-btns">
           <a href="education/research.html" target="_blank"
              style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
@@ -1424,16 +1526,12 @@ footer {
         <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 01 · DAILY CARD</p>
         <h2 class="pub-h2">에디터·디자이너 없이,<br><em>월 20만 원</em>으로 가동하는<br>자사 미디어 에이전트</h2>
         <p class="pub-desc" style="margin-bottom: 32px;">
-          로고와 희망 키워드만 등록해 두세요. AI 에이전트 팀이 매일 아침 업계 뉴스나 트렌드를 분석·제작하여 귀사의 이름으로 고객에게 자동 도달시킵니다.
+          로고와 키워드만 등록하면, AI 에이전트가 매일 아침 업계 뉴스를 선별·제작해 귀사 이름으로 발행합니다.
         </p>
 
-        <!-- 날짜 아카이브 목록 (V6의 아카이브 리스트로 복구) -->
-        <div class="daily-archive">
-          <p class="archive-title">최신 발행 브리핑 아카이브</p>
-          <ul class="dn-list" id="dailyList">
-            <li class="dn-list-placeholder">리스트를 불러오는 중...</li>
-          </ul>
-        </div>
+        <!-- 모바일 전용: 실제 카드 미리보기 이미지 + 최신 브리핑 링크 -->
+        <img class="pub-mobile-thumb" src="images/daily-card-thumb.jpg" alt="오늘의 디스플레이 데일리 카드 미리보기">
+        <a href="display-daily/latest.html" target="_blank" class="pub-mobile-link">최신 브리핑 보기 →</a>
       </div>
 
       <!-- 우측: 스마트폰 목업 프레임 (V1 스타일 및 비율 패치) -->
@@ -1854,6 +1952,7 @@ const clock = new THREE.Clock();
 
 function animate() {
   requestAnimationFrame(animate);
+  if (window.innerWidth <= 992) return; // 모바일: 영상으로 대체되어 캔버스 렌더링 불필요
   const time = clock.getElapsedTime();
 
   // 중앙 코어의 미세한 크기 맥동
@@ -2016,10 +2115,9 @@ const revealObs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
 // ── 데일리카드 비즈니스 로직 연동 ──
-const listEl = document.getElementById('dailyList');
 const iframeEl = document.getElementById('dailyIframe');
 
-if (listEl && iframeEl) {
+if (iframeEl) {
   function applyIframeStyles(el) {
     try {
       const doc = el.contentDocument || el.contentWindow.document;
@@ -2050,31 +2148,6 @@ if (listEl && iframeEl) {
   if (iframeEl.contentDocument && iframeEl.contentDocument.readyState === 'complete') {
     applyIframeStyles(iframeEl);
   }
-
-  fetch('display-daily/index.json')
-    .then(r => r.json())
-    .then(dates => {
-      listEl.innerHTML = '';
-      dates.forEach((dateStr, index) => {
-        const li = document.createElement('li');
-        li.className = 'dn-list-item' + (index === 0 ? ' active' : '');
-        const isNew = index === 0 ? '<span class="dn-badge">최신</span>' : '';
-        li.innerHTML = `<span class="d">${dateStr}${isNew}</span><span class="go">브리핑 보기 →</span>`;
-        li.addEventListener('click', () => {
-          document.querySelectorAll('.dn-list-item').forEach(el => el.classList.remove('active'));
-          li.classList.add('active');
-          iframeEl.src = `display-daily/card_${dateStr}.html`;
-        });
-        listEl.appendChild(li);
-      });
-      if (dates.length > 0) {
-        iframeEl.src = `display-daily/card_${dates[0]}.html`;
-      }
-    })
-    .catch(err => {
-      console.error('Failed to load daily news index:', err);
-      listEl.innerHTML = '<li class="dn-list-placeholder">발행 리스트를 불러오지 못했습니다.</li>';
-    });
 }
 
 syncUI();
