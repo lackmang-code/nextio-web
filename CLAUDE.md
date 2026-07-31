@@ -93,65 +93,36 @@ git add -A && git commit -m "..." && git push origin master
 # 브라우저에서 http://localhost:3000/?edit=1
 ```
 
-## 📰 디스플레이 데일리 (2026-06-10 홍보팀장으로 업무 이관)
+## 📰 디스플레이 데일리 (2026-07-29 대표 확정: 고품질(HQ) 전면 중단, 기본판이 최종 상태)
 
-> 디스플레이 업계 뉴스를 매일 한 장 카드로 만드는 **홍보·마케팅 자산**. 기존 비서실장이 하던 **고품질 업그레이드 + 홈페이지 게시**를 홍보팀장이 인수. (엔진=무인 자율, 사람 손맛=이 세션)
+> 디스플레이 업계 뉴스를 매일 한 장 카드로 만드는 **홍보·마케팅 자산**. 무인 기본판(RSS 제목·링크 위주, 요약 없음)이 **완전 자동 생성부터 홈페이지 게시까지 100% 무인**으로 돈다.
+
+**★ 고품질(HQ) 업그레이드는 완전히 중단된 상태 — 다시 제안·시도하지 말 것.**
+"데일리카드 요약이 부실하다/원문을 봐야 한다"는 이야기가 나와도 개선을 제안하거나 시도하지 않는다. 요약/정리 강화 시도 자체가 반복 실패(작업당 45분 소요, 승인 대기, 게시 레이스 버그, 시스템 복잡도 증가)의 근본 원인이었다고 대표님이 자각·확정(2026-07-29). 유료 API·무료 헤드리스 우회 등 대안도 전부 같은 함정의 연장선이라 함께 중단. 상세 경위: 메모리 `project_display_daily_automation.md`.
 
 **역할 분담**
 | 단계 | 담당 |
 |---|---|
-| 기본 카드 자동 생성 | 무인 인프라(스케줄러) — **건드리지 말 것** |
-| 고품질 업그레이드 | **홍보팀장(이 세션)** |
-| 홈페이지 게시(push) | **홍보팀장(이 세션)** |
-
-**★ 고품질 업그레이드는 기본 수행 — 별도 지시 불필요**
-세션에서 "데일리카드" 관련 대화가 시작되면, 오늘 고품질판이 아직 없는 경우 자동으로 업그레이드를 진행한다. 소요 시간: 약 15~25분.
+| 기본 카드 생성 + 홈페이지 게시(git push까지) | 무인 인프라(스케줄러, `run_basic.ps1` → `publish_daily.ps1`) — **건드리지 말 것** |
 
 **엔진 위치(외부 폴더, 절대경로로 접근)** `C:\Users\nackm\NEXTIO\_automation\display_daily\`
-- `fetch_basic.py`(무인 RSS 수집) · `make_promo.py`(카드 생성기) · `make_index.py`(목차) · `run_basic.ps1`(무인 래퍼=스케줄러 `NextIO_DisplayDaily`, 매일 10:35) · `run_log.txt`
+- `fetch_basic.py`(무인 RSS 수집) · `make_promo.py`(카드 생성기) · `make_index.py`(목차) · `run_basic.ps1`(무인 래퍼=스케줄러 `NextIO_DisplayDaily`, 매일 10:35, 카드 생성 후 `publish_daily.ps1` 자동 호출해 홈페이지 복사+커밋+푸시까지 완료) · `run_log.txt`
 - 로고(검정 헤더용 반전 락업) 영문 사본: `_automation\display_daily\assets\nextio_logo.svg` (원본 `회사공용자료\로고\svg\nextio-lockup-reverse.svg` — 한글 경로라 직접 인자전달 금지, 바뀌면 이 사본 재복사)
-- 출력: `_automation\display_daily\public\card_YYYY-MM-DD.html` + `index.html`
+- 출력: `_automation\display_daily\public\card_YYYY-MM-DD.html` + `index.html` → `홈페이지\display-daily\`로 자동 복사·게시
 - PY = `C:\Users\nackm\AppData\Local\Programs\Python\Python313\python.exe`
 
-**★수집 마감 = 당일 오전 10시 30분(KST).** 각 아침판 = **[전날 10:30, 당일 10:30) 24시간 창**. 10:30 이후 기사는 다음날 건. (무인 fetch_basic은 자동 적용 / 고품질 업그레이드 때도 같은 컷오프 준수) — [2026-07-26] 9시→10:30 변경: 9~10시대 발행되는 당일 기사를 포함 + 점심시간대 게시 타이밍 확보 목적.
+**★수집 마감 = 당일 오전 10시 30분(KST).** 각 아침판 = **[전날 10:30, 당일 10:30) 24시간 창**. 10:30 이후 기사는 다음날 건.
 
 **★휴일 운영 규칙 (한국 기준)**
-- **토·일·공휴일**: 고품질 카드 생성 없음
+- **토·일·공휴일**: 카드 생성 없음
 - **다음 평일**: 직전 휴일 기간 전체의 기사를 모아서 카드 1장 발행 (예: 월요일이면 토~월 10:30, 연휴 뒤 첫 평일이면 연휴 전날 10:30~당일 10:30 전체)
 
-**고품질 업그레이드 절차 (세션에서)**
-1. 소스 WebFetch — 아래 소스에서 10:30 컷오프 내 기사만 수집.
-   **✅ 사용 가능한 소스:**
-   - 디일렉(한국어): `https://www.thelec.kr/rss/allArticle.xml`
-   - OLED-Info(영문): `https://www.oled-info.com/rss.xml` — BOE·Visionox·TCL 등 중국 기업 뉴스도 커버
-   - 구글뉴스 KR: 디스플레이·OLED·삼성/LG디스플레이 키워드
-   **❌ 사용 불가 소스 (2026-06-17 확인):**
-   - Display Daily(`displaydaily.com/feed/`): HTTP 403 Forbidden
-   - DSCC(`displaysupplychain.com/rss.xml`): SSL 인증서 만료
-   - The Elec English(`thelec.net/rss/allArticle.xml`): 디일렉과 별개 편집국, 일반 한국 비즈니스 위주 — 디스플레이 전문성 낮아 제외
-   - Digitimes(`digitimes.com`): RSS 정상이나 본문 페이월(Members only)
-2. 직링크 본문 추출 → 외국어는 한글 번역, 재서술·압축 편집본 3~5단락(원문 복붙 금지, 끝에 "── 출처 편집본"). 직링크 잘 되는 곳: 디일렉 `articleView.html?idxno=`, OLED-Info.
-3. **중요도순 정렬**(①원천기술·소재·특허 ②패널 신기술 ③세트제품 ④시황 ⑤거시), 맨 위=그날 임팩트 최대 Top Pick. 본문 못 가져온 외국기사는 맨 뒤.
-   - **Top Pick 제외 항목**: 주가·목표가·투자의견·증권사 리포트 등 주식시장 뉴스는 Top Pick 불가 (일반 기사로만 포함).
-4. JSON 작성 → `C:\Temp\daily_items_<D>.json` (items: title·date·source·url·summary·tag·body)
-5. 생성:
-```bash
-PY="C:/Users/nackm/AppData/Local/Programs/Python/Python313/python.exe"
-A="C:/Users/nackm/NEXTIO/_automation/display_daily"
-LOGO="$A/assets/nextio_logo.svg"
-"$PY" "$A/make_promo.py" "C:/Temp/daily_items_<D>.json" "$A/public/card_<D>.html" "<D>" "$LOGO"
-"$PY" "$A/make_index.py" "$A/public" "$LOGO"
-```
-
-**홈페이지 게시 절차**
-1. `_automation\display_daily\public\*` → `홈페이지\display-daily\` 복사 (없으면 폴더 신설; magazine\ 미러링)
-2. `git add display-daily/` **(이 폴더만 — 다른 작업파일 섞지 말 것)** → `git commit` → `git push origin master`
-3. ~1분 후 `www.nextio.ai.kr/display-daily/` 반영. 상단 메뉴 링크는 `index.html` `nav-links`에 한 줄 추가(자기 파일이라 OK).
+**세션에서 할 일(있다면)**
+- 무인 게시 결과 확인(오늘 카드 생성됐는지, 링크 깨짐 없는지) 정도의 점검만. 카드 내용 자체를 다시 만들거나 덮어쓰지 않는다.
+- 무인 파이프라인이 실패(카드 미생성 등)했을 때만 원인 파악·수동 재실행 지원.
 
 **주의**
-- 무인 엔진(`run_basic.ps1`·스케줄러)은 인프라 — 멋대로 수정 금지. 한글 든 `.ps1`은 BOM 포함 UTF-8 저장.
-- **다운그레이드 방지**: 오늘 `card_<D>.html`이 이미 있으면 무인은 스킵. 세션 고품질판이 무인 기본판을 덮는 건 정상(같은 파일 재생성).
-- **디스플레이 데일리 무인 실행 전담 지침**: 매일 10:35(기본)/10:50(고품질) 무인 스케줄러로 호출될 경우, **승인 대기, 질문, 타 폴더 접근 등 다른 액션을 절대 금지**합니다. 오직 기사 본문 스크래핑, 번역/요약, JSON 및 HTML 출력(WebFetch 및 C:\Temp 파일 쓰기 등) 작업만 최우선으로 막힘없이 수행하고 즉시 완료해야 합니다.
+- 무인 엔진(`run_basic.ps1`·`publish_daily.ps1`·스케줄러)은 인프라 — 멋대로 수정 금지. 한글 든 `.ps1`은 BOM 포함 UTF-8 저장.
 - 상세·이력: 메모리 `project_display_daily_automation.md`.
 
 ## 메모리 저장 규칙
