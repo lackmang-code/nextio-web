@@ -750,6 +750,9 @@ footer {
     max-width: 220px !important;
     margin-top: 8px !important;
   }
+  .vitrine-box { height: 240px !important; max-width: 340px !important; }
+  .cover-slot { width: 96px !important; }
+  .col-list { max-width: 100% !important; }
 
   /* 모바일: 데일리카드 — 폰 목업 포기, 실제 카드 썸네일 + 링크로 전면 교체 (PC는 그대로 유지) */
   #daily .pub-right { display: none !important; }
@@ -1003,6 +1006,69 @@ footer {
   margin-top: 24px;
 }
 
+/* ── 매거진 섹션: 대표 연재 칼럼 리스트 (데일리 아카이브 리스트와 동일 패턴) ── */
+.col-list{
+  border:1px solid var(--panel-border);border-radius:14px;
+  background:rgba(255,255,255,.02);padding:8px;
+  display:flex;flex-direction:column;gap:6px;
+  max-width:460px;
+}
+.col-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:10px;
+  background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);
+  transition:all .25s cubic-bezier(0.16,1,0.3,1);
+}
+a.col-item{cursor:pointer;text-decoration:none}
+a.col-item:hover{
+  background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3);
+  transform:translateX(3px);
+}
+.col-item.is-pending{opacity:.6}
+.col-badge{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;
+  border:1px solid rgba(251,191,36,.55);background:rgba(251,191,36,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;color:var(--gold);
+}
+.col-text{flex:1;min-width:0}
+.col-title{font-size:13.5px;font-weight:700;color:#fff}
+.col-hook{font-size:11.5px;color:rgba(255,255,255,.5);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.col-arrow{flex-shrink:0;color:#d9b46a;transition:transform .25s ease, color .25s ease}
+a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
+.col-list-foot{font-size:11px;color:rgba(255,255,255,.45);margin-top:9px;padding-left:2px}
+.col-list-foot b{color:rgba(255,255,255,.75)}
+
+/* ── 매거진 섹션: 진열장 스테이지 (표지 사진 배경 + 발행호 표지) ── */
+.vitrine-box{
+  position:relative;width:100%;max-width:420px;height:300px;
+  border-radius:18px;overflow:hidden;
+  border:1px solid var(--panel-border);
+  background:url(images/magazine-vitrine-bg.jpg) center 40%/cover no-repeat, var(--dark);
+  margin:0 auto;
+}
+.vb-scrim-top{position:absolute;inset:0 0 auto 0;height:38%;background:linear-gradient(180deg,rgba(2,4,12,.6),transparent)}
+.vb-content{position:relative;height:100%;display:flex;flex-direction:column;padding:16px 20px 0}
+.vb-tag{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:center}
+.vb-tag b{color:var(--gold)}
+.shelf-wrap{position:relative;margin-top:auto;padding-bottom:9%}
+.shelf-line{
+  position:absolute;left:8%;right:8%;bottom:9%;height:2px;border-radius:2px;
+  background:linear-gradient(90deg, transparent, #a9782f 12%, #d9b46a 50%, #a9782f 88%, transparent);
+  box-shadow:0 0 16px 1px rgba(217,180,106,.4);
+}
+.covers{display:flex;justify-content:center;align-items:flex-end;gap:20px}
+.cover-slot{display:flex;flex-direction:column;align-items:center;gap:8px;width:118px;text-decoration:none}
+.cover-card{position:relative;width:100%;transition:transform .5s cubic-bezier(0.16,1,0.3,1), filter .5s ease;filter:drop-shadow(0 14px 18px rgba(0,0,0,.55))}
+.cover-card img{width:100%;display:block;border-radius:6px;border:1px solid rgba(255,255,255,.14)}
+.cover-slot:hover .cover-card{transform:translateY(-7px) scale(1.04);filter:drop-shadow(0 20px 24px rgba(0,0,0,.6)) drop-shadow(0 0 24px rgba(251,191,36,.35))}
+.new-pin{
+  position:absolute;top:-8px;right:6px;background:var(--gold);color:#1a1200;
+  font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;letter-spacing:.04em;
+  box-shadow:0 2px 8px rgba(251,191,36,.5);transform:rotate(3deg);
+}
+.cover-vol{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d9b46a}
+
 /* 데스크탑 2단 반응형 배치 */
 @media (min-width: 993px) {
   nav {
@@ -1048,6 +1114,7 @@ footer {
     max-width: 408px;
     margin-top: 80px;
   }
+  .vitrine-box{ max-width:460px; height:340px; }
 }
 
 /* ── SCROLL REVEAL STYLES ── */
@@ -1571,18 +1638,66 @@ footer {
     </div>
 
     <div class="pub-container">
-      <!-- 좌측: 비즈니스 가치 소구 카피 & 매거진 설명 -->
+      <!-- 좌측: 비즈니스 가치 소구 카피 & 대표 연재 칼럼 리스트 -->
       <div class="pub-left reveal">
         <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 02 · ONLINE MAGAZINE</p>
-        <h2 class="pub-h2">에디터와 디자이너 없이<br>조직의 성과를<br><em>트렌디한 매거진</em>으로</h2>
+        <h2 class="pub-h2">기획은 대표가,<br>제작·배포는 <em>AI 에이전트</em>가</h2>
         <p class="pub-desc">
-          고비용의 종이 인쇄물이나 복잡한 레이아웃 조율 작업이 필요하지 않습니다. 정제되지 않은 인터뷰 기록과 사내 소식, 성과 자료만 전달해 주시면, AI 공동 에디팅 시스템을 통해 최신 모바일 트렌드에 걸맞은 웹 매거진으로 신속하게 디자인 및 브랜딩해 드립니다. 대학 학과 및 기업의 성과를 가장 빠르고 경제적으로 전파하십시오.
+          「첨디공 On」— 대표가 기획한 연재 3편을 AI가 매달 편집·제작·배포합니다.
         </p>
+
+        <div class="col-list">
+          <div class="col-item is-pending">
+            <div class="col-badge">AI</div>
+            <div class="col-text">
+              <div class="col-title">AI가 픽한 기술</div>
+              <div class="col-hook">이달의 디스플레이 기술, AI의 시선</div>
+            </div>
+          </div>
+          <div class="col-item is-pending">
+            <div class="col-badge">廣</div>
+            <div class="col-text">
+              <div class="col-title">광각노트</div>
+              <div class="col-hook">현장을 넓게 보는 관찰 노트</div>
+            </div>
+          </div>
+          <div class="col-item is-pending">
+            <div class="col-badge">論</div>
+            <div class="col-text">
+              <div class="col-title">이달의 논문</div>
+              <div class="col-hook">이달의 주목 논문, 쉽게 풀어서</div>
+            </div>
+          </div>
+        </div>
+        <p class="col-list-foot">칼럼별 개별 링크는 <b>준비 중</b>입니다 — 곧 연결됩니다.</p>
       </div>
 
-      <!-- 우측: 잡지 표지 고해상도 썸네일 -->
+      <!-- 우측: 발행호 진열장 (실물 표지 + 라이브 매거진 링크) -->
       <div class="pub-right reveal reveal-d2">
-        <img src="images/cs-mag-cover.png" alt="온라인 매거진 표지 데모" class="pub-thumbnail blue-glow mag-thumbnail">
+        <div class="vitrine-box">
+          <div class="vb-scrim-top"></div>
+          <div class="vb-content">
+            <p class="vb-tag"><b>발행호 아카이브</b> · 매달 누적</p>
+            <div class="shelf-wrap">
+              <div class="shelf-line"></div>
+              <div class="covers">
+                <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-07/" target="_blank" rel="noopener">
+                  <div class="cover-card">
+                    <img src="images/magazine-cover-2026-07.png" alt="첨디공 On 창간호 2026년 7월 표지">
+                  </div>
+                  <div class="cover-vol">Vol.01 · 7월</div>
+                </a>
+                <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-08/" target="_blank" rel="noopener">
+                  <div class="cover-card">
+                    <span class="new-pin">NEW</span>
+                    <img src="images/magazine-cover-2026-08.png" alt="첨디공 On 2호 2026년 8월 표지">
+                  </div>
+                  <div class="cover-vol">Vol.02 · 8월</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
