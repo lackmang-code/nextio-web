@@ -750,7 +750,7 @@ footer {
     max-width: 220px !important;
     margin-top: 8px !important;
   }
-  .vitrine-box { height: 240px !important; max-width: 340px !important; }
+  .vitrine-box { max-width: 420px !important; }
   .cover-slot { width: 96px !important; }
   .col-list { max-width: 100% !important; }
 
@@ -1041,13 +1041,19 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
 /* ── 매거진 섹션: 진열장 스테이지 (표지 사진 배경 + 발행호 표지) ── */
 .vitrine-box{
-  position:relative;width:100%;max-width:420px;height:300px;
+  position:relative;width:100%;max-width:560px;aspect-ratio:1536/1024;
   border-radius:18px;overflow:hidden;
-  border:1px solid var(--panel-border);
-  background:url(images/magazine-vitrine-bg.jpg) center 40%/cover no-repeat, var(--dark);
+  border:1px solid rgba(217,180,106,.28);
+  box-shadow:0 0 0 1px rgba(0,0,0,.4), 0 20px 50px rgba(0,0,0,.45);
+  background:var(--dark);
   margin:0 auto;
 }
-.vb-scrim-top{position:absolute;inset:0 0 auto 0;height:38%;background:linear-gradient(180deg,rgba(2,4,12,.6),transparent)}
+.vitrine-box::before{
+  content:"";position:absolute;inset:0;
+  background:url(images/magazine-vitrine-bg.jpg) center/cover no-repeat;
+  filter:brightness(1.28) contrast(1.06) saturate(1.08);
+}
+.vb-scrim-top{position:absolute;inset:0 0 auto 0;height:30%;background:linear-gradient(180deg,rgba(2,4,12,.42),transparent)}
 .vb-content{position:relative;height:100%;display:flex;flex-direction:column;padding:16px 20px 0}
 .vb-tag{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:center}
 .vb-tag b{color:var(--gold)}
@@ -1114,7 +1120,8 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
     max-width: 408px;
     margin-top: 80px;
   }
-  .vitrine-box{ max-width:460px; height:340px; }
+  .vitrine-box{ max-width:600px; }
+  .cover-slot{ width:150px; gap:10px; }
 }
 
 /* ── SCROLL REVEAL STYLES ── */
