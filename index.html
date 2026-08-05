@@ -73,20 +73,19 @@ nav {
   -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--panel-border);
 }
-.logo { display: flex; align-items: center; cursor: pointer; text-decoration: none; }
+.logo { display: flex; align-items: center; cursor: pointer; text-decoration: none; position: relative; z-index: 9999; }
 .logo svg { height: 34px; width: auto; }
 .nav-contact {
-  font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9);
-  text-decoration: none; border: 1px solid rgba(255,255,255,0.15);
-  padding: 10px 24px; border-radius: 100px; transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
-  background: rgba(255,255,255,0.03);
-  backdrop-filter: blur(8px);
+  position: relative; z-index: 9999;
+  font-size: 14px; font-weight: 800; color: #050814;
+  text-decoration: none; border: none;
+  padding: 11px 26px; border-radius: 100px; transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(135deg, #FFE082 0%, var(--gold) 100%);
+  box-shadow: 0 4px 20px var(--gold-glow);
 }
 .nav-contact:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-  box-shadow: 0 0 20px var(--blue-glow);
-  background: rgba(111, 168, 255, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(251, 191, 36, 0.55);
 }
 .logo { flex-shrink: 0; min-width: 140px; }
 .nav-links {
@@ -114,6 +113,10 @@ nav {
   margin: 0 !important;
   max-width: none !important;
 }
+@media (min-width: 993px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-menu { display: none; }
+}
 
 /* ── LEFT: 3D 비주얼 영역 ── */
 .hero-visual {
@@ -125,14 +128,54 @@ nav {
   z-index: 1;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@media (min-width: 993px) {
-  #three-canvas {
-    transform: translateX(30%);
-  }
-}
 @media (max-width: 992px) {
   #three-canvas {
     transform: translateX(10%);
+  }
+}
+
+.hero-desk-video-wrap { display: none; }
+@media (min-width: 993px) {
+  #three-canvas { display: none; }
+  .hero-desk-video-wrap {
+    display: block;
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    z-index: 1;
+    overflow: hidden;
+  }
+  #hero-desktop-video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    transform: scale(0.8) translateY(12%);
+  }
+  .hero-sub { display: none; }
+  .hero-bottom { display: none !important; }
+
+  /* 히어로 Q&A 슬로건 — 영상 위 빈 공간, 한 줄, 시선을 끄는 굵은 처리 */
+  .hero-qa {
+    position: absolute;
+    top: 150px; left: 64px; right: 64px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .hero-qa-line {
+    font-size: clamp(20px, 2.15vw, 32px);
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-indent: 3em;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.65);
+  }
+  .hqa-big {
+    font-size: 1.4em;
+    font-weight: 900;
+  }
+  .hqa-gold {
+    color: var(--gold);
+    text-shadow: 0 0 40px var(--gold-glow), 0 4px 24px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -224,9 +267,9 @@ nav {
   padding: 100px 40px 48px;
   border-left: 1px solid var(--panel-border);
   gap: 6px; position: relative; z-index: 10;
-  background: var(--panel-bg);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  background: rgba(9, 15, 38, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* 사업 섹션 헤더 */
@@ -301,8 +344,10 @@ nav {
 }
 .item-sub {
   display: block; font-size: 13px; font-weight: 400;
-  color: rgba(255,255,255,0.45); margin-top: 4px; transition: color .2s;
+  color: rgba(255,255,255,0.45); margin-top: 0; transition: color .2s, max-height .25s ease, opacity .2s ease, margin-top .25s ease;
+  max-height: 0; opacity: 0; overflow: hidden;
 }
+.nav-item:hover .item-sub { max-height: 24px; opacity: 1; margin-top: 4px; }
 .biz-edu .nav-item:hover .item-label { color: var(--blue); }
 .biz-edu .nav-item:hover .item-sub  { color: rgba(111,168,255,0.85); }
 .biz-pub .nav-item:hover .item-label { color: var(--gold); }
@@ -1381,16 +1426,16 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 <!-- 헤더 -->
 <nav>
   <a href="#" class="logo" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" height="34">
-      <g stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" height="42">
+      <g stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" fill="none">
         <line x1="22" y1="36" x2="60" y2="60"/><line x1="22" y1="84" x2="60" y2="60"/>
         <line x1="60" y1="60" x2="100" y2="36"/><line x1="60" y1="60" x2="100" y2="84"/>
       </g>
-      <circle cx="22" cy="36" r="8" fill="#6FA8FF"/>
-      <circle cx="22" cy="84" r="8" fill="#6FA8FF"/>
-      <circle cx="100" cy="36" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"/>
-      <circle cx="100" cy="84" r="7" fill="none" stroke="#FFFFFF" stroke-width="5.5"/>
-      <circle cx="60" cy="60" r="15" fill="#FBBF24"/>
+      <circle cx="22" cy="36" r="10" fill="#6FA8FF"/>
+      <circle cx="22" cy="84" r="10" fill="#6FA8FF"/>
+      <circle cx="100" cy="36" r="9" fill="none" stroke="#FFFFFF" stroke-width="8"/>
+      <circle cx="100" cy="84" r="9" fill="none" stroke="#FFFFFF" stroke-width="8"/>
+      <circle cx="60" cy="60" r="18" fill="#FBBF24"/>
       <text x="150" y="78" font-family="Pretendard,'Apple SD Gothic Neo',sans-serif" font-weight="800" font-size="64" letter-spacing="-2" fill="#FFFFFF">Next <tspan fill="#6FA8FF">I/O</tspan></text>
     </svg>
   </a>
@@ -1401,7 +1446,6 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
     <span class="nav-link" onclick="goTo(3)">위탁콘텐츠제작1</span>
     <span class="nav-link" onclick="goTo(4)">위탁콘텐츠제작2</span>
     <span class="nav-link" onclick="goTo(5)">위탁콘텐츠제작3</span>
-    <a class="nav-link nav-link-external" href="display-daily/" target="_blank" style="text-decoration:none;">디스플레이 데일리</a>
   </nav>
   <span class="nav-contact" onclick="goTo(6)" style="cursor:pointer;">문의하기</span>
 </nav>
@@ -1415,7 +1459,17 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   <!-- ① HERO -->
   <section id="hero" class="hero">
 
-  <!-- 왼쪽: 3D 비주얼 영역 (Three.js 렌더러) -->
+  <!-- 데스크탑 전용 히어로 영상 (제미나이 생성, AI 에이전트 파이프라인) — 히어로 전체 폭 배경 -->
+  <div class="hero-desk-video-wrap">
+    <video id="hero-desktop-video" src="videos/hero-desktop-agents.mp4" autoplay muted loop playsinline></video>
+  </div>
+
+  <!-- 데스크탑 전용 히어로 카피 (Q&A 슬로건, 영상 위 빈 공간, 한 줄) -->
+  <div class="hero-qa desk-only">
+    <p class="hero-qa-line">당신에게 필요한 AI 에이전트, &nbsp;<span class="hqa-big">Next I/O가 <span class="hqa-gold">만들어 드립니다.</span></span></p>
+  </div>
+
+  <!-- 왼쪽: 3D 비주얼 영역 (Three.js 렌더러, 모바일 전용) -->
   <div class="hero-visual">
     <canvas id="three-canvas"></canvas>
 
@@ -1432,9 +1486,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
     <!-- 슬로건 글래스 카드 (모바일/데스크탑 레이아웃 개별 보강) -->
     <div class="hero-bottom">
       <div class="hero-slogan desk-only">
-        <span>AI가 일하는 회사,<br></span>
-        <span class="highlight">5일이면 당신도</span><br>
-        <span>만들 수 있습니다.</span>
+        <span>AI가 일하는 회사, <span class="highlight">5일이면 완성됩니다.</span></span>
       </div>
       <div class="hero-sub">
         <span>코딩 없이</span>
@@ -2093,7 +2145,7 @@ const clock = new THREE.Clock();
 
 function animate() {
   requestAnimationFrame(animate);
-  if (window.innerWidth <= 992) return; // 모바일: 영상으로 대체되어 캔버스 렌더링 불필요
+  if (true) return; // 모바일·데스크탑 모두 영상으로 대체되어 캔버스 렌더링 불필요
   const time = clock.getElapsedTime();
 
   // 중앙 코어의 미세한 크기 맥동
