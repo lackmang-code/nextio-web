@@ -1043,7 +1043,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
 /* ── 매거진 섹션: 진열장 스테이지 (표지 사진 배경 + 발행호 표지) ── */
 .vitrine-box{
-  position:relative;width:100%;max-width:560px;aspect-ratio:1/1;
+  position:relative;width:100%;max-width:min(62vh, 640px);aspect-ratio:1/1;
   border-radius:18px;overflow:hidden;
   border:1px solid rgba(217,180,106,.28);
   box-shadow:0 0 0 1px rgba(0,0,0,.4), 0 20px 50px rgba(0,0,0,.45);
@@ -1123,8 +1123,8 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
     max-width: 408px;
     margin-top: 80px;
   }
-  .vitrine-box{ max-width:580px; }
-  .cover-slot{ width:235px; }
+  .vitrine-box{ max-width:min(64vh, 760px); }
+  .cover-slot{ width:min(21vh, 250px); }
   .covers{ gap:26px; }
 }
 
