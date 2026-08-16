@@ -1,2 +1,5 @@
 User-agent: *
 Disallow: /magazine/preview/
+Disallow: /education/handbook/
+
+Sitemap: https://www.nextio.ai.kr/sitemap.xml

@@ -1,9 +1,11 @@
 # NextIO 홍보팀
 
-> **이 세션의 역할: 홍보팀장** — CFO 산하, 홈페이지·홍보·마케팅 총괄 (2026-05-24 승격)
+> **이 세션의 역할: 홍보팀장** — 비서실장 직속, 홈페이지·홍보·마케팅 총괄 (2026-05-24 승격) + **회사공용자료(브랜드 자산) 관리** (2026-08-12 CFO 폐지·흡수)
 
 이 폴더는 NextIO 회사 홈페이지(www.nextio.ai.kr)의 소스 코드와 작업 메모리를 담고 있습니다.
-홍보팀은 홈페이지 운영을 넘어 회사 전반의 홍보·마케팅 활동을 담당합니다.
+홍보팀은 홈페이지 운영을 넘어 회사 전반의 홍보·마케팅 활동, 그리고 회사 브랜드 자산(로고·명함·회사소개서) 관리를 담당합니다.
+
+> **2026-08-12**: 기존 CFO(`01_Company\` 상위 세션) 폐지. 홍보팀·재무팀이 각각 비서실장 직속으로 독립. CFO가 맡던 회사공용자료 관리는 홍보팀이 흡수.
 
 ## 🌐 라이브 사이트
 - **https://www.nextio.ai.kr** (HTTPS 활성화, HSTS 적용)
@@ -71,14 +73,30 @@
 
 ⚠️ **교훈:** GitHub Pages는 www 서브도메인을 반드시 CNAME으로 권장. A 레코드로 우회하면 "InvalidARecordError" 발생.
 
-## 📦 관련 산출물 (외부 폴더 — 공용 자산 마스터)
-공용 자산은 모두 `C:\Users\nackm\NEXTIO\01_Company\회사공용자료\` 에 마스터 보관:
+## 📦 회사공용자료 관리 (2026-08-12 CFO로부터 흡수)
+
+**위치**: `C:\Users\nackm\NEXTIO\01_Company\회사공용자료\` — 회사 브랜드 자산의 **마스터 원본** 보관소. 홈페이지뿐 아니라 강의자료·매거진 등 전사 모든 매체가 공통으로 참조하는 자산이다.
+
+- **자산 업데이트 시**: 여기서 수정 → 각 사용처(홈페이지\images\ 등)에 복사본 배포. 새 버전은 `_v01`, `_v02` 식으로 보존(옛 파일 덮어쓰지 않기).
+- **로고 파일** (2026-06-20 체계 개편): `회사공용자료\로고\png\` / `로고\svg\`. 구 파일(`nextio-lockup_final.svg`, `nextio-lockup-1024_final.png`) 사용 금지 — 상세는 `NEXTIO\CLAUDE.md` 문서 로고 삽입 지침 참조.
+- **대표 명함** (2026-05-20 교체 확정, `대표명함.pdf`는 구버전이므로 사용 금지):
+
+| 파일 | 용도 |
+|---|---|
+| `nextio-business-card-print-cmyk.pdf` | **인쇄소 제출용** — CMYK, 600dpi, 블리드 포함 ★ |
+| `nextio-business-card-600dpi-cmyk.tiff` | 인쇄소 원본 요청 시 — CMYK TIFF |
+| `nextio-business-card-print.pdf` | RGB 버전 (디지털 용도) |
+| `nextio-business-card-600dpi.png` | 마스터 원본 (RGBA) |
+
 - 명함 QR 코드: `회사공용자료\QR\` (3종: bw / navy / navy_logo, 1480×1480 @ 300dpi)
 - 회사소개서 PPTX: `회사공용자료\넥스트아이오_회사소개서.pptx`
-- 대표 명함: `회사공용자료\대표명함.pdf`
-- 로고 원본: `회사공용자료\로고\`
 
 ⚠️ **자산 업데이트 패턴:** 회사공용자료\에서 수정 → `홈페이지\images\`에 복사본 배포 → git push
+
+## 회사 핵심 메시지
+- AI 기반 학술/연구 실습 교육 전문
+- Claude Code + Scientific-agent-skills 활용 자동화 파이프라인
+- 온라인 매거진 위탁 개발 (학과 뉴스레터, 계간지)
 
 ## 💡 자주 쓰는 명령
 
@@ -93,36 +111,32 @@ git add -A && git commit -m "..." && git push origin master
 # 브라우저에서 http://localhost:3000/?edit=1
 ```
 
-## 📰 디스플레이 데일리 (2026-07-29 대표 확정: 고품질(HQ) 전면 중단, 기본판이 최종 상태)
+## 📰 디스플레이 데일리 (2026-08-17 확정: 무인 스케줄러 전면 폐지, "데일리카드" 반자동 트리거 단일 프로세스)
 
-> 디스플레이 업계 뉴스를 매일 한 장 카드로 만드는 **홍보·마케팅 자산**. 무인 기본판(RSS 제목·링크 위주, 요약 없음)이 **완전 자동 생성부터 홈페이지 게시까지 100% 무인**으로 돈다.
+> 디스플레이 업계 뉴스를 매일 한 장 카드로 만드는 **홍보·마케팅 자산**.
 
-**★ 고품질(HQ) 업그레이드는 완전히 중단된 상태 — 다시 제안·시도하지 말 것.**
-"데일리카드 요약이 부실하다/원문을 봐야 한다"는 이야기가 나와도 개선을 제안하거나 시도하지 않는다. 요약/정리 강화 시도 자체가 반복 실패(작업당 45분 소요, 승인 대기, 게시 레이스 버그, 시스템 복잡도 증가)의 근본 원인이었다고 대표님이 자각·확정(2026-07-29). 유료 API·무료 헤드리스 우회 등 대안도 전부 같은 함정의 연장선이라 함께 중단. 상세 경위: 메모리 `project_display_daily_automation.md`.
+**★ 무인 스케줄러는 전부 삭제됨(2026-08-17). 유일하게 유효한 프로세스는 대표님이 "데일리카드"라고 트리거하면 세션이 그 자리에서 직접 처리하는 반자동 방식뿐이다.**
+- 삭제한 태스크: `NextIO_DisplayDaily`(RSS 무인 기본판, 매일 10:35 — 다이제스트 없는 날의 백업으로 유지해왔으나 이제 불필요 판단), `DailyDisplayNewsCardGenerator`(Antigravity `auto_news_card.py`, 매일 11:00 — 6월 이후 방치되어 매일 조용히 실패하던 좀비 태스크).
+- **고품질(HQ) 업그레이드**(3소스 병렬 수집·재서술)는 이미 2026-07-29에 전면 중단 확정됨 — 다시 제안·시도하지 말 것. Skill `display-daily`가 로드하는 `Workflow({name:"display-daily"})`는 이 폐기된 HQ 경로이니 절대 실행하지 말 것.
+- "데일리카드 요약이 부실하다/원문을 봐야 한다"는 이야기가 나와도 개선을 제안하거나 시도하지 않는다(2026-07-29 결정, 상세는 메모리 참고).
 
-**역할 분담**
-| 단계 | 담당 |
-|---|---|
-| 기본 카드 생성 + 홈페이지 게시(git push까지) | 무인 인프라(스케줄러, `run_basic.ps1` → `publish_daily.ps1`) — **건드리지 말 것** |
+**"데일리카드" 트리거 시 처리 절차 (세션이 직접 수행, 2026-08-04 도입)**
+1. Gmail에서 오늘자 다이제스트 검색: `subject:"일간 디스플레이 탐사 보도 다이제스트"` (발신자 주소는 바뀔 수 있어 제목 기준으로 검색)
+2. 본문을 `digest_to_items.py` 입력 포맷(`N. 제목` / `- 내용:` / `- 분석:` / `- 출처: 이름 (URL)`, 출처가 여러 개면 대표 하나만 남기고 정리)에 맞춰 `C:/Temp/digest_YYYY-MM-DD.txt`로 재구성
+3. `digest_to_items.py`로 파싱 → `make_promo.py` + `make_index.py`로 카드 생성
+4. `latest.html`도 반드시 함께 최신 카드로 교체(누락하기 쉬움 — 메인 홈페이지·모바일이 이 파일을 봄)
+5. `_automation/display_daily/public/`와 `홈페이지/display-daily/` 양쪽에 복사(index.json 포함)
+6. git add/commit/push
+7. 요일·공휴일 여부는 무관 — 다이제스트가 와 있고 트리거를 받으면 그대로 처리(휴일 규칙은 폐지된 RSS 무인판 전용이었음)
 
 **엔진 위치(외부 폴더, 절대경로로 접근)** `C:\Users\nackm\NEXTIO\_automation\display_daily\`
-- `fetch_basic.py`(무인 RSS 수집) · `make_promo.py`(카드 생성기) · `make_index.py`(목차) · `run_basic.ps1`(무인 래퍼=스케줄러 `NextIO_DisplayDaily`, 매일 10:35, 카드 생성 후 `publish_daily.ps1` 자동 호출해 홈페이지 복사+커밋+푸시까지 완료) · `run_log.txt`
+- `digest_to_items.py`(다이제스트 파서) · `make_promo.py`(카드 생성기) · `make_index.py`(목차)
 - 로고(검정 헤더용 반전 락업) 영문 사본: `_automation\display_daily\assets\nextio_logo.svg` (원본 `회사공용자료\로고\svg\nextio-lockup-reverse.svg` — 한글 경로라 직접 인자전달 금지, 바뀌면 이 사본 재복사)
-- 출력: `_automation\display_daily\public\card_YYYY-MM-DD.html` + `index.html` → `홈페이지\display-daily\`로 자동 복사·게시
+- 출력: `_automation\display_daily\public\card_YYYY-MM-DD.html` + `index.html` → `홈페이지\display-daily\`로 복사·게시
 - PY = `C:\Users\nackm\AppData\Local\Programs\Python\Python313\python.exe`
 
-**★수집 마감 = 당일 오전 10시 30분(KST).** 각 아침판 = **[전날 10:30, 당일 10:30) 24시간 창**. 10:30 이후 기사는 다음날 건.
-
-**★휴일 운영 규칙 (한국 기준)**
-- **토·일·공휴일**: 카드 생성 없음
-- **다음 평일**: 직전 휴일 기간 전체의 기사를 모아서 카드 1장 발행 (예: 월요일이면 토~월 10:30, 연휴 뒤 첫 평일이면 연휴 전날 10:30~당일 10:30 전체)
-
-**세션에서 할 일(있다면)**
-- 무인 게시 결과 확인(오늘 카드 생성됐는지, 링크 깨짐 없는지) 정도의 점검만. 카드 내용 자체를 다시 만들거나 덮어쓰지 않는다.
-- 무인 파이프라인이 실패(카드 미생성 등)했을 때만 원인 파악·수동 재실행 지원.
-
 **주의**
-- 무인 엔진(`run_basic.ps1`·`publish_daily.ps1`·스케줄러)은 인프라 — 멋대로 수정 금지. 한글 든 `.ps1`은 BOM 포함 UTF-8 저장.
+- 2026-08-17에 스케줄러(`NextIO_DisplayDaily`, `DailyDisplayNewsCardGenerator`)와 그 전용 스크립트(`run_basic.ps1`·`run_daily.ps1`·`run_hq.ps1`·`fetch_basic.py`·`routine_prompt.txt`), 그리고 "데일리카드" 트리거를 가로채 폐기된 HQ 3소스 Workflow를 실행하던 `.claude/skills/display-daily.md`·`.claude/workflows/display-daily.js`까지 전부 삭제 완료. `publish_daily.ps1`(범용 복사+커밋+푸시 스크립트)만 현재 프로세스에서 재사용.
 - 상세·이력: 메모리 `project_display_daily_automation.md`.
 
 ## 메모리 저장 규칙
