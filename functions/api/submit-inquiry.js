@@ -75,7 +75,12 @@ export async function onRequestPost(context) {
   try {
     gfResp = await fetch(GF_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': GF_URL.replace('/formResponse', '/viewform'),
+        'Origin': 'https://docs.google.com',
+      },
       body: params.toString(),
     });
     gfText = await gfResp.text();
@@ -89,7 +94,7 @@ export async function onRequestPost(context) {
     return json({ success: true }, origin, 200);
   }
   return json(
-    { success: false, error: 'google_rejected', status: gfResp.status, detail: gfText.slice(0, 500) },
+    { success: false, error: 'google_rejected', status: gfResp.status, detail: gfText.slice(0, 2000) },
     origin,
     200
   );
