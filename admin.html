@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>문의 게시판 관리자 - Next I/O</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+    background: #0f1117;
+    color: #e5e7eb;
+    margin: 0;
+    padding: 40px 20px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 24px; }
+  #loginBox {
+    background: #1a1d27;
+    border: 1px solid #2a2e3a;
+    border-radius: 10px;
+    padding: 32px;
+    max-width: 360px;
+    margin: 60px auto;
+  }
+  #loginBox label { display: block; margin-bottom: 8px; font-size: 14px; color: #9ca3af; }
+  #loginBox input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #2a2e3a;
+    background: #0f1117;
+    color: #e5e7eb;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  #loginBox button, .replyBtn {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: none;
+    background: #2456E6;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  #loginBox button:hover, .replyBtn:hover { background: #1c46c2; }
+  #loginError { color: #f87171; font-size: 13px; margin-top: 8px; min-height: 16px; }
+  #boardWrap { display: none; }
+  .post {
+    background: #1a1d27;
+    border: 1px solid #2a2e3a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .post-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+  .post-title { font-size: 16px; font-weight: 600; }
+  .post-meta { font-size: 12px; color: #9ca3af; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+  .badge.private { background: #7c2d12; color: #fed7aa; }
+  .badge.answered { background: #14532d; color: #bbf7d0; }
+  .badge.unanswered { background: #3f3f46; color: #d4d4d8; }
+  .post-body { font-size: 14px; line-height: 1.6; white-space: pre-wrap; color: #d1d5db; margin: 12px 0; }
+  .post-contact { font-size: 12px; color: #9ca3af; margin-bottom: 8px; }
+  .reply-existing {
+    background: #0f1117;
+    border-left: 3px solid #2456E6;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    margin-top: 10px;
+    color: #e5e7eb;
+  }
+  textarea.replyInput {
+    width: 100%;
+    min-height: 80px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #2a2e3a;
+    background: #0f1117;
+    color: #e5e7eb;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .replyBtn { width: auto; padding: 8px 20px; margin-top: 8px; font-size: 13px; }
+  #emptyMsg { color: #9ca3af; text-align: center; padding: 40px 0; }
+  #refreshBtn { background: #2a2e3a; margin-bottom: 16px; width: auto; padding: 8px 16px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="loginBox">
+    <h1 style="margin-top:0;">관리자 로그인</h1>
+    <label for="pwInput">비밀번호</label>
+    <input type="password" id="pwInput" autocomplete="off">
+    <button id="loginBtn">로그인</button>
+    <div id="loginError"></div>
+  </div>
+
+  <div id="boardWrap">
+    <h1>문의 게시판 관리</h1>
+    <button id="refreshBtn">새로고침</button>
+    <div id="posts"></div>
+    <div id="emptyMsg" style="display:none;">등록된 문의가 없습니다.</div>
+  </div>
+
+</div>
+
+<script>
+let ADMIN_PW = '';
+
+const loginBox = document.getElementById('loginBox');
+const boardWrap = document.getElementById('boardWrap');
+const pwInput = document.getElementById('pwInput');
+const loginBtn = document.getElementById('loginBtn');
+const loginError = document.getElementById('loginError');
+const postsEl = document.getElementById('posts');
+const emptyMsg = document.getElementById('emptyMsg');
+const refreshBtn = document.getElementById('refreshBtn');
+
+async function login() {
+  const pw = pwInput.value;
+  if (!pw) return;
+  loginError.textContent = '';
+  loginBtn.disabled = true;
+  loginBtn.textContent = '확인 중...';
+  try {
+    const res = await fetch('/api/board/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw, action: 'list' })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      loginError.textContent = '비밀번호가 올바르지 않습니다.';
+      loginBtn.disabled = false;
+      loginBtn.textContent = '로그인';
+      return;
+    }
+    ADMIN_PW = pw;
+    loginBox.style.display = 'none';
+    boardWrap.style.display = 'block';
+    renderPosts(data.posts);
+  } catch (e) {
+    loginError.textContent = '접속 중 오류가 발생했습니다.';
+    loginBtn.disabled = false;
+    loginBtn.textContent = '로그인';
+  }
+}
+
+loginBtn.addEventListener('click', login);
+pwInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') login(); });
+
+function esc(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : str;
+  return div.innerHTML;
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+function renderPosts(posts) {
+  postsEl.innerHTML = '';
+  if (!posts || posts.length === 0) {
+    emptyMsg.style.display = 'block';
+    return;
+  }
+  emptyMsg.style.display = 'none';
+
+  posts.forEach((p) => {
+    const div = document.createElement('div');
+    div.className = 'post';
+
+    const answeredBadge = p.replied_at
+      ? '<span class="badge answered">답변완료</span>'
+      : '<span class="badge unanswered">미답변</span>';
+    const privateBadge = p.is_private ? '<span class="badge private">비공개</span>' : '';
+
+    div.innerHTML = `
+      <div class="post-head">
+        <div class="post-title">#${p.id} ${esc(p.title)} ${privateBadge}${answeredBadge}</div>
+        <div class="post-meta">${fmtDate(p.created_at)}</div>
+      </div>
+      <div class="post-contact">${esc(p.name)} · ${esc(p.email)}${p.org ? ' · ' + esc(p.org) : ''}${p.service ? ' · 관심서비스: ' + esc(p.service) : ''}</div>
+      <div class="post-body">${esc(p.message)}</div>
+      ${p.reply ? `<div class="reply-existing"><strong>답변 (${fmtDate(p.replied_at)}):</strong><br>${esc(p.reply)}</div>` : ''}
+      <textarea class="replyInput" placeholder="${p.reply ? '답변 수정...' : '답변 작성...'}">${p.reply ? esc(p.reply) : ''}</textarea>
+      <button class="replyBtn" data-id="${p.id}">${p.reply ? '답변 수정' : '답변 등록'}</button>
+    `;
+
+    postsEl.appendChild(div);
+  });
+
+  postsEl.querySelectorAll('.replyBtn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-id');
+      const textarea = btn.previousElementSibling;
+      const reply = textarea.value.trim();
+      if (!reply) return;
+      btn.disabled = true;
+      btn.textContent = '등록 중...';
+      try {
+        const res = await fetch('/api/board/admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: ADMIN_PW, action: 'reply', id, reply })
+        });
+        const data = await res.json();
+        if (data.success) {
+          loadPosts();
+        } else {
+          alert('답변 등록에 실패했습니다.');
+          btn.disabled = false;
+          btn.textContent = '답변 등록';
+        }
+      } catch (e) {
+        alert('오류가 발생했습니다.');
+        btn.disabled = false;
+        btn.textContent = '답변 등록';
+      }
+    });
+  });
+}
+
+async function loadPosts() {
+  const res = await fetch('/api/board/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: ADMIN_PW, action: 'list' })
+  });
+  const data = await res.json();
+  if (data.success) renderPosts(data.posts);
+}
+
+refreshBtn.addEventListener('click', loadPosts);
+</script>
+</body>
+</html>

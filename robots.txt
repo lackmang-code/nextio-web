@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /magazine/preview/
 Disallow: /education/handbook/
+Disallow: /admin.html
 
 Sitemap: https://www.nextio.ai.kr/sitemap.xml
 Sitemap: https://www.nextio.ai.kr/display-daily/sitemap-display-daily.xml
