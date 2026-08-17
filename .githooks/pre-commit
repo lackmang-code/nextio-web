@@ -1,0 +1,39 @@
+#!/bin/sh
+# Next I/O 홈페이지 저장소는 Public GitHub repo다.
+# 내부 전용 문서(가격·계약·리드·기밀 등)가 실수로 커밋되는 걸 막는 안전장치.
+# 우회하려면: git commit --no-verify (정말 의도한 경우에만 사용)
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$staged" ] && exit 0
+
+# 1) 파일 경로/이름에 민감 키워드가 있으면 차단
+path_pattern='handbook|NDA|nda|견적|계약서|리드DB|리드db|컨택리스트|독소조항|내부문서|기밀|confidential|salary|연봉|급여'
+bad_paths=$(echo "$staged" | grep -E -i "$path_pattern")
+
+# 2) 파일 내용에 비밀키/시크릿 패턴이 있으면 차단
+bad_content=""
+for f in $staged; do
+  [ -f "$f" ] || continue
+  case "$f" in
+    *.png|*.jpg|*.jpeg|*.gif|*.svg|*.ico|*.pdf|*.woff|*.woff2|*.ttf) continue ;;
+  esac
+  if grep -I -q -E "BEGIN (RSA|OPENSSH|PRIVATE) KEY|api[_-]?key\s*[:=]\s*['\"][A-Za-z0-9_\-]{16,}|AKIA[0-9A-Z]{16}|password\s*[:=]\s*['\"][^'\"]{4,}" "$f" 2>/dev/null; then
+    bad_content="$bad_content$f\n"
+  fi
+done
+
+if [ -n "$bad_paths" ] || [ -n "$bad_content" ]; then
+  echo ""
+  echo "🚫 커밋 차단: 이 저장소(nextio-web)는 Public입니다."
+  echo ""
+  [ -n "$bad_paths" ] && printf "   민감 파일명으로 의심되는 파일:\n%s\n\n" "$bad_paths"
+  [ -n "$bad_content" ] && printf "   민감 내용(키/비밀번호 패턴)이 의심되는 파일:\n%b\n" "$bad_content"
+  echo "   내부 전용 문서(가격·계약·리드·NDA 등)는 이 저장소에 커밋하지 말고"
+  echo "   회사공용자료(비공개 위치)에 보관하세요."
+  echo ""
+  echo "   정말 의도한 파일이면: git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
+exit 0

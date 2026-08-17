@@ -9,15 +9,24 @@
 
 ## 🌐 라이브 사이트
 - **https://www.nextio.ai.kr** (HTTPS 활성화, HSTS 적용)
-- GitHub Pages 자동 배포
+- 자동 배포 (2026-08-17 확인: GitHub Pages 아님 — `has_pages:false`. Cloudflare 경유로 서비스되며 Cloudflare Pages GitHub 연동으로 추정. 상세는 아래 "도메인 DNS" 섹션)
 
 ## 📁 작업 폴더
 `C:\Users\nackm\NEXTIO\01_Company\홈페이지`
 
 ## 🔗 GitHub
-- 저장소: https://github.com/lackmang-code/nextio-web
+- 저장소: https://github.com/lackmang-code/nextio-web (**Public**)
 - 브랜치: `master`
-- 푸시 즉시 자동 배포 (~1분)
+- 푸시 즉시 자동 배포 (보통 ~30초, 간헐적으로 지연되는 경우 있었음 — 2026-08-17)
+
+## 🔒 보안: Public 저장소 커밋 전 필수 확인 (2026-08-17 도입)
+
+**이 저장소는 Public입니다.** `education/handbook/`(NDA·견적서·계약서·리드DB 등 내부문서)가 실수로 2개월 넘게 공개돼있던 사건 이후 도입.
+
+- **pre-commit 훅 설치됨**: `.githooks/pre-commit` — 파일명에 `NDA·견적·계약서·리드DB·컨택리스트·독소조항·내부문서·기밀·연봉` 등이 들어가거나, 내용에 API 키·비밀번호 패턴이 있으면 커밋 자체를 차단.
+- **클론 직후 1회 필요**: `git config core.hooksPath .githooks` (훅 경로는 git 설정이라 저장소에 자동 포함 안 됨 — 새로 클론하면 다시 설정해야 함). 이 로컬 환경엔 이미 설정 완료.
+- **원칙**: 내부 전용 문서(가격·계약·리드·기밀 등)는 애초에 이 저장소에 저장하지 말 것 — `01_Company\회사공용자료\` 등 비공개 위치에 보관. "education/" 같은 폴더명이 내부적으로 보여도 이 저장소 전체가 public이라는 점을 항상 기억할 것.
+- 훅을 의도적으로 우회해야 하는 경우(오탐): `git commit --no-verify`
 
 ## 🗂️ 파일 구성 (2026-06-23 v2 전면 개편 기준)
 
