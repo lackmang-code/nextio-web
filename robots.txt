@@ -3,3 +3,4 @@ Disallow: /magazine/preview/
 Disallow: /education/handbook/
 
 Sitemap: https://www.nextio.ai.kr/sitemap.xml
+Sitemap: https://www.nextio.ai.kr/display-daily/sitemap-display-daily.xml
