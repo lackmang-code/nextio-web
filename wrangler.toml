@@ -1,0 +1,8 @@
+name = "skk-display-magazine"
+pages_build_output_dir = "."
+compatibility_date = "2026-05-03"
+
+[[d1_databases]]
+binding = "BOARD_DB"
+database_name = "nextio-board"
+database_id = "f7f63e9e-9c72-451a-9945-3353992659e6"
