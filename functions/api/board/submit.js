@@ -19,12 +19,15 @@ export async function onRequestPost({ request, env }) {
   }
 
   const createdAt = new Date().toISOString();
+  const accessToken = crypto.randomUUID().replace(/-/g, '');
 
-  await env.BOARD_DB.prepare(
-    `INSERT INTO posts (service, name, email, org, title, message, is_private, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-  ).bind(service || null, name, email, org || null, title, message, is_private ? 1 : 0, createdAt).run();
+  const result = await env.BOARD_DB.prepare(
+    `INSERT INTO posts (service, name, email, org, title, message, is_private, created_at, access_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(service || null, name, email, org || null, title, message, is_private ? 1 : 0, createdAt, accessToken).run();
 
-  return new Response(JSON.stringify({ success: true }), {
+  const id = result.meta.last_row_id;
+
+  return new Response(JSON.stringify({ success: true, id, access_token: accessToken }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' }
   });
