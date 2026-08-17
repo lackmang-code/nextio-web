@@ -1630,7 +1630,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
              style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
             과정 상세 보기 →
           </a>
-          <a href="#contact" onclick="goTo(6); return false;"
+          <a href="#contact" onclick="goToContactFor('AI 유니콘 과정'); return false;"
              style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
             교육 문의
           </a>
@@ -1664,7 +1664,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
              style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
             과정 상세 보기 →
           </a>
-          <a href="#contact" onclick="goTo(6); return false;"
+          <a href="#contact" onclick="goToContactFor('AI 연구역량 과정'); return false;"
              style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
             교육 문의
           </a>
@@ -1688,9 +1688,13 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <div class="pub-left reveal">
         <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 01 · DAILY CARD</p>
         <h2 class="pub-h2">에디터·디자이너 없이,<br><em>월 20만 원</em>으로 가동하는<br>자사 미디어 에이전트</h2>
-        <p class="pub-desc" style="margin-bottom: 32px;">
+        <p class="pub-desc" style="margin-bottom: 20px;">
           로고와 키워드만 등록하면, AI 에이전트가 매일 아침 업계 뉴스를 선별·제작해 귀사 이름으로 발행합니다.
         </p>
+        <a href="#contact" onclick="goToContactFor('데일리카드 위탁제작'); return false;"
+           style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;margin-bottom:32px;">
+          위탁제작 문의
+        </a>
 
         <!-- 날짜 아카이브 목록 (PC 전용) -->
         <div class="daily-archive">
@@ -1730,9 +1734,13 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <div class="pub-left reveal">
         <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 02 · ONLINE MAGAZINE</p>
         <h2 class="pub-h2">기획은 대표가,<br>제작·배포는<br><em>AI 에이전트</em>가</h2>
-        <p class="pub-desc">
+        <p class="pub-desc" style="margin-bottom: 20px;">
           귀사도 소정의 비용으로 매달 매거진을 발행할 수 있습니다.
         </p>
+        <a href="#contact" onclick="goToContactFor('온라인 매거진 위탁제작'); return false;"
+           style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
+          위탁제작 문의
+        </a>
       </div>
 
       <!-- 우측: 발행호 진열장 (실물 표지 + 라이브 매거진 링크) -->
@@ -1778,9 +1786,13 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <div class="pub-left reveal">
         <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 03 · BOOK PROJECT</p>
         <h2 class="pub-h2">원고 기획부터 서점 유통까지<br>귀사의 지식 자산을<br><em>권위 있는 책</em>으로 완성</h2>
-        <p class="pub-desc">
+        <p class="pub-desc" style="margin-bottom: 20px;">
           구술 인터뷰 기록과 분산된 내부 자료만 준비해 주십시오. AI 팩트체크 및 문체 교정 에이전트와 함께 귀사만의 독창적인 스토리를 고품격 단행본으로 기획 및 정교하게 다듬어 드립니다. 정식 ISBN 발급부터 전국 온·오프라인 서점 유통까지 올인원으로 서포트하며, 귀사의 전문성을 입증하는 가장 신뢰도 높은 책 브랜딩 에셋을 경제적으로 전달합니다.
         </p>
+        <a href="#contact" onclick="goToContactFor('단행본 프로젝트'); return false;"
+           style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
+          위탁제작 문의
+        </a>
       </div>
 
       <!-- 우측: 단행본 표지 고해상도 썸네일 -->
@@ -1800,6 +1812,18 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <p class="contact-tagline">무엇이든 편하게 문의해 주세요.</p>
 
       <form id="boardForm" class="board-form" novalidate>
+        <div class="bf-full">
+          <label class="bf-label">관심 서비스 <span class="bf-req">*</span></label>
+          <select class="bf-input" id="bf-service" name="service" required>
+            <option value="" disabled selected>관심 있는 서비스를 선택해 주세요</option>
+            <option value="AI 유니콘 과정">AI 유니콘 과정</option>
+            <option value="AI 연구역량 과정">AI 연구역량 과정</option>
+            <option value="데일리카드 위탁제작">데일리카드 위탁제작</option>
+            <option value="온라인 매거진 위탁제작">온라인 매거진 위탁제작</option>
+            <option value="단행본 프로젝트">단행본 프로젝트</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
         <div class="bf-row">
           <div class="bf-col">
             <label class="bf-label">이름 <span class="bf-req">*</span></label>
@@ -1857,11 +1881,18 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
   const GF_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeKenhxndfa-ABL8X9gIDL1VvNdYS6DBNIieSPI5xlI96ZqXw/formResponse';
   const GF = {
+    service: 'entry.391658267',
     name:    'entry.2005620554',
     email:   'entry.1045781291',
     org:     'entry.1065046570',
     title:   'entry.1166974658',
     message: 'entry.839337160'
+  };
+
+  window.goToContactFor = function (serviceValue) {
+    const sel = document.getElementById('bf-service');
+    if (sel) sel.value = serviceValue;
+    if (typeof goTo === 'function') goTo(6);
   };
 
   again.addEventListener('click', () => {
@@ -1888,6 +1919,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
     const fbzx = Math.floor(Math.random() * 9e18) * -1;
     const fields = [
+      [GF.service, form.querySelector('[name="service"]').value],
       [GF.name,    form.querySelector('[name="name"]').value],
       [GF.email,   form.querySelector('[name="email"]').value],
       [GF.org,     form.querySelector('[name="organization"]').value],
