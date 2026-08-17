@@ -1925,7 +1925,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
     let ok = false;
     try {
-      const res = await fetch('/api/submit-inquiry', {
+      const res = await fetch('https://skk-display-magazine.pages.dev/api/submit-inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

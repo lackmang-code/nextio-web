@@ -13,24 +13,51 @@ const ENTRY_MAP = {
   message: 'entry.839337160',
 };
 
-function json(data, status = 200) {
+// CORS: 커스텀 도메인(www.nextio.ai.kr)에서 이 함수의 POST 요청이 502로 막히는
+// Cloudflare 커스텀 도메인 특이 현상이 있어, 프론트엔드가 안정적인 *.pages.dev 고정
+// production 주소로 직접 이 함수를 호출한다. 그래서 크로스 오리진 허용이 필요하다.
+const ALLOWED_ORIGINS = new Set([
+  'https://www.nextio.ai.kr',
+  'https://nextio.ai.kr',
+]);
+
+function corsHeaders(origin) {
+  const allow = ALLOWED_ORIGINS.has(origin) ? origin : 'https://www.nextio.ai.kr';
+  return {
+    'Access-Control-Allow-Origin': allow,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
+
+function json(data, origin, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      ...corsHeaders(origin),
+    },
   });
 }
 
+export async function onRequestOptions(context) {
+  const origin = context.request.headers.get('Origin') || '';
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
+}
+
 export async function onRequestPost(context) {
+  const origin = context.request.headers.get('Origin') || '';
+
   let body;
   try {
     body = await context.request.json();
   } catch (e) {
-    return json({ success: false, error: 'invalid_json' }, 400);
+    return json({ success: false, error: 'invalid_json' }, origin, 400);
   }
 
   // 서버 쪽에서도 필수값 최소 검증(클라이언트 검증 우회 대비)
   if (!body.name || !body.email || !body.title || !body.message) {
-    return json({ success: false, error: 'missing_required_field' }, 400);
+    return json({ success: false, error: 'missing_required_field' }, origin, 400);
   }
 
   const params = new URLSearchParams();
@@ -44,19 +71,26 @@ export async function onRequestPost(context) {
   params.append('partialResponse', `[null,null,"${fbzx}"]`);
   params.append('submissionTimestamp', '-1');
 
-  let gfResp;
+  let gfResp, gfText;
   try {
     gfResp = await fetch(GF_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: params.toString(),
     });
+    gfText = await gfResp.text();
   } catch (e) {
-    return json({ success: false, error: 'network_error' }, 502);
+    // 항상 HTTP 200으로 응답하고 성공 여부는 body로만 전달한다(엣지가 비-2xx 응답을
+    // 자체 에러 페이지로 치환해버리는 것을 피하기 위함 — 오늘 실제로 겪은 문제).
+    return json({ success: false, error: 'network_error' }, origin, 200);
   }
 
   if (gfResp.status >= 200 && gfResp.status < 400) {
-    return json({ success: true });
+    return json({ success: true }, origin, 200);
   }
-  return json({ success: false, error: 'google_rejected', status: gfResp.status }, 502);
+  return json(
+    { success: false, error: 'google_rejected', status: gfResp.status, detail: gfText.slice(0, 500) },
+    origin,
+    200
+  );
 }
