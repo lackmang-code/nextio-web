@@ -456,6 +456,8 @@ nav {
 .bd-again { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 9px 22px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; transition: border-color 0.2s, color 0.2s; }
 .bd-again:hover { border-color: #6FA8FF; color: #fff; }
 .board-list { margin-top: 32px; display: flex; flex-direction: column; gap: 10px; }
+.admin-link { display: block; text-align: center; margin-top: 28px; font-size: 11px; color: rgba(255,255,255,0.25); text-decoration: none; letter-spacing: 0.5px; }
+.admin-link:hover { color: rgba(255,255,255,0.55); }
 .bl-loading { color: rgba(255,255,255,0.5); font-size: 14px; text-align: center; padding: 16px 0; }
 .bl-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 18px; }
 .bl-item summary { cursor: pointer; display: flex; flex-direction: column; gap: 4px; list-style: none; }
@@ -1898,6 +1900,8 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <div class="board-list" id="boardList">
         <p class="bl-loading" id="blLoading">문의 목록을 불러오는 중...</p>
       </div>
+
+      <a href="/admin.html" class="admin-link">관리자</a>
     </div>
   </section>
 
