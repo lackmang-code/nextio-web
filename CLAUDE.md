@@ -68,6 +68,8 @@
 
 ⚠️ **2026-08-17 발견**: 실제 서비스는 더 이상 GitHub Pages IP로 직결되지 않고 **Cloudflare를 경유**해서 나간다(`nslookup www.nextio.ai.kr` → `172.67.165.148`, `104.21.34.213` 등 Cloudflare IP, 응답 헤더 `Server: cloudflare`). 대표님 확인: "깃허브에만 하면 뭔가 안 되는 게 있다고 해서 무료 서버(Cloudflare)를 통해 배포한 것" — 의도된 설정. 정확히 무엇이 안 됐는지는 미상, 필요시 대표님께 재확인.
 
+⚠️ **2026-08-17 추가 확인**: `gh api repos/lackmang-code/nextio-web` → **`has_pages: false`** — 이 저장소는 GitHub Pages가 아예 꺼져있음. 즉 실제 서비스는 **Cloudflare Pages(GitHub 연동, GitHub App 방식이라 classic webhook에는 안 잡힘 — `/hooks` API도 빈 배열)**로 도는 것으로 추정. `git push`하면 보통 정상 반영되지만(관찰상 15~35초), **force-push(히스토리 재작성) 이후엔 반영이 눈에 띄게 느림/지연될 수 있음**을 확인함(2026-08-17, `education/handbook` 삭제 force-push 후 10분 넘게 구버전 서빙). 원인 미상 — Cloudflare Pages 빌드 큐 지연인지 다른 문제인지는 Cloudflare 대시보드 접근 권한이 있어야 확정 가능(이 세션은 접근 불가).
+
 아래 표는 과거(GitHub Pages 직결 시절) 기록으로, 지금은 참고용 — 실제 현재 A/CNAME 값은 가비아·Cloudflare 대시보드에서 직접 확인 필요(이 세션은 접근 권한 없음):
 | 타입 | 호스트 | 값 (과거 기록) |
 |---|---|---|
