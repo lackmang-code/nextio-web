@@ -1861,6 +1861,13 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
         <p class="bd-sub">빠른 시일 내에 연락드리겠습니다.</p>
         <button class="bd-again" id="bd-again-btn">다시 작성하기</button>
       </div>
+
+      <div id="boardError" class="board-done" hidden>
+        <div class="bd-icon" style="color:#ff6b6b;">✕</div>
+        <p class="bd-title">제출에 실패했습니다</p>
+        <p class="bd-sub">일시적인 오류일 수 있습니다. 잠시 후 다시 시도해 주세요.</p>
+        <button class="bd-again" id="bd-retry-btn">다시 시도하기</button>
+      </div>
     </div>
   </section>
 
@@ -1877,17 +1884,9 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   const titleI = document.getElementById('bf-title');
   const done   = document.getElementById('boardDone');
   const again  = document.getElementById('bd-again-btn');
+  const errBox = document.getElementById('boardError');
+  const retry  = document.getElementById('bd-retry-btn');
   if (!form) return;
-
-  const GF_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeKenhxndfa-ABL8X9gIDL1VvNdYS6DBNIieSPI5xlI96ZqXw/formResponse';
-  const GF = {
-    service: 'entry.391658267',
-    name:    'entry.2005620554',
-    email:   'entry.1045781291',
-    org:     'entry.1065046570',
-    title:   'entry.1166974658',
-    message: 'entry.839337160'
-  };
 
   window.goToContactFor = function (serviceValue) {
     const sel = document.getElementById('bf-service');
@@ -1903,50 +1902,50 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
     btn.disabled = false;
   });
 
-  form.addEventListener('submit', function (e) {
+  retry.addEventListener('click', () => {
+    errBox.hidden = true;
+    form.hidden = false;
+  });
+
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
     const title = titleI.value.trim() || '제목 없음';
 
-    const iframe = document.createElement('iframe');
-    iframe.name = 'gf-target';
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
+    btn.disabled = true;
+    btn.textContent = '제출 중...';
 
-    const gfForm = document.createElement('form');
-    gfForm.method = 'POST';
-    gfForm.action = GF_URL;
-    gfForm.target = 'gf-target';
+    const payload = {
+      service: form.querySelector('[name="service"]').value,
+      name:    form.querySelector('[name="name"]').value,
+      email:   form.querySelector('[name="email"]').value,
+      org:     form.querySelector('[name="organization"]').value,
+      title:   title,
+      message: form.querySelector('[name="message"]').value
+    };
 
-    const fbzx = Math.floor(Math.random() * 9e18) * -1;
-    const fields = [
-      [GF.service, form.querySelector('[name="service"]').value],
-      [GF.name,    form.querySelector('[name="name"]').value],
-      [GF.email,   form.querySelector('[name="email"]').value],
-      [GF.org,     form.querySelector('[name="organization"]').value],
-      [GF.title,   title],
-      [GF.message, form.querySelector('[name="message"]').value],
-      ['fvv',             '1'],
-      ['pageHistory',     '0'],
-      ['fbzx',            String(fbzx)],
-      ['partialResponse', '[null,null,"' + fbzx + '"]'],
-      ['submissionTimestamp', '-1']
-    ];
-    fields.forEach(function(pair) {
-      const inp = document.createElement('input');
-      inp.type = 'hidden'; inp.name = pair[0]; inp.value = pair[1];
-      gfForm.appendChild(inp);
-    });
+    let ok = false;
+    try {
+      const res = await fetch('/api/submit-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      ok = !!data.success;
+    } catch (err) {
+      ok = false;
+    }
 
-    document.body.appendChild(gfForm);
-    gfForm.submit();
+    btn.disabled = false;
+    btn.textContent = '게시하기 →';
 
-    setTimeout(function() {
-      try { document.body.removeChild(iframe); } catch(e) {}
-      try { document.body.removeChild(gfForm); } catch(e) {}
-    }, 3000);
-
-    form.hidden = true;
-    done.hidden = false;
+    if (ok) {
+      form.hidden = true;
+      done.hidden = false;
+    } else {
+      form.hidden = true;
+      errBox.hidden = false;
+    }
   });
 })();
 </script>
