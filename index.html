@@ -842,6 +842,8 @@ footer {
   .vitrine-box { max-width: 340px !important; }
   .cover-slot { width: 140px !important; }
   .covers { gap: 12px !important; }
+  .shelf-row .cover-slot { width: 80px !important; }
+  .shelf-row .covers { gap: 10px !important; }
   .vb-tag { top: 10px !important; font-size: 9px !important; }
   .col-list { max-width: 100% !important; }
 
@@ -1141,14 +1143,19 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 }
 .vitrine-box::before{
   content:"";position:absolute;inset:0;
-  background:url(images/magazine-vitrine-bg.jpg) center/cover no-repeat;
+  background:url(images/magazine-vitrine-bg-2shelf.jpg) center/cover no-repeat;
   filter:contrast(1.04) saturate(1.05);
 }
 .vb-scrim-top{position:absolute;inset:0 0 auto 0;height:22%;background:linear-gradient(180deg,rgba(20,14,4,.5),transparent)}
 .vb-content{position:relative;height:100%}
 .vb-tag{position:absolute;top:14px;left:0;right:0;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);text-align:center}
 .vb-tag b{color:var(--gold)}
-.shelf-wrap{position:absolute;left:0;right:0;bottom:23%}
+.shelf-wrap{position:absolute;left:0;right:0;top:0;bottom:0}
+.shelf-row{position:absolute;left:0;right:0}
+.shelf-row-1{bottom:68%}
+.shelf-row-2{bottom:37%}
+.shelf-row .covers{display:flex;justify-content:center;align-items:flex-end;gap:14px}
+.shelf-row .cover-slot{width:96px}
 .covers{display:flex;justify-content:center;align-items:flex-end;gap:20px}
 .cover-slot{position:relative;display:block;width:118px;text-decoration:none}
 .cover-card{position:relative;width:100%;transition:transform .5s cubic-bezier(0.16,1,0.3,1), filter .5s ease;filter:drop-shadow(0 14px 18px rgba(0,0,0,.55))}
@@ -1774,22 +1781,34 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
         <div class="vitrine-box">
           <div class="vb-scrim-top"></div>
           <div class="vb-content">
-            <p class="vb-tag"><b>발행호 아카이브</b> · 매달 누적</p>
+            <p class="vb-tag"><b>발행 매체</b> · Next I/O</p>
             <div class="shelf-wrap">
-              <div class="covers">
-                <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-07/" target="_blank" rel="noopener">
-                  <div class="cover-card">
-                    <img src="images/magazine-cover-2026-07.png" alt="첨디공 On 창간호 2026년 7월 표지">
-                  </div>
-                  <div class="cover-vol">Vol.01 · 7월</div>
-                </a>
-                <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-08/" target="_blank" rel="noopener">
-                  <div class="cover-card">
-                    <span class="new-pin">NEW</span>
-                    <img src="images/magazine-cover-2026-08.png" alt="첨디공 On 2호 2026년 8월 표지">
-                  </div>
-                  <div class="cover-vol">Vol.02 · 8월</div>
-                </a>
+              <div class="shelf-row shelf-row-1">
+                <div class="covers">
+                  <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-07/" target="_blank" rel="noopener">
+                    <div class="cover-card">
+                      <img src="images/magazine-cover-2026-07.png" alt="첨디공 On 창간호 2026년 7월 표지">
+                    </div>
+                    <div class="cover-vol">Vol.01 · 7월</div>
+                  </a>
+                  <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-08/" target="_blank" rel="noopener">
+                    <div class="cover-card">
+                      <img src="images/magazine-cover-2026-08.png" alt="첨디공 On 2호 2026년 8월 표지">
+                    </div>
+                    <div class="cover-vol">Vol.02 · 8월</div>
+                  </a>
+                </div>
+              </div>
+              <div class="shelf-row shelf-row-2">
+                <div class="covers">
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/" target="_blank" rel="noopener">
+                    <div class="cover-card">
+                      <span class="new-pin">NEW</span>
+                      <img src="images/magazine-cover-display-now.svg" alt="DISPLAY NOW 표지">
+                    </div>
+                    <div class="cover-vol">DISPLAY NOW · 주간 발행</div>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
