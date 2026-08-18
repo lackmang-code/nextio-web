@@ -2,7 +2,7 @@ name: Display Daily Auto-publish
 
 on:
   schedule:
-    - cron: '0 2 * * *'   # 매일 02:00 UTC = 11:00 KST
+    - cron: '30 0 * * *'  # 매일 00:30 UTC = 09:30 KST (다이제스트 메일이 09:10경 도착)
   workflow_dispatch: {}    # 수동 실행 버튼(테스트·긴급 재실행용)
 
 permissions:
