@@ -7,6 +7,9 @@
 """
 import sys, json, html
 
+# 카톡·링크드인 링크 미리보기용 썸네일(1200x630). display-daily/에 함께 배포됨.
+OG_IMAGE = "https://www.nextio.ai.kr/display-daily/og-display-daily.png"
+
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -155,9 +158,14 @@ def build(items, date_str, logo_svg, card_url=""):
 <meta property="og:description" content="{desc_text}">
 <meta property="og:url" content="{esc(card_url)}">
 <meta property="og:locale" content="ko_KR">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{OG_IMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="디스플레이 데일리 — Next I/O">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{title_text}">
 <meta name="twitter:description" content="{desc_text}">
+<meta name="twitter:image" content="{OG_IMAGE}">
 """
     return f"""<!DOCTYPE html>
 <html lang="ko">
