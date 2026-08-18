@@ -120,14 +120,6 @@ img  { display: block; width: 100%; }
 .sec-img { overflow: hidden; }
 .sec-img img { height: 100%; object-fit: cover; }
 
-/* Day 1 전용 임시 배경 — day1 이미지 제작 후 <img>로 교체할 것 */
-.sec-img-day1 {
-  background:
-    radial-gradient(circle at 30% 25%, rgba(15,118,110,.28), transparent 55%),
-    radial-gradient(circle at 72% 70%, rgba(27,45,107,.30), transparent 55%),
-    linear-gradient(140deg, #12303A 0%, #1B2D6B 100%);
-}
-
 .sec-body {
   display: flex; flex-direction: column; justify-content: center;
   padding: 64px 8vw;
@@ -287,7 +279,9 @@ img  { display: block; width: 100%; }
 
 <!-- ② Day 1 조직 구성 -->
 <section class="section rev reveal" id="day1">
-  <div class="sec-img sec-img-day1"></div>
+  <div class="sec-img">
+    <img src="images/day1_setup.jpg" alt="노트북 화면에 CEO와 AI 팀장들로 구성된 조직도를 그리는 모습">
+  </div>
   <div class="sec-body">
     <span class="day-chip" style="background:#D6F0EC; color:var(--c-ceo)">Day 1</span>
     <span class="sec-tag" style="color:var(--c-ceo)">
