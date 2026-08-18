@@ -127,32 +127,40 @@ git add -A && git commit -m "..." && git push origin master
 # 브라우저에서 http://localhost:3000/?edit=1
 ```
 
-## 📰 디스플레이 데일리 (2026-08-17 확정: 무인 스케줄러 전면 폐지, "데일리카드" 반자동 트리거 단일 프로세스)
+## 📰 디스플레이 데일리 (2026-08-17 확정: GitHub Actions 무인 자동 발행 — 매일 09:30 KST)
 
 > 디스플레이 업계 뉴스를 매일 한 장 카드로 만드는 **홍보·마케팅 자산**.
 
-**★ 무인 스케줄러는 전부 삭제됨(2026-08-17). 유일하게 유효한 프로세스는 대표님이 "데일리카드"라고 트리거하면 세션이 그 자리에서 직접 처리하는 반자동 방식뿐이다.**
-- 삭제한 태스크: `NextIO_DisplayDaily`(RSS 무인 기본판, 매일 10:35 — 다이제스트 없는 날의 백업으로 유지해왔으나 이제 불필요 판단), `DailyDisplayNewsCardGenerator`(Antigravity `auto_news_card.py`, 매일 11:00 — 6월 이후 방치되어 매일 조용히 실패하던 좀비 태스크).
-- **고품질(HQ) 업그레이드**(3소스 병렬 수집·재서술)는 이미 2026-07-29에 전면 중단 확정됨 — 다시 제안·시도하지 말 것. Skill `display-daily`가 로드하는 `Workflow({name:"display-daily"})`는 이 폐기된 HQ 경로이니 절대 실행하지 말 것.
-- "데일리카드 요약이 부실하다/원문을 봐야 한다"는 이야기가 나와도 개선을 제안하거나 시도하지 않는다(2026-07-29 결정, 상세는 메모리 참고).
+**★ 현재 프로세스: GitHub Actions가 매일 09:30 KST에 무인 발행한다. 사람 개입 불필요.**
 
-**"데일리카드" 트리거 시 처리 절차 (세션이 직접 수행, 2026-08-04 도입)**
-1. Gmail에서 오늘자 다이제스트 검색: `subject:"일간 디스플레이 탐사 보도 다이제스트"` (발신자 주소는 바뀔 수 있어 제목 기준으로 검색)
-2. 본문을 `digest_to_items.py` 입력 포맷(`N. 제목` / `- 내용:` / `- 분석:` / `- 출처: 이름 (URL)`, 출처가 여러 개면 대표 하나만 남기고 정리)에 맞춰 `C:/Temp/digest_YYYY-MM-DD.txt`로 재구성
-3. `digest_to_items.py`로 파싱 → `make_promo.py` + `make_index.py`로 카드 생성
-4. `latest.html`도 반드시 함께 최신 카드로 교체(누락하기 쉬움 — 메인 홈페이지·모바일이 이 파일을 봄)
-5. `_automation/display_daily/public/`와 `홈페이지/display-daily/` 양쪽에 복사(index.json 포함)
-6. git add/commit/push
-7. 요일·공휴일 여부는 무관 — 다이제스트가 와 있고 트리거를 받으면 그대로 처리(휴일 규칙은 폐지된 RSS 무인판 전용이었음)
+| 항목 | 값 |
+|---|---|
+| 워크플로 | `.github/workflows/display-daily.yml` |
+| 스케줄 | `30 0 * * *` = 00:30 UTC = **09:30 KST** (다이제스트 메일이 09:10경 도착) |
+| 실행 스크립트 | `_automation/run_daily.py` (**저장소 안**, 로컬 `NEXTIO\_automation\display_daily\`가 아님) |
+| Secrets | `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD` (Gmail 앱 비밀번호) |
+| 수동 실행 | `gh workflow run display-daily.yml --ref master` (`workflow_dispatch` 있음) |
 
-**엔진 위치(외부 폴더, 절대경로로 접근)** `C:\Users\nackm\NEXTIO\_automation\display_daily\`
-- `digest_to_items.py`(다이제스트 파서) · `make_promo.py`(카드 생성기) · `make_index.py`(목차)
-- 로고(검정 헤더용 반전 락업) 영문 사본: `_automation\display_daily\assets\nextio_logo.svg` (원본 `회사공용자료\로고\svg\nextio-lockup-reverse.svg` — 한글 경로라 직접 인자전달 금지, 바뀌면 이 사본 재복사)
-- 출력: `_automation\display_daily\public\card_YYYY-MM-DD.html` + `index.html` → `홈페이지\display-daily\`로 복사·게시
+**동작:** Gmail IMAP으로 최근 5일 내 `일간 디스플레이 탐사 보도 다이제스트` 메일 중 최신 것을 찾아 → 파싱 → `make_promo.py`·`make_index.py`로 카드·인덱스 생성 → `latest.html` 갱신 → `display-daily/`에 직접 커밋·푸시. **해당 날짜 카드가 이미 있으면 스킵(멱등성)** 이라 중복 실행해도 안전하다. 요일·공휴일 무관.
+
+**운영 시 알아둘 것**
+- **GitHub Actions 예약은 정시를 보장하지 않는다** — 공용 큐라 보통 몇 분, 혼잡하면 30분 이상 밀린다. 09:30은 "그 이후 언젠가"에 가깝다. 메일 도착(09:10)과 여유가 20분뿐이라, 메일이 늦은 날은 스킵될 수 있으나 다음날 실행 시 최근 5일 범위에서 따라잡는다.
+- **cron 시각을 바꾸면 그날 하루는 공백이 생길 수 있다** — 새 시각이 이미 지났고 구 시각은 삭제되므로 양쪽 다 안 돈다(2026-08-18 실제 발생). 변경한 날은 수동 dispatch로 메울 것.
+- 60일간 저장소 활동이 없으면 GitHub이 schedule을 자동 비활성화한다.
+- 실행 확인: `gh run list --workflow=display-daily.yml` / 로그: `gh run view <id> --log`
+
+**금지 사항 (변경 없음)**
+- **고품질(HQ) 업그레이드**(3소스 병렬 수집·재서술)는 2026-07-29에 전면 중단 확정 — 다시 제안·시도하지 말 것.
+- "데일리카드 요약이 부실하다/원문을 봐야 한다"는 이야기가 나와도 개선을 제안하거나 시도하지 않는다(2026-07-29 결정).
+
+**로컬 엔진(수동 작업용 원본, 참고)** `C:\Users\nackm\NEXTIO\_automation\display_daily\`
+- 저장소 안 `_automation\`이 이 폴더의 사본이다. 생성기(`make_promo.py` 등)를 수정하면 **양쪽 다 반영**할 것 — Actions는 저장소 안 사본만 본다.
+- 로고(검정 헤더용 반전 락업): `_automation\assets\nextio_logo.svg` (원본 `회사공용자료\로고\svg\nextio-lockup-reverse.svg` — 한글 경로라 직접 인자전달 금지, 바뀌면 이 사본 재복사)
 - PY = `C:\Users\nackm\AppData\Local\Programs\Python\Python313\python.exe`
 
-**주의**
-- 2026-08-17에 스케줄러(`NextIO_DisplayDaily`, `DailyDisplayNewsCardGenerator`)와 그 전용 스크립트(`run_basic.ps1`·`run_daily.ps1`·`run_hq.ps1`·`fetch_basic.py`·`routine_prompt.txt`), 그리고 "데일리카드" 트리거를 가로채 폐기된 HQ 3소스 Workflow를 실행하던 `.claude/skills/display-daily.md`·`.claude/workflows/display-daily.js`까지 전부 삭제 완료. `publish_daily.ps1`(범용 복사+커밋+푸시 스크립트)만 현재 프로세스에서 재사용.
+**폐지 이력**
+- 2026-08-17: Windows 작업 스케줄러 태스크(`NextIO_DisplayDaily` 10:35, `DailyDisplayNewsCardGenerator` 11:00)와 전용 스크립트(`run_basic.ps1`·`run_daily.ps1`·`run_hq.ps1`·`fetch_basic.py`·`routine_prompt.txt`), 폐기된 HQ Workflow를 실행하던 `.claude/skills/display-daily.md`·`.claude/workflows/display-daily.js` 전부 삭제. 이후 GitHub Actions 방식으로 재구축.
+- 2026-08-04~08-17에 쓰던 "데일리카드" 수동 트리거 절차는 GitHub Actions 도입으로 상시 사용하지 않는다. 자동 발행이 실패한 날의 백업 수단으로는 `gh workflow run`(위)이 더 간단하다.
 - 상세·이력: 메모리 `project_display_daily_automation.md`.
 
 ## 메모리 저장 규칙
