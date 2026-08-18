@@ -21,6 +21,7 @@
 :root {
   --navy: #1B2D6B;
   --gold:  #FBBF24;
+  --c-ceo:    #0F766E;
   --c-admin:  #1B2D6B;
   --c-legal:  #7C3AED;
   --c-sales:  #059669;
@@ -118,6 +119,14 @@ img  { display: block; width: 100%; }
 
 .sec-img { overflow: hidden; }
 .sec-img img { height: 100%; object-fit: cover; }
+
+/* Day 1 전용 임시 배경 — day1 이미지 제작 후 <img>로 교체할 것 */
+.sec-img-day1 {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(15,118,110,.28), transparent 55%),
+    radial-gradient(circle at 72% 70%, rgba(27,45,107,.30), transparent 55%),
+    linear-gradient(140deg, #12303A 0%, #1B2D6B 100%);
+}
 
 .sec-body {
   display: flex; flex-direction: column; justify-content: center;
@@ -276,7 +285,26 @@ img  { display: block; width: 100%; }
   </div>
 </section>
 
-<!-- ② Day 2 총무팀 -->
+<!-- ② Day 1 조직 구성 -->
+<section class="section rev reveal" id="day1">
+  <div class="sec-img sec-img-day1"></div>
+  <div class="sec-body">
+    <span class="day-chip" style="background:#D6F0EC; color:var(--c-ceo)">Day 1</span>
+    <span class="sec-tag" style="color:var(--c-ceo)">
+      <span class="dot" style="background:var(--c-ceo)"></span>AI 조직 구성
+    </span>
+    <h2 class="sec-h2">우리 회사를<br>AI에게<br>등록합니다</h2>
+    <p class="sec-desc">단가·거래처·할인 기준을 한 번만 등록해 두면, 그다음부터는 말로 시키기만 하면 됩니다. 첫날은 내 사업에 필요한 AI 팀을 정하고, 그 팀이 함께 볼 회사 정보를 앉히는 날입니다.</p>
+    <ul class="output-list" style="color:var(--c-ceo)">
+      <li>내 사업에 필요한 AI 팀 구성 확정</li>
+      <li>회사 정보 등록 (단가 · 거래처 · 정책)</li>
+      <li>견적서 첫 장 직접 발행</li>
+      <li>자동으로 맡길 일 / 직접 승인할 일 구분</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ③ Day 2 총무팀 -->
 <section class="section reveal" id="day2">
   <div class="sec-img">
     <img src="images/day2_branding.png" alt="브랜드 디자인 작업">
@@ -297,7 +325,7 @@ img  { display: block; width: 100%; }
   </div>
 </section>
 
-<!-- ③ Day 3 법무팀 -->
+<!-- ④ Day 3 법무팀 -->
 <section class="section rev reveal" id="day3">
   <div class="sec-img">
     <img src="images/day3_legal.png" alt="AI 법무 검토">
@@ -318,7 +346,7 @@ img  { display: block; width: 100%; }
   </div>
 </section>
 
-<!-- ④ Day 4 영업팀 -->
+<!-- ⑤ Day 4 영업팀 -->
 <section class="section reveal" id="day4">
   <div class="sec-img">
     <img src="images/day4_sales.png" alt="영업 CRM 대시보드">
@@ -339,7 +367,7 @@ img  { display: block; width: 100%; }
   </div>
 </section>
 
-<!-- ⑤ Day 5 편집·마케팅팀 -->
+<!-- ⑥ Day 5 편집·마케팅팀 -->
 <section class="section rev reveal" id="day5">
   <div class="sec-img">
     <img src="images/day5_editorial.png" alt="매거진 편집 작업">
