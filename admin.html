@@ -88,6 +88,14 @@
     resize: vertical;
   }
   .replyBtn { width: auto; padding: 8px 20px; margin-top: 8px; font-size: 13px; }
+  .delBtn {
+    width: auto; padding: 8px 16px; margin-top: 8px; margin-left: 8px; font-size: 13px;
+    border-radius: 6px; border: 1px solid #5a3030; background: transparent; color: #d98a8a;
+    cursor: pointer;
+  }
+  .delBtn:hover { background: #3a2020; }
+  .delBtn.armed { background: #c0392b; border-color: #c0392b; color: #fff; font-weight: 700; }
+  .delBtn:disabled { opacity: .6; cursor: default; }
   #emptyMsg { color: #9ca3af; text-align: center; padding: 40px 0; }
   #refreshBtn { background: #2a2e3a; margin-bottom: 16px; width: auto; padding: 8px 16px; font-size: 13px; }
 </style>
@@ -196,9 +204,51 @@ function renderPosts(posts) {
       ${p.reply ? `<div class="reply-existing"><strong>답변 (${fmtDate(p.replied_at)}):</strong><br>${esc(p.reply)}</div>` : ''}
       <textarea class="replyInput" placeholder="${p.reply ? '답변 수정...' : '답변 작성...'}">${p.reply ? esc(p.reply) : ''}</textarea>
       <button class="replyBtn" data-id="${p.id}">${p.reply ? '답변 수정' : '답변 등록'}</button>
+      <button class="delBtn" data-id="${p.id}">삭제</button>
     `;
 
     postsEl.appendChild(div);
+  });
+
+  // 삭제는 두 번 눌러야 실행된다. confirm() 은 쓰지 않는다(자동화 도구가 걸린다).
+  postsEl.querySelectorAll('.delBtn').forEach((btn) => {
+    let armed = false;
+    let timer = null;
+    btn.addEventListener('click', async () => {
+      if (!armed) {
+        armed = true;
+        btn.textContent = '한 번 더 누르면 삭제';
+        btn.classList.add('armed');
+        timer = setTimeout(() => {
+          armed = false;
+          btn.textContent = '삭제';
+          btn.classList.remove('armed');
+        }, 4000);
+        return;
+      }
+      clearTimeout(timer);
+      btn.disabled = true;
+      btn.textContent = '삭제 중...';
+      try {
+        const res = await fetch('/api/board/admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: ADMIN_PW, action: 'delete', id: btn.getAttribute('data-id') })
+        });
+        const data = await res.json();
+        if (data.success) {
+          loadPosts();
+        } else {
+          btn.disabled = false;
+          btn.textContent = '삭제 실패';
+          btn.classList.remove('armed');
+        }
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = '삭제 실패';
+        btn.classList.remove('armed');
+      }
+    });
   });
 
   postsEl.querySelectorAll('.replyBtn').forEach((btn) => {
