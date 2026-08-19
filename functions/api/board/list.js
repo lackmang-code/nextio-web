@@ -1,3 +1,5 @@
+import { json, maskName } from './_lib.js';
+
 export async function onRequestGet({ env }) {
   const { results } = await env.BOARD_DB.prepare(
     `SELECT id, service, name, title, message, is_private, created_at, reply, replied_at FROM posts ORDER BY id DESC LIMIT 100`
@@ -8,7 +10,7 @@ export async function onRequestGet({ env }) {
       return {
         id: p.id,
         service: p.service,
-        name: p.name,
+        name: maskName(p.name), // 비밀글은 작성자 이름을 가린다
         title: '비밀글입니다',
         message: null,
         is_private: true,
@@ -32,8 +34,5 @@ export async function onRequestGet({ env }) {
     };
   });
 
-  return new Response(JSON.stringify({ success: true, posts }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' }
-  });
+  return json({ success: true, posts }, 200);
 }
