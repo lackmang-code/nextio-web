@@ -41,6 +41,15 @@ export function safeEqual(a, b) {
   return diff === 0;
 }
 
+// 비밀글은 내용을 가려도 누가 문의했는지가 드러난다.
+// 특정 기관·경쟁사 이름이 목록에 뜨면 그 사실 자체가 정보가 된다.
+// 첫 글자만 남겨 작성자 본인은 알아보되 제3자에게는 드러나지 않게 한다.
+export function maskName(name) {
+  const s = String(name || '').trim();
+  if (!s) return '비공개';
+  return s.length === 1 ? s : s[0] + '○'.repeat(s.length - 1);
+}
+
 // ─────────────────────────── 대입 시도 제한 ───────────────────────────
 // D1에 시도 기록을 남겨 창(window) 단위로 센다.
 // 마이그레이션을 수동으로 돌릴 수 없는 환경이라 코드에서 테이블을 만든다.

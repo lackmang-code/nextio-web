@@ -1886,28 +1886,32 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
         <div class="bf-row">
           <div class="bf-col">
             <label class="bf-label">이름 <span class="bf-req">*</span></label>
-            <input class="bf-input" type="text" name="name" placeholder="성함" required>
+            <input class="bf-input" type="text" name="name" placeholder="성함" maxlength="40" required>
           </div>
           <div class="bf-col">
             <label class="bf-label">이메일 <span class="bf-req">*</span></label>
-            <input class="bf-input" type="email" name="email" placeholder="답장받을 이메일 주소" required>
+            <input class="bf-input" type="email" name="email" placeholder="답장받을 이메일 주소" maxlength="120" required>
           </div>
         </div>
         <div class="bf-full">
           <label class="bf-label">소속 / 기관</label>
-          <input class="bf-input" type="text" name="organization" placeholder="회사 · 학교 · 기관명 (선택)">
+          <input class="bf-input" type="text" name="organization" placeholder="회사 · 학교 · 기관명 (선택)" maxlength="80">
         </div>
         <div class="bf-full">
           <label class="bf-label">제목 <span class="bf-req">*</span></label>
-          <input class="bf-input" id="bf-title" type="text" name="title" placeholder="문의 제목" required>
+          <input class="bf-input" id="bf-title" type="text" name="title" placeholder="문의 제목" maxlength="120" required>
         </div>
         <div class="bf-full">
           <label class="bf-label">내용 <span class="bf-req">*</span></label>
-          <textarea class="bf-textarea" name="message" placeholder="문의 내용을 자유롭게 작성해 주세요." required></textarea>
+          <textarea class="bf-textarea" name="message" placeholder="문의 내용을 자유롭게 작성해 주세요." maxlength="4000" required></textarea>
+
+          <!-- 허니팟: 화면에서 숨긴 칸. 사람은 채울 수 없고, 값이 있으면 서버가 봇으로 보고 저장하지 않는다. -->
+          <input type="text" name="website" id="bf-website" tabindex="-1" autocomplete="off" aria-hidden="true"
+                 style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
         </div>
         <div class="bf-full bf-pw-wrap" id="bf-pw-wrap" hidden>
           <label class="bf-label">비밀번호 <span class="bf-req">*</span></label>
-          <input class="bf-input" id="bf-pw" type="password" placeholder="나중에 답변을 확인할 때 필요한 비밀번호 (4자 이상)" minlength="4" autocomplete="off">
+          <input class="bf-input" id="bf-pw" type="password" placeholder="나중에 답변을 확인할 때 필요한 비밀번호 (4자 이상)" minlength="4" maxlength="64" autocomplete="off">
         </div>
         <div class="bf-actions">
           <label class="bf-priv">
@@ -2109,7 +2113,8 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       title:   titleI.value.trim() || '제목 없음',
       message: form.querySelector('[name="message"]').value.trim(),
       is_private: isPrivate,
-      post_password: isPrivate ? pwInput.value : undefined
+      post_password: isPrivate ? pwInput.value : undefined,
+      website: (form.querySelector('[name="website"]') || {}).value || ''
     };
 
     btn.disabled = true;
