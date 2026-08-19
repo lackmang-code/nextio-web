@@ -202,7 +202,7 @@ function renderPosts(posts) {
       <div class="post-contact">${esc(p.name)} · ${esc(p.email)}${p.org ? ' · ' + esc(p.org) : ''}${p.service ? ' · 관심서비스: ' + esc(p.service) : ''}</div>
       <div class="post-body">${esc(p.message)}</div>
       ${p.reply ? `<div class="reply-existing"><strong>답변 (${fmtDate(p.replied_at)}):</strong><br>${esc(p.reply)}</div>` : ''}
-      <textarea class="replyInput" placeholder="${p.reply ? '답변 수정...' : '답변 작성...'}">${p.reply ? esc(p.reply) : ''}</textarea>
+      <textarea class="replyInput" placeholder="${p.reply ? '답변 수정...' : '답변 작성...'}"${p.reply ? ' style="display:none"' : ''}>${p.reply ? esc(p.reply) : ''}</textarea>
       <button class="replyBtn" data-id="${p.id}">${p.reply ? '답변 수정' : '답변 등록'}</button>
       <button class="delBtn" data-id="${p.id}">삭제</button>
     `;
@@ -255,6 +255,16 @@ function renderPosts(posts) {
     btn.addEventListener('click', async () => {
       const id = btn.getAttribute('data-id');
       const textarea = btn.previousElementSibling;
+
+      // 등록된 답변이 있으면 수정칸을 접어둔다(읽기용 답변과 중복돼 보이지 않도록).
+      // 첫 클릭은 펼치기, 그 다음 클릭에 저장한다.
+      if (textarea.style.display === 'none') {
+        textarea.style.display = '';
+        textarea.focus();
+        btn.textContent = '저장';
+        return;
+      }
+
       const reply = textarea.value.trim();
       if (!reply) return;
       btn.disabled = true;
@@ -271,12 +281,12 @@ function renderPosts(posts) {
         } else {
           alert('답변 등록에 실패했습니다.');
           btn.disabled = false;
-          btn.textContent = '답변 등록';
+          btn.textContent = '저장';
         }
       } catch (e) {
         alert('오류가 발생했습니다.');
         btn.disabled = false;
-        btn.textContent = '답변 등록';
+        btn.textContent = '저장';
       }
     });
   });
