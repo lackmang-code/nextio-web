@@ -2,7 +2,10 @@ name: Display Daily Auto-publish
 
 on:
   schedule:
-    - cron: '30 0 * * *'  # 매일 00:30 UTC = 09:30 KST (다이제스트 메일이 09:10경 도착)
+    # GitHub 예약 큐는 정각/30분 등 인기 시각에 몰려 아예 스킵되는 일이 잦다.
+    # → 어중간한 분(分)으로 옮기고, 백업 스케줄을 하나 더 둔다(멱등이라 중복 실행 안전).
+    - cron: '43 0 * * *'  # 00:43 UTC = 09:43 KST (다이제스트 메일이 09:10경 도착)
+    - cron: '17 3 * * *'  # 03:17 UTC = 12:17 KST — 1차가 스킵된 날의 백업
   workflow_dispatch: {}    # 수동 실행 버튼(테스트·긴급 재실행용)
 
 permissions:
