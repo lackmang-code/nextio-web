@@ -127,16 +127,16 @@ git add -A && git commit -m "..." && git push origin master
 # 브라우저에서 http://localhost:3000/?edit=1
 ```
 
-## 📰 디스플레이 데일리 (2026-08-17 확정: GitHub Actions 무인 자동 발행 — 매일 09:30 KST)
+## 📰 디스플레이 데일리 (GitHub Actions 무인 자동 발행 — 매일 09:43 KST, 백업 12:17 KST)
 
 > 디스플레이 업계 뉴스를 매일 한 장 카드로 만드는 **홍보·마케팅 자산**.
 
-**★ 현재 프로세스: GitHub Actions가 매일 09:30 KST에 무인 발행한다. 사람 개입 불필요.**
+**★ 현재 프로세스: GitHub Actions가 매일 09:43 KST에 무인 발행한다(스킵 대비 12:17 KST 백업 1회 더). 사람 개입 불필요.**
 
 | 항목 | 값 |
 |---|---|
 | 워크플로 | `.github/workflows/display-daily.yml` |
-| 스케줄 | `30 0 * * *` = 00:30 UTC = **09:30 KST** (다이제스트 메일이 09:10경 도착) |
+| 스케줄 | `43 0 * * *` = 00:43 UTC = **09:43 KST** + `17 3 * * *` = **12:17 KST**(백업) — 다이제스트 메일은 09:10경 도착 |
 | 실행 스크립트 | `_automation/run_daily.py` (**저장소 안**, 로컬 `NEXTIO\_automation\display_daily\`가 아님) |
 | Secrets | `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD` (Gmail 앱 비밀번호) |
 | 수동 실행 | `gh workflow run display-daily.yml --ref master` (`workflow_dispatch` 있음) |
@@ -144,7 +144,8 @@ git add -A && git commit -m "..." && git push origin master
 **동작:** Gmail IMAP으로 최근 5일 내 `일간 디스플레이 탐사 보도 다이제스트` 메일 중 최신 것을 찾아 → 파싱 → `make_promo.py`·`make_index.py`로 카드·인덱스 생성 → `latest.html` 갱신 → `display-daily/`에 직접 커밋·푸시. **해당 날짜 카드가 이미 있으면 스킵(멱등성)** 이라 중복 실행해도 안전하다. 요일·공휴일 무관.
 
 **운영 시 알아둘 것**
-- **GitHub Actions 예약은 정시를 보장하지 않는다** — 공용 큐라 보통 몇 분, 혼잡하면 30분 이상 밀린다. 09:30은 "그 이후 언젠가"에 가깝다. 메일 도착(09:10)과 여유가 20분뿐이라, 메일이 늦은 날은 스킵될 수 있으나 다음날 실행 시 최근 5일 범위에서 따라잡는다.
+- **GitHub Actions 예약은 정시를 보장하지 않고, 아예 스킵되기도 한다** — 2026-08-19에 `30 0 * * *`(00:30 UTC) 예약이 87분이 지나도 실행되지 않아 수동 dispatch로 발행했다. 정각·30분 같은 인기 시각은 공용 큐가 몰려 드롭될 확률이 높다. 그래서 어중간한 분(43분)으로 옮기고 **12:17 KST 백업 스케줄**을 추가했다. 파이프라인이 멱등(같은 날짜 카드 있으면 스킵)이라 두 번 돌아도 안전하다.
+- **예약이 또 안 돌면** `gh run list --workflow=display-daily.yml --json event,createdAt`로 `schedule` 이벤트 유무를 먼저 확인하고, 없으면 `gh workflow run display-daily.yml --ref master`로 수동 발행한 뒤 시각 조정을 검토한다.
 - **cron 시각을 바꾸면 그날 하루는 공백이 생길 수 있다** — 새 시각이 이미 지났고 구 시각은 삭제되므로 양쪽 다 안 돈다(2026-08-18 실제 발생). 변경한 날은 수동 dispatch로 메울 것.
 - 60일간 저장소 활동이 없으면 GitHub이 schedule을 자동 비활성화한다.
 - 실행 확인: `gh run list --workflow=display-daily.yml` / 로그: `gh run view <id> --log`
