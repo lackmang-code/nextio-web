@@ -156,16 +156,17 @@ git add -A && git commit -m "..." && git push origin master
 # 브라우저에서 http://localhost:3000/?edit=1
 ```
 
-## 📰 디스플레이 데일리 (GitHub Actions 무인 자동 발행 — 매일 09:43 KST, 백업 12:17 KST)
+## 📰 디스플레이 데일리 (무인 자동 발행 — cron-job.org가 매일 09:45 KST 트리거, GitHub 예약은 백업)
 
 > 디스플레이 업계 뉴스를 매일 한 장 카드로 만드는 **홍보·마케팅 자산**.
 
-**★ 현재 프로세스: GitHub Actions가 매일 09:43 KST에 무인 발행한다(스킵 대비 12:17 KST 백업 1회 더). 사람 개입 불필요.**
+**★ 현재 프로세스: cron-job.org(외부 스케줄러)가 매일 09:45 KST에 GitHub Actions를 트리거해 무인 발행한다. GitHub 자체 예약(09:43·12:17 KST)은 백업으로 남겨둔다. 사람 개입 불필요.**
 
 | 항목 | 값 |
 |---|---|
 | 워크플로 | `.github/workflows/display-daily.yml` |
-| 스케줄 | `43 0 * * *` = 00:43 UTC = **09:43 KST** + `17 3 * * *` = **12:17 KST**(백업) — 다이제스트 메일은 09:10경 도착 |
+| **주 트리거** | **cron-job.org** — 매일 **09:45 KST**(Asia/Seoul, crontab `45 9 * * *`), 잡 ID `8292885` |
+| 백업 스케줄 | GitHub Actions cron `43 0 * * *`(09:43 KST) + `17 3 * * *`(12:17 KST) — 상습 지연되지만 안전망으로 유지 |
 | 실행 스크립트 | `_automation/run_daily.py` (**저장소 안**, 로컬 `NEXTIO\_automation\display_daily\`가 아님) |
 | Secrets | `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD` (Gmail 앱 비밀번호) |
 | 수동 실행 | `gh workflow run display-daily.yml --ref master` (`workflow_dispatch` 있음) |
@@ -173,11 +174,25 @@ git add -A && git commit -m "..." && git push origin master
 **동작:** Gmail IMAP으로 최근 5일 내 `일간 디스플레이 탐사 보도 다이제스트` 메일 중 최신 것을 찾아 → 파싱 → `make_promo.py`·`make_index.py`로 카드·인덱스 생성 → `latest.html` 갱신 → `display-daily/`에 직접 커밋·푸시. **해당 날짜 카드가 이미 있으면 스킵(멱등성)** 이라 중복 실행해도 안전하다. 요일·공휴일 무관.
 
 **운영 시 알아둘 것**
-- **GitHub Actions 예약은 정시를 보장하지 않고, 아예 스킵되기도 한다** — 2026-08-19에 `30 0 * * *`(00:30 UTC) 예약이 87분이 지나도 실행되지 않아 수동 dispatch로 발행했다. 정각·30분 같은 인기 시각은 공용 큐가 몰려 드롭될 확률이 높다. 그래서 어중간한 분(43분)으로 옮기고 **12:17 KST 백업 스케줄**을 추가했다. 파이프라인이 멱등(같은 날짜 카드 있으면 스킵)이라 두 번 돌아도 안전하다.
+- **GitHub Actions 예약은 정시를 보장하지 않는다 — 시각을 옮겨도 해결되지 않았다.** 무료 예약은 공용 큐 최저 우선순위라 상습적으로 밀린다. 실측: 8/19 `43 0`→01:58Z(75분 지연), 8/19 `17 3`→03:59Z(42분), 8/20 `43 0`→02:05Z(82분). 8/18에 시각을 43분으로 옮긴 조치는 효과가 없었다. **그래서 2026-08-20에 외부 트리거(cron-job.org)를 주 경로로 두고 GitHub 예약은 백업으로 강등했다.** 파이프라인이 멱등(같은 날짜 카드 있으면 스킵)이라 셋 다 돌아도 카드는 하루 한 장만 생긴다.
 - **예약이 또 안 돌면** `gh run list --workflow=display-daily.yml --json event,createdAt`로 `schedule` 이벤트 유무를 먼저 확인하고, 없으면 `gh workflow run display-daily.yml --ref master`로 수동 발행한 뒤 시각 조정을 검토한다.
 - **cron 시각을 바꾸면 그날 하루는 공백이 생길 수 있다** — 새 시각이 이미 지났고 구 시각은 삭제되므로 양쪽 다 안 돈다(2026-08-18 실제 발생). 변경한 날은 수동 dispatch로 메울 것.
 - 60일간 저장소 활동이 없으면 GitHub이 schedule을 자동 비활성화한다.
 - 실행 확인: `gh run list --workflow=display-daily.yml` / 로그: `gh run view <id> --log`
+
+**외부 트리거(cron-job.org) 상세 — 2026-08-20 도입**
+
+| 항목 | 값 |
+|---|---|
+| 콘솔 | https://console.cron-job.org/jobs/8292885 (계정: `lackmang@gmail.com`) |
+| 호출 | `POST https://api.github.com/repos/lackmang-code/nextio-web/actions/workflows/display-daily.yml/dispatches` · body `{"ref":"master"}` |
+| 헤더 | `Accept: application/vnd.github+json` · `Authorization: Bearer <PAT>` · `X-GitHub-Api-Version: 2022-11-28` · `Content-Type: application/json` · `User-Agent: nextio-cron` |
+| 성공 응답 | HTTP **204 No Content** |
+| 인증 토큰 | GitHub fine-grained PAT `nextio-daily-cron` — **저장소 `nextio-web` 하나 × Actions: Read and write 만**, 만료 없음 |
+| 알림 | 실행 실패 시 대표 메일로 알림 ON · 응답 기록 저장 ON |
+
+- **토큰을 재발급하면** cron-job.org 잡의 `Authorization` 헤더 값(`Bearer ` + 토큰)을 **반드시 함께 갱신**해야 한다. 안 하면 401로 조용히 실패한다(실패 알림은 오도록 켜둠).
+- 외부 트리거가 죽어도 GitHub 백업 예약이 그날 안에는 발행하므로 완전 공백은 생기지 않는다.
 
 **금지 사항 (변경 없음)**
 - **고품질(HQ) 업그레이드**(3소스 병렬 수집·재서술)는 2026-07-29에 전면 중단 확정 — 다시 제안·시도하지 말 것.
