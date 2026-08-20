@@ -94,12 +94,12 @@ def find_latest_digest(imap):
             continue
         y, mo, d = m.groups()
         date_str = f"{y}-{int(mo):02d}-{int(d):02d}"
-        candidates.append((date_str, msg_id))
+        candidates.append((date_str, msg_id, subject))
 
     if not candidates:
         return None
     candidates.sort(key=lambda x: x[0], reverse=True)
-    return candidates[0]  # (date_str, msg_id)
+    return candidates[0]  # (date_str, msg_id, subject)
 
 
 def main():
@@ -115,11 +115,16 @@ def main():
 
     found = find_latest_digest(imap)
     if not found:
-        print(f"오늘은 최근 {SEARCH_WINDOW_DAYS}일 내 다이제스트 메일을 찾지 못함 — 종료(스킵)")
+        # 조용히 성공으로 끝내지 않는다 — 실패로 종료해야 GitHub이 알림 메일을 보낸다.
+        # (메일함에는 반도체/배터리 등 다른 다이제스트도 오므로, 못 찾았다는 건 진짜 이상 신호다.)
+        print(f"ERROR: 최근 {SEARCH_WINDOW_DAYS}일 내 '{SUBJECT_KEYWORD}' 메일을 찾지 못했습니다.")
+        print("       메일이 아직 도착하지 않았거나, 제목 형식이 바뀌었을 수 있습니다.")
         imap.logout()
-        return
+        sys.exit(1)
 
-    date_str, msg_id = found
+    date_str, msg_id, subject = found
+    # 어떤 메일을 골랐는지 반드시 남긴다 — 엉뚱한 다이제스트를 집었는지 로그로 확인할 수 있어야 한다.
+    print(f"선택한 메일: {subject}")
     card_path = os.path.join(PUB_DIR, f"card_{date_str}.html")
     if os.path.exists(card_path):
         print(f"오늘({date_str}) 카드 이미 존재 → 작업 없이 종료: {card_path}")
