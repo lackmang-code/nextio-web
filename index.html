@@ -851,6 +851,9 @@ footer {
   /* 모바일: 데일리카드 — 폰 목업 포기, 실제 카드 썸네일 + 링크로 전면 교체 (PC는 그대로 유지) */
   #daily .pub-right { display: none !important; }
   #daily .daily-archive { display: none !important; }
+  /* 진열장은 모바일에서도 유지 — 3종 라인업이 핵심 소구점 */
+  #daily .brand-switch { max-width: 100% !important; margin-bottom: 12px !important; }
+  #daily .bs-item { flex: 1 1 100% !important; }
   .pub-mobile-thumb {
     display: block !important;
     width: 100%;
@@ -940,6 +943,47 @@ footer {
   line-height: 1.7; margin-bottom: 30px;
   max-width: 580px;
 }
+
+/* 데일리카드 — 브랜드 3칸 진열장 (위탁제작 라인업) */
+.brand-switch {
+  display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
+  max-width: 520px;
+}
+.bs-item {
+  flex: 1 1 150px; min-width: 148px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px; padding: 12px 13px;
+  cursor: pointer; text-align: left;
+  font-family: inherit; color: inherit;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+.bs-item:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+.bs-item.active { background: rgba(255,255,255,0.08); border-color: var(--bs-accent, #fbbf24); }
+.bs-top { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.bs-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+.bs-topic {
+  font-size: 9.5px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+.bs-name {
+  font-size: 0.82rem; font-weight: 700; color: #fff;
+  line-height: 1.35; word-break: keep-all;
+}
+.bs-role { font-size: 0.68rem; color: rgba(255,255,255,0.45); margin-top: 4px; }
+.bs-archive {
+  display: inline-block; font-size: 0.78rem; font-weight: 600;
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  padding-bottom: 2px; margin-bottom: 22px;
+}
+.bs-archive:hover { color: #fff; border-color: #fff; }
+.bs-live {
+  display: block; font-size: 0.72rem; color: rgba(255,255,255,0.42);
+  text-decoration: none; margin-top: 14px;
+}
+.bs-live b { color: rgba(255,255,255,0.7); font-weight: 600; }
+.bs-live:hover { color: rgba(255,255,255,0.75); }
 
 /* 4페이지 데일리 아카이브 목록 스타일 */
 .daily-archive {
@@ -1739,17 +1783,15 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
           위탁제작 문의
         </a>
 
-        <!-- 날짜 아카이브 목록 (PC 전용) -->
-        <div class="daily-archive">
-          <p class="archive-title">최신 발행 브리핑 아카이브</p>
-          <ul class="dn-list" id="dailyList">
-            <li class="dn-list-placeholder">리스트를 불러오는 중...</li>
-          </ul>
-        </div>
+        <!-- 브랜드 3칸 진열장 — 같은 파이프라인, 다른 이름으로 발행되는 라인업 -->
+        <div class="brand-switch" id="brandSwitch"></div>
+        <a class="bs-archive" id="bsArchive" href="showcase/skku-display/" target="_blank" rel="noopener">아카이브 전체 보기 ↗</a>
+        <a class="bs-live" href="display-daily/" target="_blank" rel="noopener">이 파이프라인으로 <b>Next I/O 디스플레이 데일리</b>를 매일 자동 발행하고 있습니다 →</a>
 
-        <!-- 모바일 전용: 실제 카드 미리보기 이미지 + 최신 브리핑 링크 -->
-        <img class="pub-mobile-thumb" src="images/daily-card-thumb.jpg" alt="오늘의 디스플레이 데일리 카드 미리보기">
-        <a href="display-daily/latest.html" target="_blank" class="pub-mobile-link">최신 브리핑 보기 →</a>
+        <!-- 날짜 목록은 폐지(2026-08-23) — 목업이 늘 최신본만 보여주므로 불필요. 과거분은 아카이브 페이지에서. -->
+
+        <!-- 모바일 전용: 선택한 브랜드의 최신 카드로 연결 -->
+        <a href="showcase/skku-display/" id="bsMobileLink" target="_blank" class="pub-mobile-link">최신 브리핑 보기 →</a>
       </div>
 
       <!-- 우측: 스마트폰 목업 프레임 (V1 스타일 및 비율 패치) -->
@@ -2539,7 +2581,6 @@ const revealObs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
 // ── 데일리카드 비즈니스 로직 연동 ──
-const listEl = document.getElementById('dailyList');
 const iframeEl = document.getElementById('dailyIframe');
 
 if (iframeEl) {
@@ -2574,28 +2615,46 @@ if (iframeEl) {
     applyIframeStyles(iframeEl);
   }
 
-  if (listEl) {
-    fetch('display-daily/index.json')
-      .then(r => r.json())
-      .then(dates => {
-        listEl.innerHTML = '';
-        dates.forEach((dateStr, index) => {
-          const li = document.createElement('li');
-          li.className = 'dn-list-item' + (index === 0 ? ' active' : '');
-          const isNew = index === 0 ? '<span class="dn-badge">최신</span>' : '';
-          li.innerHTML = `<span class="d">${dateStr}${isNew}</span><span class="go">브리핑 보기 →</span>`;
-          li.addEventListener('click', () => {
-            document.querySelectorAll('.dn-list-item').forEach(el => el.classList.remove('active'));
-            li.classList.add('active');
-            iframeEl.src = `display-daily/card_${dateStr}.html`;
-          });
-          listEl.appendChild(li);
-        });
-      })
-      .catch(err => {
-        console.error('Failed to load daily news index:', err);
-        listEl.innerHTML = '<li class="dn-list-placeholder">발행 리스트를 불러오지 못했습니다.</li>';
-      });
+  // 브랜드 3종 라인업 — 같은 파이프라인이 이름만 바꿔 발행한다는 것을 보여주는 진열장
+  const DN_BRANDS = [
+    { key: 'skku-display',  dir: 'showcase/skku-display',  topic: 'Display',
+      name: '성균관대 첨단디스플레이공학과', role: '위탁제작 샘플', accent: '#7BC96F' },
+    { key: 'semiconductor', dir: 'showcase/semiconductor', topic: 'Semiconductor',
+      name: 'Next I/O 반도체 데일리', role: '자체 발행', accent: '#6FA8FF' },
+    { key: 'battery',       dir: 'showcase/battery',       topic: 'Battery',
+      name: '에이프로머티리얼즈', role: '위탁제작 샘플', accent: '#34D399' }
+  ];
+
+  const switchEl = document.getElementById('brandSwitch');
+  const archiveLinkEl = document.getElementById('bsArchive');
+  const mobileLinkEl = document.getElementById('bsMobileLink');
+
+  function selectBrand(brand) {
+    document.querySelectorAll('.bs-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.brand === brand.key);
+    });
+    if (switchEl) switchEl.style.setProperty('--bs-accent', brand.accent);
+    if (archiveLinkEl) archiveLinkEl.href = brand.dir + '/';
+    if (mobileLinkEl) mobileLinkEl.href = brand.dir + '/';
+    // latest.html은 발행 파이프라인이 매일 갱신한다 — 목업은 늘 최신본을 가리킨다.
+    iframeEl.src = `${brand.dir}/latest.html`;
+  }
+
+  if (switchEl) {
+    DN_BRANDS.forEach((brand, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'bs-item' + (i === 0 ? ' active' : '');
+      btn.dataset.brand = brand.key;
+      btn.innerHTML =
+        `<div class="bs-top"><span class="bs-dot" style="background:${brand.accent}"></span>` +
+        `<span class="bs-topic">${brand.topic}</span></div>` +
+        `<div class="bs-name">${brand.name}</div>` +
+        `<div class="bs-role">${brand.role}</div>`;
+      btn.addEventListener('click', () => selectBrand(brand));
+      switchEl.appendChild(btn);
+    });
+    selectBrand(DN_BRANDS[0]);
   }
 }
 

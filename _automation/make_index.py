@@ -2,18 +2,44 @@
 """
 디스플레이 데일리 — 공개 아카이브 index 생성기
 public 폴더의 card_YYYY-MM-DD.html 들을 모아 최신순 목록 페이지를 만든다.
-사용법: python make_index.py <public_dir> <logo.svg>
+사용법: python make_index.py <public_dir> <logo.svg> [--brand <key>]
 """
 import sys, os, re, html, json
+
+from make_promo import load_brand
 
 CSS = ""
 
 def esc(s): return html.escape(str(s or ""))
 
 def main():
-    if len(sys.argv) < 3:
-        print("usage: make_index.py <public_dir> <logo.svg>"); sys.exit(1)
-    pub, logo_path = sys.argv[1], sys.argv[2]
+    argv = sys.argv[1:]
+    brand_key = None
+    if "--brand" in argv:
+        i = argv.index("--brand")
+        brand_key = argv[i + 1]
+        del argv[i:i + 2]
+    if len(argv) < 2:
+        print("usage: make_index.py <public_dir> <logo.svg> [--brand <key>]"); sys.exit(1)
+    pub, logo_path = argv[0], argv[1]
+    brand = load_brand(brand_key)
+    pub_name = esc(brand["publisher"])
+    masthead = esc(brand["masthead"])
+    topic = esc(brand["topic"])
+    kicker = esc(brand["kicker"])
+    index_kicker_sub = esc(brand.get("index_kicker_sub") or "아카이브 · 매일 업데이트")
+    archive_label = esc(brand.get("archive_label") or (brand["masthead"] + " 아카이브"))
+    archive_url = brand["base_url"].rstrip("/") + "/"
+    og_image = esc(brand["og_image"])
+    site_url = brand.get("site_url") or "https://www.nextio.ai.kr"
+    site_label = site_url.replace("https://", "").replace("http://", "").rstrip("/")
+    archive_desc = esc(brand.get("archive_desc") or
+        ("%s가 AI로 매일 자동 제작하는 %s 업계 뉴스 브리핑 아카이브" % (brand["publisher"], brand["topic"])))
+    archive_intro = esc(brand.get("archive_intro") or
+        ("%s가 AI로 매일 자동 선별·해설하는 %s 업계 뉴스 브리핑. 날짜를 눌러 그날의 브리핑을 확인하세요." % (brand["publisher"], brand["topic"])))
+    index_foot = brand.get("index_foot") or (
+        'AI 자동 큐레이션 by <b>%s</b> · 온라인 매거진 위탁 개발 · <a href="%s" target="_blank" rel="noopener">%s</a>'
+        % (pub_name, site_url, site_label))
     with open(logo_path, encoding="utf-8") as f:
         logo_svg = f.read()
     pat = re.compile(r'^card_(\d{4}-\d{2}-\d{2})\.html$')
@@ -31,23 +57,23 @@ def main():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>디스플레이 데일리 아카이브 | Next I/O</title>
-<meta name="description" content="Next I/O가 AI로 매일 자동 제작하는 디스플레이 업계 뉴스 브리핑 아카이브">
-<link rel="canonical" href="https://www.nextio.ai.kr/display-daily/">
+<title>{archive_label} | {pub_name}</title>
+<meta name="description" content="{archive_desc}">
+<link rel="canonical" href="{archive_url}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Next I/O">
-<meta property="og:title" content="디스플레이 데일리 아카이브 | Next I/O">
-<meta property="og:description" content="Next I/O가 AI로 매일 자동 제작하는 디스플레이 업계 뉴스 브리핑 아카이브">
-<meta property="og:url" content="https://www.nextio.ai.kr/display-daily/">
+<meta property="og:site_name" content="{pub_name}">
+<meta property="og:title" content="{archive_label} | {pub_name}">
+<meta property="og:description" content="{archive_desc}">
+<meta property="og:url" content="{archive_url}">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="https://www.nextio.ai.kr/display-daily/og-display-daily.png">
+<meta property="og:image" content="{og_image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="디스플레이 데일리 — Next I/O">
+<meta property="og:image:alt" content="{masthead} — {pub_name}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="디스플레이 데일리 아카이브 | Next I/O">
-<meta name="twitter:description" content="Next I/O가 AI로 매일 자동 제작하는 디스플레이 업계 뉴스 브리핑 아카이브">
-<meta name="twitter:image" content="https://www.nextio.ai.kr/display-daily/og-display-daily.png">
+<meta name="twitter:title" content="{archive_label} | {pub_name}">
+<meta name="twitter:description" content="{archive_desc}">
+<meta name="twitter:image" content="{og_image}">
 <style>
 /* Base Styles */
 *{{box-sizing:border-box;margin:0;padding:0}}
@@ -115,13 +141,13 @@ body{{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;color:#1a1a1a;
   <div class="sidebar">
     <div class="sidebar-header">
       <div class="logo">{logo_svg}</div>
-      <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">아카이브 · 매일 업데이트</div></div>
+      <div class="kick"><div class="k1">{kicker}</div><div class="k2">{index_kicker_sub}</div></div>
     </div>
     <div class="index-box">
-      <h1 style="font-size:1.45rem;font-weight:700;color:#000;margin-bottom:4px">디스플레이 데일리 아카이브</h1>
-      <div style="font-size:0.88rem;color:#666;margin-bottom:18px;word-break:keep-all">Next I/O가 AI로 매일 자동 선별·해설하는 디스플레이 업계 뉴스 브리핑. 날짜를 눌러 그날의 브리핑을 확인하세요.</div>
+      <h1 style="font-size:1.45rem;font-weight:700;color:#000;margin-bottom:4px">{archive_label}</h1>
+      <div style="font-size:0.88rem;color:#666;margin-bottom:18px;word-break:keep-all">{archive_intro}</div>
       {rows}
-      <div class="foot">AI 자동 큐레이션 by <b>Next I/O</b> · 온라인 매거진 위탁 개발 · <a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
+      <div class="foot">{index_foot}</div>
     </div>
   </div>
   <div class="viewer">
@@ -170,13 +196,14 @@ rows.forEach(row => {{
 </script>
 </body>
 </html>"""
+    out = out.replace("#fbbf24", brand["accent"]).replace("#b45309", brand["accent2"])
     with open(os.path.join(pub, "index.html"), "w", encoding="utf-8") as f:
         f.write(out)
     with open(os.path.join(pub, "index.json"), "w", encoding="utf-8") as f:
         json.dump(dates, f, ensure_ascii=False)
 
     # 개별 카드 URL을 담은 사이트맵 — 카드가 생길 때마다 이 스크립트가 매번 재실행되므로 항상 최신 상태 유지
-    base = "https://www.nextio.ai.kr/display-daily"
+    base = brand["base_url"].rstrip("/")
     urls = [f"  <url><loc>{base}/</loc><changefreq>daily</changefreq><priority>0.7</priority></url>"]
     for d in dates:
         urls.append(
@@ -188,7 +215,8 @@ rows.forEach(row => {{
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "\n".join(urls) + "\n</urlset>\n"
     )
-    with open(os.path.join(pub, "sitemap-display-daily.xml"), "w", encoding="utf-8") as f:
+    sitemap_name = brand.get("sitemap") or ("sitemap-%s.xml" % brand["key"])
+    with open(os.path.join(pub, sitemap_name), "w", encoding="utf-8") as f:
         f.write(sitemap)
 
     print(f"OK index: {len(dates)} cards listed")

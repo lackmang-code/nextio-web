@@ -3,12 +3,25 @@
 디스플레이 데일리 — 공개 홍보용 카드 생성기
 내부 수집용과 달리: ① 기사 본문 임베드 안 함(저작권 안전) ② 공식 로고 삽입
 ③ 헤드라인 + 'AI의 시선'(우리 코멘트) + 원문 링크 형태.
-사용법: python make_promo.py <items.json> <output.html> <YYYY-MM-DD> <logo.svg>
+사용법: python make_promo.py <items.json> <output.html> <YYYY-MM-DD> <logo.svg> [--brand <key>]
 """
-import sys, json, html
+import os, sys, json, html
 
-# 카톡·링크드인 링크 미리보기용 썸네일(1200x630). display-daily/에 함께 배포됨.
-OG_IMAGE = "https://www.nextio.ai.kr/display-daily/og-display-daily.png"
+# 브랜드 프로파일(제호·발행처·색·URL)은 brands.json에서 읽는다.
+# 인자를 주지 않으면 DEFAULT_BRAND가 적용되며, 그 결과물은 기존 발행분과 완전히 동일하다.
+BRANDS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "brands.json")
+DEFAULT_BRAND = "display"
+
+def load_brand(key=None):
+    key = key or DEFAULT_BRAND
+    with open(BRANDS_PATH, encoding="utf-8") as f:
+        brands = json.load(f)
+    if key not in brands:
+        print("알 수 없는 브랜드: %s (가능: %s)" % (key, ", ".join(brands)))
+        sys.exit(1)
+    b = dict(brands[key])
+    b["key"] = key
+    return b
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
@@ -20,12 +33,12 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif
 .hd .logo{height:46px;display:flex;align-items:center}
 .hd .logo svg{height:46px;width:auto;border-radius:4px}
 .hd .kick{text-align:right}
-.hd .kick .k1{font-size:12px;font-weight:700;color:#fbbf24;letter-spacing:2px}
+.hd .kick .k1{font-size:12px;font-weight:700;color:__ACCENT__;letter-spacing:2px}
 .hd .kick .k2{font-size:11px;color:#bbb;margin-top:2px}
 .inner{padding:26px 30px 22px}
 .title{font-size:1.4rem;line-height:1.3;letter-spacing:-.5px;color:#000;font-weight:700;margin-bottom:4px}
 .date{font-size:.85rem;color:#777;font-weight:600;margin-bottom:16px}
-.date b{color:#b45309}
+.date b{color:__ACCENT2__}
 .dt{height:1px;background:#e0e0e0;margin:14px 0}
 
 .top{background:#1a1a1a;color:#f0eadf;border-radius:10px;padding:16px 18px;margin-bottom:14px}
@@ -42,16 +55,16 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif
 .ib{flex:1;min-width:0}
 .it{font-size:1rem;line-height:1.4;color:#111;font-weight:700;word-break:keep-all;margin-bottom:4px}
 .eye{font-size:.84rem;line-height:1.65;color:#444;word-break:keep-all}
-.eye .lab{color:#b45309;font-weight:700}
+.eye .lab{color:__ACCENT2__;font-weight:700}
 .meta{font-size:11px;color:#999;margin-top:5px;word-break:break-all}
 .meta a{color:#8a6d3b;text-decoration:none;font-weight:600}
 .dbadge{display:inline-block;font-size:10px;font-weight:700;color:#fff;background:#3a3228;border-radius:4px;padding:1px 6px;margin-right:7px}
-.top .dbadge{background:#fbbf24;color:#1a1a1a}
+.top .dbadge{background:__ACCENT__;color:#1a1a1a}
 /* 기사 본문 아코디언(한글 번역·편집본) */
 .art{margin-top:10px;border:1px solid #e3ddd2;border-radius:8px;background:#faf7f1;overflow:hidden}
 .art>summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:.8rem;font-weight:700;color:#3a3228;background:#f1ece2;user-select:none}
 .art>summary::-webkit-details-marker{display:none}
-.art>summary::before{content:"▸ ";color:#b45309}
+.art>summary::before{content:"▸ ";color:__ACCENT2__}
 .art[open]>summary::before{content:"▾ "}
 .art[open]>summary{border-bottom:1px solid #e3ddd2}
 .bodytext{padding:12px 14px}
@@ -59,13 +72,13 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif
 .bodytext p:last-child{margin-bottom:0}
 .top .art{background:#262626;border-color:#3a3a3a;margin-top:11px}
 .top .art>summary{background:#333;color:#e8e2d6}
-.top .art>summary::before{color:#fbbf24}
+.top .art>summary::before{color:__ACCENT__}
 .top .bodytext p{color:#ddd6c8}
 
 /* 홍보 푸터 (CTA) */
 .cta{margin-top:20px;background:#fbf6ee;border:1px solid #ecdfca;border-radius:10px;padding:16px 18px;text-align:center}
 .cta .c1{font-size:.92rem;color:#1a1a1a;font-weight:700;word-break:keep-all}
-.cta .c1 b{color:#b45309}
+.cta .c1 b{color:__ACCENT2__}
 .cta .c2{font-size:.8rem;color:#666;margin-top:6px;line-height:1.6;word-break:keep-all}
 .cta .c3{font-size:.75rem;color:#999;margin-top:8px;padding-top:8px;border-top:1px solid #ecdfca;word-break:keep-all}
 .foot{margin-top:14px;padding-top:12px;border-top:1px solid #e0e0e0;font-size:10.5px;color:#aaa;line-height:1.6;text-align:center;word-break:keep-all}
@@ -124,11 +137,12 @@ def render_item(n, it):
   </div>
 </div>"""
 
-def build_description(items):
+def build_description(items, brand):
     """그날 다룬 기사 제목 2~3개를 이어붙여 카드별로 고유한 검색용 요약을 만든다."""
+    pub_name, topic = brand["publisher"], brand["topic"]
     titles = [it.get("title", "").strip() for it in items if it.get("title")]
     if not titles:
-        return "Next I/O가 선별하는 디스플레이 업계 뉴스 브리핑"
+        return "%s가 선별하는 %s 업계 뉴스 브리핑" % (pub_name, topic)
     picked, total = [], 0
     for t in titles[:3]:
         t = t if len(t) <= 60 else t[:57] + "..."
@@ -136,9 +150,26 @@ def build_description(items):
         total += len(t)
         if total > 110:
             break
-    return " / ".join(picked) + " 등 디스플레이 업계 뉴스 브리핑 — Next I/O"
+    return " / ".join(picked) + " 등 %s 업계 뉴스 브리핑 — %s" % (topic, pub_name)
 
-def build(items, date_str, logo_svg, card_url=""):
+def build(items, date_str, logo_svg, card_url="", brand=None):
+    brand = brand or load_brand()
+    pub_name = esc(brand["publisher"])
+    masthead = esc(brand["masthead"])
+    kicker = esc(brand["kicker"])
+    kicker_sub = esc(brand.get("kicker_sub") or "AI 큐레이션 · 매일 업데이트")
+    card_h1 = esc(brand["card_h1"])
+    site_url = brand.get("site_url") or "https://www.nextio.ai.kr"
+    site_label = site_url.replace("https://", "").replace("http://", "").rstrip("/")
+    archive_url = brand["base_url"].rstrip("/") + "/"
+    archive_label = esc(brand.get("archive_label") or (brand["masthead"] + " 아카이브"))
+    og_image = esc(brand["og_image"])
+    css = CSS.replace("__ACCENT__", brand["accent"]).replace("__ACCENT2__", brand["accent2"])
+    cta1 = brand.get("cta1") or ("이 브리핑, <b>%s</b>가 AI로 <b>매일 자동 제작</b>합니다." % pub_name)
+    cta2 = brand.get("cta2") or "학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다."
+    foot_text = brand.get("foot") or (
+        "본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 %s가 한 줄 해설을 덧붙인 큐레이션입니다. "
+        "각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요." % pub_name)
     n = len(items)
     if n == 0:
         body = '<div style="padding:30px 0;text-align:center;color:#999">오늘은 선별할 신규 소식이 없습니다.</div>'
@@ -147,25 +178,25 @@ def build(items, date_str, logo_svg, card_url=""):
         rest = items[1:]
         if rest:
             body += '<div class="dt"></div>' + "\n".join(render_item(i+2, it) for i, it in enumerate(rest))
-    title_text = f"디스플레이 데일리 — {esc(date_str)} | Next I/O"
-    desc_text = esc(build_description(items))
+    title_text = f"{masthead} — {esc(date_str)} | {pub_name}"
+    desc_text = esc(build_description(items, brand))
     og_tags = ""
     if card_url:
         og_tags = f"""<link rel="canonical" href="{esc(card_url)}">
 <meta property="og:type" content="article">
-<meta property="og:site_name" content="Next I/O">
+<meta property="og:site_name" content="{pub_name}">
 <meta property="og:title" content="{title_text}">
 <meta property="og:description" content="{desc_text}">
 <meta property="og:url" content="{esc(card_url)}">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:image" content="{OG_IMAGE}">
+<meta property="og:image" content="{og_image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="디스플레이 데일리 — Next I/O">
+<meta property="og:image:alt" content="{masthead} — {pub_name}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{title_text}">
 <meta name="twitter:description" content="{desc_text}">
-<meta name="twitter:image" content="{OG_IMAGE}">
+<meta name="twitter:image" content="{og_image}">
 """
     return f"""<!DOCTYPE html>
 <html lang="ko">
@@ -174,41 +205,48 @@ def build(items, date_str, logo_svg, card_url=""):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title_text}</title>
 <meta name="description" content="{desc_text}">
-{og_tags}<style>{CSS}</style>
+{og_tags}<style>{css}</style>
 </head>
 <body>
 <div class="sheet">
   <div class="hd">
     <div class="logo">{logo_svg}</div>
-    <div class="kick"><div class="k1">DISPLAY DAILY</div><div class="k2">AI 큐레이션 · 매일 업데이트</div></div>
+    <div class="kick"><div class="k1">{kicker}</div><div class="k2">{kicker_sub}</div></div>
   </div>
   <div class="inner">
-    <h1 class="title">오늘의 디스플레이 Tech</h1>
+    <h1 class="title">{card_h1}</h1>
     <div class="date">{esc(date_str)} · AI가 고른 소식 <b>{n}건</b></div>
     {body}
     <div class="cta">
-      <div class="c1">이 브리핑, <b>Next I/O</b>가 AI로 <b>매일 자동 제작</b>합니다.</div>
-      <div class="c2">학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다.<br><a href="https://www.nextio.ai.kr" target="_blank" rel="noopener">www.nextio.ai.kr</a></div>
-      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="https://www.nextio.ai.kr/display-daily/" target="_blank" rel="noopener">디스플레이 데일리 아카이브</a></div>
+      <div class="c1">{cta1}</div>
+      <div class="c2">{cta2}<br><a href="{site_url}" target="_blank" rel="noopener">{site_label}</a></div>
+      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="{archive_url}" target="_blank" rel="noopener">{archive_label}</a></div>
     </div>
-    <div class="foot">본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 Next I/O가 한 줄 해설을 덧붙인 큐레이션입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.</div>
+    <div class="foot">{foot_text}</div>
   </div>
 </div>
 </body>
 </html>"""
 
 def main():
-    if len(sys.argv) < 5:
-        print("usage: make_promo.py <items.json> <output.html> <YYYY-MM-DD> <logo.svg>"); sys.exit(1)
-    items_path, out_path, date_str, logo_path = sys.argv[1:5]
+    argv = sys.argv[1:]
+    brand_key = None
+    if "--brand" in argv:
+        i = argv.index("--brand")
+        brand_key = argv[i + 1]
+        del argv[i:i + 2]
+    if len(argv) < 4:
+        print("usage: make_promo.py <items.json> <output.html> <YYYY-MM-DD> <logo.svg> [--brand <key>]"); sys.exit(1)
+    items_path, out_path, date_str, logo_path = argv[:4]
+    brand = load_brand(brand_key)
     with open(items_path, encoding="utf-8") as f:
         data = json.load(f)
     items = data.get("items", []) if isinstance(data, dict) else data
     with open(logo_path, encoding="utf-8") as f:
         logo_svg = f.read()
-    card_url = f"https://www.nextio.ai.kr/display-daily/card_{date_str}.html"
+    card_url = brand["base_url"].rstrip("/") + f"/card_{date_str}.html"
     with open(out_path, "w", encoding="utf-8") as f:
-        f.write(build(items, date_str, logo_svg, card_url))
+        f.write(build(items, date_str, logo_svg, card_url, brand))
     print(f"OK promo: {out_path} ({len(items)} items)")
 
 if __name__ == "__main__":

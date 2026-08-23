@@ -27,14 +27,32 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: python _automation/run_daily.py
 
+      # 쇼케이스 3종(성대 첨디공·반도체·에이프로)은 실발행과 분리된 별도 스크립트다.
+      # continue-on-error로 두어, 여기서 실패해도 위 디스플레이 데일리 결과는 반드시 커밋되게 한다.
+      # 실패 사실은 맨 아래 스텝에서 job을 실패시켜 알림이 오도록 한다.
+      - name: Run showcase pipeline
+        id: showcase
+        continue-on-error: true
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python _automation/run_showcase.py
+
       - name: Commit and push if changed
         run: |
           git config user.name "nextio-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add display-daily/
+          git add display-daily/ showcase/
           if git diff --cached --quiet; then
             echo "변경 없음 — 커밋 스킵"
           else
-            git commit -m "Auto-publish Display Daily [$(date -u +%Y-%m-%d)]"
+            git commit -m "Auto-publish Daily Cards [$(date -u +%Y-%m-%d)]"
             git push
           fi
+
+      - name: Fail if showcase pipeline failed
+        if: steps.showcase.outcome == 'failure'
+        run: |
+          echo "쇼케이스 발행이 실패했습니다 — 위 'Run showcase pipeline' 로그를 확인하세요."
+          echo "디스플레이 데일리 실발행은 정상 커밋되었습니다."
+          exit 1

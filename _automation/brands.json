@@ -1,0 +1,60 @@
+{
+  "display": {
+    "publisher": "Next I/O",
+    "masthead": "디스플레이 데일리",
+    "kicker": "DISPLAY DAILY",
+    "topic": "디스플레이",
+    "card_h1": "오늘의 디스플레이 Tech",
+    "accent": "#fbbf24",
+    "accent2": "#b45309",
+    "logo": "assets/nextio_logo.svg",
+    "base_url": "https://www.nextio.ai.kr/display-daily",
+    "og_image": "https://www.nextio.ai.kr/display-daily/og-display-daily.png",
+    "_note": "실제 매일 자동 발행되는 자사 매체. 이 프로파일은 발행 파이프라인이 쓰므로 값을 바꾸지 말 것.",
+    "sitemap": "sitemap-display-daily.xml"
+  },
+  "semiconductor": {
+    "publisher": "Next I/O",
+    "masthead": "반도체 데일리",
+    "kicker": "SEMICONDUCTOR DAILY",
+    "kicker_sub": "AI 큐레이션 · 매일 업데이트",
+    "topic": "반도체",
+    "card_h1": "오늘의 반도체 Tech",
+    "accent": "#6FA8FF",
+    "accent2": "#2456E6",
+    "logo": "assets/nextio_logo.svg",
+    "base_url": "https://www.nextio.ai.kr/showcase/semiconductor",
+    "og_image": "https://www.nextio.ai.kr/display-daily/og-display-daily.png",
+    "_note": "자사 브랜드 — 샘플이 아니라 자체 발행. 헤더에 '샘플' 표기를 넣지 말 것."
+  },
+  "battery": {
+    "publisher": "에이프로머티리얼즈",
+    "masthead": "배터리 데일리",
+    "kicker": "BATTERY DAILY",
+    "kicker_sub": "AI 큐레이션 · 위탁제작 샘플",
+    "topic": "배터리",
+    "card_h1": "오늘의 배터리 Tech",
+    "accent": "#34D399",
+    "accent2": "#047857",
+    "logo": "assets/brand_battery.svg",
+    "base_url": "https://www.nextio.ai.kr/showcase/battery",
+    "og_image": "https://www.nextio.ai.kr/display-daily/og-display-daily.png",
+    "cta1": "이 브리핑은 <b>Next I/O</b>가 AI로 자동 제작한 <b>위탁 발행 샘플</b>입니다.",
+    "_note": "타사 브랜드 — 2026-08-23 대표가 상호 사용 구두 동의 확보(서면 없음). 로고는 임시 워드마크이며 실제 CI 확보 시 교체할 것. 헤더·CTA의 '샘플' 표기는 유지한다."
+  },
+  "skku-display": {
+    "publisher": "성균관대 첨단디스플레이공학과",
+    "masthead": "첨디공 디스플레이 데일리",
+    "kicker": "SKKU DISPLAY DAILY",
+    "kicker_sub": "AI 큐레이션 · 위탁제작 샘플",
+    "topic": "디스플레이",
+    "card_h1": "오늘의 디스플레이 Tech",
+    "accent": "#7BC96F",
+    "accent2": "#0B5B3B",
+    "logo": "assets/brand_skku.svg",
+    "base_url": "https://www.nextio.ai.kr/showcase/skku-display",
+    "og_image": "https://www.nextio.ai.kr/display-daily/og-display-daily.png",
+    "cta1": "이 브리핑은 <b>Next I/O</b>가 AI로 자동 제작한 <b>위탁 발행 샘플</b>입니다.",
+    "_note": "타 기관 브랜드 — 2026-08-23 대표가 학과 명의 사용 구두 동의 확보(서면 없음). 로고는 임시 워드마크이며 학과 공식 CI 확보 시 교체할 것. 헤더·CTA의 '샘플' 표기는 유지한다."
+  }
+}
