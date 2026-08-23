@@ -1873,10 +1873,13 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
               </div>
               <div class="shelf-row shelf-row-2">
                 <div class="covers">
-                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/1" target="_blank" rel="noopener">
+                  <!-- 아래 값은 data/display-now-latest.json 이 있으면 그 내용으로 교체된다.
+                       디플(04_Display_Now)이 새 호를 낼 때 그 JSON과 표지 파일만 갱신하면 되고,
+                       이 HTML은 건드리지 않는다. JSON을 못 읽으면 아래 값이 그대로 남는다. -->
+                  <a class="cover-slot" id="dnSlot" href="https://display-now.nextio.ai.kr/issue/1" target="_blank" rel="noopener">
                     <div class="cover-card">
                       <span class="new-pin">NEW</span>
-                      <img src="images/magazine-cover-display-now-1.webp" alt="DISPLAY NOW 제1호 표지">
+                      <img src="images/magazine-cover-display-now.webp" alt="DISPLAY NOW 제1호 표지">
                     </div>
                     <div class="cover-vol">DISPLAY NOW 제1호 · 8월</div>
                   </a>
@@ -2584,6 +2587,27 @@ window.goto = function(id) {
     goTo(idx);
   }
 };
+
+// ── 매거진 진열대: DISPLAY NOW 최신호 연동 ──
+// 디플이 새 호를 낼 때 data/display-now-latest.json 과 표지 파일만 갱신하면
+// 여기가 알아서 표지·라벨·링크를 바꾼다. 파일이 없거나 형식이 깨져도
+// HTML에 적힌 기본값이 그대로 남으므로 진열대가 비지 않는다.
+(function syncDisplayNowSlot() {
+  const slot = document.getElementById('dnSlot');
+  if (!slot) return;
+  fetch('data/display-now-latest.json', { cache: 'no-cache' })
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+    .then(d => {
+      if (!d || typeof d !== 'object') return;
+      const img = slot.querySelector('img');
+      const vol = slot.querySelector('.cover-vol');
+      if (d.url) slot.href = d.url;
+      if (d.cover && img) img.src = d.cover;
+      if (img) img.alt = d.alt || ('DISPLAY NOW 제' + (d.issue || '') + '호 표지');
+      if (d.label && vol) vol.textContent = d.label;
+    })
+    .catch(err => console.warn('DISPLAY NOW 최신호 정보를 읽지 못했습니다 — 기본값 유지:', err.message));
+})();
 
 // ── Scroll Reveal Script ──
 const revealObs = new IntersectionObserver((entries) => {
