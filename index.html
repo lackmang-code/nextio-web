@@ -949,23 +949,39 @@ footer {
   display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
   max-width: 520px;
 }
+/* 버튼마다 자기 브랜드 색을 옅게 깔고, 선택되면 짙어진다.
+   --bs-rgb 는 JS가 브랜드 accent(hex)를 "r, g, b" 로 변환해 인라인으로 넣는다.
+   rgba(var(--x), a) 형태라 color-mix 미지원 브라우저에서도 그대로 동작한다. */
 .bs-item {
   flex: 1 1 150px; min-width: 148px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(var(--bs-rgb, 255,255,255), 0.20);
+  border: 1px solid rgba(var(--bs-rgb, 255,255,255), 0.42);
   border-radius: 14px; padding: 12px 13px;
   cursor: pointer; text-align: left;
   font-family: inherit; color: inherit;
-  transition: border-color .2s ease, background .2s ease, transform .2s ease;
+  transition: border-color .2s ease, background .2s ease,
+              transform .2s ease, box-shadow .2s ease;
 }
-.bs-item:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
-.bs-item.active { background: rgba(255,255,255,0.08); border-color: var(--bs-accent, #fbbf24); }
+.bs-item:hover {
+  background: rgba(var(--bs-rgb, 255,255,255), 0.32);
+  border-color: rgba(var(--bs-rgb, 255,255,255), 0.7);
+  transform: translateY(-2px);
+}
+.bs-item.active {
+  background: rgba(var(--bs-rgb, 255,255,255), 0.52);
+  border-color: rgb(var(--bs-rgb, 255,255,255));
+  box-shadow: 0 0 0 1px rgba(var(--bs-rgb, 255,255,255), 0.7) inset,
+              0 8px 24px rgba(var(--bs-rgb, 0,0,0), 0.3);
+}
 .bs-top { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
 .bs-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
 .bs-topic {
   font-size: 9.5px; font-weight: 800; letter-spacing: .12em;
-  text-transform: uppercase; color: rgba(255,255,255,0.45);
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  transition: color .2s ease;
 }
+.bs-item.active .bs-topic { color: rgb(var(--bs-rgb, 255,255,255)); }
+.bs-item.active .bs-role { color: rgba(255,255,255,0.72); }
 .bs-name {
   font-size: 0.82rem; font-weight: 700; color: #fff;
   line-height: 1.35; word-break: keep-all;
@@ -2617,12 +2633,13 @@ if (iframeEl) {
 
   // 브랜드 3종 라인업 — 같은 파이프라인이 이름만 바꿔 발행한다는 것을 보여주는 진열장
   const DN_BRANDS = [
+    // 색은 서로 멀리 떨어뜨린다(초록·파랑·주황) — 계열이 비슷하면 브랜드가 구분되지 않는다.
     { key: 'skku-display',  dir: 'showcase/skku-display',  topic: 'Display',
-      name: '성균관대 첨단디스플레이공학과', role: '위탁제작 샘플', accent: '#7BC96F' },
+      name: '성균관대 첨단디스플레이공학과', role: '위탁제작 샘플', accent: '#4ADE80' },
     { key: 'semiconductor', dir: 'showcase/semiconductor', topic: 'Semiconductor',
-      name: 'Next I/O 반도체 데일리', role: '자체 발행', accent: '#6FA8FF' },
+      name: 'Next I/O 반도체 데일리', role: '자체 발행', accent: '#60A5FA' },
     { key: 'battery',       dir: 'showcase/battery',       topic: 'Battery',
-      name: '에이프로머티리얼즈', role: '위탁제작 샘플', accent: '#34D399' }
+      name: '에이프로머티리얼즈', role: '위탁제작 샘플', accent: '#FB923C' }
   ];
 
   const switchEl = document.getElementById('brandSwitch');
@@ -2640,12 +2657,21 @@ if (iframeEl) {
     iframeEl.src = `${brand.dir}/latest.html`;
   }
 
+  // '#7BC96F' → '123, 201, 111' — rgba()에 투명도만 바꿔 끼우기 위해 채널만 뽑는다.
+  function hexToRgbChannels(hex) {
+    const h = hex.replace('#', '');
+    const full = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
+    const n = parseInt(full, 16);
+    return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+  }
+
   if (switchEl) {
     DN_BRANDS.forEach((brand, i) => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'bs-item' + (i === 0 ? ' active' : '');
       btn.dataset.brand = brand.key;
+      btn.style.setProperty('--bs-rgb', hexToRgbChannels(brand.accent));
       btn.innerHTML =
         `<div class="bs-top"><span class="bs-dot" style="background:${brand.accent}"></span>` +
         `<span class="bs-topic">${brand.topic}</span></div>` +
