@@ -1,3 +1,18 @@
+# ⚠️ 이름이 헷갈리지만 아래 name은 정확하다. 절대 "고치지" 말 것. (2026-08-23 확인)
+#
+# "skk-display-magazine"은 매거진이 아니라 **이 홈페이지를 배포하는 Cloudflare Pages
+# 프로젝트의 실제 이름**이다. 과거 매거진용으로 만든 프로젝트를 홈페이지에 전용하면서
+# 이름만 남은 것으로 보인다. Cloudflare 대시보드에서 직접 확인한 사실:
+#   - skk-display-magazine → 연결 저장소 lackmang-code/nextio-web
+#                          → 사용자 설정 도메인 nextio.ai.kr / www.nextio.ai.kr (활성)
+#   - display-magazine     → 성대 첨디공 매거진 (display-magazine.pages.dev)
+#   - display-now          → DISPLAY NOW (디플)
+#
+# 이름만 보고 "홈페이지 폴더에 매거진 이름이 잘못 적혔다"고 판단해 바꾸면, 그 순간
+# 수동 배포가 엉뚱한 프로젝트로 나간다. Cloudflare Pages는 프로젝트명 변경이 불가하므로
+# 이름을 정리하려면 프로젝트를 새로 만들고 도메인을 옮겨야 한다(권장하지 않음).
+#
+# 아래 D1 바인딩(BOARD_DB)은 문의 게시판이 쓴다 — 파일을 통째로 지우지 말 것.
 name = "skk-display-magazine"
 pages_build_output_dir = "."
 compatibility_date = "2026-05-03"

@@ -80,7 +80,17 @@
 
 ⚠️ **2026-08-17 추가 확인**: `gh api repos/lackmang-code/nextio-web` → **`has_pages: false`** — 이 저장소는 GitHub Pages가 아예 꺼져있음. 즉 실제 서비스는 **Cloudflare Pages(GitHub 연동, GitHub App 방식이라 classic webhook에는 안 잡힘 — `/hooks` API도 빈 배열)**로 도는 것으로 추정. `git push`하면 보통 정상 반영되지만(관찰상 15~35초), **force-push(히스토리 재작성) 이후엔 반영이 눈에 띄게 느림/지연될 수 있음**을 확인함(2026-08-17, `education/handbook` 삭제 force-push 후 10분 넘게 구버전 서빙). 원인 미상 — Cloudflare Pages 빌드 큐 지연인지 다른 문제인지는 Cloudflare 대시보드 접근 권한이 있어야 확정 가능(이 세션은 접근 불가).
 
-아래 표는 과거(GitHub Pages 직결 시절) 기록으로, 지금은 참고용 — 실제 현재 A/CNAME 값은 가비아·Cloudflare 대시보드에서 직접 확인 필요(이 세션은 접근 권한 없음):
+✅ **2026-08-23 확정 (대시보드 직접 확인)**: 위 "추정"이 사실로 확인됐다. **홈페이지는 Cloudflare Pages 프로젝트 `skk-display-magazine`이 배포한다.**
+
+| Cloudflare Pages 프로젝트 | 실제 용도 | 연결 저장소 / 도메인 |
+|---|---|---|
+| **`skk-display-magazine`** | **회사 홈페이지** ★ | `lackmang-code/nextio-web` → `nextio.ai.kr`, `www.nextio.ai.kr` (활성) |
+| `display-magazine` | 성대 첨디공 매거진 | `display-magazine.pages.dev` |
+| `display-now` | DISPLAY NOW (디플) | `display-now.nextio.ai.kr` |
+
+⚠️ **`wrangler.toml`의 `name = "skk-display-magazine"`은 오타가 아니라 정답이다. "홈페이지 폴더에 매거진 이름이 잘못 적혔다"고 오해해서 고치지 말 것.** 과거 매거진용으로 만든 프로젝트를 홈페이지에 전용하면서 이름만 남은 것으로 보인다. 이름을 바꾸면 그 순간 수동 배포(`wrangler pages deploy`)가 엉뚱한 프로젝트로 나간다. Cloudflare Pages는 프로젝트명 변경이 불가하므로 정리하려면 프로젝트를 새로 만들고 도메인을 옮겨야 한다(권장하지 않음). 2026-08-23 디플이 이 값을 "설정 오류"로 보고했으나 실물 확인 결과 오진이었다 — 같은 오해가 반복될 수 있으니 이 표를 근거로 삼을 것.
+
+아래 표는 과거(GitHub Pages 직결 시절) 기록으로, 지금은 참고용 — 실제 현재 A/CNAME 값은 가비아 대시보드에서 확인 필요:
 | 타입 | 호스트 | 값 (과거 기록) |
 |---|---|---|
 | A | @ × 4 | 185.199.108-111.153 (GitHub Pages, Cloudflare 도입 전) |
