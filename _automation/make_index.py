@@ -10,6 +10,22 @@ from make_promo import load_brand
 
 CSS = ""
 
+NL = chr(10)
+
+def build_partner_html(brand, wrap_style="", link_color=""):
+    """자매 매체 링크 한 줄. brands.json 에 partner_links 가 있는 브랜드에만 붙는다.
+    타 기관 명의 쇼케이스 브랜드에는 이 키를 넣지 말 것(브랜드 파일 _note 참조).
+    rel 은 noopener 만 — nofollow 를 붙이면 SEO 목적이 사라진다."""
+    pl = brand.get("partner_links") or {}
+    items = [it for it in (pl.get("items") or []) if it.get("label") and it.get("url")]
+    if not items:
+        return ""
+    ls = ' style="color:%s;font-weight:600"' % link_color if link_color else ""
+    links = " &middot; ".join(
+        '<a href="%s" target="_blank" rel="noopener"%s>%s</a>' % (esc(it["url"]), ls, esc(it["label"]))
+        for it in items)
+    return NL + '      <div style="%s">%s &rarr; %s</div>' % (wrap_style, esc(pl.get("lead") or ""), links)
+
 def esc(s): return html.escape(str(s or ""))
 
 def main():
@@ -40,6 +56,10 @@ def main():
     index_foot = brand.get("index_foot") or (
         'AI 자동 큐레이션 by <b>%s</b> · 온라인 매거진 위탁 개발 · <a href="%s" target="_blank" rel="noopener">%s</a>'
         % (pub_name, site_url, site_label))
+    partner_html = build_partner_html(
+        brand,
+        wrap_style="margin-top:8px;font-size:11px;color:#999;text-align:center;line-height:1.6",
+        link_color="#666")
     with open(logo_path, encoding="utf-8") as f:
         logo_svg = f.read()
     pat = re.compile(r'^card_(\d{4}-\d{2}-\d{2})\.html$')
@@ -147,7 +167,7 @@ body{{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;color:#1a1a1a;
       <h1 style="font-size:1.45rem;font-weight:700;color:#000;margin-bottom:4px">{archive_label}</h1>
       <div style="font-size:0.88rem;color:#666;margin-bottom:18px;word-break:keep-all">{archive_intro}</div>
       {rows}
-      <div class="foot">{index_foot}</div>
+      <div class="foot">{index_foot}</div>{partner_html}
     </div>
   </div>
   <div class="viewer">

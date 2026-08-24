@@ -152,6 +152,22 @@ def build_description(items, brand):
             break
     return " / ".join(picked) + " 등 %s 업계 뉴스 브리핑 — %s" % (topic, pub_name)
 
+NL = chr(10)
+
+def build_partner_html(brand, wrap_style="", link_color=""):
+    """자매 매체 링크 한 줄. brands.json 에 partner_links 가 있는 브랜드에만 붙는다.
+    타 기관 명의 쇼케이스 브랜드에는 이 키를 넣지 말 것(브랜드 파일 _note 참조).
+    rel 은 noopener 만 — nofollow 를 붙이면 SEO 목적이 사라진다."""
+    pl = brand.get("partner_links") or {}
+    items = [it for it in (pl.get("items") or []) if it.get("label") and it.get("url")]
+    if not items:
+        return ""
+    ls = ' style="color:%s;font-weight:600"' % link_color if link_color else ""
+    links = " &middot; ".join(
+        '<a href="%s" target="_blank" rel="noopener"%s>%s</a>' % (esc(it["url"]), ls, esc(it["label"]))
+        for it in items)
+    return NL + '      <div style="%s">%s &rarr; %s</div>' % (wrap_style, esc(pl.get("lead") or ""), links)
+
 def build(items, date_str, logo_svg, card_url="", brand=None):
     brand = brand or load_brand()
     pub_name = esc(brand["publisher"])
@@ -167,6 +183,10 @@ def build(items, date_str, logo_svg, card_url="", brand=None):
     css = CSS.replace("__ACCENT__", brand["accent"]).replace("__ACCENT2__", brand["accent2"])
     cta1 = brand.get("cta1") or ("이 브리핑, <b>%s</b>가 AI로 <b>매일 자동 제작</b>합니다." % pub_name)
     cta2 = brand.get("cta2") or "학과·연구소·기업의 뉴스레터/매거진을 AI 파이프라인으로 위탁 개발합니다."
+    partner_html = build_partner_html(
+        brand,
+        wrap_style="font-size:.75rem;color:#999;margin-top:6px;word-break:keep-all",
+        link_color=brand["accent2"])
     foot_text = brand.get("foot") or (
         "본 페이지는 공개된 기사 제목·출처를 AI가 선별하고 %s가 한 줄 해설을 덧붙인 큐레이션입니다. "
         "각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요." % pub_name)
@@ -220,7 +240,7 @@ def build(items, date_str, logo_svg, card_url="", brand=None):
     <div class="cta">
       <div class="c1">{cta1}</div>
       <div class="c2">{cta2}<br><a href="{site_url}" target="_blank" rel="noopener">{site_label}</a></div>
-      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="{archive_url}" target="_blank" rel="noopener">{archive_label}</a></div>
+      <div class="c3">다른 날짜의 기사도 확인하고 싶으면 → <a href="{archive_url}" target="_blank" rel="noopener">{archive_label}</a></div>{partner_html}
     </div>
     <div class="foot">{foot_text}</div>
   </div>

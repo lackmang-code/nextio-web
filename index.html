@@ -1233,6 +1233,21 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   color:#f4ede0;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 6px rgba(0,0,0,.6);
 }
 
+/* DISPLAY NOW 최신 기사 목록 (매거진 섹션 좌측) */
+.dn-latest{margin-top:22px;max-width:420px}
+.dn-latest-h{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin:0 0 9px}
+.dn-latest-list{list-style:none;margin:0;padding:0;
+  border-top:1px solid rgba(255,255,255,.12)}
+.dn-latest-list li{border-bottom:1px solid rgba(255,255,255,.09)}
+.dn-latest-list a{display:block;padding:7px 0 7px 13px;position:relative;
+  font-size:.82rem;line-height:1.45;color:rgba(255,255,255,.72);
+  text-decoration:none;word-break:keep-all;transition:color .2s ease}
+.dn-latest-list a::before{content:"·";position:absolute;left:2px;top:7px;
+  color:rgba(255,255,255,.35)}
+.dn-latest-list a:hover{color:var(--gold)}
+.dn-latest-list a:hover::before{color:var(--gold)}
+
 /* 데스크탑 2단 반응형 배치 */
 @media (min-width: 993px) {
   nav {
@@ -1846,6 +1861,21 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
            style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 20px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;margin-top:10px;">
           <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#FEE500;margin-right:7px;vertical-align:1px;"></span>DISPLAY NOW 카카오채널
         </a>
+
+        <!-- DISPLAY NOW 최신 기사 — 아래 <a>는 서버에 그대로 찍혀 나가는 기본값이며
+             data/display-now-articles.json 이 있으면 그 내용으로 교체된다.
+             디플(04_Display_Now)이 그 JSON만 갱신하고 이 HTML은 건드리지 않는다.
+             JSON을 못 읽어도 기본값이 남으므로 목록이 비지 않는다. 최대 5편. -->
+        <div class="dn-latest">
+          <p class="dn-latest-h">DISPLAY NOW 최신 기사</p>
+          <ul class="dn-latest-list" id="dnLatestList">
+            <li><a href="https://display-now.nextio.ai.kr/article/2026-08-18-blue-phosphorescent-oled-patents" target="_blank" rel="noopener">청색 인광 OLED(PHOLED) 특허 8건 분석</a></li>
+            <li><a href="https://display-now.nextio.ai.kr/article/2026-08-18-dongguk-ald-igzo-vrram" target="_blank" rel="noopener">ALD IGZO 수직 RRAM: 디스플레이 백플레인 소재의 메모리 응용</a></li>
+            <li><a href="https://display-now.nextio.ai.kr/article/2026-08-18-faceid-under-panel" target="_blank" rel="noopener">언더패널 페이스 ID: 구조광 3D 센싱의 회절 한계</a></li>
+            <li><a href="https://display-now.nextio.ai.kr/article/2026-08-18-lgd-2stack-woled" target="_blank" rel="noopener">LG디스플레이 2스택 탠덤 WOLED 구조와 보급형 전략</a></li>
+            <li><a href="https://display-now.nextio.ai.kr/article/2026-08-18-self-healing-wearable-peled" target="_blank" rel="noopener">자가치유 페로브스카이트 LED 발광층과 웨어러블 봉지</a></li>
+          </ul>
+        </div>
       </div>
 
       <!-- 우측: 발행호 진열장 (실물 표지 + 라이브 매거진 링크) -->
@@ -2607,6 +2637,37 @@ window.goto = function(id) {
       if (d.label && vol) vol.textContent = d.label;
     })
     .catch(err => console.warn('DISPLAY NOW 최신호 정보를 읽지 못했습니다 — 기본값 유지:', err.message));
+})();
+
+// ── 매거진 좌측: DISPLAY NOW 최신 기사 목록 연동 ──
+// 디플이 data/display-now-articles.json 만 갱신하면 여기가 목록을 다시 그린다.
+// 앵커 텍스트는 기사 제목 그대로, rel 은 noopener 만 (nofollow 금지 — SEO 요청 조건).
+// 파일이 없거나 형식이 깨지면 HTML 기본값이 그대로 남는다.
+(function syncDisplayNowArticles() {
+  const list = document.getElementById('dnLatestList');
+  if (!list) return;
+  fetch('data/display-now-articles.json', { cache: 'no-cache' })
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+    .then(d => {
+      const arts = (d && Array.isArray(d.articles) ? d.articles : [])
+        .filter(a => a && typeof a.title === 'string' && typeof a.url === 'string'
+                     && a.title.trim() && /^https:\/\/display-now\.nextio\.ai\.kr\//.test(a.url))
+        .slice(0, 5);
+      if (!arts.length) return;              // 빈 목록이면 기본값 유지
+      const frag = document.createDocumentFragment();
+      arts.forEach(a => {
+        const li = document.createElement('li');
+        const el = document.createElement('a');
+        el.href = a.url;
+        el.target = '_blank';
+        el.rel = 'noopener';
+        el.textContent = a.title.trim();
+        li.appendChild(el);
+        frag.appendChild(li);
+      });
+      list.replaceChildren(frag);
+    })
+    .catch(err => console.warn('DISPLAY NOW 최신 기사 목록을 읽지 못했습니다 — 기본값 유지:', err.message));
 })();
 
 // ── Scroll Reveal Script ──

@@ -11,7 +11,33 @@
     "base_url": "https://www.nextio.ai.kr/display-daily",
     "og_image": "https://www.nextio.ai.kr/display-daily/og-display-daily.png",
     "_note": "실제 매일 자동 발행되는 자사 매체. 이 프로파일은 발행 파이프라인이 쓰므로 값을 바꾸지 말 것.",
-    "sitemap": "sitemap-display-daily.xml"
+    "sitemap": "sitemap-display-daily.xml",
+    "partner_links": {
+      "_note": "자매 매체 DISPLAY NOW 로 나가는 링크. 자사(Next I/O) 매체에만 붙인다 — 타 기관 명의 쇼케이스 브랜드(skku-display·battery)에는 절대 넣지 말 것.",
+      "lead": "디스플레이 기술을 더 깊이 보려면",
+      "items": [
+        {
+          "label": "DISPLAY NOW 기술노트",
+          "url": "https://display-now.nextio.ai.kr/section/tech-note"
+        },
+        {
+          "label": "논문",
+          "url": "https://display-now.nextio.ai.kr/section/paper"
+        },
+        {
+          "label": "특허",
+          "url": "https://display-now.nextio.ai.kr/section/patent"
+        },
+        {
+          "label": "이슈",
+          "url": "https://display-now.nextio.ai.kr/section/issue"
+        },
+        {
+          "label": "주제별 모음",
+          "url": "https://display-now.nextio.ai.kr/tag"
+        }
+      ]
+    }
   },
   "semiconductor": {
     "publisher": "Next I/O",
