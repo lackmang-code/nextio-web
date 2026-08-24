@@ -14,7 +14,7 @@ import sys, re, json
 from datetime import date, timedelta
 from urllib.parse import urlparse
 
-from digest_to_items import unwrap_url
+from digest_to_items import unwrap_url, article_date, filter_by_age
 
 ITEM_RE = re.compile(r'^(.*?)\s*##\s*(\d+)\.\s*\[(.+?)\]\((https?://[^)\s]+)\)\s*$')
 ANALYSIS_RE = re.compile(r'^\s*\*?\s*🔍.*?:\s*\*?\s*(.*\S)\s*$')
@@ -50,39 +50,6 @@ def guess_source(url):
         if cand in MEDIA:
             return MEDIA[cand]
     return host
-
-
-# URL "경로"에 박힌 8자리 날짜만 보도일로 인정한다.
-# 쿼리스트링(?idxno=2023092168625 등)은 기사 일련번호인 경우가 많아 날짜로 오독하면 안 된다.
-PATH_DATE_RE = re.compile(r'(20\d{2})(\d{2})(\d{2})')
-
-
-def article_date(url):
-    """URL 경로에서 보도일을 추정한다. 알 수 없으면 None."""
-    path = urlparse(url).path
-    for y, m, d in PATH_DATE_RE.findall(path):
-        try:
-            return date(int(y), int(m), int(d))
-        except ValueError:
-            continue
-    return None
-
-
-def filter_by_age(items, date_str, max_age_days):
-    """다이제스트 발행일 기준으로 오래된 기사를 걷어낸다.
-    보도일을 알 수 없는 기사는 남긴다(다이제스트가 오늘자로 보내온 것을 신뢰)."""
-    y, m, d = (int(x) for x in date_str.split("-"))
-    pub = date(y, m, d)
-    cutoff = pub - timedelta(days=max_age_days)
-    kept, dropped = [], []
-    for it in items:
-        ad = article_date(it["url"])
-        if ad is not None and ad < cutoff:
-            it["_dropped_date"] = ad.isoformat()
-            dropped.append(it)
-        else:
-            kept.append(it)
-    return kept, dropped
 
 
 def parse_digest(text):

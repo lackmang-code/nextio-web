@@ -159,6 +159,22 @@ def main():
         print(f"ERROR: {date_str} 다이제스트에서 파싱된 기사가 0건 — 형식이 예상과 다를 수 있음")
         sys.exit(1)
 
+    # 묵은 기사 제외 (2026-08-24 도입, 대표 지시).
+    # 다이제스트가 며칠 전 기사를 섞어 보내는 일이 있어 발행일 기준으로 걸러낸다.
+    # 보도일은 URL 경로의 8자리 날짜로만 판정하며, 판정 불가는 남긴다 —
+    # 실측상 87%가 판정 불가라 이 필터는 확실한 것만 걷어내는 보조 장치다.
+    max_age = int(os.environ.get("DAILY_MAX_AGE_DAYS", digest_to_items.DEFAULT_MAX_AGE_DAYS))
+    items, dropped = digest_to_items.filter_by_age(items, date_str, max_age)
+    for it in dropped:
+        print(f"  [제외] {it['_dropped_date']} ({max_age}일 초과) {it['title'][:50]}")
+    if dropped:
+        print(f"묵은 기사 {len(dropped)}건 제외 → 잔여 {len(items)}건")
+    if not items:
+        # 전부 걸러졌다면 다이제스트가 통째로 묵은 것이다.
+        # 빈 카드를 내보내느니 실패시켜 알림을 받는 편이 낫다.
+        print(f"ERROR: {date_str} 기사가 전부 {max_age}일 초과로 제외됨 — 다이제스트 내용 확인 필요")
+        sys.exit(1)
+
     empty_urls = [it["title"] for it in items if not it.get("url")]
     if empty_urls:
         print(f"경고: 원문 링크 파싱 실패 항목 {len(empty_urls)}건: {empty_urls}")
