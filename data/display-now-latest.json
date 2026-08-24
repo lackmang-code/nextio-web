@@ -1,8 +1,8 @@
 {
-  "issue": 2,
-  "label": "DISPLAY NOW 제2호 · 8월",
-  "cover": "images/magazine-cover-display-now.webp?v=2",
-  "url": "https://display-now.nextio.ai.kr/issue/2",
-  "alt": "DISPLAY NOW 제2호 표지",
-  "updated": "2026-08-25"
+  "issue": 1,
+  "label": "DISPLAY NOW 제1호 · 8월",
+  "cover": "images/magazine-cover-display-now.webp?v=1",
+  "url": "https://display-now.nextio.ai.kr/issue/1",
+  "alt": "DISPLAY NOW 제1호 표지",
+  "updated": "2026-08-23"
 }
