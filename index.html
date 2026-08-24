@@ -846,6 +846,10 @@ footer {
   .shelf-row .cover-slot { width: 80px !important; }
   .shelf-row .covers { gap: 10px !important; }
   .vb-tag { top: 10px !important; font-size: 9px !important; }
+  /* 모바일에서만: NEW 배지가 표지 위로 튀어나와 윗 선반의 'VOL.02 · 8월' 라벨을 덮는다.
+     (배지 y767~787 vs 라벨 y763~778) 배지를 표지 안쪽으로 넣어 겹침을 없앤다.
+     데스크톱은 선반 간격이 넓어 겹치지 않으므로 그대로 둔다. */
+  #dnSlot .new-pin { top: 4px !important; }
   .col-list { max-width: 100% !important; }
 
   /* 모바일: 데일리카드 — 폰 목업 포기, 실제 카드 썸네일 + 링크로 전면 교체 (PC는 그대로 유지) */
