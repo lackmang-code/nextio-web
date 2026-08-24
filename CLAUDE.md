@@ -289,8 +289,41 @@ git add -A && git commit -m "..." && git push origin master
 
 | 규격서 | 대상 | 내용 |
 |---|---|---|
-| `연동규격_DISPLAY_NOW_진열대.md` | 디플 | 새 호 발행 시 `data/display-now-latest.json` + 표지 webp만 갱신. `index.html`은 JSON을 읽어 스스로 바뀐다. JSON을 못 읽어도 HTML 기본값이 남아 진열대가 비지 않는다 |
+| `연동규격_DISPLAY_NOW_진열대.md` | 디플 | 새 호 발행 시 `data/display-now-latest.json` + 표지 webp + **`data/display-now-articles.json`(최신 기사 5편, 2026-08-24 추가)** 갱신. `index.html`은 JSON을 읽어 스스로 바뀐다. JSON을 못 읽어도 HTML 기본값이 남아 진열대·기사목록이 비지 않는다 |
 | `연동규격_시뮬레이터_소개페이지.md` | 비서실장 | `simulators/` 비공개 페이지 틀. **문안 미작성·커밋 보류 상태** (담당 미배정) |
+
+## 🔗 DISPLAY NOW 유입 링크 (2026-08-24 신설 — SEO)
+
+디플 요청으로 회사 홈페이지에서 `display-now.nextio.ai.kr` 로 나가는 링크를 늘렸다.
+배경: display-now 기사 44개가 구글에서 **"발견됨, 현재 색인이 생성되지 않음"** 상태였고,
+차단·noindex·중복이 하나도 없어 **외부 링크 부족**이 유일한 병목이었다.
+회사 홈페이지는 이미 잘 색인돼 있어(구글 `site:` 3페이지) 크롤러 유입 경로로 적합하다.
+
+| 위치 | 링크 | 반영 |
+|---|---|---|
+| `index.html` 매거진 섹션 **좌측** | 최신 기사 5편(직접 URL) | 2026-08-24 |
+| `display-daily/index.html` 하단 | 섹션 4개 + `/tag` | 2026-08-24 |
+| `display-daily/card_*.html` 하단 | 섹션 4개 + `/tag` | 2026-08-25 발행분부터 |
+
+**⚠️ 반드시 지킬 것**
+
+- **`brands.json`의 `partner_links` 는 `display`(자사) 브랜드에만 둔다.**
+  성대 첨디공·에이프로 명의 쇼케이스 카드에 우리 매체 링크를 심으면
+  "위탁제작 샘플" 표기 원칙과 충돌한다. `semiconductor` 에도 넣지 않았다(주제 불일치)
+- **`rel="nofollow"`를 붙이지 말 것.** 붙이는 순간 이 작업의 목적이 사라진다
+- 기사 목록의 **HTML 기본값(폴백)이 크롤러가 실제로 읽는 것**이다.
+  JS로만 주입하면 의미가 없으므로 서버 렌더 `<a href>` 패턴을 유지할 것
+- 앵커 텍스트는 **기사 제목 원문**. "자세히 보기" 같은 문구는 효과가 없다
+
+**보류**: 기존 카드 44장 소급 적용 — 파일 44개 동시 커밋이 되므로 대표 판단 대기.
+
+**오해 주의 (2026-08-24 디플 점검 오진 2건)**
+- "카드에 display-now 링크가 1개 있다" → **0개였다.** 카드는 `make_promo.py`가 만드는
+  독립 페이지라 `index.html` 진열대와 무관하다
+- "회사 사이트맵에 카드가 없다" → **`display-daily/sitemap-display-daily.xml` 에 45개 이미 등록.**
+  `robots.txt` 선언까지 돼 있고 매일 자동 갱신된다. 조치 불필요
+
+---
 
 ## 메모리 저장 규칙
 

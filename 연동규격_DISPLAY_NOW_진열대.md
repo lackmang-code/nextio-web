@@ -9,14 +9,15 @@
 
 ## 한 줄 요약
 
-**파일 2개만 갱신하고 커밋하면 끝난다. `index.html`은 절대 건드리지 않는다.**
+**파일 3개만 갱신하고 커밋하면 끝난다. `index.html`은 절대 건드리지 않는다.**
 
 | 갱신할 파일 | 내용 |
 |---|---|
 | `images/magazine-cover-display-now.webp` | 최신호 표지 (**파일명 고정 — 매번 덮어쓴다**) |
 | `data/display-now-latest.json` | 호수·라벨·링크 |
+| `data/display-now-articles.json` | **최신 기사 목록 5편** (2026-08-24 추가, 아래 3절) |
 
-홈페이지가 이 JSON을 읽어 표지·라벨·링크를 스스로 바꾼다.
+홈페이지가 이 JSON들을 읽어 표지·라벨·링크·기사목록을 스스로 바꾼다.
 
 ---
 
@@ -94,11 +95,59 @@ git push origin master
 
 ---
 
+## 3. 최신 기사 목록 (2026-08-24 신설)
+
+**경로**: `01_Company/홈페이지/data/display-now-articles.json`
+
+`index.html` 매거진 섹션 좌측의 "DISPLAY NOW 최신 기사" 목록을 그린다.
+디플의 2026-08-24 요청(검색 색인 유입 확보)에 따라 홍보팀장이 승인·구현했다.
+
+```json
+{
+  "updated": "2026-08-24",
+  "articles": [
+    {
+      "title": "청색 인광 OLED(PHOLED) 특허 8건 분석",
+      "url": "https://display-now.nextio.ai.kr/article/2026-08-18-blue-phosphorescent-oled-patents",
+      "section": "특허",
+      "publishedAt": "2026-08-18"
+    }
+  ]
+}
+```
+
+| 필드 | 필수 | 규칙 |
+|---|---|---|
+| `title` | ✅ | **화면에 그대로 앵커 텍스트로 나간다.** 기사 제목 원문을 쓸 것 |
+| `url` | ✅ | **`https://display-now.nextio.ai.kr/` 로 시작해야 한다.** 아닌 항목은 렌더러가 버린다 |
+| `section` | — | 현재 화면에 표시하지 않는다. 넣어도 무해 |
+| `publishedAt` | — | 현재 화면에 표시하지 않는다. 넣어도 무해 |
+
+**지켜야 할 것**
+
+1. **최대 5편.** 6편 이상 넣으면 앞에서 5편만 쓰고 나머지는 버린다. 좌측 칼럼 높이가
+   정해져 있어 늘리면 레이아웃이 무너진다 — 더 필요하면 홍보팀장에게 요청할 것
+2. **제목은 짧을수록 좋다.** 40자를 넘으면 두 줄로 접힌다(깨지지는 않는다)
+3. `title`·`url`이 없거나 도메인이 다른 항목은 **조용히 버려진다.**
+   전부 버려져 0편이 되면 **HTML 기본값 5편이 그대로 남는다**(목록이 비지 않는다)
+4. **`rel="nofollow"`는 붙지 않는다** — 렌더러가 `rel="noopener"`만 넣는다.
+   이 목록의 존재 이유가 색인 유입이므로 이 동작을 바꿔달라고 요청하지 말 것
+
+**기본값(폴백)에 대해**: `index.html`에는 2026-08-18자 기사 5편이 하드코딩돼 있다.
+JSON이 정상이면 화면에는 JSON 내용만 보인다. 다만 **크롤러가 JS 없이 읽는 것은 이 기본값**이므로,
+기본값이 오래돼 죽은 URL이 되면 홍보팀장에게 알려 갱신을 요청할 것.
+
+---
+
 ## 4. 확인 방법
 
 ```bash
 # 데이터가 올라갔는지
 curl -s https://www.nextio.ai.kr/data/display-now-latest.json
+curl -s https://www.nextio.ai.kr/data/display-now-articles.json
+
+# 기사 링크가 서버 렌더로 찍혀 나오는지 (5개 나와야 정상)
+curl -sL https://www.nextio.ai.kr/ | grep -c 'display-now.nextio.ai.kr/article/'
 
 # 표지가 뜨는지 (200이어야 함)
 curl -sL -o /dev/null -w "%{http_code}\n" \
