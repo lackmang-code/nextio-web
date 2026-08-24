@@ -112,6 +112,19 @@ def parse_digest(text):
     return items
 
 
+def dump_diagnostics(text):
+    """파싱이 0건일 때 원인 판별용 진단 출력.
+    메일에서 뽑아낸 텍스트가 마크다운인지(정상) 태그만 걷어낸 HTML인지(비정상) 여기서 갈린다.
+    저장소가 public이라 Actions 로그도 공개되므로 앞부분만 짧게 찍는다."""
+    lines = [l for l in text.splitlines() if l.strip()]
+    print("  [진단] 총 %d자 / 비어있지 않은 줄 %d개" % (len(text), len(lines)))
+    print("  [진단] 마커 개수 — '## ':%d  '](http':%d  '🔍':%d  '<':%d"
+          % (text.count("## "), text.count("](http"), text.count("🔍"), text.count("<")))
+    print("  [진단] 앞 20줄:")
+    for l in lines[:20]:
+        print("    | %s" % l[:120])
+
+
 def main():
     if len(sys.argv) < 4:
         print("usage: digest_md_to_items.py <raw.txt> <items.json> <YYYY-MM-DD> [--max-age N] [--legacy]")
@@ -137,7 +150,9 @@ def main():
     else:
         items = parse_digest(text)
     if not items:
-        print("파싱된 항목이 0건 — 다이제스트 형식을 확인할 것"); sys.exit(1)
+        print("파싱된 항목이 0건 — 다이제스트 형식을 확인할 것")
+        dump_diagnostics(text)
+        sys.exit(1)
     items, dropped = filter_by_age(items, date_str, max_age)
     for it in dropped:
         print("  [제외] %s자 기사: %s" % (it["_dropped_date"], it["title"][:40]))
