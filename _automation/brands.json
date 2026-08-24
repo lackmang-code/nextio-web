@@ -40,7 +40,9 @@
     "base_url": "https://www.nextio.ai.kr/showcase/battery",
     "og_image": "https://www.nextio.ai.kr/display-daily/og-display-daily.png",
     "cta1": "이 브리핑은 <b>Next I/O</b>가 AI로 자동 제작한 <b>위탁 발행 샘플</b>입니다.",
-    "_note": "타사 브랜드 — 2026-08-23 대표가 상호 사용 구두 동의 확보(서면 없음). 로고는 임시 워드마크이며 실제 CI 확보 시 교체할 것. 헤더·CTA의 '샘플' 표기는 유지한다."
+    "_note": "타사 브랜드 — 2026-08-23 대표가 상호 사용 구두 동의 확보(서면 없음). 로고는 임시 워드마크이며 실제 CI 확보 시 교체할 것. 헤더·CTA의 '샘플' 표기는 유지한다.",
+    "foot": "본 페이지는 공개된 기사 제목·출처를 Next I/O의 AI가 선별하고 한 줄 해설을 덧붙여 에이프로머티리얼즈 명의로 제작한 위탁 발행 샘플입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.",
+    "index_foot": "AI 자동 큐레이션 by <b>Next I/O</b> · 에이프로머티리얼즈 명의 위탁 발행 샘플 · <a href=\"https://www.nextio.ai.kr\" target=\"_blank\" rel=\"noopener\">www.nextio.ai.kr</a>"
   },
   "skku-display": {
     "publisher": "성균관대 첨단디스플레이공학과",
@@ -55,6 +57,8 @@
     "base_url": "https://www.nextio.ai.kr/showcase/skku-display",
     "og_image": "https://www.nextio.ai.kr/display-daily/og-display-daily.png",
     "cta1": "이 브리핑은 <b>Next I/O</b>가 AI로 자동 제작한 <b>위탁 발행 샘플</b>입니다.",
-    "_note": "타 기관 브랜드 — 2026-08-23 대표가 학과 명의 사용 구두 동의 확보(서면 없음). 로고는 임시 워드마크이며 학과 공식 CI 확보 시 교체할 것. 헤더·CTA의 '샘플' 표기는 유지한다."
+    "_note": "타 기관 브랜드 — 2026-08-23 대표가 학과 명의 사용 구두 동의 확보(서면 없음). 로고는 임시 워드마크이며 학과 공식 CI 확보 시 교체할 것. 헤더·CTA의 '샘플' 표기는 유지한다.",
+    "foot": "본 페이지는 공개된 기사 제목·출처를 Next I/O의 AI가 선별하고 한 줄 해설을 덧붙여 성균관대 첨단디스플레이공학과 명의로 제작한 위탁 발행 샘플입니다. 각 기사의 저작권은 해당 언론사에 있으며, 상세 내용은 원문 링크에서 확인하세요.",
+    "index_foot": "AI 자동 큐레이션 by <b>Next I/O</b> · 성균관대 첨단디스플레이공학과 명의 위탁 발행 샘플 · <a href=\"https://www.nextio.ai.kr\" target=\"_blank\" rel=\"noopener\">www.nextio.ai.kr</a>"
   }
 }
