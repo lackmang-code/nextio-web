@@ -1233,6 +1233,14 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   color:#f4ede0;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 6px rgba(0,0,0,.6);
 }
 
+/* DISPLAY NOW 라벨은 다른 칸("Vol.01 · 7월")보다 길어 96px 슬롯에서 두 줄로 접힌다.
+   선반 2행에는 표지가 하나뿐이라 옆 칸과 부딪힐 일이 없으므로,
+   라벨 상자만 가운데 기준으로 넓혀 한 줄로 만든다. 표지·선반 배치는 그대로. */
+#dnSlot .cover-vol{
+  left:50%; right:auto; transform:translateX(-50%);
+  width:max-content; max-width:190px;
+}
+
 /* DISPLAY NOW 최신 기사 목록 (매거진 섹션 좌측) */
 .dn-latest{margin-top:22px;max-width:420px}
 .dn-latest-h{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
