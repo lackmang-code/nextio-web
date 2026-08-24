@@ -33,6 +33,8 @@ MEDIA = {
     "theelec.kr": "디일렉", "energy-news.co.kr": "에너지신문", "hellot.net": "헬로티",
     "reuters.com": "Reuters", "bloomberg.com": "Bloomberg", "digitimes.com": "DigiTimes",
     "nikkei.com": "Nikkei", "scmp.com": "SCMP",
+    "einfomax.co.kr": "연합인포맥스", "investing.com": "인베스팅닷컴",
+    "investchosun.com": "인베스트조선", "thedailyeconomy.kr": "데일리이코노미",
 }
 
 

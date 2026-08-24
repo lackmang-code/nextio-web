@@ -31,6 +31,7 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 
 from run_daily import decode_mime, get_plain_text  # IMAP 헬퍼만 재사용(실발행 로직은 건드리지 않음)
+from mail_html_to_md import get_html_text
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUTO_DIR = os.path.join(REPO_ROOT, "_automation")
@@ -121,7 +122,19 @@ def publish_brand(imap, brand):
     if typ != "OK" or not data or not data[0]:
         raise RuntimeError("메일 본문 가져오기 실패")
 
-    body_text = get_plain_text(email.message_from_bytes(data[0][1]))
+    msg = email.message_from_bytes(data[0][1])
+    body_text = ""
+    if not brand["legacy"]:
+        # 마크다운형(반도체·배터리)은 HTML 파트를 우선 쓴다.
+        # 2026-08-24부터 text/plain 파트에서 기사 링크가 통째로 빠져 나와 파싱이 0건이 됐다.
+        # HTML에는 <a href>가 살아있으므로 그쪽을 마크다운으로 변환해 쓴다.
+        md = get_html_text(msg)
+        if "](http" in md:
+            body_text = md
+        elif md:
+            print("  주의: HTML 파트에서 링크를 찾지 못해 text/plain으로 폴백합니다.")
+    if not body_text:
+        body_text = get_plain_text(msg)
     if not body_text.strip():
         raise RuntimeError("다이제스트 본문이 비어있음")
 
