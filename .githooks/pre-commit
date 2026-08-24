@@ -22,6 +22,53 @@ for f in $staged; do
   fi
 done
 
+# 3) 대용량 파일 차단 (2026-08-24 대표 지시로 강화)
+#    git 은 파일을 지워도 히스토리에 남아 저장소가 영구히 무거워진다.
+#    실제로 education png 69MB·매거진 인쇄용 PDF 47.8MB 가 들어가 저장소가
+#    199MB 까지 불었고, 2026-08-24 에 히스토리를 재작성해야 했다(→16MB).
+#    "일단 올리고 나중에 정리"는 원리적으로 통하지 않는다.
+WARN_KB=500      # 경고
+BLOCK_KB=2000    # 차단
+big_files=""
+warn_files=""
+for f in $staged; do
+  [ -f "$f" ] || continue
+  kb=$(du -k "$f" 2>/dev/null | cut -f1)
+  [ -z "$kb" ] && continue
+  if [ "$kb" -gt "$BLOCK_KB" ]; then
+    big_files="$big_files   ${kb}KB  $f
+"
+  elif [ "$kb" -gt "$WARN_KB" ]; then
+    warn_files="$warn_files   ${kb}KB  $f
+"
+  fi
+done
+
+if [ -n "$warn_files" ]; then
+  echo ""
+  echo "⚠️  용량이 큰 파일이 있습니다 (${WARN_KB}KB 초과). 차단은 아니지만 줄일 수 있는지 보세요."
+  printf "%b" "$warn_files"
+  echo "   이미지는 webp, 영상은 재인코딩. 히스토리에 남으면 되돌릴 수 없습니다."
+  echo ""
+fi
+
+if [ -n "$big_files" ]; then
+  echo ""
+  echo "🚫 커밋 차단: ${BLOCK_KB}KB 를 넘는 파일이 있습니다."
+  echo ""
+  printf "%b" "$big_files"
+  echo ""
+  echo "   git 은 지워도 히스토리에 남습니다. 한번 올리면 저장소가 영구히 무거워집니다."
+  echo "   (2026-08-24: 이런 파일들 때문에 저장소가 199MB 까지 불어 히스토리를 재작성했습니다)"
+  echo ""
+  echo "   해결: 이미지는 webp 변환 · 영상은 재인코딩 · 인쇄용 원본/제출본은"
+  echo "         저장소가 아니라 01_Company\회사공용자료\ 같은 비공개 위치에 보관"
+  echo ""
+  echo "   꼭 필요한 파일이면(예: 히어로 영상 교체): git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
 if [ -n "$bad_paths" ] || [ -n "$bad_content" ]; then
   echo ""
   echo "🚫 커밋 차단: 이 저장소(nextio-web)는 Public입니다."
