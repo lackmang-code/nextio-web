@@ -7,7 +7,9 @@ staged=$(git diff --cached --name-only --diff-filter=ACM)
 [ -z "$staged" ] && exit 0
 
 # 1) 파일 경로/이름에 민감 키워드가 있으면 차단
-path_pattern='handbook|NDA|nda|견적|계약서|리드DB|리드db|컨택리스트|독소조항|내부문서|기밀|confidential|salary|연봉|급여'
+# 2026-08-25: 일일보고 6건(5~8월)이 이 목록에 없어 그대로 공개돼 있었다.
+# 세션 보고서·계획서·지시서 계열을 통째로 막는다.
+path_pattern='handbook|NDA|nda|견적|계약서|리드DB|리드db|컨택리스트|독소조항|내부문서|기밀|confidential|salary|연봉|급여|보고_|일일보고|브리핑_|작업지시서|modify_plan|착수점|_전략|세션정리'
 bad_paths=$(echo "$staged" | grep -E -i "$path_pattern")
 
 # 2) 파일 내용에 비밀키/시크릿 패턴이 있으면 차단
