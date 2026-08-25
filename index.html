@@ -849,7 +849,7 @@ footer {
   /* 모바일에서만: NEW 배지가 표지 위로 튀어나와 윗 선반의 'VOL.02 · 8월' 라벨을 덮는다.
      (배지 y767~787 vs 라벨 y763~778) 배지를 표지 안쪽으로 넣어 겹침을 없앤다.
      데스크톱은 선반 간격이 넓어 겹치지 않으므로 그대로 둔다. */
-  #dnSlot .new-pin { top: 4px !important; }
+  .shelf-row-2 .new-pin { top: 4px !important; }
   .col-list { max-width: 100% !important; }
 
   /* 모바일: 데일리카드 — 폰 목업 포기, 실제 카드 썸네일 + 링크로 전면 교체 (PC는 그대로 유지) */
@@ -1235,14 +1235,6 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   position:absolute;top:100%;left:0;right:0;margin-top:8px;text-align:center;
   font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   color:#f4ede0;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 6px rgba(0,0,0,.6);
-}
-
-/* DISPLAY NOW 라벨은 다른 칸("Vol.01 · 7월")보다 길어 96px 슬롯에서 두 줄로 접힌다.
-   선반 2행에는 표지가 하나뿐이라 옆 칸과 부딪힐 일이 없으므로,
-   라벨 상자만 가운데 기준으로 넓혀 한 줄로 만든다. 표지·선반 배치는 그대로. */
-#dnSlot .cover-vol{
-  left:50%; right:auto; transform:translateX(-50%);
-  width:max-content; max-width:190px;
 }
 
 /* DISPLAY NOW 최신 기사 목록 (매거진 섹션 좌측) */
@@ -1914,16 +1906,26 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
                 </div>
               </div>
               <div class="shelf-row shelf-row-2">
-                <div class="covers">
-                  <!-- 아래 값은 data/display-now-latest.json 이 있으면 그 내용으로 교체된다.
-                       디플(04_Display_Now)이 새 호를 낼 때 그 JSON과 표지 파일만 갱신하면 되고,
-                       이 HTML은 건드리지 않는다. JSON을 못 읽으면 아래 값이 그대로 남는다. -->
-                  <a class="cover-slot" id="dnSlot" href="https://display-now.nextio.ai.kr/issue/1" target="_blank" rel="noopener">
+                <div class="covers" id="dnCovers">
+                  <!-- 아래 칸들은 data/display-now-issues.json 이 있으면 그 내용으로 다시 그려진다.
+                       디플(04_Display_Now)이 새 호를 낼 때 그 JSON 배열 맨 앞에 항목을 추가하고
+                       표지 파일을 함께 올리면 되고, 이 HTML은 건드리지 않는다.
+                       최신 3호까지만 진열하며 NEW 배지는 첫 항목에만 붙는다.
+                       JSON을 못 읽으면 아래 기본값이 그대로 남는다.
+                       ⚠️ 표지 파일명은 반드시 호수별로 다르게 — 고정 파일명으로 덮어쓰면
+                          지난 호 표지가 사라진다(2026-08-25 실제 발생). -->
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/2" target="_blank" rel="noopener">
                     <div class="cover-card">
                       <span class="new-pin">NEW</span>
-                      <img src="images/magazine-cover-display-now.webp" alt="DISPLAY NOW 제1호 표지">
+                      <img src="images/magazine-cover-display-now-2.webp" alt="DISPLAY NOW 제2호 표지">
                     </div>
-                    <div class="cover-vol">DISPLAY NOW 제1호 · 8월</div>
+                    <div class="cover-vol">제2호 · 8월</div>
+                  </a>
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/1" target="_blank" rel="noopener">
+                    <div class="cover-card">
+                      <img src="images/magazine-cover-display-now-1.webp" alt="DISPLAY NOW 제1호 표지">
+                    </div>
+                    <div class="cover-vol">제1호 · 8월</div>
                   </a>
                 </div>
               </div>
@@ -2634,21 +2636,57 @@ window.goto = function(id) {
 // 디플이 새 호를 낼 때 data/display-now-latest.json 과 표지 파일만 갱신하면
 // 여기가 알아서 표지·라벨·링크를 바꾼다. 파일이 없거나 형식이 깨져도
 // HTML에 적힌 기본값이 그대로 남으므로 진열대가 비지 않는다.
-(function syncDisplayNowSlot() {
-  const slot = document.getElementById('dnSlot');
-  if (!slot) return;
-  fetch('data/display-now-latest.json', { cache: 'no-cache' })
-    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
-    .then(d => {
-      if (!d || typeof d !== 'object') return;
-      const img = slot.querySelector('img');
-      const vol = slot.querySelector('.cover-vol');
-      if (d.url) slot.href = d.url;
-      if (d.cover && img) img.src = d.cover;
-      if (img) img.alt = d.alt || ('DISPLAY NOW 제' + (d.issue || '') + '호 표지');
-      if (d.label && vol) vol.textContent = d.label;
-    })
-    .catch(err => console.warn('DISPLAY NOW 최신호 정보를 읽지 못했습니다 — 기본값 유지:', err.message));
+(function syncDisplayNowShelf() {
+  const box = document.getElementById('dnCovers');
+  if (!box) return;
+  const MAX = 3;   // 최신 3호까지만. 더 늘리면 96px 칸이 좁아진다.
+
+  // 신형(배열) 우선, 없으면 구형(단일 객체)으로 폴백한다.
+  // 디플이 규격을 아직 못 봤을 때도 진열대가 비지 않게 하기 위함.
+  const load = (url) => fetch(url, { cache: 'no-cache' })
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))));
+
+  const norm = (d) => {
+    if (d && Array.isArray(d.issues)) return d.issues;
+    if (d && typeof d === 'object' && d.url) return [d];   // 구형 단일 객체
+    return [];
+  };
+
+  const draw = (list) => {
+    const items = list
+      .filter(x => x && typeof x.url === 'string' && typeof x.cover === 'string')
+      .slice(0, MAX);
+    if (!items.length) return;                 // 비면 HTML 기본값 유지
+    const frag = document.createDocumentFragment();
+    items.forEach((x, i) => {
+      const a = document.createElement('a');
+      a.className = 'cover-slot';
+      a.href = x.url; a.target = '_blank'; a.rel = 'noopener';
+      const card = document.createElement('div');
+      card.className = 'cover-card';
+      if (i === 0) {                            // NEW 배지는 최신호에만
+        const pin = document.createElement('span');
+        pin.className = 'new-pin'; pin.textContent = 'NEW';
+        card.appendChild(pin);
+      }
+      const img = document.createElement('img');
+      img.src = x.cover;
+      img.alt = x.alt || ('DISPLAY NOW 제' + (x.issue || '') + '호 표지');
+      card.appendChild(img);
+      const vol = document.createElement('div');
+      vol.className = 'cover-vol';
+      vol.textContent = x.label || ('DISPLAY NOW 제' + (x.issue || '') + '호');
+      a.appendChild(card); a.appendChild(vol);
+      frag.appendChild(a);
+    });
+    box.replaceChildren(frag);
+  };
+
+  load('data/display-now-issues.json')
+    .then(d => draw(norm(d)))
+    .catch(() => load('data/display-now-latest.json')
+      .then(d => draw(norm(d)))
+      .catch(err => console.warn('DISPLAY NOW 발행호 정보를 읽지 못했습니다 — 기본값 유지:', err.message)));
 })();
 
 // ── 매거진 좌측: DISPLAY NOW 최신 기사 목록 연동 ──

@@ -1,0 +1,20 @@
+{
+  "_note": "디플(04_Display_Now) 소관. 새 호를 낼 때 이 배열 맨 앞에 항목을 추가하고 표지 파일을 함께 올린다. 홈페이지는 앞에서 최대 3개만 진열하고, NEW 배지는 첫 항목에만 붙는다. 표지 파일명은 호수별로 다르게 둘 것 — 고정 파일명으로 덮어쓰면 지난 호 표지가 사라진다(2026-08-25 실제 발생). 라벨은 '제N호 · 월' 형식으로 짧게 — 길면 옆 칸 라벨과 겹친다.",
+  "updated": "2026-08-25",
+  "issues": [
+    {
+      "issue": 2,
+      "label": "제2호 · 8월",
+      "cover": "images/magazine-cover-display-now-2.webp?v=2",
+      "url": "https://display-now.nextio.ai.kr/issue/2",
+      "alt": "DISPLAY NOW 제2호 표지"
+    },
+    {
+      "issue": 1,
+      "label": "제1호 · 8월",
+      "cover": "images/magazine-cover-display-now-1.webp?v=1",
+      "url": "https://display-now.nextio.ai.kr/issue/1",
+      "alt": "DISPLAY NOW 제1호 표지"
+    }
+  ]
+}
