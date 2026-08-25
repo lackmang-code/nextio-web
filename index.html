@@ -1855,8 +1855,8 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
         <!-- 날짜 목록은 폐지(2026-08-23) — 목업이 늘 최신본만 보여주므로 불필요. 과거분은 아카이브 페이지에서. -->
 
-        <!-- 모바일 전용: 선택한 브랜드의 최신 카드로 연결 -->
-        <a href="showcase/skku-display/" id="bsMobileLink" target="_blank" class="pub-mobile-link">최신 브리핑 보기 →</a>
+        <!-- 모바일 '최신 브리핑 보기' 버튼은 2026-08-25 제거.
+             브랜드 칸을 누르면 그 브랜드 카드가 오버레이로 열리므로 중복이었다. -->
       </div>
 
       <!-- 우측: 스마트폰 목업 프레임 (V1 스타일 및 비율 패치) -->
@@ -2809,7 +2809,6 @@ if (iframeEl) {
 
   const switchEl = document.getElementById('brandSwitch');
   const archiveLinkEl = document.getElementById('bsArchive');
-  const mobileLinkEl = document.getElementById('bsMobileLink');
 
   function selectBrand(brand) {
     document.querySelectorAll('.bs-item').forEach(el => {
@@ -2817,12 +2816,6 @@ if (iframeEl) {
     });
     if (switchEl) switchEl.style.setProperty('--bs-accent', brand.accent);
     if (archiveLinkEl) archiveLinkEl.href = brand.dir + '/';
-    if (mobileLinkEl) {
-      // 모바일에서는 새 탭 대신 오버레이로 띄운다(아래 dcOverlay). href 는 폴백용.
-      mobileLinkEl.href = brand.dir + '/latest.html';
-      mobileLinkEl.dataset.card = brand.dir + '/latest.html';
-      mobileLinkEl.dataset.name = brand.name;
-    }
     // latest.html은 발행 파이프라인이 매일 갱신한다 — 목업은 늘 최신본을 가리킨다.
     iframeEl.src = `${brand.dir}/latest.html`;
   }
@@ -2847,7 +2840,14 @@ if (iframeEl) {
         `<span class="bs-topic">${brand.topic}</span></div>` +
         `<div class="bs-name">${brand.name}</div>` +
         `<div class="bs-role">${brand.role}</div>`;
-      btn.addEventListener('click', () => selectBrand(brand));
+      btn.addEventListener('click', () => {
+        selectBrand(brand);
+        // 모바일에는 폰 목업이 없어서 브랜드만 고르면 화면에 아무 변화가 없다.
+        // 사용자가 브랜드 칸을 누르는 의도는 "이 카드를 보고 싶다" 이므로 바로 띄운다.
+        if (window.matchMedia('(max-width: 992px)').matches && window.__openDailyCard) {
+          window.__openDailyCard(brand.dir + '/latest.html', brand.name);
+        }
+      });
       switchEl.appendChild(btn);
     });
     selectBrand(DN_BRANDS[0]);
@@ -2869,8 +2869,7 @@ syncUI();
   const title = document.getElementById('dcTitle');
   const openNew = document.getElementById('dcOpenNew');
   const closeBtn = document.getElementById('dcClose');
-  const link  = document.getElementById('bsMobileLink');
-  if (!ov || !frame || !link) return;
+  if (!ov || !frame) return;
 
   const HASH = '#dailycard';
   const MOBILE = () => window.matchMedia('(max-width: 992px)').matches;
@@ -2893,12 +2892,12 @@ syncUI();
     window.scrollTo(0, savedY);         // 해시가 바뀌며 튄 스크롤을 되돌린다
   }
 
-  link.addEventListener('click', (e) => {
-    if (!MOBILE()) return;              // 데스크톱은 폰 목업이 있으므로 기존 동작 유지
-    e.preventDefault();
-    show(link.dataset.card || link.getAttribute('href'), link.dataset.name || '');
+  // 브랜드 칸(.bs-item)에서 호출한다. 데스크톱은 폰 목업이 있으므로 부르지 않는다.
+  window.__openDailyCard = function (url, name) {
+    if (!MOBILE()) return;
+    show(url, name);
     if (location.hash !== HASH) location.hash = HASH;   // 뒤로가기 지점을 만든다
-  });
+  };
 
   // 해시가 #dailycard 를 벗어나면 닫는다 — 뒤로가기·닫기 버튼 모두 이 경로를 탄다
   window.addEventListener('hashchange', () => {
