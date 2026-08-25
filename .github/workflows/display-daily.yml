@@ -6,7 +6,12 @@ on:
     # → 어중간한 분(分)으로 옮기고, 백업 스케줄을 하나 더 둔다(멱등이라 중복 실행 안전).
     - cron: '43 0 * * *'  # 00:43 UTC = 09:43 KST (다이제스트 메일이 09:10경 도착)
     - cron: '17 3 * * *'  # 03:17 UTC = 12:17 KST — 1차가 스킵된 날의 백업
-  workflow_dispatch: {}    # 수동 실행 버튼(테스트·긴급 재실행용)
+  workflow_dispatch:       # 수동 실행 버튼(테스트·긴급 재실행용)
+    inputs:
+      mail_to:
+        description: '발행 알림 메일 수신자(쉼표 구분). 비우면 Secrets 설정을 따른다'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -50,9 +55,35 @@ jobs:
             git push
           fi
 
-      - name: Fail if showcase pipeline failed
-        if: steps.showcase.outcome == 'failure'
+      # 발행 알림 메일. 카드 상단을 크롬으로 캡처해 썸네일을 만들고 링크와 함께 보낸다.
+      # 썸네일은 저장소에 커밋하지 않고 메일에 인라인 첨부한다(매일 커밋하면 저장소가 부푼다).
+      # 수신자 시크릿이 없는 브랜드는 스크립트가 조용히 건너뛴다 = 브랜드별 on/off 스위치.
+      - name: Send publish notification mail
+        id: mail
+        continue-on-error: true
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          MAIL_TO_BATTERY: ${{ github.event.inputs.mail_to != '' && github.event.inputs.mail_to || secrets.MAIL_TO_BATTERY }}
+          MAIL_TO_DISPLAY: ${{ secrets.MAIL_TO_DISPLAY }}
+          MAIL_TO_SKKU_DISPLAY: ${{ secrets.MAIL_TO_SKKU_DISPLAY }}
+          MAIL_TO_SEMICONDUCTOR: ${{ secrets.MAIL_TO_SEMICONDUCTOR }}
         run: |
-          echo "쇼케이스 발행이 실패했습니다 — 위 'Run showcase pipeline' 로그를 확인하세요."
-          echo "디스플레이 데일리 실발행은 정상 커밋되었습니다."
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+          pip install --quiet pillow
+          for b in display battery skku-display semiconductor; do
+            python _automation/send_daily_mail.py --brand "$b" || echo "  ($b 발송 실패 — 계속)"
+          done
+
+      - name: Fail if a non-critical step failed
+        if: steps.showcase.outcome == 'failure' || steps.mail.outcome == 'failure'
+        run: |
+          if [ "${{ steps.showcase.outcome }}" = "failure" ]; then
+            echo "쇼케이스 발행이 실패했습니다 — 'Run showcase pipeline' 로그를 확인하세요."
+          fi
+          if [ "${{ steps.mail.outcome }}" = "failure" ]; then
+            echo "발행 알림 메일이 실패했습니다 — 'Send publish notification mail' 로그를 확인하세요."
+          fi
+          echo "디스플레이 데일리 실발행(카드·커밋)은 위 단계에서 이미 완료되었습니다."
           exit 1
