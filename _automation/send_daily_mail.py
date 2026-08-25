@@ -136,7 +136,9 @@ def build_html(brand, date_str, card_url, archive_url, cid):
 <div style="padding:14px 20px 26px;text-align:center;">
 <a href="{arch}" style="color:{accent2};font-size:12.5px;font-weight:700;text-decoration:none;">지난 날짜 보기 &#8599;</a>
 <div style="font-size:10.5px;color:#aaaaaa;line-height:1.7;margin-top:18px;border-top:1px solid #eeeeee;padding-top:14px;">
-이 메일은 <b style="color:#888888;">Next I/O 홍보팀</b>이 자동 발송했습니다<br>www.nextio.ai.kr
+이 메일은 <b style="color:#888888;">Next I/O 홍보팀</b>이 매일 아침 자동 발송합니다<br>
+수신을 원치 않으시면 이 메일에 회신해 주십시오. 바로 중단하겠습니다.<br>
+<a href="https://www.nextio.ai.kr" style="color:#aaaaaa;text-decoration:none;">www.nextio.ai.kr</a>
 </div>
 </div>
 </div></div>""".format(pub=pub, kicker=kicker, accent=accent, accent2=accent2,
@@ -183,7 +185,8 @@ def main():
         msg["To"] = ", ".join(to)
         msg.set_content(
             "%s %s 카드가 나왔습니다.\n\n카드 보기: %s\n지난 날짜: %s\n\n"
-            "이 메일은 Next I/O 홍보팀이 자동 발송했습니다."
+            "이 메일은 Next I/O 홍보팀이 매일 아침 자동 발송합니다.\n"
+            "수신을 원치 않으시면 이 메일에 회신해 주십시오. 바로 중단하겠습니다."
             % (brand["publisher"], date_str, card_url, archive_url))
 
         cid_val = None
