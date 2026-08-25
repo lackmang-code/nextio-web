@@ -64,7 +64,7 @@ jobs:
         env:
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-          MAIL_TO_BATTERY: ${{ github.event.inputs.mail_to != '' && github.event.inputs.mail_to || secrets.MAIL_TO_BATTERY }}
+          MAIL_TO_BATTERY: ${{ github.event.inputs.mail_to || secrets.MAIL_TO_BATTERY }}
           MAIL_TO_DISPLAY: ${{ secrets.MAIL_TO_DISPLAY }}
           MAIL_TO_SKKU_DISPLAY: ${{ secrets.MAIL_TO_SKKU_DISPLAY }}
           MAIL_TO_SEMICONDUCTOR: ${{ secrets.MAIL_TO_SEMICONDUCTOR }}
