@@ -49,13 +49,13 @@ BRANDS = [
     {
         "key": "skku-display",
         "subject": "일간 디스플레이 탐사 보도 다이제스트",
-        "legacy": True,   # 구 형식 파서(- 내용:/- 분석:/- 출처:)
+        "legacy": True,   # 선호값. 실제 형식은 본문을 보고 자동 감지한다
         "logo": "assets/brand_skku.svg",
     },
     {
         "key": "semiconductor",
         "subject": "반도체 탐사 보도 다이제스트",
-        "legacy": False,  # 마크다운 형식 파서
+        "legacy": False,  # 선호값. 실제 형식은 본문을 보고 자동 감지한다
         "logo": "assets/nextio_logo.svg",
     },
     {
@@ -123,20 +123,40 @@ def publish_brand(imap, brand):
         raise RuntimeError("메일 본문 가져오기 실패")
 
     msg = email.message_from_bytes(data[0][1])
-    body_text = ""
-    if not brand["legacy"]:
-        # 마크다운형(반도체·배터리)은 HTML 파트를 우선 쓴다.
-        # 2026-08-24부터 text/plain 파트에서 기사 링크가 통째로 빠져 나와 파싱이 0건이 됐다.
-        # HTML에는 <a href>가 살아있으므로 그쪽을 마크다운으로 변환해 쓴다.
-        md = get_html_text(msg)
-        if "](http" in md:
-            body_text = md
-        elif md:
-            print("  주의: HTML 파트에서 링크를 찾지 못해 text/plain으로 폴백합니다.")
-    if not body_text:
-        body_text = get_plain_text(msg)
+
+    # ── 형식 자동 감지 (2026-08-25 도입) ────────────────────────────────
+    # 다이제스트 형식이 계속 바뀐다. 브랜드별로 파서를 하드코딩해두면 그때마다 깨진다.
+    #   2026-08-23 마크다운형 파서 신설
+    #   2026-08-24 text/plain 에서 기사 링크 소실 -> HTML 파트로 전환
+    #   2026-08-25 배터리만 구형식으로 전환 (반도체는 마크다운 유지) -> 발행 실패
+    # 그래서 brand["legacy"] 는 이제 "고정값"이 아니라 판별 실패 시 쓰는 "선호값"이다.
+    # 본문 내용을 보고 실제 형식을 정한다.
+    md = get_html_text(msg) or ""
+    plain = get_plain_text(msg) or ""
+
+    def _is_md(t):      # 마크다운형: "## 1. [제목](URL)"
+        return ("## " in t) and ("](http" in t)
+
+    def _is_legacy(t):  # 구형식: "1. 제목" / "- 내용:" / "- 출처: 매체 (URL)"
+        return ("- 출처:" in t) or ("- 내용:" in t)
+
+    body_text, use_legacy, how = "", brand["legacy"], "선호값"
+    if _is_md(md):
+        body_text, use_legacy, how = md, False, "마크다운(HTML 파트)"
+    elif _is_md(plain):
+        body_text, use_legacy, how = plain, False, "마크다운(text/plain)"
+    elif _is_legacy(plain):
+        body_text, use_legacy, how = plain, True, "구형식(text/plain)"
+    elif _is_legacy(md):
+        body_text, use_legacy, how = md, True, "구형식(HTML 파트)"
+    else:
+        # 어느 쪽도 아니면 기존 동작대로 브랜드 선호값을 따른다.
+        body_text = md if (md and not brand["legacy"]) else plain
+        print("  주의: 형식을 판별하지 못해 선호값(legacy=%s)으로 진행합니다." % brand["legacy"])
+
     if not body_text.strip():
         raise RuntimeError("다이제스트 본문이 비어있음")
+    print("  형식 감지: %s" % how)
 
     raw_path = os.path.join(AUTO_DIR, "_raw_%s_%s.txt" % (key, date_str))
     items_path = os.path.join(AUTO_DIR, "_items_%s_%s.json" % (key, date_str))
@@ -146,7 +166,7 @@ def publish_brand(imap, brand):
     try:
         cmd = [PY, "digest_md_to_items.py", raw_path, items_path, date_str,
                "--max-age", str(MAX_AGE_DAYS)]
-        if brand["legacy"]:
+        if use_legacy:
             cmd.append("--legacy")
         run(cmd)
 
