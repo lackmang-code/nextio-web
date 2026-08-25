@@ -647,9 +647,15 @@ footer {
     overflow: visible;
   }
 
-  /* 모바일: 세로 스크롤이지만 섹션 단위로 딱딱 넘어가는 스냅 효과 */
+  /* 모바일: 세로 스크롤이지만 섹션 단위로 딱딱 넘어가는 스냅 효과
+     ⚠️ mandatory 는 쓰지 말 것 (2026-08-25 실측).
+        섹션 7개 중 4개가 화면보다 길다(매거진 +166px, 문의 +364px).
+        mandatory 면 손을 떼는 순간 무조건 섹션 머리로 끌려가서
+        아래쪽을 볼 수 없고(300px 내려도 이동량 0), 탭 도중 화면이 움직여
+        버튼 클릭이 취소된다. proximity 는 머리 근처에서만 붙어
+        "딱딱 맞는 느낌"은 유지하면서 갇히지 않는다. */
   html {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
   }
   #pages > section {
     scroll-snap-align: start;
