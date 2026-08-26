@@ -12,6 +12,10 @@ on:
         description: '발행 알림 메일 수신자(쉼표 구분). 비우면 Secrets 설정을 따른다'
         required: false
         default: ''
+      mail_brands:
+        description: '메일 보낼 브랜드만 선택(쉼표 구분: display,battery,skku-display,semiconductor). 비우면 전체 — 신규 수신자 테스트 시 해당 브랜드만 지정하면 다른 브랜드 기존 수신자에게 중복 발송되지 않는다'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -72,7 +76,13 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
           pip install --quiet pillow
-          for b in display battery skku-display semiconductor; do
+          BRANDS="${{ github.event.inputs.mail_brands }}"
+          if [ -z "$BRANDS" ]; then
+            BRANDS="display,battery,skku-display,semiconductor"
+          fi
+          echo "메일 대상 브랜드: $BRANDS"
+          IFS=',' read -ra LIST <<< "$BRANDS"
+          for b in "${LIST[@]}"; do
             python _automation/send_daily_mail.py --brand "$b" || echo "  ($b 발송 실패 — 계속)"
           done
 
