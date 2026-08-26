@@ -38,7 +38,8 @@ KST = timezone(timedelta(hours=9))
 
 # 썸네일: 카드 상단(헤더+TOP PICK)만 담기는 크기. 카드 본문은 이 아래부터 시작한다.
 SHOT_W, SHOT_H = 700, 470
-THUMB_W = 480
+THUMB_W = 480          # 이메일에 표시되는 CSS 폭(px) — HTML width/max-width는 이 값을 쓴다
+THUMB_PX_W = THUMB_W * 2  # 실제 저장 픽셀 폭 — 고밀도(레티나) 화면에서 흐려 보이지 않게 2배로 저장
 
 
 def load_brand(key):
@@ -79,8 +80,11 @@ def make_thumb(card_path, out_path):
         print("  썸네일 건너뜀: 크롬을 찾지 못했습니다")
         return None
     raw = out_path + ".raw.png"
+    # 2배 스케일로 캡처한 뒤 THUMB_W로 축소 — 이메일 화면(고밀도 디스플레이 포함)에서
+    # 더 또렷하게 보인다. 캡처 자체를 THUMB_W 그대로 하면 확대 시 흐려진다.
+    scale = 2
     cmd = [chrome, "--headless=new", "--disable-gpu", "--no-sandbox",
-           "--hide-scrollbars", "--force-device-scale-factor=1",
+           "--hide-scrollbars", "--force-device-scale-factor=%d" % scale,
            "--window-size=%d,%d" % (SHOT_W, SHOT_H),
            "--screenshot=" + raw, "file://" + card_path.replace("\\", "/")]
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
@@ -93,18 +97,19 @@ def make_thumb(card_path, out_path):
         print("  썸네일 건너뜀: Pillow 미설치")
         return None
     im = Image.open(raw).convert("RGB")
-    im = im.crop((0, 0, im.width, min(SHOT_H, im.height)))
-    h = round(im.height * THUMB_W / im.width)
-    im.resize((THUMB_W, h), Image.LANCZOS).save(
-        out_path, "JPEG", quality=72, optimize=True, progressive=True)
+    im = im.crop((0, 0, im.width, min(SHOT_H * scale, im.height)))
+    h = round(im.height * THUMB_PX_W / im.width)
+    im.resize((THUMB_PX_W, h), Image.LANCZOS).save(
+        out_path, "JPEG", quality=90, optimize=True, progressive=True)
     os.remove(raw)
     print("  썸네일 생성: %.1f KB" % (os.path.getsize(out_path) / 1024))
     return out_path
 
 
-def build_html(brand, date_str, card_url, archive_url, cid):
+def build_html(brand, date_str, card_url, cid):
     pub = brand["publisher"]
     kicker = brand["kicker"]
+    topic = brand["topic"]
     accent, accent2 = brand["accent"], brand["accent2"]
     img_block = ""
     if cid:
@@ -124,7 +129,7 @@ def build_html(brand, date_str, card_url, archive_url, cid):
 </tr></table>
 </div>
 <div style="padding:24px 20px 0;text-align:center;">
-<div style="font-size:17px;font-weight:800;color:#1a1a1a;">{date} 카드가 나왔습니다</div>
+<div style="font-size:17px;font-weight:800;color:#1a1a1a;">{date} {topic} 핫 이슈입니다.</div>
 </div>
 {img}
 <div style="padding:16px 20px 6px;">
@@ -134,15 +139,14 @@ def build_html(brand, date_str, card_url, archive_url, cid):
 </td></tr></table>
 </div>
 <div style="padding:14px 20px 26px;text-align:center;">
-<a href="{arch}" style="color:{accent2};font-size:12.5px;font-weight:700;text-decoration:none;">지난 날짜 보기 &#8599;</a>
-<div style="font-size:10.5px;color:#aaaaaa;line-height:1.7;margin-top:18px;border-top:1px solid #eeeeee;padding-top:14px;">
+<div style="font-size:10.5px;color:#aaaaaa;line-height:1.7;margin-top:4px;border-top:1px solid #eeeeee;padding-top:14px;">
 이 메일은 <b style="color:#888888;">Next I/O 홍보팀</b>이 매일 아침 자동 발송합니다<br>
 수신을 원치 않으시면 이 메일에 회신해 주십시오. 바로 중단하겠습니다.<br>
 <a href="https://www.nextio.ai.kr" style="color:#aaaaaa;text-decoration:none;">www.nextio.ai.kr</a>
 </div>
 </div>
-</div></div>""".format(pub=pub, kicker=kicker, accent=accent, accent2=accent2,
-                       date=date_str, img=img_block, card=card_url, arch=archive_url)
+</div></div>""".format(pub=pub, kicker=kicker, topic=topic, accent=accent, accent2=accent2,
+                       date=date_str, img=img_block, card=card_url)
 
 
 def main():
@@ -171,7 +175,6 @@ def main():
     base = brand["base_url"].rstrip("/")
     # 확장자 없는 주소가 리다이렉트 0회로 바로 열린다(2026-08-25 실측).
     card_url = "%s/card_%s?utm_source=email&utm_medium=daily" % (base, date_str)
-    archive_url = "%s/?utm_source=email&utm_medium=daily" % base
 
     print("[%s] %s → %d명" % (a.brand, date_str, len(to)))
 
@@ -184,16 +187,16 @@ def main():
         msg["From"] = "Next I/O 홍보팀 <%s>" % os.environ["GMAIL_ADDRESS"]
         msg["To"] = ", ".join(to)
         msg.set_content(
-            "%s %s 카드가 나왔습니다.\n\n카드 보기: %s\n지난 날짜: %s\n\n"
+            "%s %s 핫 이슈입니다.\n\n카드 보기: %s\n\n"
             "이 메일은 Next I/O 홍보팀이 매일 아침 자동 발송합니다.\n"
             "수신을 원치 않으시면 이 메일에 회신해 주십시오. 바로 중단하겠습니다."
-            % (brand["publisher"], date_str, card_url, archive_url))
+            % (date_str, brand["topic"], card_url))
 
         cid_val = None
         if thumb:
             cid_val = make_msgid(domain="nextio.ai.kr")[1:-1]  # <> 제거
         msg.add_alternative(
-            build_html(brand, date_str, card_url, archive_url, cid_val), subtype="html")
+            build_html(brand, date_str, card_url, cid_val), subtype="html")
         if thumb:
             with open(thumb, "rb") as f:
                 msg.get_payload()[1].add_related(
