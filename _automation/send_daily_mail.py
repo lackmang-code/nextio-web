@@ -129,6 +129,7 @@ def build_html(brand, date_str, card_url, cid):
 </tr></table>
 </div>
 <div style="padding:24px 20px 0;text-align:center;">
+<div style="font-size:12.5px;font-weight:700;color:#999999;letter-spacing:0.02em;margin-bottom:4px;">[{pub}]</div>
 <div style="font-size:17px;font-weight:800;color:#1a1a1a;">{date} {topic} 핫 이슈입니다.</div>
 </div>
 {img}
@@ -187,10 +188,10 @@ def main():
         msg["From"] = "Next I/O 홍보팀 <%s>" % os.environ["GMAIL_ADDRESS"]
         msg["To"] = ", ".join(to)
         msg.set_content(
-            "%s %s 핫 이슈입니다.\n\n카드 보기: %s\n\n"
+            "[%s] %s %s 핫 이슈입니다.\n\n카드 보기: %s\n\n"
             "이 메일은 Next I/O 홍보팀이 매일 아침 자동 발송합니다.\n"
             "수신을 원치 않으시면 이 메일에 회신해 주십시오. 바로 중단하겠습니다."
-            % (date_str, brand["topic"], card_url))
+            % (brand["publisher"], date_str, brand["topic"], card_url))
 
         cid_val = None
         if thumb:
