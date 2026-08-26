@@ -66,8 +66,8 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           MAIL_TO_BATTERY: ${{ github.event.inputs.mail_to || secrets.MAIL_TO_BATTERY }}
           MAIL_TO_DISPLAY: ${{ github.event.inputs.mail_to || secrets.MAIL_TO_DISPLAY }}
-          MAIL_TO_SKKU_DISPLAY: ${{ secrets.MAIL_TO_SKKU_DISPLAY }}
-          MAIL_TO_SEMICONDUCTOR: ${{ secrets.MAIL_TO_SEMICONDUCTOR }}
+          MAIL_TO_SKKU_DISPLAY: ${{ github.event.inputs.mail_to || secrets.MAIL_TO_SKKU_DISPLAY }}
+          MAIL_TO_SEMICONDUCTOR: ${{ github.event.inputs.mail_to || secrets.MAIL_TO_SEMICONDUCTOR }}
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
