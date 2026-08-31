@@ -1,36 +1,36 @@
 {
-  "updated": "2026-08-24",
+  "updated": "2026-09-01",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "청색 인광 OLED(PHOLED) 특허 8건 분석",
-      "url": "https://display-now.nextio.ai.kr/article/2026-08-18-blue-phosphorescent-oled-patents",
+      "title": "e스포츠 전용 24.5인치 패널로 맞붙은 펜타 탠덤과 탠덤 WOLED",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-01-esports-245-panel-tandem",
+      "section": "이슈",
+      "publishedAt": "2026-09-01"
+    },
+    {
+      "title": "초음파 지문센서는 유리보다 접착제에서 막힌다",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-01-ultrasonic-fingerprint-impedance",
+      "section": "기술노트",
+      "publishedAt": "2026-09-01"
+    },
+    {
+      "title": "나노 LED 특허 12건 분석",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-01-nano-led-patents",
       "section": "특허",
-      "publishedAt": "2026-08-18"
+      "publishedAt": "2026-09-01"
     },
     {
-      "title": "ALD IGZO 수직 RRAM: 디스플레이 백플레인 소재의 메모리 응용",
-      "url": "https://display-now.nextio.ai.kr/article/2026-08-18-dongguk-ald-igzo-vrram",
+      "title": "아이소소바이드 가교제로 잡은 폴더블 접착제의 투명도와 회복력",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-01-isosorbide-oca-foldable",
       "section": "논문",
-      "publishedAt": "2026-08-18"
+      "publishedAt": "2026-09-01"
     },
     {
-      "title": "언더패널 페이스 ID: 구조광 3D 센싱의 회절 한계",
-      "url": "https://display-now.nextio.ai.kr/article/2026-08-18-faceid-under-panel",
-      "section": "기술노트",
-      "publishedAt": "2026-08-18"
-    },
-    {
-      "title": "LG디스플레이 2스택 탠덤 WOLED 구조와 보급형 전략",
-      "url": "https://display-now.nextio.ai.kr/article/2026-08-18-lgd-2stack-woled",
-      "section": "기술노트",
-      "publishedAt": "2026-08-18"
-    },
-    {
-      "title": "자가치유 페로브스카이트 LED 발광층과 웨어러블 봉지",
-      "url": "https://display-now.nextio.ai.kr/article/2026-08-18-self-healing-wearable-peled",
+      "title": "나노크랙을 유도해 잡은 신축성 OLED의 효율과 신장률",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-01-stretchable-oled-nanocrack",
       "section": "논문",
-      "publishedAt": "2026-08-18"
+      "publishedAt": "2026-09-01"
     }
   ]
 }
