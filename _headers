@@ -1,0 +1,11 @@
+# Cloudflare Pages 응답 헤더 규칙
+#
+# /px/* — 집계 픽셀. 캐시되면 두 번째 방문부터 요청 자체가 나가지 않아
+#          독자 수가 과소집계된다. no-store 를 완화하지 말 것.
+#          (Pages Function functions/px/[[path]].js 도 같은 헤더를 직접 붙인다 —
+#           라우팅이 정적 파일 쪽으로 붙는 경우를 대비한 이중화)
+/px/*
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+  Access-Control-Allow-Origin: *
