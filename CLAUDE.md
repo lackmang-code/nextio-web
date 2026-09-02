@@ -299,6 +299,7 @@ git add -A && git commit -m "..." && git push origin master
 | 규격서 | 대상 | 내용 |
 |---|---|---|
 | `연동규격_DISPLAY_NOW_진열대.md` | 디플 | 새 호 발행 시 `data/display-now-latest.json` + 표지 webp + **`data/display-now-articles.json`(최신 기사 5편, 2026-08-24 추가)** 갱신. `index.html`은 JSON을 읽어 스스로 바뀐다. JSON을 못 읽어도 HTML 기본값이 남아 진열대·기사목록이 비지 않는다 |
+| `연동규격_첨디공On_진열대.md` | 성대첨디공팀 | **2026-09-02 신설.** 디플 방식과 달리 **홈페이지가 매거진 사이트를 직접 읽는다** — `display-magazine.pages.dev/data/issues.json`. 그쪽 발행 빌드가 그 JSON만 갱신하면 사람 손 없이 진열대가 바뀌고, **표지 PNG를 이 저장소에 커밋할 필요가 없다**(저장용량 규칙 정합). ⚠️ 남의 오리진 데이터라 렌더러가 오리진 화이트리스트로 검증한다 — **그 검증을 빼지 말 것** |
 | `연동규격_시뮬레이터_소개페이지.md` | 비서실장 | `simulators/` 비공개 페이지 틀. **문안 미작성·커밋 보류 상태** (담당 미배정) |
 
 ## 🔗 DISPLAY NOW 유입 링크 (2026-08-24 신설 — SEO)

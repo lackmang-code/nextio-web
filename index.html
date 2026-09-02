@@ -1926,7 +1926,15 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
             <p class="vb-tag"><b>발행 매체</b> · Next I/O</p>
             <div class="shelf-wrap">
               <div class="shelf-row shelf-row-1">
-                <div class="covers">
+                <!-- 아래 칸들은 매거진 사이트의 data/issues.json 을 읽어 다시 그려진다.
+                     성대첨디공팀이 발행하면 그쪽 빌드가 그 JSON을 갱신하고, 이 HTML도
+                     표지 파일도 건드릴 필요가 없다(표지는 그쪽 사이트를 직접 참조).
+                     최신 3호까지만 진열하며 NEW 배지는 첫 항목에만 붙는다.
+                     JSON을 못 읽으면 아래 기본값이 그대로 남는다.
+                     ⚠️ 남의 오리진에서 오는 데이터라 렌더러가 오리진 화이트리스트로
+                        검증한다(syncMagazineShelf). 그 검증을 빼지 말 것.
+                     규격서: 연동규격_첨디공On_진열대.md -->
+                <div class="covers" id="mgCovers">
                   <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-07/" target="_blank" rel="noopener">
                     <div class="cover-card">
                       <img src="images/magazine-cover-2026-07.png" alt="첨디공 On 창간호 2026년 7월 표지">
@@ -2767,6 +2775,83 @@ window.goto = function(id) {
       list.replaceChildren(frag);
     })
     .catch(err => console.warn('DISPLAY NOW 최신 기사 목록을 읽지 못했습니다 — 기본값 유지:', err.message));
+})();
+
+// ── 매거진 진열대: 첨디공On(성대 첨디공) 발행호 연동 ──
+// 성대첨디공팀이 발행할 때 자기 사이트의 data/issues.json 만 갱신하면 여기가 표지·라벨·
+// 링크를 스스로 바꾼다. 표지 이미지도 그쪽 사이트를 직접 참조하므로 이 저장소에 매달
+// 표지 PNG를 커밋할 필요가 없다(저장용량 규칙).
+//
+// ⚠️ 이 데이터는 우리 저장소가 아니라 남의 오리진에서 온다. 커밋 훅이라는 사람 관문을
+//    거치지 않으므로 url·cover 를 반드시 오리진 화이트리스트로 검증한다.
+//    검증을 빼면 그쪽 사고가 회사 홈페이지 링크·이미지로 그대로 나간다. 빼지 말 것.
+// 실패해도(사이트 다운·형식 오류·타임아웃) HTML 기본값이 남아 진열대가 비지 않는다.
+(function syncMagazineShelf() {
+  const box = document.getElementById('mgCovers');
+  if (!box) return;
+  const ORIGIN  = 'https://display-magazine.pages.dev';
+  const SRC     = ORIGIN + '/data/issues.json';
+  const MAX     = 3;      // 최신 3호까지만. 더 늘리면 96px 칸이 좁아진다.
+  const TIMEOUT = 5000;   // 남의 사이트가 느릴 때 페이지가 붙잡히지 않게
+
+  // 화이트리스트: 매거진 사이트의 https URL만 통과시킨다.
+  // 상대경로는 그 사이트 기준으로 해석되므로 안전하고, 'javascript:' 나
+  // '//evil.example' 같은 값은 오리진이 달라져 전부 걸러진다.
+  const safe = (u) => {
+    if (typeof u !== 'string' || !u.trim()) return null;
+    try {
+      const p = new URL(u, ORIGIN);
+      return (p.origin === ORIGIN && p.protocol === 'https:') ? p.href : null;
+    } catch (e) { return null; }
+  };
+
+  const draw = (list) => {
+    const items = [];
+    for (const x of (Array.isArray(list) ? list : [])) {
+      if (!x || typeof x !== 'object') continue;
+      const url = safe(x.url), cover = safe(x.cover);
+      if (!url || !cover) continue;           // 화이트리스트 밖이면 조용히 버린다
+      items.push({ url, cover, label: x.label, alt: x.alt, issue: x.issue });
+      if (items.length === MAX) break;
+    }
+    if (!items.length) return;                // 하나도 못 쓰면 HTML 기본값 유지
+    const frag = document.createDocumentFragment();
+    items.forEach((x, i) => {
+      const a = document.createElement('a');
+      a.className = 'cover-slot';
+      a.href = x.url; a.target = '_blank'; a.rel = 'noopener';
+      const card = document.createElement('div');
+      card.className = 'cover-card';
+      if (i === 0) {                          // NEW 배지는 최신호에만
+        const pin = document.createElement('span');
+        pin.className = 'new-pin'; pin.textContent = 'NEW';
+        card.appendChild(pin);
+      }
+      const img = document.createElement('img');
+      img.src = x.cover;
+      img.alt = (typeof x.alt === 'string' && x.alt.trim())
+        ? x.alt.trim() : ('첨디공 On ' + (x.issue || '') + '호 표지');
+      card.appendChild(img);
+      const vol = document.createElement('div');
+      vol.className = 'cover-vol';
+      // label 이 없을 때만 쓰는 폴백. 기존 라벨과 같은 'Vol.03' 형식으로 맞춘다.
+      const n = Number(x.issue);
+      vol.textContent = (typeof x.label === 'string' && x.label.trim())
+        ? x.label.trim()
+        : ('Vol.' + (Number.isFinite(n) ? String(n).padStart(2, '0') : ''));
+      a.appendChild(card); a.appendChild(vol);
+      frag.appendChild(a);
+    });
+    box.replaceChildren(frag);
+  };
+
+  const ctl = (typeof AbortController === 'function') ? new AbortController() : null;
+  const timer = ctl ? setTimeout(() => ctl.abort(), TIMEOUT) : null;
+  fetch(SRC, { cache: 'no-cache', mode: 'cors', signal: ctl ? ctl.signal : undefined })
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+    .then(d => draw(d && Array.isArray(d.issues) ? d.issues : []))
+    .catch(err => console.warn('첨디공On 발행호 정보를 읽지 못했습니다 — 기본값 유지:', err.message))
+    .finally(() => { if (timer) clearTimeout(timer); });
 })();
 
 // ── Scroll Reveal Script ──
