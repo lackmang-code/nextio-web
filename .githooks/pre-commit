@@ -3,7 +3,12 @@
 # 내부 전용 문서(가격·계약·리드·기밀 등)가 실수로 커밋되는 걸 막는 안전장치.
 # 우회하려면: git commit --no-verify (정말 의도한 경우에만 사용)
 
-staged=$(git diff --cached --name-only --diff-filter=ACM)
+# ⚠ git 은 비ASCII 경로를 "\354\227\260..." 로 이스케이프해 넘긴다.
+#   그러면 아래 한글 파일명 패턴이 하나도 발화하지 않는다 (2026-09-03 디플 발견).
+#   저장소 로컬 core.quotepath=false 에 기대면 클론했을 때 죽으므로 여기서 직접 끈다.
+staged=$(git -c core.quotepath=false diff --cached --name-only --diff-filter=ACM)
+IFS='
+'
 [ -z "$staged" ] && exit 0
 
 # 1) 파일 경로/이름에 민감 키워드가 있으면 차단
