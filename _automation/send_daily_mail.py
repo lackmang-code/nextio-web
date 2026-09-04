@@ -155,6 +155,9 @@ def main():
     ap.add_argument("--brand", required=True)
     ap.add_argument("--date")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--require-published",
+                    help="이번 실행에서 실제로 커밋된 파일 목록(공백 구분). "
+                         "이 브랜드의 오늘 카드가 그 안에 없으면 발송하지 않는다.")
     a = ap.parse_args()
 
     brand = load_brand(a.brand)
@@ -172,6 +175,17 @@ def main():
     if not os.path.exists(card_path):
         print("[%s] %s 카드가 없습니다 — 건너뜁니다" % (a.brand, date_str))
         return
+
+    # 카드가 "있다"는 것만으로 보내면, 하루에 여러 번 트리거될 때
+    # 같은 메일이 반복 발송된다(2026-09-04 실측: 수신자당 하루 3통).
+    # 재실행 시 1차가 만든 카드가 이미 있어 위 가드를 그대로 통과하기 때문이다.
+    # 따라서 "이번 실행에서 새로 커밋됐는가"로 판정한다.
+    if a.require_published is not None:
+        rel = os.path.relpath(card_path, REPO_ROOT).replace(os.sep, "/")
+        if rel not in a.require_published.split():
+            print("[%s] %s 카드가 이번 실행에서 새로 발행되지 않았습니다 — 건너뜁니다"
+                  % (a.brand, date_str))
+            return
 
     base = brand["base_url"].rstrip("/")
     # 확장자 없는 주소가 리다이렉트 0회로 바로 열린다(2026-08-25 실측).

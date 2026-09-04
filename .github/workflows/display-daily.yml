@@ -1,19 +1,17 @@
 name: Display Daily Auto-publish
 
 on:
-  schedule:
-    # GitHub 예약 큐는 정각/30분 등 인기 시각에 몰려 아예 스킵되는 일이 잦다.
-    # → 어중간한 분(分)으로 옮기고, 백업 스케줄을 하나 더 둔다(멱등이라 중복 실행 안전).
-    - cron: '43 0 * * *'  # 00:43 UTC = 09:43 KST (다이제스트 메일이 09:10경 도착)
-    - cron: '17 3 * * *'  # 03:17 UTC = 12:17 KST — 1차가 스킵된 날의 백업
-  workflow_dispatch:       # 수동 실행 버튼(테스트·긴급 재실행용)
+  # 트리거는 cron-job.org(매일 09:45 KST) 하나뿐이다.
+  # GitHub 예약(schedule)은 2026-09-04 제거했다 — 42~82분 상습 지연에 더해,
+  # 하루 3회 실행되면서 같은 발행 알림 메일이 수신자에게 3통씩 나갔다.
+  workflow_dispatch:
     inputs:
       mail_to:
         description: '발행 알림 메일 수신자(쉼표 구분). 비우면 Secrets 설정을 따른다'
         required: false
         default: ''
       mail_brands:
-        description: '메일 보낼 브랜드만 선택(쉼표 구분: display,battery,skku-display,semiconductor). 비우면 전체 — 신규 수신자 테스트 시 해당 브랜드만 지정하면 다른 브랜드 기존 수신자에게 중복 발송되지 않는다'
+        description: '메일 보낼 브랜드만 선택(쉼표 구분: display,battery,skku-display,semiconductor). 비우면 전체 — 신규 수신자 테스트 시 해당 브랜드만 지정하면 다른 브랜드 기존 수신자에게 중복 발송되지 않는다. 지정하면 "이번에 새로 발행됐는가" 가드를 우회해 강제 발송한다'
         required: false
         default: ''
 
@@ -48,20 +46,29 @@ jobs:
         run: python _automation/run_showcase.py
 
       - name: Commit and push if changed
+        id: commit
         run: |
           git config user.name "nextio-bot"
           git config user.email "actions@users.noreply.github.com"
           git add display-daily/ showcase/
           if git diff --cached --quiet; then
             echo "변경 없음 — 커밋 스킵"
+            echo "published=" >> "$GITHUB_OUTPUT"
           else
+            FILES="$(git diff --cached --name-only | tr '\n' ' ')"
             git commit -m "Auto-publish Daily Cards [$(date -u +%Y-%m-%d)]"
             git push
+            echo "이번에 발행된 파일: $FILES"
+            echo "published=$FILES" >> "$GITHUB_OUTPUT"
           fi
 
       # 발행 알림 메일. 카드 상단을 크롬으로 캡처해 썸네일을 만들고 링크와 함께 보낸다.
       # 썸네일은 저장소에 커밋하지 않고 메일에 인라인 첨부한다(매일 커밋하면 저장소가 부푼다).
       # 수신자 시크릿이 없는 브랜드는 스크립트가 조용히 건너뛴다 = 브랜드별 on/off 스위치.
+      #
+      # ⚠ 카드가 '있는지'로 판정하면 안 된다. 재실행 시 1차가 만든 카드가 이미 있어
+      #   가드를 그냥 통과하고 같은 메일이 다시 나간다(2026-09-04 실측: 하루 3통).
+      #   반드시 '이번 실행에서 새로 커밋됐는지'(--require-published)로 판정한다.
       - name: Send publish notification mail
         id: mail
         continue-on-error: true
@@ -72,18 +79,29 @@ jobs:
           MAIL_TO_DISPLAY: ${{ github.event.inputs.mail_to || secrets.MAIL_TO_DISPLAY }}
           MAIL_TO_SKKU_DISPLAY: ${{ github.event.inputs.mail_to || secrets.MAIL_TO_SKKU_DISPLAY }}
           MAIL_TO_SEMICONDUCTOR: ${{ github.event.inputs.mail_to || secrets.MAIL_TO_SEMICONDUCTOR }}
+          PUBLISHED: ${{ steps.commit.outputs.published }}
+          MANUAL_BRANDS: ${{ github.event.inputs.mail_brands }}
         run: |
+          if [ -z "$PUBLISHED" ] && [ -z "$MANUAL_BRANDS" ]; then
+            echo "이번 실행에서 새로 발행된 카드가 없습니다 — 메일을 보내지 않습니다."
+            exit 0
+          fi
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
           pip install --quiet pillow
-          BRANDS="${{ github.event.inputs.mail_brands }}"
+          BRANDS="$MANUAL_BRANDS"
           if [ -z "$BRANDS" ]; then
             BRANDS="display,battery,skku-display,semiconductor"
           fi
           echo "메일 대상 브랜드: $BRANDS"
           IFS=',' read -ra LIST <<< "$BRANDS"
           for b in "${LIST[@]}"; do
-            python _automation/send_daily_mail.py --brand "$b" || echo "  ($b 발송 실패 — 계속)"
+            if [ -n "$MANUAL_BRANDS" ]; then
+              # 수동 지정 = 테스트·재발송. 가드를 걸지 않는다.
+              python _automation/send_daily_mail.py --brand "$b" || echo "  ($b 발송 실패 — 계속)"
+            else
+              python _automation/send_daily_mail.py --brand "$b" --require-published "$PUBLISHED" || echo "  ($b 발송 실패 — 계속)"
+            fi
           done
 
       - name: Fail if a non-critical step failed
