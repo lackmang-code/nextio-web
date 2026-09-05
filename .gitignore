@@ -43,3 +43,11 @@ modify_plan.md
 # 안에 "에이프로·성대 명의 사용은 구두 동의뿐이고 서면이 없다"가 들어 있었다.
 CLAUDE.md
 .agents/
+
+# 2026-09-05: CLAUDE.md 를 34.6KB → 15KB 로 줄이면서 세 갈래로 나눴다.
+#   CLAUDE.md(규칙) / README.md(목록·절차) / 착수점.md(현황)
+# 나머지 둘도 똑같은 내부 문서다. 특히 README.md 는 이름 때문에 위험하다 —
+# 공개 저장소에서 README.md 는 "당연히 커밋하는 파일"로 취급되는데,
+# 이 README 에는 cron 콘솔 주소·PAT 이름·Secrets 이름·백업 경로가 들어 있다.
+README.md
+착수점.md

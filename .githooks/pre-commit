@@ -14,7 +14,11 @@ IFS='
 # 1) 파일 경로/이름에 민감 키워드가 있으면 차단
 # 2026-08-25: 일일보고 6건(5~8월)이 이 목록에 없어 그대로 공개돼 있었다.
 # 세션 보고서·계획서·지시서 계열을 통째로 막는다.
-path_pattern='handbook|NDA|nda|견적|계약서|리드DB|리드db|컨택리스트|독소조항|내부문서|기밀|confidential|salary|연봉|급여|보고_|일일보고|브리핑_|작업지시서|modify_plan|착수점|_전략|세션정리|CLAUDE.md|rules.md|.agents/|연동규격|검수_|회신_|시말서'
+# 2026-09-05: README.md 추가. CLAUDE.md 를 규칙/목록/현황 세 갈래로 나누면서
+#   README.md 가 내부 운영 문서가 됐다(cron 콘솔 주소·PAT 이름·Secrets 이름·백업 경로).
+#   공개 저장소에서 README.md 는 "당연히 커밋하는 파일"로 취급되므로 훅에서도 막는다.
+#   진짜 공개용 README 가 필요해지면 그때 --no-verify 로 한 번만 통과시킬 것.
+path_pattern='handbook|NDA|nda|견적|계약서|리드DB|리드db|컨택리스트|독소조항|내부문서|기밀|confidential|salary|연봉|급여|보고_|일일보고|브리핑_|작업지시서|modify_plan|착수점|_전략|세션정리|CLAUDE.md|README.md|rules.md|.agents/|연동규격|검수_|회신_|시말서'
 bad_paths=$(echo "$staged" | grep -E -i "$path_pattern")
 
 # 2) 파일 내용에 비밀키/시크릿 패턴이 있으면 차단
