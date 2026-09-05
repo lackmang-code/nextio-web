@@ -116,6 +116,21 @@
     <button id="refreshBtn">새로고침</button>
     <div id="posts"></div>
     <div id="emptyMsg" style="display:none;">등록된 문의가 없습니다.</div>
+
+    <div id="notifyWrap" style="margin-top:44px; border-top:1px solid #2a2e3a; padding-top:26px;">
+      <h1 style="font-size:20px;">단행본 출간 알림 신청 <span id="notifyCount" style="color:#d9a441;"></span></h1>
+      <p style="font-size:13px; color:#8b93a8; margin:-6px 0 14px;">
+        『1인 유니콘 기업 첫발 딛기』 사전 신청 명단입니다. 출간되면 이 주소로 안내를 보냅니다.
+      </p>
+      <button id="notifyRefreshBtn" style="background:#2a2e3a; width:auto; padding:8px 16px; font-size:13px;">새로고침</button>
+      <button id="copyMailsBtn" style="background:#2a2e3a; width:auto; padding:8px 16px; font-size:13px; margin-left:6px;">이메일 전체 복사</button>
+      <div id="notifyList" style="margin-top:14px;"></div>
+      <div id="notifyEmpty" style="display:none; color:#8b93a8;">아직 신청자가 없습니다.</div>
+      <textarea id="mailsBox" readonly
+        style="display:none; width:100%; height:120px; margin-top:12px; background:#141821;
+               color:#e6e9ef; border:1px solid #2a2e3a; border-radius:6px; padding:10px;
+               font-family:ui-monospace,Consolas,monospace; font-size:12.5px;"></textarea>
+    </div>
   </div>
 
 </div>
@@ -155,6 +170,7 @@ async function login() {
     loginBox.style.display = 'none';
     boardWrap.style.display = 'block';
     renderPosts(data.posts);
+    loadNotify();
   } catch (e) {
     loginError.textContent = '접속 중 오류가 발생했습니다.';
     loginBtn.disabled = false;
@@ -303,6 +319,81 @@ async function loadPosts() {
 }
 
 refreshBtn.addEventListener('click', loadPosts);
+
+// ─────────────── 단행본 출간 알림 신청 명단 ───────────────
+const notifyListEl = document.getElementById('notifyList');
+const notifyEmpty = document.getElementById('notifyEmpty');
+const notifyCount = document.getElementById('notifyCount');
+const mailsBox = document.getElementById('mailsBox');
+let NOTIFY_ROWS = [];
+
+function renderNotify(rows) {
+  NOTIFY_ROWS = rows || [];
+  notifyCount.textContent = NOTIFY_ROWS.length ? '· ' + NOTIFY_ROWS.length + '명' : '';
+  if (!NOTIFY_ROWS.length) {
+    notifyListEl.innerHTML = '';
+    notifyEmpty.style.display = 'block';
+    return;
+  }
+  notifyEmpty.style.display = 'none';
+  notifyListEl.innerHTML =
+    '<table style="width:100%; border-collapse:collapse; font-size:13.5px;">' +
+    '<thead><tr style="color:#8b93a8; font-size:12px; text-align:left;">' +
+    '<th style="padding:7px 8px;">이메일</th><th style="padding:7px 8px;">이름</th>' +
+    '<th style="padding:7px 8px;">유입</th><th style="padding:7px 8px;">신청일</th>' +
+    '<th style="padding:7px 8px;"></th></tr></thead><tbody>' +
+    NOTIFY_ROWS.map(function (r) {
+      return '<tr style="border-top:1px solid #2a2e3a;">' +
+        '<td style="padding:8px;">' + esc(r.email) + '</td>' +
+        '<td style="padding:8px; color:#c7ccdb;">' + esc(r.name || '—') + '</td>' +
+        '<td style="padding:8px; color:#8b93a8;">' + esc(r.source || '—') + '</td>' +
+        '<td style="padding:8px; color:#8b93a8; white-space:nowrap;">' + fmtDate(r.created_at) + '</td>' +
+        '<td style="padding:8px; text-align:right;"><button class="nDelBtn" data-id="' + r.id +
+        '" style="background:#3a1f24; width:auto; padding:5px 11px; font-size:12px;">삭제</button></td>' +
+        '</tr>';
+    }).join('') + '</tbody></table>';
+
+  notifyListEl.querySelectorAll('.nDelBtn').forEach(function (btn) {
+    btn.addEventListener('click', async function () {
+      // 신청자 삭제는 되돌릴 수 없다. 수신 거부 요청을 처리할 때만 쓴다.
+      if (!confirm('이 신청자를 삭제할까요? 되돌릴 수 없습니다.')) return;
+      btn.disabled = true;
+      const res = await fetch('/api/board/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: ADMIN_PW, action: 'notify_delete', id: btn.getAttribute('data-id') })
+      });
+      const d = await res.json();
+      if (d.success) loadNotify(); else { alert('삭제하지 못했습니다.'); btn.disabled = false; }
+    });
+  });
+}
+
+async function loadNotify() {
+  const res = await fetch('/api/board/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: ADMIN_PW, action: 'notify_list' })
+  });
+  const data = await res.json();
+  if (data.success) renderNotify(data.notify);
+}
+
+document.getElementById('notifyRefreshBtn').addEventListener('click', loadNotify);
+
+// 클립보드 API는 http 로 열거나 권한이 없으면 조용히 실패한다.
+// 그래서 텍스트 상자에도 함께 뿌려 둔다 — 복사가 안 되면 눈으로 긁어갈 수 있다.
+document.getElementById('copyMailsBtn').addEventListener('click', function () {
+  if (!NOTIFY_ROWS.length) { alert('신청자가 없습니다.'); return; }
+  const text = NOTIFY_ROWS.map(function (r) { return r.email; }).join(', ');
+  mailsBox.value = text;
+  mailsBox.style.display = 'block';
+  try {
+    navigator.clipboard.writeText(text).then(function () {
+      alert(NOTIFY_ROWS.length + '개 주소를 복사했습니다.');
+    }, function () { mailsBox.select(); });
+  } catch (e) { mailsBox.select(); }
+});
 </script>
 </body>
 </html>

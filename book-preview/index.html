@@ -117,6 +117,29 @@
   .closing .btn-primary{max-width:300px; margin:0 auto;}
   .closing .btn-note{color:#8b93a8;}
 
+  /* 출간 알림 신청 폼 */
+  html{scroll-behavior:smooth;}
+  .notify{max-width:360px; margin:0 auto; text-align:left;}
+  .notify .row{margin-bottom:10px;}
+  .notify input[type=text], .notify input[type=email]{
+    width:100%; padding:13px 14px; border-radius:8px; font-size:15px; font-family:inherit;
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18); color:#fff;
+  }
+  .notify input::placeholder{color:#79819a;}
+  .notify input:focus{outline:none; border-color:var(--gold); background:rgba(255,255,255,.1);}
+  .notify .consent{display:flex; gap:9px; align-items:flex-start; font-size:12.5px;
+    color:#a8b0c2; line-height:1.65; margin:13px 0 15px;}
+  .notify .consent input{margin-top:3px; flex:none; width:16px; height:16px; accent-color:var(--gold);}
+  .notify button{width:100%; border:0; cursor:pointer; font-family:inherit;}
+  .notify button[disabled]{opacity:.5; cursor:default; transform:none;}
+  .notify .msg{font-size:13.5px; margin:12px 0 0; text-align:center; min-height:1.3em;}
+  .notify .msg.ok{color:#8fe0a8;}
+  .notify .msg.err{color:#ff9c9c;}
+  .notify .hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0;}
+  .privacy{font-size:11.5px; color:#79819a; line-height:1.8; max-width:360px;
+    margin:18px auto 0; text-align:left; border-top:1px solid rgba(255,255,255,.1); padding-top:13px;}
+  .privacy b{color:#a8b0c2; font-weight:600;}
+
   footer{padding:26px 0 40px; text-align:center;}
   footer img{height:16px; opacity:.65; margin-bottom:10px;}
   footer .meta{font-size:12px; color:#9aa0ae; line-height:1.9;}
@@ -142,8 +165,8 @@
     </div>
     <p class="pitch">혼자 일하는 사람이 회사 하나가 하는 일을 해내게 만드는 법. AI를 도구가 아니라 <strong>직원</strong>으로 채용해, 열 개의 관문을 지나며 실제로 굴러가는 회사를 만듭니다.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="mailto:info@nextio.ai.kr?subject=%5B1%EC%9D%B8%20%EC%9C%A0%EB%8B%88%EC%BD%98%20%EA%B8%B0%EC%97%85%20%EC%B2%AB%EB%B0%9C%20%EB%94%9B%EA%B8%B0%5D%20%EC%B6%9C%EA%B0%84%20%EC%86%8C%EC%8B%9D%20%EB%B0%9B%EA%B3%A0%20%EC%8B%B6%EC%96%B4%EC%9A%94&body=%EC%B6%9C%EA%B0%84%EB%90%98%EB%A9%B4%20%EA%B0%80%EC%9E%A5%20%EB%A8%BC%EC%A0%80%20%EC%95%8C%EB%A0%A4%EC%A3%BC%EC%84%B8%EC%9A%94.">📖 출간 소식 가장 먼저 받기</a>
-      <span class="btn-note">부크크 등록 완료 후 이 자리에 실제 구매 링크가 연결됩니다</span>
+      <a class="btn btn-primary" href="#notify" data-src="hero">📖 출간 소식 가장 먼저 받기</a>
+      <span class="btn-note">출간되면 이 자리에 실제 구매 링크가 연결됩니다</span>
     </div>
   </div>
 </div>
@@ -234,7 +257,7 @@
       <div class="lock">🔒</div>
       <h3>여기서부터는 책에서 이어집니다</h3>
       <p>세 자리를 정한 이유 다음엔 "왜 딱 셋에서 멈추는가", "제작팀은 왜 없는가", 그리고 1부 끝에서 만나는 <strong>네 번째 벽</strong>이 기다리고 있습니다. 관문 0부터 27장까지, 총 30편이 이어집니다.</p>
-      <a class="btn btn-primary" href="mailto:info@nextio.ai.kr?subject=%5B1%EC%9D%B8%20%EC%9C%A0%EB%8B%88%EC%BD%98%20%EA%B8%B0%EC%97%85%20%EC%B2%AB%EB%B0%9C%20%EB%94%9B%EA%B8%B0%5D%20%EC%B6%9C%EA%B0%84%20%EC%86%8C%EC%8B%9D%20%EB%B0%9B%EA%B3%A0%20%EC%8B%B6%EC%96%B4%EC%9A%94&body=%EC%B6%9C%EA%B0%84%EB%90%98%EB%A9%B4%20%EA%B0%80%EC%9E%A5%20%EB%A8%BC%EC%A0%80%20%EC%95%8C%EB%A0%A4%EC%A3%BC%EC%84%B8%EC%9A%94.">📖 출간 소식 가장 먼저 받기</a>
+      <a class="btn btn-primary" href="#notify" data-src="gate">📖 출간 소식 가장 먼저 받기</a>
     </div>
   </div>
 </div>
@@ -290,12 +313,38 @@
   </div>
 </section>
 
-<div class="closing">
+<div class="closing" id="notify">
   <div class="wrap">
     <h3>혼자인데, 회사처럼.</h3>
     <p>사업자등록증도, 회사 이름도, 무엇을 팔지에 대한 확신도 지금은 필요 없습니다. 필요한 건 컴퓨터 한 대와 두 시간, 그리고 첫 관문뿐입니다.</p>
-    <a class="btn btn-primary" href="mailto:info@nextio.ai.kr?subject=%5B1%EC%9D%B8%20%EC%9C%A0%EB%8B%88%EC%BD%98%20%EA%B8%B0%EC%97%85%20%EC%B2%AB%EB%B0%9C%20%EB%94%9B%EA%B8%B0%5D%20%EC%B6%9C%EA%B0%84%20%EC%86%8C%EC%8B%9D%20%EB%B0%9B%EA%B3%A0%20%EC%8B%B6%EC%96%B4%EC%9A%94&body=%EC%B6%9C%EA%B0%84%EB%90%98%EB%A9%B4%20%EA%B0%80%EC%9E%A5%20%EB%A8%BC%EC%A0%80%20%EC%95%8C%EB%A0%A4%EC%A3%BC%EC%84%B8%EC%9A%94.">📖 출간 소식 가장 먼저 받기</a>
-    <p class="btn-note" style="margin-top:14px;">부크크 등록 완료 후 종이책·전자책 구매 링크로 교체됩니다</p>
+
+    <form class="notify" id="notifyForm" autocomplete="on" novalidate>
+      <div class="row">
+        <input type="email" id="nEmail" name="email" placeholder="이메일 주소" required
+               maxlength="120" autocomplete="email" inputmode="email">
+      </div>
+      <div class="row">
+        <input type="text" id="nName" name="name" placeholder="이름 (선택)" maxlength="40" autocomplete="name">
+      </div>
+
+      <!-- 허니팟: 사람 눈에 보이지 않는 칸. 채워져 있으면 봇이다. -->
+      <input class="hp" type="text" name="website" id="nWebsite" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="hidden" id="nSource" name="source" value="closing">
+
+      <label class="consent">
+        <input type="checkbox" id="nConsent" required>
+        <span>출간 알림을 받기 위해 이메일 주소 수집·이용에 동의합니다. <b>(필수)</b></span>
+      </label>
+
+      <button class="btn btn-primary" type="submit" id="nSubmit">📖 출간 소식 가장 먼저 받기</button>
+      <p class="msg" id="nMsg" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="privacy">
+      <b>수집 항목</b> 이메일 주소, 이름(선택) &nbsp;·&nbsp; <b>이용 목적</b> 『1인 유니콘 기업 첫발 딛기』 출간·구매처 안내<br>
+      <b>보유 기간</b> 출간 안내 발송 후 파기. 그 전이라도 <a href="mailto:info@nextio.ai.kr?subject=%EC%B6%9C%EA%B0%84%20%EC%95%8C%EB%A6%BC%20%EC%88%98%EC%8B%A0%20%EC%B7%A8%EC%86%8C" style="color:#a8b0c2;">info@nextio.ai.kr</a>로 요청하시면 즉시 삭제합니다.<br>
+      동의를 거부하실 수 있으며, 이 경우 출간 알림을 받으실 수 없습니다. 광고·타 상품 안내에는 사용하지 않습니다.
+    </div>
   </div>
 </div>
 
@@ -304,6 +353,83 @@
     <img src="/book-preview/nextio-lockup.svg" alt="Next I/O" style="filter:invert(1) grayscale(1) brightness(.4);">
     <p class="meta">Next I/O 단행본출판팀 · 문의 info@nextio.ai.kr<br>ⓒ 2026 박원상 · 1인 유니콘 기업 첫발 딛기</p>
   </div>
+  <script>
+  (function () {
+    var form = document.getElementById('notifyForm');
+    if (!form) return;
+    var email = document.getElementById('nEmail');
+    var srcField = document.getElementById('nSource');
+    var msg = document.getElementById('nMsg');
+    var btn = document.getElementById('nSubmit');
+    var done = false;
+
+    // 위쪽 버튼 두 개는 폼으로 내려보낸다. 어느 버튼에서 왔는지는 남겨둔다 —
+    // 나중에 "어느 자리가 실제로 신청을 만드는가"를 알 수 있다.
+    Array.prototype.forEach.call(document.querySelectorAll('a[href="#notify"][data-src]'), function (a) {
+      a.addEventListener('click', function () {
+        srcField.value = a.getAttribute('data-src');
+        // 스크롤이 끝난 뒤 커서를 넣는다. 바로 넣으면 브라우저가 점프해버린다.
+        setTimeout(function () { try { email.focus({ preventScroll: true }); } catch (e) { email.focus(); } }, 600);
+      });
+    });
+
+    function say(text, kind) {
+      msg.textContent = text;
+      msg.className = 'msg' + (kind ? ' ' + kind : '');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (done) return;
+
+      var v = (email.value || '').trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
+        say('이메일 주소를 다시 확인해 주세요.', 'err');
+        email.focus();
+        return;
+      }
+      if (!document.getElementById('nConsent').checked) {
+        say('이메일 수집·이용 동의가 필요합니다.', 'err');
+        return;
+      }
+
+      btn.disabled = true;
+      say('보내는 중…');
+
+      fetch('/api/book/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: v,
+          name: (document.getElementById('nName').value || '').trim(),
+          source: srcField.value,
+          consent: true,
+          website: document.getElementById('nWebsite').value
+        })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (res.ok && res.d && res.d.success) {
+            done = true;
+            // 이미 신청한 주소여도 같은 문구가 나온다. 서버가 성공·중복을 구분해 알려주지 않기 때문이다.
+            say('신청되었습니다. 출간되면 가장 먼저 알려드리겠습니다.', 'ok');
+            btn.textContent = '✅ 신청 완료';
+            return;
+          }
+          var code = res.d && res.d.error;
+          if (code === 'too_many_requests') say('잠시 후 다시 시도해 주세요.', 'err');
+          else if (code === 'invalid_email') say('이메일 주소를 다시 확인해 주세요.', 'err');
+          else if (code === 'consent_required') say('이메일 수집·이용 동의가 필요합니다.', 'err');
+          else say('전송에 실패했습니다. info@nextio.ai.kr 로 보내주시면 등록해 드리겠습니다.', 'err');
+          btn.disabled = false;
+        })
+        .catch(function () {
+          say('네트워크 오류입니다. 잠시 후 다시 시도해 주세요.', 'err');
+          btn.disabled = false;
+        });
+    });
+  })();
+  </script>
 </footer>
 
 </body>

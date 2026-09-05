@@ -1,4 +1,5 @@
 import { json, getIP, sha256hex, safeEqual, isBlocked, recordFail, clearFails } from './_lib.js';
+import { ensureNotifyTable } from '../book/notify.js';
 
 // 관리자 비밀번호는 게시판 전체(비밀글 본문·문의자 이메일 전부)를 지키는 단 하나의 문이다.
 // IP당 15분 5회로 제한한다. 전역 차단은 두지 않는다 — IP를 돌려가며 두드려
@@ -59,6 +60,32 @@ export async function onRequestPost({ request, env }) {
     if (!id) return json({ success: false, error: 'missing_id' }, 400);
 
     const res = await env.BOARD_DB.prepare(`DELETE FROM posts WHERE id = ?`).bind(id).run();
+    const removed = res && res.meta ? res.meta.changes : undefined;
+    if (removed === 0) return json({ success: false, error: 'not_found' }, 404);
+    return json({ success: true }, 200);
+  }
+
+  // ── 단행본 출간 알림 신청 명단 ──
+  // 게시판과 같은 D1·같은 비밀번호를 쓴다. 관리자 문을 하나 더 만들지 않기 위해서다.
+  // (문이 늘면 지켜야 할 곳도 늘어난다)
+  if (action === 'notify_list') {
+    try {
+      await ensureNotifyTable(env);
+      const { results } = await env.BOARD_DB.prepare(
+        `SELECT id, email, name, source, created_at FROM book_notify ORDER BY id DESC LIMIT 1000`
+      ).all();
+      return json({ success: true, notify: results }, 200);
+    } catch (e) {
+      // 아직 한 명도 신청하지 않아 표가 없을 수 있다. 그건 오류가 아니다.
+      return json({ success: true, notify: [] }, 200);
+    }
+  }
+
+  if (action === 'notify_delete') {
+    const { id } = data;
+    if (!id) return json({ success: false, error: 'missing_id' }, 400);
+
+    const res = await env.BOARD_DB.prepare(`DELETE FROM book_notify WHERE id = ?`).bind(id).run();
     const removed = res && res.meta ? res.meta.changes : undefined;
     if (removed === 0) return json({ success: false, error: 'not_found' }, 404);
     return json({ success: true }, 200);
