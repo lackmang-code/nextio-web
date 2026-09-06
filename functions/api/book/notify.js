@@ -17,6 +17,12 @@ const RL_MAX = 5;
 
 const LIMITS = { email: 120, name: 40, source: 40 };
 
+// 구매 의향·수량은 자유 입력이 아니라 정해진 값만 받는다.
+// 초판을 직접 인쇄하기로 하면서(2026-09-05) 이 값이 "몇 부를 찍을까"의 근거가 됐다.
+// 자유 입력으로 두면 집계가 안 되고, 집계가 안 되면 결국 감으로 찍게 된다.
+const INTENTS = ['buy', 'maybe'];
+const QTYS = ['1', '2-4', '5+'];
+
 // 서버에서 자른다. 폼의 maxlength 는 안내용일 뿐 우회가 쉽다.
 function clip(v, n) {
   if (v === null || v === undefined) return null;
@@ -46,6 +52,16 @@ export async function ensureNotifyTable(env) {
        ip_hash    TEXT
      )`
   ).run();
+
+  // 컬럼을 나중에 더한다. 이미 있으면 ALTER 가 실패하는데 그게 정상 종료다
+  // (_lib.js 의 ensurePostsSchema 와 같은 방식 — 수동 마이그레이션을 돌릴 수 없다).
+  for (const col of ['intent TEXT', 'qty TEXT']) {
+    try {
+      await env.BOARD_DB.prepare(`ALTER TABLE book_notify ADD COLUMN ${col}`).run();
+    } catch (e) {
+      // 이미 있는 경우 — 정상
+    }
+  }
   tableReady = true;
 }
 
@@ -57,7 +73,7 @@ export async function onRequestPost({ request, env }) {
     return json({ success: false, error: 'invalid_json' }, 400);
   }
 
-  const { email, name, source, consent, website } = data;
+  const { email, name, source, consent, website, intent, qty } = data;
 
   // 허니팟: 화면에서 숨긴 칸이라 사람은 채울 수 없다.
   // 값이 있으면 봇이므로 접수한 척만 하고 저장하지 않는다.
@@ -91,15 +107,17 @@ export async function onRequestPost({ request, env }) {
   // "이미 등록된 주소입니다"라고 알려주면 그 주소의 신청 여부가 외부에 드러난다.
   // 신청자 입장에서도 두 번 눌렀을 때 오류가 뜨는 것보다 이 편이 낫다.
   await env.BOARD_DB.prepare(
-    `INSERT OR IGNORE INTO book_notify (email, name, source, consent_at, created_at, ip_hash)
-     VALUES (?, ?, ?, ?, ?, ?)`
+    `INSERT OR IGNORE INTO book_notify (email, name, source, consent_at, created_at, ip_hash, intent, qty)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(
     clip(email, LIMITS.email).toLowerCase(),
     clip(name, LIMITS.name) || null,
     clip(source, LIMITS.source) || null,
     now,
     now,
-    ipHash
+    ipHash,
+    INTENTS.includes(intent) ? intent : null,
+    QTYS.includes(qty) ? qty : null
   ).run();
 
   // 성공·중복을 구분하지 않고 센다. 여기서는 '실패 횟수'가 아니라 '제출 횟수'다.

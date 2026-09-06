@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1인 유니콘 기업 첫발 딛기 — 독자 페이지</title>
+<meta name="description" content="『1인 유니콘 기업 첫발 딛기』 구매자 특전 다운로드, 정오표, 구매처 안내.">
+<link rel="canonical" href="https://www.nextio.ai.kr/book/unicorn/">
+<meta property="og:title" content="1인 유니콘 기업 첫발 딛기 — 독자 페이지">
+<meta property="og:description" content="구매자 특전 「필수조직 파이프라인」 다운로드와 정오표.">
+<meta property="og:image" content="https://www.nextio.ai.kr/book-preview/cover.webp">
+<meta property="og:url" content="https://www.nextio.ai.kr/book/unicorn/">
+<meta property="og:type" content="book">
+<style>
+  :root{
+    --navy:#12182b; --navy2:#1b2338; --paper:#faf7f0;
+    --ink:#1f2430; --ink-soft:#4a5163;
+    --gold:#d9a441; --gold-soft:#f0d9a8;
+    --blue:#2456E6; --line:#e6e0d2; --maxw:720px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Pretendard","Noto Sans KR","Malgun Gothic",-apple-system,sans-serif;
+    line-height:1.85; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+
+  .topbar{background:var(--navy); padding:14px 0;}
+  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .topbar img{height:20px; display:block;}
+  .topbar a.back{color:var(--gold-soft); font-size:12.5px; letter-spacing:.04em; text-decoration:none;}
+  .topbar a.back:hover{color:#fff;}
+
+  .hero{background:linear-gradient(180deg,var(--navy) 0%, var(--navy2) 100%); color:#fff; padding:46px 0 52px;}
+  .hero .wrap{display:flex; flex-direction:column; align-items:center; text-align:center; gap:20px;}
+  .hero .cover{width:190px; max-width:52%; border-radius:3px;
+    box-shadow:0 24px 60px -18px rgba(0,0,0,.6), 0 2px 0 rgba(255,255,255,.06) inset;}
+  .hero .kicker{font-size:12.5px; letter-spacing:.14em; color:var(--gold); font-weight:600;}
+  .hero h1{font-size:27px; line-height:1.42; margin:4px 0 0; font-weight:800; letter-spacing:-.01em;}
+  .hero .byline{font-size:13.5px; color:#8b93a8; margin:0;}
+  .hero .pitch{font-size:14.5px; color:#dfe3ee; max-width:30em; margin:2px 0 0;}
+  .hero .status{display:inline-block; font-size:12.5px; font-weight:700; letter-spacing:.02em;
+    color:var(--navy); background:var(--gold-soft); border-radius:999px; padding:4px 14px;}
+
+  section{padding:44px 0 0;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:26px 24px;
+    box-shadow:0 1px 0 rgba(0,0,0,.02);}
+  h2{font-size:19px; margin:0 0 4px; letter-spacing:-.01em;}
+  .lede{color:var(--ink-soft); font-size:14.5px; margin:0 0 18px;}
+  .btn{display:block; text-align:center; padding:15px 22px; border-radius:8px;
+    font-size:15.5px; font-weight:700; text-decoration:none; letter-spacing:-.01em;
+    transition:transform .15s ease, box-shadow .15s ease;}
+  .btn-primary{background:var(--gold); color:#2b1d05; box-shadow:0 10px 24px -10px rgba(217,164,65,.6);}
+  .btn-primary:hover{transform:translateY(-1px);}
+  .btn-outline{background:#fff; color:var(--ink); border:1px solid var(--line); font-weight:600; font-size:14.5px;}
+  .btn-outline:hover{border-color:var(--gold);}
+  .btn[aria-disabled="true"]{background:#eee6d6; color:#8a8371; box-shadow:none; cursor:default;}
+  .btn[aria-disabled="true"]:hover{transform:none;}
+  .meta-line{font-size:12.5px; color:var(--ink-soft); text-align:center; margin:10px 0 0;}
+
+  .advice{background:#fbf7ec; border-left:3px solid var(--gold); border-radius:0 8px 8px 0;
+    padding:14px 18px; margin:18px 0 0; font-size:14px; color:var(--ink-soft);}
+  .advice b{color:var(--ink);}
+
+  table.errata{width:100%; border-collapse:collapse; font-size:14px; margin-top:6px;}
+  table.errata th, table.errata td{border-bottom:1px solid var(--line); padding:9px 8px;
+    text-align:left; vertical-align:top;}
+  table.errata th{font-size:12.5px; letter-spacing:.06em; color:var(--ink-soft); font-weight:600;
+    border-bottom:1px solid var(--ink);}
+  table.errata td.pg{white-space:nowrap; color:var(--ink-soft); width:5.5em;}
+  .empty{font-size:14px; color:var(--ink-soft); margin:4px 0 0;}
+  .report{font-size:13.5px; color:var(--ink-soft); margin:16px 0 0; padding-top:14px;
+    border-top:1px dashed var(--line);}
+  .report a{color:var(--blue);}
+
+  .buy-list{display:flex; flex-direction:column; gap:9px; margin-top:4px;}
+
+  footer{background:var(--navy); color:#8b93a8; padding:34px 0 40px; margin-top:52px; text-align:center;}
+  footer img{height:18px; opacity:.75;}
+  footer .meta{font-size:12.5px; margin:12px 0 0; line-height:1.75;}
+  footer a{color:#a8b0c2;}
+
+  @media (max-width:520px){
+    .hero h1{font-size:23px;} .wrap{padding:0 18px;} .card{padding:22px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <img src="/book-preview/nextio-lockup.svg" alt="Next I/O">
+    <a class="back" href="/book/">← Next I/O가 낸 책</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="wrap">
+    <img class="cover" src="/book-preview/cover.webp" alt="1인 유니콘 기업 첫발 딛기 표지">
+    <div class="kicker">독자 페이지</div>
+    <h1>1인 유니콘 기업 첫발 딛기</h1>
+    <p class="byline">박원상 지음 · Next I/O</p>
+    <p class="pitch">책을 사신 분을 위한 자리입니다. 특전을 내려받고, 정오표를 확인하실 수 있습니다.</p>
+    <span class="status" id="bookStatus">출간 준비 중</span>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="card">
+      <h2>구매자 특전 — 필수조직 파이프라인</h2>
+      <p class="lede">책이 만드는 회사의 뼈대입니다. 팀 폴더와 지침서, 표준 서식이 들어 있습니다.</p>
+
+      <a class="btn btn-primary" id="bonusBtn" href="#" aria-disabled="true">특전 준비 중</a>
+      <p class="meta-line" id="bonusMeta">배포 파일 검수 중입니다. 곧 열립니다.</p>
+
+      <div class="advice">
+        <b>먼저 직접 만들어보신 다음에 여세요.</b> 순서가 반대면 배우는 게 없습니다.
+        이 파일은 답안지가 아니라 대조표입니다. 관문을 지나며 손으로 만든 것과 견줘 보시라고 드리는 것입니다.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="card">
+      <h2>정오표</h2>
+      <p class="lede">인쇄된 책에서 바로잡을 곳입니다.</p>
+
+      <div id="errataBox">
+        <p class="empty">등록된 정오 사항이 없습니다.</p>
+      </div>
+
+      <p class="report">
+        오류를 찾으셨다면 <a href="mailto:info@nextio.ai.kr?subject=%5B%EC%A0%95%EC%98%A4%20%EC%A0%9C%EB%B3%B4%5D%201%EC%9D%B8%20%EC%9C%A0%EB%8B%88%EC%BD%98%20%EA%B8%B0%EC%97%85%20%EC%B2%AB%EB%B0%9C%20%EB%94%9B%EA%B8%B0">info@nextio.ai.kr</a>로 알려주십시오.
+        쪽수와 해당 문장을 함께 적어주시면 가장 빠릅니다. 확인되면 이 표에 올리고 다음 쇄에 반영합니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="card">
+      <h2>구매</h2>
+      <div id="buyBox">
+        <p class="empty">아직 출간 전입니다. 출간되면 이 자리에 구매처가 열립니다.</p>
+        <div class="buy-list" style="margin-top:14px;">
+          <a class="btn btn-outline" href="/book-preview/#notify">📖 출간 소식 가장 먼저 받기</a>
+          <a class="btn btn-outline" href="/book-preview/">책 미리보기 — 앞부분 읽어보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="/book-preview/nextio-lockup.svg" alt="Next I/O" style="filter:grayscale(1) brightness(1.6);">
+    <p class="meta">
+      Next I/O 단행본출판팀 · 문의 <a href="mailto:info@nextio.ai.kr">info@nextio.ai.kr</a><br>
+      ⓒ 2026 박원상 · 1인 유니콘 기업 첫발 딛기
+    </p>
+  </div>
+</footer>
+
+<script>
+// 이 페이지의 고정 정보(제목·표지·특전 설명)는 HTML에 구워져 있다 — 종이에 박히는 것들이라
+// 안 변하고, JS가 없거나 JSON을 못 읽어도 독자가 빈 페이지를 만나면 안 되기 때문이다.
+// 시간이 지나며 변하는 것(상태·특전 개방·정오표·구매처)만 여기서 덮어쓴다.
+(function () {
+  var SLUG = 'unicorn';
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // 구매처 링크는 남이 채우는 값이다. javascript: 같은 걸 그대로 href 에 넣지 않는다.
+  function safeUrl(u) {
+    var s = String(u == null ? '' : u).trim();
+    return (/^https?:\/\//i.test(s) || /^\//.test(s)) ? s : null;
+  }
+
+  fetch('/data/books.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !Array.isArray(d.books)) return;
+      var b = null;
+      for (var i = 0; i < d.books.length; i++) {
+        if (d.books[i] && d.books[i].slug === SLUG) { b = d.books[i]; break; }
+      }
+      if (!b) return;
+
+      if (b.status) document.getElementById('bookStatus').textContent = b.status;
+
+      // 특전 — ready 가 true 가 되는 순간 열린다. 페이지를 다시 만들 필요가 없다.
+      var bonus = b.bonus || {};
+      var href = safeUrl(bonus.file);
+      if (bonus.ready && href) {
+        var btn = document.getElementById('bonusBtn');
+        btn.setAttribute('href', href);
+        btn.removeAttribute('aria-disabled');
+        if (bonus.download_as) btn.setAttribute('download', bonus.download_as);
+        btn.textContent = '⬇ ' + (bonus.name || '특전') + ' 내려받기';
+        var bits = [];
+        if (bonus.size) bits.push(bonus.size);
+        if (bonus.count) bits.push('파일 ' + bonus.count + '개');
+        document.getElementById('bonusMeta').textContent =
+          bits.length ? 'ZIP · ' + bits.join(' · ') : '';
+      } else if (bonus.hold_note) {
+        document.getElementById('bonusMeta').textContent = bonus.hold_note;
+      }
+
+      // 정오표 — 단행본출판팀이 배열에 한 줄씩 더한다.
+      var errata = Array.isArray(b.errata) ? b.errata : [];
+      if (errata.length) {
+        var rows = errata.map(function (e) {
+          return '<tr><td class="pg">' + esc(e.page) + '</td>'
+               + '<td>' + esc(e.wrong) + '</td>'
+               + '<td>' + esc(e.right) + '</td></tr>';
+        }).join('');
+        document.getElementById('errataBox').innerHTML =
+          '<table class="errata"><thead><tr><th>쪽</th><th>고칠 곳</th><th>바른 것</th></tr></thead>'
+          + '<tbody>' + rows + '</tbody></table>';
+      }
+
+      // 구매처
+      var buy = Array.isArray(b.purchase) ? b.purchase : [];
+      var links = buy.map(function (p) {
+        var u = safeUrl(p && p.url);
+        return u ? '<a class="btn btn-outline" href="' + esc(u) + '" target="_blank" rel="noopener">'
+                 + esc(p.name || '구매하기') + '</a>' : '';
+      }).filter(Boolean);
+      if (links.length) {
+        document.getElementById('buyBox').innerHTML =
+          '<div class="buy-list">' + links.join('') + '</div>';
+      }
+    })
+    .catch(function () { /* JSON 을 못 읽어도 위의 HTML 기본값이 그대로 남는다 */ });
+})();
+</script>
+</body>
+</html>

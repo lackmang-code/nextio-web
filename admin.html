@@ -124,6 +124,8 @@
       </p>
       <button id="notifyRefreshBtn" style="background:#2a2e3a; width:auto; padding:8px 16px; font-size:13px;">새로고침</button>
       <button id="copyMailsBtn" style="background:#2a2e3a; width:auto; padding:8px 16px; font-size:13px; margin-left:6px;">이메일 전체 복사</button>
+      <div id="notifySummary" style="margin-top:14px; padding:12px 14px; background:#141821;
+           border:1px solid #2a2e3a; border-radius:8px; font-size:13.5px; line-height:1.75;"></div>
       <div id="notifyList" style="margin-top:14px;"></div>
       <div id="notifyEmpty" style="display:none; color:#8b93a8;">아직 신청자가 없습니다.</div>
       <textarea id="mailsBox" readonly
@@ -336,16 +338,36 @@ function renderNotify(rows) {
     return;
   }
   notifyEmpty.style.display = 'none';
+
+  // 초판을 직접 인쇄하기로 해서(2026-09-05) 부수 산정 근거가 필요해졌다.
+  // "살 생각이다"라고 답한 사람의 수량만 더한다. 미정은 세지 않는다 —
+  // 재고를 떠안는 결정이라 낙관적으로 세면 그대로 손해가 된다.
+  var buyers = NOTIFY_ROWS.filter(function (r) { return r.intent === 'buy'; });
+  var maybes = NOTIFY_ROWS.filter(function (r) { return r.intent === 'maybe'; });
+  var minCopies = buyers.reduce(function (s, r) {
+    return s + (r.qty === '5+' ? 5 : r.qty === '2-4' ? 2 : 1);
+  }, 0);
+  document.getElementById('notifySummary').innerHTML =
+    '<b style="color:#d9a441;">구매 의향 ' + buyers.length + '명</b> · 미정 ' + maybes.length + '명 · 무응답 ' +
+    (NOTIFY_ROWS.length - buyers.length - maybes.length) + '명<br>' +
+    '<span style="color:#c7ccdb;">확보된 최소 수요 <b>' + minCopies + '권</b></span> ' +
+    '<span style="color:#8b93a8;">— 2~4권은 2권, 5권 이상은 5권으로만 세고 미정은 빼서 보수적으로 잡은 값입니다.</span>';
+
   notifyListEl.innerHTML =
     '<table style="width:100%; border-collapse:collapse; font-size:13.5px;">' +
     '<thead><tr style="color:#8b93a8; font-size:12px; text-align:left;">' +
     '<th style="padding:7px 8px;">이메일</th><th style="padding:7px 8px;">이름</th>' +
+    '<th style="padding:7px 8px;">구매의향</th><th style="padding:7px 8px;">수량</th>' +
     '<th style="padding:7px 8px;">유입</th><th style="padding:7px 8px;">신청일</th>' +
     '<th style="padding:7px 8px;"></th></tr></thead><tbody>' +
     NOTIFY_ROWS.map(function (r) {
+      var it = r.intent === 'buy' ? '<span style="color:#8fe0a8;">살 생각</span>'
+             : r.intent === 'maybe' ? '<span style="color:#d9a441;">미정</span>' : '—';
       return '<tr style="border-top:1px solid #2a2e3a;">' +
         '<td style="padding:8px;">' + esc(r.email) + '</td>' +
         '<td style="padding:8px; color:#c7ccdb;">' + esc(r.name || '—') + '</td>' +
+        '<td style="padding:8px;">' + it + '</td>' +
+        '<td style="padding:8px; color:#c7ccdb;">' + esc(r.qty || '—') + '</td>' +
         '<td style="padding:8px; color:#8b93a8;">' + esc(r.source || '—') + '</td>' +
         '<td style="padding:8px; color:#8b93a8; white-space:nowrap;">' + fmtDate(r.created_at) + '</td>' +
         '<td style="padding:8px; text-align:right;"><button class="nDelBtn" data-id="' + r.id +

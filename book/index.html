@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Next I/O가 낸 책</title>
+<meta name="description" content="Next I/O 단행본출판팀이 기획·집필·발간한 책. 구매자 특전과 정오표를 각 책의 독자 페이지에서 제공합니다.">
+<link rel="canonical" href="https://www.nextio.ai.kr/book/">
+<meta property="og:title" content="Next I/O가 낸 책">
+<meta property="og:description" content="Next I/O 단행본출판팀이 기획·집필·발간한 책.">
+<meta property="og:image" content="https://www.nextio.ai.kr/book-preview/cover.webp">
+<meta property="og:url" content="https://www.nextio.ai.kr/book/">
+<style>
+  :root{
+    --navy:#12182b; --navy2:#1b2338; --paper:#faf7f0;
+    --ink:#1f2430; --ink-soft:#4a5163;
+    --gold:#d9a441; --gold-soft:#f0d9a8;
+    --blue:#2456E6; --line:#e6e0d2; --maxw:760px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Pretendard","Noto Sans KR","Malgun Gothic",-apple-system,sans-serif;
+    line-height:1.85; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+
+  .topbar{background:var(--navy); padding:14px 0;}
+  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .topbar img{height:20px; display:block;}
+  .topbar a.back{color:var(--gold-soft); font-size:12.5px; letter-spacing:.04em; text-decoration:none;}
+  .topbar a.back:hover{color:#fff;}
+
+  .head{background:linear-gradient(180deg,var(--navy) 0%, var(--navy2) 100%); color:#fff; padding:46px 0 44px;}
+  .head .wrap{text-align:center;}
+  .head .kicker{font-size:12.5px; letter-spacing:.14em; color:var(--gold); font-weight:600;}
+  .head h1{font-size:28px; margin:6px 0 0; font-weight:800; letter-spacing:-.01em;}
+  .head p{font-size:14.5px; color:#c7ccdb; margin:10px auto 0; max-width:30em;}
+
+  .shelf{padding:40px 0 0; display:flex; flex-direction:column; gap:16px;}
+
+  a.book{display:flex; gap:20px; align-items:flex-start; text-decoration:none; color:inherit;
+    background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px;
+    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;}
+  a.book:hover{border-color:var(--gold); transform:translateY(-1px);
+    box-shadow:0 12px 28px -18px rgba(18,24,43,.5);}
+  a.book img{width:88px; flex:none; border-radius:3px; box-shadow:0 8px 20px -10px rgba(0,0,0,.45);}
+  a.book .body{flex:1; min-width:0;}
+  a.book .status{display:inline-block; font-size:11.5px; font-weight:700; color:#5a4a1d;
+    background:var(--gold-soft); border-radius:999px; padding:2px 10px; margin-bottom:6px;}
+  a.book h2{font-size:18px; margin:0; letter-spacing:-.01em;}
+  a.book .sub{font-size:13.5px; color:var(--ink-soft); margin:2px 0 0;}
+  a.book .blurb{font-size:14px; color:var(--ink-soft); margin:9px 0 0;}
+  a.book .go{font-size:13px; color:var(--blue); font-weight:600; margin:10px 0 0;}
+
+  .note{margin:34px 0 0; padding:16px 18px; background:#fbf7ec;
+    border-left:3px solid var(--gold); border-radius:0 8px 8px 0;
+    font-size:13.5px; color:var(--ink-soft);}
+  .note b{color:var(--ink);}
+
+  footer{background:var(--navy); color:#8b93a8; padding:34px 0 40px; margin-top:52px; text-align:center;}
+  footer img{height:18px; opacity:.75;}
+  footer .meta{font-size:12.5px; margin:12px 0 0; line-height:1.75;}
+  footer a{color:#a8b0c2;}
+
+  @media (max-width:520px){
+    .head h1{font-size:23px;} .wrap{padding:0 18px;}
+    a.book{padding:16px; gap:14px;} a.book img{width:68px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <img src="/book-preview/nextio-lockup.svg" alt="Next I/O">
+    <a class="back" href="/">← Next I/O</a>
+  </div>
+</div>
+
+<div class="head">
+  <div class="wrap">
+    <div class="kicker">단행본출판팀</div>
+    <h1>Next I/O가 낸 책</h1>
+    <p>책마다 독자 페이지가 있습니다. 구매자 특전과 정오표는 그 안에 있습니다.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- 기본값. JSON 을 못 읽어도 서가가 비지 않는다. -->
+  <div class="shelf" id="shelf">
+    <a class="book" href="/book/unicorn/">
+      <img src="/book-preview/cover.webp" alt="1인 유니콘 기업 첫발 딛기 표지">
+      <div class="body">
+        <span class="status">출간 준비 중</span>
+        <h2>1인 유니콘 기업 첫발 딛기</h2>
+        <p class="sub">박원상 지음 · 혼자인데, 회사처럼</p>
+        <p class="blurb">사업자등록증도, 회사 이름도, 무엇을 팔지에 대한 확신도 필요 없습니다. 컴퓨터 한 대와 두 시간, 그리고 첫 관문이면 됩니다.</p>
+        <p class="go">독자 페이지 열기 →</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="note">
+    <b>책을 사신 분께.</b> 책에 인쇄된 QR을 찍으면 그 책의 독자 페이지로 바로 갑니다.
+    특전 다운로드와 정오표가 거기 있습니다. 문의는 <a href="mailto:info@nextio.ai.kr">info@nextio.ai.kr</a>.
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <img src="/book-preview/nextio-lockup.svg" alt="Next I/O" style="filter:grayscale(1) brightness(1.6);">
+    <p class="meta">
+      Next I/O 단행본출판팀 · 문의 <a href="mailto:info@nextio.ai.kr">info@nextio.ai.kr</a><br>
+      ⓒ 2026 Next I/O
+    </p>
+  </div>
+</footer>
+
+<script>
+// 서가는 data/books.json 이 정본이다. 책이 늘면 그 배열에 한 항목이 더해지고
+// 여기가 자동으로 늘어난다 — 이 파일을 고칠 일이 없다.
+// 다만 위의 HTML 기본값을 지워두지 않는다: JSON 을 못 읽어도 서가가 비면 안 된다.
+(function () {
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  // 남이 채우는 값이라 경로를 검증한다. 우리 사이트 안쪽만 받는다.
+  function safePath(u) {
+    var s = String(u == null ? '' : u).trim();
+    return /^\/[A-Za-z0-9\-._~/]*$/.test(s) ? s : null;
+  }
+
+  fetch('/data/books.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !Array.isArray(d.books) || !d.books.length) return;
+
+      var cards = d.books.map(function (b) {
+        var url = safePath(b && b.url);
+        var cover = safePath(b && b.cover);
+        if (!url) return '';
+        return '<a class="book" href="' + esc(url) + '">'
+          + (cover ? '<img src="' + esc(cover) + '" alt="' + esc(b.title) + ' 표지">' : '')
+          + '<div class="body">'
+          + (b.status ? '<span class="status">' + esc(b.status) + '</span>' : '')
+          + '<h2>' + esc(b.title) + '</h2>'
+          + '<p class="sub">' + esc(b.author) + ' 지음'
+          + (b.subtitle ? ' · ' + esc(b.subtitle) : '') + '</p>'
+          + (b.blurb ? '<p class="blurb">' + esc(b.blurb) + '</p>' : '')
+          + '<p class="go">독자 페이지 열기 →</p>'
+          + '</div></a>';
+      }).filter(Boolean);
+
+      if (cards.length) document.getElementById('shelf').innerHTML = cards.join('');
+    })
+    .catch(function () { /* 기본값 유지 */ });
+})();
+</script>
+</body>
+</html>

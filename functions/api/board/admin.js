@@ -72,7 +72,7 @@ export async function onRequestPost({ request, env }) {
     try {
       await ensureNotifyTable(env);
       const { results } = await env.BOARD_DB.prepare(
-        `SELECT id, email, name, source, created_at FROM book_notify ORDER BY id DESC LIMIT 1000`
+        `SELECT id, email, name, source, intent, qty, created_at FROM book_notify ORDER BY id DESC LIMIT 1000`
       ).all();
       return json({ success: true, notify: results }, 200);
     } catch (e) {

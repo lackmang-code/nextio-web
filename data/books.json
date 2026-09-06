@@ -1,0 +1,27 @@
+{
+  "updated": "2026-09-06",
+  "_note": "단행본출판팀 소관 파일. 홍보팀은 /book/ 렌더링만 담당한다. 책이 늘면 books 배열에 한 항목을 추가하고, 홈페이지에 /book/<slug>/ 폴더를 요청한다. 표지·제목·특전은 HTML에 구워져 있고(종이에 박히는 것), 이 파일은 시간이 지나며 변하는 것만 담는다 — status · purchase · errata.",
+  "books": [
+    {
+      "slug": "unicorn",
+      "title": "1인 유니콘 기업 첫발 딛기",
+      "subtitle": "혼자인데, 회사처럼",
+      "author": "박원상",
+      "cover": "/book-preview/cover.webp",
+      "url": "/book/unicorn/",
+      "blurb": "사업자등록증도, 회사 이름도, 무엇을 팔지에 대한 확신도 필요 없습니다. 컴퓨터 한 대와 두 시간, 그리고 첫 관문이면 됩니다.",
+      "status": "출간 준비 중",
+      "published_at": null,
+      "purchase": [],
+      "errata": [],
+      "bonus": {
+        "ready": true,
+        "name": "필수조직 파이프라인",
+        "file": "/book/unicorn/pipeline-pack.zip",
+        "download_as": "필수조직_파이프라인.zip",
+        "size": "84KB",
+        "count": 66
+      }
+    }
+  ]
+}

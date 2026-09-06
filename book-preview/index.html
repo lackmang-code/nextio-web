@@ -127,6 +127,18 @@
   }
   .notify input::placeholder{color:#79819a;}
   .notify input:focus{outline:none; border-color:var(--gold); background:rgba(255,255,255,.1);}
+  .notify fieldset.intent{border:1px solid rgba(255,255,255,.14); border-radius:8px;
+    padding:12px 14px 13px; margin:14px 0 0; background:rgba(255,255,255,.03);}
+  .notify fieldset.intent legend{font-size:12.5px; color:#c7ccdb; padding:0 6px;}
+  .notify fieldset.intent legend .opt{color:#79819a; font-size:11.5px;}
+  .notify .opts{display:flex; flex-direction:column; gap:7px;}
+  .notify .opts label{display:flex; gap:8px; align-items:flex-start; font-size:13px;
+    color:#a8b0c2; cursor:pointer; line-height:1.5;}
+  .notify .opts input{margin-top:2px; flex:none; width:15px; height:15px; accent-color:var(--gold);}
+  .notify .qty-row{margin-top:11px; padding-top:11px; border-top:1px solid rgba(255,255,255,.1);}
+  .notify .qty-row label{display:block; font-size:12.5px; color:#a8b0c2; margin-bottom:6px;}
+  .notify .qty-row select{width:100%; padding:10px 12px; border-radius:7px; font-size:14px;
+    font-family:inherit; background:#232a3d; color:#fff; border:1px solid rgba(255,255,255,.18);}
   .notify .consent{display:flex; gap:9px; align-items:flex-start; font-size:12.5px;
     color:#a8b0c2; line-height:1.65; margin:13px 0 15px;}
   .notify .consent input{margin-top:3px; flex:none; width:16px; height:16px; accent-color:var(--gold);}
@@ -256,7 +268,7 @@
     <div class="gate-box">
       <div class="lock">🔒</div>
       <h3>여기서부터는 책에서 이어집니다</h3>
-      <p>세 자리를 정한 이유 다음엔 "왜 딱 셋에서 멈추는가", "제작팀은 왜 없는가", 그리고 1부 끝에서 만나는 <strong>네 번째 벽</strong>이 기다리고 있습니다. 관문 0부터 27장까지, 총 30편이 이어집니다.</p>
+      <p>세 자리를 정한 이유 다음엔 "왜 딱 셋에서 멈추는가", "제작팀은 왜 없는가", 그리고 1부 끝에서 만나는 <strong>네 번째 벽</strong>이 기다리고 있습니다. 관문 0부터 28장까지, 총 28편이 이어집니다.</p>
       <a class="btn btn-primary" href="#notify" data-src="gate">📖 출간 소식 가장 먼저 받기</a>
     </div>
   </div>
@@ -265,7 +277,7 @@
 <section class="toc">
   <div class="wrap">
     <span class="section-label">전체 목차</span>
-    <h2 class="chapter-title" style="margin-bottom:6px;">30편으로 완성하는 1인 회사</h2>
+    <h2 class="chapter-title" style="margin-bottom:6px;">28편으로 완성하는 1인 회사</h2>
     <p style="color:var(--ink-soft); font-size:14.5px; margin:0 0 10px;">챕터 1개 = 산출물 1개. 마지막 장을 덮으면 실제로 굴러가는 회사 폴더가 남습니다.</p>
 
     <div class="toc-part">
@@ -306,8 +318,9 @@
         <li class="locked"><span class="num">26</span><span class="t">25장. 때를 맞춘다</span></li>
         <li class="locked"><span class="num">27</span><span class="t">26장. 공식적으로 알린다</span></li>
         <li class="locked"><span class="num">28</span><span class="t">27장. 마지막으로 확인한다</span></li>
-        <li class="locked"><span class="num">29</span><span class="t">2부를 마치며 — 첫 번째 실천가가 되다</span></li>
-        <li class="locked"><span class="num">30</span><span class="t">에필로그 — 출발선에서</span></li>
+        <li class="locked"><span class="num">29</span><span class="t">28장. 얼굴을 밖에 건다</span></li>
+        <li class="locked"><span class="num">30</span><span class="t">2부를 마치며 — 첫 번째 실천가가 되다</span></li>
+        <li class="locked"><span class="num">31</span><span class="t">에필로그 — 이제 당신 차례입니다</span></li>
       </ul>
     </div>
   </div>
@@ -331,6 +344,24 @@
       <input class="hp" type="text" name="website" id="nWebsite" tabindex="-1" autocomplete="off" aria-hidden="true">
       <input type="hidden" id="nSource" name="source" value="closing">
 
+      <!-- 초판을 직접 인쇄하기로 해서(2026-09-05) 부수 산정 근거가 필요해졌다.
+           칸을 늘리면 신청이 줄기 때문에 둘만, 그것도 선택으로 둔다. -->
+      <fieldset class="intent">
+        <legend>출간되면 구매하실 생각이신가요? <span class="opt">선택</span></legend>
+        <div class="opts">
+          <label><input type="radio" name="intent" value="buy"><span>살 생각입니다</span></label>
+          <label><input type="radio" name="intent" value="maybe"><span>관심은 있는데 아직 모르겠습니다</span></label>
+        </div>
+        <div class="qty-row" id="qtyRow" hidden>
+          <label for="nQty">몇 권쯤 필요하실까요?</label>
+          <select id="nQty">
+            <option value="1">1권</option>
+            <option value="2-4">2~4권</option>
+            <option value="5+">5권 이상 (단체·교육용)</option>
+          </select>
+        </div>
+      </fieldset>
+
       <label class="consent">
         <input type="checkbox" id="nConsent" required>
         <span>출간 알림을 받기 위해 이메일 주소 수집·이용에 동의합니다. <b>(필수)</b></span>
@@ -341,7 +372,8 @@
     </form>
 
     <div class="privacy">
-      <b>수집 항목</b> 이메일 주소, 이름(선택) &nbsp;·&nbsp; <b>이용 목적</b> 『1인 유니콘 기업 첫발 딛기』 출간·구매처 안내<br>
+      <b>수집 항목</b> 이메일 주소, 이름·구매 의향·수량(선택) &nbsp;·&nbsp;
+      <b>이용 목적</b> 『1인 유니콘 기업 첫발 딛기』 출간·구매처 안내 및 <b>초판 발행 부수 산정</b><br>
       <b>보유 기간</b> 출간 안내 발송 후 파기. 그 전이라도 <a href="mailto:info@nextio.ai.kr?subject=%EC%B6%9C%EA%B0%84%20%EC%95%8C%EB%A6%BC%20%EC%88%98%EC%8B%A0%20%EC%B7%A8%EC%86%8C" style="color:#a8b0c2;">info@nextio.ai.kr</a>로 요청하시면 즉시 삭제합니다.<br>
       동의를 거부하실 수 있으며, 이 경우 출간 알림을 받으실 수 없습니다. 광고·타 상품 안내에는 사용하지 않습니다.
     </div>
@@ -371,6 +403,16 @@
         // 스크롤이 끝난 뒤 커서를 넣는다. 바로 넣으면 브라우저가 점프해버린다.
         setTimeout(function () { try { email.focus({ preventScroll: true }); } catch (e) { email.focus(); } }, 600);
       });
+    });
+
+    // "살 생각입니다"를 골랐을 때만 수량을 묻는다. 처음부터 다 보이면 칸이 많아 보인다.
+    var qtyRow = document.getElementById('qtyRow');
+    function intentValue() {
+      var picked = form.querySelector('input[name="intent"]:checked');
+      return picked ? picked.value : null;
+    }
+    Array.prototype.forEach.call(form.querySelectorAll('input[name="intent"]'), function (r) {
+      r.addEventListener('change', function () { qtyRow.hidden = intentValue() !== 'buy'; });
     });
 
     function say(text, kind) {
@@ -404,6 +446,8 @@
           name: (document.getElementById('nName').value || '').trim(),
           source: srcField.value,
           consent: true,
+          intent: intentValue(),
+          qty: intentValue() === 'buy' ? document.getElementById('nQty').value : null,
           website: document.getElementById('nWebsite').value
         })
       })
