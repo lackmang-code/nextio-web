@@ -7,13 +7,13 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.nextio.ai.kr/education/unicorn.html</loc>
+    <loc>https://www.nextio.ai.kr/education/unicorn</loc>
     <lastmod>2026-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.nextio.ai.kr/education/research.html</loc>
+    <loc>https://www.nextio.ai.kr/education/research</loc>
     <lastmod>2026-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -25,20 +25,14 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.nextio.ai.kr/magazine/2026-07/</loc>
-    <lastmod>2026-08-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://www.nextio.ai.kr/book/</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.nextio.ai.kr/book/unicorn/</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
