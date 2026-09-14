@@ -1,36 +1,36 @@
 {
-  "updated": "2026-09-08",
+  "updated": "2026-09-15",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "표면처리기술 AF(Anti-Fingerprint)",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-08-af-anti-fingerprint",
+      "title": "티타늄판을 넣고도 펜을 지킨 폴더블 아이폰 듀오",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-iphone-duo-crease-pen-thickness",
+      "section": "이슈",
+      "publishedAt": "2026-09-15"
+    },
+    {
+      "title": "표면처리기술 AG(Anti-Glare)",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-ag-anti-glare",
       "section": "기술노트",
-      "publishedAt": "2026-09-08"
+      "publishedAt": "2026-09-15"
     },
     {
-      "title": "마이크로LED 대량전사 특허 28건 분석",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-08-microled-mass-transfer-patents",
+      "title": "양자점 색변환층 특허 316건 분석",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-quantum-dot-color-conversion-layer-patents",
       "section": "특허",
-      "publishedAt": "2026-09-08"
+      "publishedAt": "2026-09-15"
     },
     {
-      "title": "유리 코어 기판(GCS): 반도체 패키징 기판에 도전하는 AUO, 코닝",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-08-glass-core-substrate-gcs",
-      "section": "이슈",
-      "publishedAt": "2026-09-08"
-    },
-    {
-      "title": "LG디스플레이 OLED TV 패널을 165Hz로 올린 구동기술 HDS",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-08-lgd-hds-scan-split",
-      "section": "이슈",
-      "publishedAt": "2026-09-08"
-    },
-    {
-      "title": "이중 시드층으로 나눠 잡은 투명 QLED 전극의 투명도와 전자주입",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-08-transparent-qled-double-seed",
+      "title": "Micro-LED 디스플레이를 이용한 광통신과 ToF",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-microled-display-owc-tof",
       "section": "논문",
-      "publishedAt": "2026-09-08"
+      "publishedAt": "2026-09-15"
+    },
+    {
+      "title": "수 옹스트롬 백금 간격이 가른 인광 OLED 롤오프",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-pt-mmlct-oled-rolloff",
+      "section": "논문",
+      "publishedAt": "2026-09-15"
     }
   ]
 }
