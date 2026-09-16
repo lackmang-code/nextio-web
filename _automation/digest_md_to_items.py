@@ -20,6 +20,17 @@ ITEM_RE = re.compile(r'^(.*?)\s*##\s*(\d+)\.\s*\[(.+?)\]\((https?://[^)\s]+)\)\s
 ANALYSIS_RE = re.compile(r'^\s*\*?\s*🔍.*?:\s*\*?\s*(.*\S)\s*$')
 SKIP_RE = re.compile(r'^\s*(#|©|본 다이제스트는|\*?\s*📌)')
 
+# 번호형(2026-09-16 디스플레이 다이제스트 신형식):
+#   1. [제목](URL)
+#   출처: 매체 | 보도일: 2026.09.16
+#   [핵심 요약]
+#   요약문
+#   [심층 분석]
+#   분석문
+NUM_ITEM_RE = re.compile(r'^\s*(\d+)\.\s*\[(.+)\]\((https?://[^)\s]+)\)\s*$')
+NUM_SOURCE_RE = re.compile(r'^\s*출처\s*:\s*(.+?)\s*(\|.*)?$')
+NUM_SECTION_RE = re.compile(r'^\s*\[(핵심 요약|심층 분석)\]\s*$')
+
 MEDIA = {
     "it.chosun.com": "IT조선", "biz.chosun.com": "조선비즈", "chosun.com": "조선일보",
     "econovill.com": "이코노믹리뷰", "yna.co.kr": "연합뉴스", "mk.co.kr": "매일경제",
@@ -52,7 +63,50 @@ def guess_source(url):
     return host
 
 
+def parse_numbered(text):
+    """번호형 다이제스트를 읽는다. 항목 구조는 parse_digest와 같다."""
+    items, cur, section = [], None, None
+    for raw in text.splitlines():
+        line = raw.rstrip()
+        m = NUM_ITEM_RE.match(line)
+        if m:
+            if cur:
+                items.append(cur)
+            _, title, url = m.groups()
+            url = unwrap_url(url)
+            cur = {"title": title.strip(), "summary": "", "body": "",
+                   "source": guess_source(url), "url": url, "tag": ""}
+            section = None
+            continue
+        if cur is None or not line.strip() or SKIP_RE.match(line):
+            continue
+        m = NUM_SECTION_RE.match(line)
+        if m:
+            section = m.group(1)
+            continue
+        m = NUM_SOURCE_RE.match(line)
+        if m and section is None:
+            cur["source"] = m.group(1)
+            continue
+        if section == "핵심 요약" and not cur["summary"]:
+            cur["summary"] = line.strip()
+        elif section == "심층 분석" and not cur["body"]:
+            cur["body"] = "<p>%s</p>" % line.strip()
+    if cur:
+        items.append(cur)
+    return items
+
+
 def parse_digest(text):
+    items = _parse_hash_items(text)
+    # 기존 "## 1." 형식으로 한 건도 못 읽었을 때만 번호형을 시도한다.
+    # 반도체·배터리처럼 기존 형식이 읽히는 메일의 결과는 그대로 유지된다.
+    if not items:
+        items = parse_numbered(text)
+    return items
+
+
+def _parse_hash_items(text):
     items, cur = [], None
     for raw in text.splitlines():
         line = raw.rstrip()
