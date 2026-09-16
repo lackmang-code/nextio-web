@@ -33,8 +33,15 @@ PUB_DIR = os.path.join(REPO_ROOT, "display-daily")
 LOGO = os.path.join(AUTO_DIR, "assets", "nextio_logo.svg")
 PY = sys.executable
 
-SUBJECT_KEYWORD = "일간 디스플레이 탐사 보도 다이제스트"
-DATE_RE = re.compile(r"(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일자")
+# 2026-09-16 제목 형식이 바뀌었다:
+#   구  "[일간 디스플레이 탐사 보도 다이제스트] 2026년 9월 15일자"
+#   신  "[디스플레이 탐사 보도 다이제스트] 2026년 9월 16일 주요 기술·산업 동향 및 심층 분석"
+# 키워드는 두 형식에 공통인 부분만 쓴다. 반도체·배터리 제목에는 "디스플레이"가 없어 섞이지 않는다.
+# 날짜 뒤 "자"는 선택 — 신형식에는 없다. 둘 중 하나라도 안 맞으면 오늘 메일을 못 알아보고
+# 어제 메일을 집어 "카드 이미 존재"로 조용히 끝난다(9/16 실제로 그렇게 두 카드가 빠졌다).
+SUBJECT_KEYWORD = "디스플레이 탐사 보도 다이제스트"
+DATE_RE = re.compile(r"(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일")
+KST = timezone(timedelta(hours=9))
 SEARCH_WINDOW_DAYS = 5  # 최근 며칠 안에서만 다이제스트를 찾는다(주말/연휴 대비 여유)
 
 
@@ -125,6 +132,16 @@ def main():
     date_str, msg_id, subject = found
     # 어떤 메일을 골랐는지 반드시 남긴다 — 엉뚱한 다이제스트를 집었는지 로그로 확인할 수 있어야 한다.
     print(f"선택한 메일: {subject}")
+
+    # 집은 메일이 오늘자가 아니면 실패로 끝낸다(2026-09-16 도입).
+    # 오늘 메일을 못 알아보면 어제 메일이 잡히고, 어제 카드는 이미 있으니 "성공"으로 조용히 끝났다.
+    # 아래 "카드 이미 존재" 판정보다 먼저 봐야 이 누락이 알림으로 드러난다.
+    today = datetime.now(KST).strftime("%Y-%m-%d")
+    if date_str < today:
+        print(f"ERROR: 가장 최신 다이제스트가 {date_str}자다 — 오늘({today})자를 찾지 못했다.")
+        print("       메일이 아직 오지 않았거나 제목 형식이 또 바뀌었을 수 있다.")
+        imap.logout()
+        sys.exit(1)
     card_path = os.path.join(PUB_DIR, f"card_{date_str}.html")
     if os.path.exists(card_path):
         print(f"오늘({date_str}) 카드 이미 존재 → 작업 없이 종료: {card_path}")
@@ -139,6 +156,25 @@ def main():
 
     msg = email.message_from_bytes(data[0][1])
     body_text = get_plain_text(msg)
+
+    # 본문 형식 판별(2026-09-16 도입). 신형식 제목과 함께 본문도 반도체·배터리와 같은
+    # 마크다운형("## 1. [제목](URL)")으로 바뀌었다. 판별은 run_showcase.py와 같은 기준이다.
+    # 마크다운형이 아니면 아래는 기존 경로 그대로 간다 — 구형식 출력은 바뀌지 않는다.
+    from mail_html_to_md import get_html_text  # noqa: E402
+
+    def _is_md(t):
+        return ("## " in t) and ("](http" in t)
+
+    md_text = ""
+    html_md = get_html_text(msg) or ""
+    if _is_md(html_md):
+        md_text = html_md
+    elif _is_md(body_text):
+        md_text = body_text
+    if md_text:
+        body_text = md_text
+        print("형식 감지: 마크다운형")
+
     if not body_text.strip():
         print("ERROR: 다이제스트 본문이 비어있음")
         sys.exit(1)
@@ -150,7 +186,11 @@ def main():
     sys.path.insert(0, AUTO_DIR)
     import digest_to_items  # noqa: E402
 
-    items = digest_to_items.parse_digest(body_text)
+    if md_text:
+        import digest_md_to_items  # noqa: E402
+        items = digest_md_to_items.parse_digest(body_text)
+    else:
+        items = digest_to_items.parse_digest(body_text)
     for it in items:
         it["date"] = date_str
         it["tag"] = ""

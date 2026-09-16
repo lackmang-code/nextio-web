@@ -48,7 +48,7 @@ DATE_RE = re.compile(r"(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일")
 BRANDS = [
     {
         "key": "skku-display",
-        "subject": "일간 디스플레이 탐사 보도 다이제스트",
+        "subject": "디스플레이 탐사 보도 다이제스트",  # 9/16 제목에서 "일간"이 빠졌다 — run_daily.py 참고
         "legacy": True,   # 선호값. 실제 형식은 본문을 보고 자동 감지한다
         "logo": "assets/brand_skku.svg",
     },
@@ -112,6 +112,12 @@ def publish_brand(imap, brand):
 
     date_str, msg_id, subject = found
     print("  선택한 메일: %s" % subject)
+
+    # 오늘자가 아니면 실패로 친다(2026-09-16 도입) — run_daily.py와 같은 이유.
+    # 어제 메일을 집으면 "카드 이미 존재 → 스킵"으로 조용히 끝나 누락이 드러나지 않았다.
+    today = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d")
+    if date_str < today:
+        raise RuntimeError("가장 최신 '%s' 메일이 %s자다 — 오늘(%s)자를 찾지 못했다" % (brand["subject"], date_str, today))
 
     card_path = os.path.join(pub_dir, "card_%s.html" % date_str)
     if os.path.exists(card_path):

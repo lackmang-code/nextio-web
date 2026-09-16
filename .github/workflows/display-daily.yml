@@ -28,7 +28,11 @@ jobs:
         with:
           python-version: '3.11'
 
+      # 2026-09-16: 오늘자 다이제스트를 못 찾으면 실패로 끝나게 바꿨다(조용한 누락 방지).
+      # 그 실패가 아래 쇼케이스·커밋을 막지 않도록 continue-on-error로 두고, 맨 아래에서 job을 실패시킨다.
       - name: Run daily card pipeline
+        id: daily
+        continue-on-error: true
         env:
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
@@ -105,13 +109,16 @@ jobs:
           done
 
       - name: Fail if a non-critical step failed
-        if: steps.showcase.outcome == 'failure' || steps.mail.outcome == 'failure'
+        if: steps.daily.outcome == 'failure' || steps.showcase.outcome == 'failure' || steps.mail.outcome == 'failure'
         run: |
+          if [ "${{ steps.daily.outcome }}" = "failure" ]; then
+            echo "디스플레이 데일리 실발행이 실패했습니다 — 'Run daily card pipeline' 로그를 확인하세요."
+          fi
           if [ "${{ steps.showcase.outcome }}" = "failure" ]; then
             echo "쇼케이스 발행이 실패했습니다 — 'Run showcase pipeline' 로그를 확인하세요."
           fi
           if [ "${{ steps.mail.outcome }}" = "failure" ]; then
             echo "발행 알림 메일이 실패했습니다 — 'Send publish notification mail' 로그를 확인하세요."
           fi
-          echo "디스플레이 데일리 실발행(카드·커밋)은 위 단계에서 이미 완료되었습니다."
+          echo "실패하지 않은 브랜드의 카드·커밋은 위 단계에서 이미 완료되었습니다."
           exit 1
