@@ -14,12 +14,12 @@
       "published_at": "2026-09-18",
       "purchase": [
         {
-          "name": "부크크에서 종이책 구매",
-          "url": "https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd"
-        },
-        {
           "name": "유페이퍼에서 전자책 구매",
           "url": "https://nextio.upaper.kr/content/1224889"
+        },
+        {
+          "name": "부크크에서 종이책 구매",
+          "url": "https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd"
         }
       ],
       "errata": [],

@@ -147,8 +147,8 @@
       <h2>구매</h2>
       <div id="buyBox">
         <div class="buy-list">
-          <a class="btn btn-primary" href="https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd" target="_blank" rel="noopener">부크크에서 종이책 구매</a>
           <a class="btn btn-primary" href="https://nextio.upaper.kr/content/1224889" target="_blank" rel="noopener">유페이퍼에서 전자책 구매</a>
+          <a class="btn btn-outline" href="https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd" target="_blank" rel="noopener">부크크에서 종이책 구매</a>
           <a class="btn btn-outline" href="/book-preview/">책 미리보기 — 앞부분 읽어보기</a>
         </div>
       </div>
@@ -244,9 +244,10 @@
 
       // 구매처
       var buy = Array.isArray(b.purchase) ? b.purchase : [];
-      var links = buy.map(function (p) {
+      // 첫 구매처만 강조한다 — 순서는 books.json 이 정한다(2026-09-17 대표 지시: 전자책 우선).
+      var links = buy.map(function (p, i) {
         var u = safeUrl(p && p.url);
-        return u ? '<a class="btn btn-primary" href="' + esc(u) + '" target="_blank" rel="noopener">'
+        return u ? '<a class="btn ' + (i === 0 ? 'btn-primary' : 'btn-outline') + '" href="' + esc(u) + '" target="_blank" rel="noopener">'
                  + esc(p.name || '구매하기') + '</a>' : '';
       }).filter(Boolean);
       if (links.length) {
