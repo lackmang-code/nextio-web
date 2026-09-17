@@ -101,8 +101,8 @@
     <h1>1인 유니콘 기업 첫발 딛기</h1>
     <p class="byline">박원상 지음 · Next I/O</p>
     <p class="pitch">책을 사신 분을 위한 자리입니다. 특전을 내려받고, 정오표를 확인하실 수 있습니다.</p>
-    <span class="status" id="bookStatus">전자책 출간 · 종이책 출간 준비 중</span>
-    <p class="editions" id="bookEditions">전자책 · 2026년 9월 18일 발행 · 20,000원 · ISBN 979-11-221309-1-1</p>
+    <span class="status" id="bookStatus">전자책 · 종이책 출간</span>
+    <p class="editions" id="bookEditions">종이책 · 2026년 9월 18일 발행 · 29,000원 · B5 · 320쪽 · ISBN 979-11-221309-0-4<br>전자책 · 2026년 9월 18일 발행 · 20,000원 · ISBN 979-11-221309-1-1</p>
   </div>
 </div>
 
@@ -147,8 +147,8 @@
       <h2>구매</h2>
       <div id="buyBox">
         <div class="buy-list">
+          <a class="btn btn-primary" href="https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd" target="_blank" rel="noopener">부크크에서 종이책 구매</a>
           <a class="btn btn-primary" href="https://nextio.upaper.kr/content/1224889" target="_blank" rel="noopener">유페이퍼에서 전자책 구매</a>
-          <a class="btn btn-outline" href="/book-preview/#notify">📖 종이책 출간 알림 신청</a>
           <a class="btn btn-outline" href="/book-preview/">책 미리보기 — 앞부분 읽어보기</a>
         </div>
       </div>
@@ -205,6 +205,7 @@
           var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(e.published_at || '');
           if (m) bits.push(m[1] + '년 ' + (+m[2]) + '월 ' + (+m[3]) + '일 발행');
           if (typeof e.price === 'number') bits.push(e.price.toLocaleString('ko-KR') + '원');
+          if (e.spec) bits.push(esc(e.spec));
           if (e.isbn) bits.push('ISBN ' + esc(e.isbn));
           return bits.join(' · ');
         }).join('<br>');
@@ -249,10 +250,9 @@
                  + esc(p.name || '구매하기') + '</a>' : '';
       }).filter(Boolean);
       if (links.length) {
-        // 종이책 알림·미리보기 링크는 구매처가 생겨도 남긴다(종이책은 아직 출간 전이다).
+        // 미리보기 링크는 구매처가 생겨도 남긴다.
         document.getElementById('buyBox').innerHTML =
           '<div class="buy-list">' + links.join('')
-          + '<a class="btn btn-outline" href="/book-preview/#notify">📖 종이책 출간 알림 신청</a>'
           + '<a class="btn btn-outline" href="/book-preview/">책 미리보기 — 앞부분 읽어보기</a>'
           + '</div>';
       }

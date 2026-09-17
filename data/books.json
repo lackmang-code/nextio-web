@@ -10,9 +10,13 @@
       "cover": "/book-preview/cover.webp",
       "url": "/book/unicorn/",
       "blurb": "사업자등록증도, 회사 이름도, 무엇을 팔지에 대한 확신도 필요 없습니다. 컴퓨터 한 대와 두 시간, 그리고 첫 관문이면 됩니다. 마지막 관문을 지나면 혼자인데, 회사처럼 굴러갑니다.",
-      "status": "전자책 출간 · 종이책 출간 준비 중",
+      "status": "전자책 · 종이책 출간",
       "published_at": "2026-09-18",
       "purchase": [
+        {
+          "name": "부크크에서 종이책 구매",
+          "url": "https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd"
+        },
         {
           "name": "유페이퍼에서 전자책 구매",
           "url": "https://nextio.upaper.kr/content/1224889"
@@ -28,6 +32,13 @@
         "count": 66
       },
       "editions": [
+        {
+          "format": "종이책",
+          "published_at": "2026-09-18",
+          "price": 29000,
+          "isbn": "979-11-221309-0-4",
+          "spec": "B5 · 320쪽"
+        },
         {
           "format": "전자책",
           "published_at": "2026-09-18",
