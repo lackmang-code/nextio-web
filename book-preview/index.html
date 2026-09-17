@@ -177,7 +177,7 @@
     </div>
     <p class="pitch">혼자 일하는 사람이 회사 하나가 하는 일을 해내게 만드는 법. AI를 도구가 아니라 <strong>직원</strong>으로 채용해, 열 개의 관문을 지나며 실제로 굴러가는 회사를 만듭니다.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="#notify" data-src="hero">📖 출간 소식 가장 먼저 받기</a>
+      <a class="btn btn-primary" href="#notify" data-src="hero">📖 종이책 출간 알림 신청</a>
       <span class="btn-note">출간되면 이 자리에 실제 구매 링크가 연결됩니다</span>
     </div>
   </div>
@@ -269,7 +269,7 @@
       <div class="lock">🔒</div>
       <h3>여기서부터는 책에서 이어집니다</h3>
       <p>세 자리를 정한 이유 다음엔 "왜 딱 셋에서 멈추는가", "제작팀은 왜 없는가", 그리고 1부 끝에서 만나는 <strong>네 번째 벽</strong>이 기다리고 있습니다. 관문 0부터 28장까지, 총 28편이 이어집니다.</p>
-      <a class="btn btn-primary" href="#notify" data-src="gate">📖 출간 소식 가장 먼저 받기</a>
+      <a class="btn btn-primary" href="#notify" data-src="gate">📖 종이책 출간 알림 신청</a>
     </div>
   </div>
 </div>
@@ -347,7 +347,7 @@
       <!-- 초판을 직접 인쇄하기로 해서(2026-09-05) 부수 산정 근거가 필요해졌다.
            칸을 늘리면 신청이 줄기 때문에 둘만, 그것도 선택으로 둔다. -->
       <fieldset class="intent">
-        <legend>출간되면 구매하실 생각이신가요? <span class="opt">선택</span></legend>
+        <legend>종이책이 출간되면 구매하실 생각이신가요? <span class="opt">선택</span></legend>
         <div class="opts">
           <label><input type="radio" name="intent" value="buy"><span>살 생각입니다</span></label>
           <label><input type="radio" name="intent" value="maybe"><span>관심은 있는데 아직 모르겠습니다</span></label>
@@ -364,10 +364,10 @@
 
       <label class="consent">
         <input type="checkbox" id="nConsent" required>
-        <span>출간 알림을 받기 위해 이메일 주소 수집·이용에 동의합니다. <b>(필수)</b></span>
+        <span>종이책 출간 알림을 받기 위해 이메일 주소 수집·이용에 동의합니다. <b>(필수)</b></span>
       </label>
 
-      <button class="btn btn-primary" type="submit" id="nSubmit">📖 출간 소식 가장 먼저 받기</button>
+      <button class="btn btn-primary" type="submit" id="nSubmit">📖 종이책 출간 알림 신청</button>
       <p class="msg" id="nMsg" role="status" aria-live="polite"></p>
     </form>
 
@@ -375,7 +375,7 @@
       <b>수집 항목</b> 이메일 주소, 이름·구매 의향·수량(선택) &nbsp;·&nbsp;
       <b>이용 목적</b> 『1인 유니콘 기업 첫발 딛기』 출간·구매처 안내 및 <b>초판 발행 부수 산정</b><br>
       <b>보유 기간</b> 출간 안내 발송 후 파기. 그 전이라도 <a href="mailto:info@nextio.ai.kr?subject=%EC%B6%9C%EA%B0%84%20%EC%95%8C%EB%A6%BC%20%EC%88%98%EC%8B%A0%20%EC%B7%A8%EC%86%8C" style="color:#a8b0c2;">info@nextio.ai.kr</a>로 요청하시면 즉시 삭제합니다.<br>
-      동의를 거부하실 수 있으며, 이 경우 출간 알림을 받으실 수 없습니다. 광고·타 상품 안내에는 사용하지 않습니다.
+      동의를 거부하실 수 있으며, 이 경우 종이책 출간 알림을 받으실 수 없습니다. 광고·타 상품 안내에는 사용하지 않습니다.
     </div>
   </div>
 </div>
@@ -456,7 +456,7 @@
           if (res.ok && res.d && res.d.success) {
             done = true;
             // 이미 신청한 주소여도 같은 문구가 나온다. 서버가 성공·중복을 구분해 알려주지 않기 때문이다.
-            say('신청되었습니다. 출간되면 가장 먼저 알려드리겠습니다.', 'ok');
+            say('신청되었습니다. 종이책이 출간되면 가장 먼저 알려드리겠습니다.', 'ok');
             btn.textContent = '✅ 신청 완료';
             return;
           }
