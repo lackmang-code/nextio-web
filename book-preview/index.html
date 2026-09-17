@@ -43,6 +43,8 @@
   .hero .subtitle{font-size:15.5px; color:#c7ccdb; margin:2px 0 0; max-width:34em;}
   .hero .byline{font-size:13.5px; color:#8b93a8; margin-top:2px;}
   .hero .pitch{font-size:15px; color:#dfe3ee; max-width:32em; margin-top:6px;}
+  /* 한글이 단어 중간(「만듭니|다」)에서 끊겨 한 글자만 다음 줄로 넘어가지 않게 한다 */
+  .hero .pitch, .gate-box p, .closing p, .hero .subtitle{word-break:keep-all; text-wrap:pretty;}
 
   .cta-row{display:flex; flex-direction:column; gap:10px; width:100%; max-width:340px; margin-top:6px;}
   .btn{
@@ -181,7 +183,6 @@
     <div class="cta-row">
       <a class="btn btn-primary" href="https://nextio.upaper.kr/content/1224889" target="_blank" rel="noopener">📱 전자책 구매 — 유페이퍼 20,000원</a>
       <a class="btn btn-secondary" href="https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd" target="_blank" rel="noopener">📕 종이책 구매 — 부크크 29,000원</a>
-      <a class="btn btn-secondary" href="#notify" data-src="hero">📖 출간 소식 가장 먼저 받기</a>
     </div>
   </div>
 </div>
@@ -276,7 +277,6 @@
         <a class="btn btn-primary" href="https://nextio.upaper.kr/content/1224889" target="_blank" rel="noopener">📱 전자책 구매 — 유페이퍼 20,000원</a>
         <a class="btn btn-secondary" href="https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd" target="_blank" rel="noopener">📕 종이책 구매 — 부크크 29,000원</a>
       </div>
-      <a class="btn btn-secondary" href="#notify" data-src="gate" style="max-width:280px; margin:0 auto;">📖 출간 소식 가장 먼저 받기</a>
     </div>
   </div>
 </div>
@@ -343,7 +343,8 @@
       <a class="btn btn-secondary" href="https://bookk.co.kr/bookStore/6aaa98b1c5fc5df28d214abd" target="_blank" rel="noopener">📕 종이책 구매 — 부크크 29,000원</a>
     </div>
 
-    <form class="notify" id="notifyForm" autocomplete="on" novalidate>
+    <!-- 2026-09-17 대표 결정: 판매가 시작돼 출간 알림 폼은 숨긴다. 코드는 되살릴 수 있게 남긴다(hidden 두 곳만 빼면 된다). -->
+    <form class="notify" id="notifyForm" autocomplete="on" novalidate hidden>
       <div class="row">
         <input type="email" id="nEmail" name="email" placeholder="이메일 주소" required
                maxlength="120" autocomplete="email" inputmode="email">
@@ -383,7 +384,7 @@
       <p class="msg" id="nMsg" role="status" aria-live="polite"></p>
     </form>
 
-    <div class="privacy">
+    <div class="privacy" hidden>
       <b>수집 항목</b> 이메일 주소, 이름·구매 의향·수량(선택) &nbsp;·&nbsp;
       <b>이용 목적</b> 『1인 유니콘 기업 첫발 딛기』 출간·구매처 안내 및 <b>초판 발행 부수 산정</b><br>
       <b>보유 기간</b> 출간 안내 발송 후 파기. 그 전이라도 <a href="mailto:info@nextio.ai.kr?subject=%EC%B6%9C%EA%B0%84%20%EC%95%8C%EB%A6%BC%20%EC%88%98%EC%8B%A0%20%EC%B7%A8%EC%86%8C" style="color:#a8b0c2;">info@nextio.ai.kr</a>로 요청하시면 즉시 삭제합니다.<br>
