@@ -1,36 +1,36 @@
 {
-  "updated": "2026-09-15",
+  "updated": "2026-09-22",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "티타늄판을 넣고도 펜을 지킨 폴더블 아이폰 듀오",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-iphone-duo-crease-pen-thickness",
-      "section": "이슈",
-      "publishedAt": "2026-09-15"
-    },
-    {
-      "title": "표면처리기술 AG(Anti-Glare)",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-ag-anti-glare",
-      "section": "기술노트",
-      "publishedAt": "2026-09-15"
-    },
-    {
-      "title": "양자점 색변환층 특허 316건 분석",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-quantum-dot-color-conversion-layer-patents",
+      "title": "삼성 무효심판을 버틴 인화인듐 양자점 합성 특허 4건",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-nanoco-quantum-dot-synthesis-patent-litigation",
       "section": "특허",
-      "publishedAt": "2026-09-15"
+      "publishedAt": "2026-09-22"
     },
     {
-      "title": "Micro-LED 디스플레이를 이용한 광통신과 ToF",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-microled-display-owc-tof",
-      "section": "논문",
-      "publishedAt": "2026-09-15"
+      "title": "표면처리기술 AR·LR(반사방지·저반사)",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-ar-anti-reflection",
+      "section": "기술노트",
+      "publishedAt": "2026-09-22"
     },
     {
-      "title": "수 옹스트롬 백금 간격이 가른 인광 OLED 롤오프",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-15-pt-mmlct-oled-rolloff",
+      "title": "구동칩(DDI)이 막힌 자리, UMC 22나노",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-ddi-22nm-foundry-bottleneck",
+      "section": "이슈",
+      "publishedAt": "2026-09-22"
+    },
+    {
+      "title": "시야각 색변이를 4분의 1로 줄인 폴라리톤 OLED",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-polariton-oled-angle-stable",
       "section": "논문",
-      "publishedAt": "2026-09-15"
+      "publishedAt": "2026-09-22"
+    },
+    {
+      "title": "2.7V로 1000니트를 낸 청색 업컨버전 OLED",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-blue-upconversion-oled-low-voltage",
+      "section": "논문",
+      "publishedAt": "2026-09-22"
     }
   ]
 }
