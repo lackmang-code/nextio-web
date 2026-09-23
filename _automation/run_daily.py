@@ -39,7 +39,9 @@ PY = sys.executable
 # 키워드는 두 형식에 공통인 부분만 쓴다. 반도체·배터리 제목에는 "디스플레이"가 없어 섞이지 않는다.
 # 날짜 뒤 "자"는 선택 — 신형식에는 없다. 둘 중 하나라도 안 맞으면 오늘 메일을 못 알아보고
 # 어제 메일을 집어 "카드 이미 존재"로 조용히 끝난다(9/16 실제로 그렇게 두 카드가 빠졌다).
-SUBJECT_KEYWORD = "디스플레이 탐사 보도 다이제스트"
+SUBJECT_KEYWORD = "디스플레이 다이제스트"          # 로그·오류 문구용 이름
+SUBJECT_MUST = ["디스플레이", "다이제스트"]        # 제목에 전부 있어야 한다
+SUBJECT_MUST_NOT = ["반도체", "배터리", "이차전지"]  # 하나라도 있으면 남의 산업 메일이다
 DATE_RE = re.compile(r"(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일")
 KST = timezone(timedelta(hours=9))
 SEARCH_WINDOW_DAYS = 5  # 최근 며칠 안에서만 다이제스트를 찾는다(주말/연휴 대비 여유)
@@ -94,7 +96,7 @@ def find_latest_digest(imap):
         raw_header = hdata[0][1]
         msg = email.message_from_bytes(raw_header)
         subject = decode_mime(msg.get("Subject"))
-        if SUBJECT_KEYWORD not in subject:
+        if not (all(k in subject for k in SUBJECT_MUST) and not any(k in subject for k in SUBJECT_MUST_NOT)):
             continue
         m = DATE_RE.search(subject)
         if not m:

@@ -48,27 +48,44 @@ DATE_RE = re.compile(r"(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일")
 BRANDS = [
     {
         "key": "skku-display",
-        "subject": "디스플레이 탐사 보도 다이제스트",  # 9/16 제목에서 "일간"이 빠졌다 — run_daily.py 참고
+        "subject": "디스플레이 다이제스트",
+        "must": ["디스플레이", "다이제스트"],
+        "must_not": ["반도체", "배터리", "이차전지"],
         "legacy": True,   # 선호값. 실제 형식은 본문을 보고 자동 감지한다
         "logo": "assets/brand_skku.svg",
     },
     {
         "key": "semiconductor",
-        "subject": "반도체 탐사 보도 다이제스트",
+        "subject": "반도체 다이제스트",
+        "must": ["반도체", "다이제스트"],
+        "must_not": ["디스플레이", "배터리", "이차전지"],
         "legacy": False,  # 선호값. 실제 형식은 본문을 보고 자동 감지한다
         "logo": "assets/nextio_logo.svg",
     },
     {
         "key": "battery",
-        "subject": "배터리 탐사 보도 다이제스트",
+        "subject": "배터리 다이제스트",
+        "must": ["배터리", "다이제스트"],   # 9/23 제목이 「[일일 다이제스트] … 배터리·이차전지 …」로 바뀌었다
+        "must_not": ["디스플레이", "반도체"],
         "legacy": False,
         "logo": "assets/brand_battery.svg",
     },
 ]
 
 
-def find_digest(imap, subject_keyword):
-    """제목에 keyword가 든 메일 중 제목 날짜가 가장 최신인 것을 고른다."""
+def subject_matches(subject, must, must_not):
+    """제목 판정 — must 는 전부 있어야 하고, must_not 은 하나도 없어야 한다.
+
+    2026-09-16 디스플레이, 2026-09-23 배터리 제목이 예고 없이 바뀌었다(「탐사 보도」가 빠지거나
+    말머리가 「[일일 다이제스트]」로). 한 덩어리 문구로 맞추면 그때마다 그 브랜드가 통째로 빠진다.
+    그렇다고 느슨하게 「다이제스트」만 보면 남의 산업 메일을 집는다 — must_not 이 그것을 막는다.
+    """
+    return all(k in subject for k in must) and not any(k in subject for k in must_not)
+
+
+def find_digest(imap, brand):
+    """그 브랜드의 다이제스트 중 제목 날짜가 가장 최신인 것을 고른다."""
+    must, must_not = brand["must"], brand["must_not"]
     since = (datetime.now(timezone.utc) - timedelta(days=SEARCH_WINDOW_DAYS)).strftime("%d-%b-%Y")
     typ, data = imap.search(None, '(SINCE "%s")' % since)
     if typ != "OK" or not data or not data[0]:
@@ -80,7 +97,7 @@ def find_digest(imap, subject_keyword):
         if typ != "OK" or not hdata or not hdata[0]:
             continue
         subject = decode_mime(email.message_from_bytes(hdata[0][1]).get("Subject"))
-        if subject_keyword not in subject:
+        if not subject_matches(subject, must, must_not):
             continue
         m = DATE_RE.search(subject)
         if not m:
@@ -106,7 +123,7 @@ def publish_brand(imap, brand):
     pub_dir = os.path.join(SHOWCASE_DIR, key)
     os.makedirs(pub_dir, exist_ok=True)
 
-    found = find_digest(imap, brand["subject"])
+    found = find_digest(imap, brand)
     if not found:
         raise RuntimeError("최근 %d일 내 '%s' 메일을 찾지 못했습니다." % (SEARCH_WINDOW_DAYS, brand["subject"]))
 
