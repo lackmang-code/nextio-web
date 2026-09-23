@@ -27,6 +27,16 @@ SKIP_RE = re.compile(r'^\s*(#|©|본 다이제스트는|\*?\s*📌)')
 #   요약문
 #   [심층 분석]
 #   분석문
+# 라벨형(2026-09-23 배터리 다이제스트 신형식):
+#   정책 / R&D 1. 제목            ← 앞에 카테고리가 붙고 제목에는 링크가 없다
+#   핵심 요약: …
+#   심층 분석 및 산업적 영향: …
+#   원문 출처: [매체](URL)
+LAB_ITEM_RE = re.compile(r'^\s*(?:(.*?)\s+)?(\d{1,2})\.\s+(\S.*?)\s*$')
+LAB_SUMMARY_RE = re.compile(r'^\s*핵심\s*요약\s*[:：]\s*(.*\S)\s*$')
+LAB_BODY_RE = re.compile(r'^\s*심층\s*분석[^:：]*[:：]\s*(.*\S)\s*$')
+LAB_SOURCE_RE = re.compile(r'^\s*원문\s*출처\s*[:：]\s*\[([^\]]+)\]\((https?://[^)\s]+)\)\s*$')
+
 NUM_ITEM_RE = re.compile(r'^\s*(\d+)\.\s*\[(.+)\]\((https?://[^)\s]+)\)\s*$')
 NUM_SOURCE_RE = re.compile(r'^\s*출처\s*:\s*(.+?)\s*(\|.*)?$')
 NUM_SECTION_RE = re.compile(r'^\s*\[(핵심 요약|심층 분석)\]\s*$')
@@ -97,12 +107,53 @@ def parse_numbered(text):
     return items
 
 
+def parse_labeled(text):
+    """라벨형 다이제스트를 읽는다. 항목 구조는 parse_digest와 같다.
+
+    제목 줄에 링크가 없어 「원문 출처」 줄에서 매체명과 주소를 받는다.
+    """
+    items, cur = [], None
+    for raw in text.splitlines():
+        line = raw.rstrip()
+        if not line.strip() or SKIP_RE.match(line):
+            continue
+        m = LAB_SOURCE_RE.match(line)
+        if m and cur is not None:
+            cur["source"] = m.group(1).strip()
+            cur["url"] = unwrap_url(m.group(2))
+            continue
+        m = LAB_SUMMARY_RE.match(line)
+        if m and cur is not None:
+            if not cur["summary"]:
+                cur["summary"] = m.group(1)
+            continue
+        m = LAB_BODY_RE.match(line)
+        if m and cur is not None:
+            if not cur["body"]:
+                cur["body"] = "<p>%s</p>" % m.group(1)
+            continue
+        m = LAB_ITEM_RE.match(line)
+        # 새 항목은 「이전 항목이 주소까지 받은 뒤」에만 시작한다 —
+        # 본문 안의 「2026년 9월 23일」 같은 숫자 줄을 제목으로 잘못 집지 않기 위해서다.
+        if m and (cur is None or cur["url"]):
+            cat, _, title = m.groups()
+            if cur is not None:
+                items.append(cur)
+            cur = {"title": title.strip(), "summary": "", "body": "",
+                   "source": "", "url": "", "tag": ("#" + cat.strip().replace(" ", "")) if cat else ""}
+    if cur is not None and cur["url"]:
+        items.append(cur)
+    return items
+
+
 def parse_digest(text):
     items = _parse_hash_items(text)
-    # 기존 "## 1." 형식으로 한 건도 못 읽었을 때만 번호형을 시도한다.
-    # 반도체·배터리처럼 기존 형식이 읽히는 메일의 결과는 그대로 유지된다.
+    # 기존 "## 1." 형식으로 한 건도 못 읽었을 때만 다음 형식을 시도한다.
+    # 그 형식이 읽히는 메일의 결과는 그대로 유지된다.
     if not items:
         items = parse_numbered(text)
+    if not items:
+        items = parse_labeled(text)
     return items
 
 
