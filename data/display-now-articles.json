@@ -1,36 +1,36 @@
 {
-  "updated": "2026-09-22",
+  "updated": "2026-09-29",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "삼성 무효심판을 버틴 인화인듐 양자점 합성 특허 4건",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-nanoco-quantum-dot-synthesis-patent-litigation",
-      "section": "특허",
-      "publishedAt": "2026-09-22"
-    },
-    {
-      "title": "표면처리기술 AR·LR(반사방지·저반사)",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-ar-anti-reflection",
-      "section": "기술노트",
-      "publishedAt": "2026-09-22"
-    },
-    {
-      "title": "구동칩(DDI)이 막힌 자리, UMC 22나노",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-ddi-22nm-foundry-bottleneck",
+      "title": "애플 탭틱 엔진 특허소송 7.7조 패소",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-taction-apple-haptic-q-factor",
       "section": "이슈",
-      "publishedAt": "2026-09-22"
+      "publishedAt": "2026-09-29"
     },
     {
-      "title": "시야각 색변이를 4분의 1로 줄인 폴라리톤 OLED",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-polariton-oled-angle-stable",
-      "section": "논문",
-      "publishedAt": "2026-09-22"
+      "title": "표면처리기술 모스아이(Moth-eye)",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-moth-eye",
+      "section": "기술노트",
+      "publishedAt": "2026-09-29"
     },
     {
-      "title": "2.7V로 1000니트를 낸 청색 업컨버전 OLED",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-22-blue-upconversion-oled-low-voltage",
+      "title": "탠덤 OLED 전하생성층(CGL) 특허 430건 분석",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-tandem-oled-cgl-patents",
+      "section": "특허",
+      "publishedAt": "2026-09-29"
+    },
+    {
+      "title": "액정 겔 온도센서는 굳힐 때의 상이 감도를 정한다",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-lc-gel-temperature-capacitor",
       "section": "논문",
-      "publishedAt": "2026-09-22"
+      "publishedAt": "2026-09-29"
+    },
+    {
+      "title": "21,000PPI 양자점 화소를 만든 가역 광패터닝",
+      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-qd-reversible-photolithography",
+      "section": "논문",
+      "publishedAt": "2026-09-29"
     }
   ]
 }
