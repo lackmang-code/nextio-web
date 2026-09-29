@@ -66,7 +66,7 @@ def main():
     dates = sorted({m.group(1) for fn in os.listdir(pub) if (m := pat.match(fn))}, reverse=True)
     if dates:
         rows = "\n".join(
-            f'<a class="row" href="card_{d}.html"><span class="d">{d}'
+            f'<a class="row" href="card_{d}"><span class="d">{d}'
             + (' <span class="badge">최신</span>' if i == 0 else '')
             + '</span><span class="go">브리핑 보기 →</span></a>'
             for i, d in enumerate(dates))
@@ -187,7 +187,7 @@ if (rows.length > 0) {{
     let activeRow = rows[0];
     if (targetDate) {{
         for (const row of rows) {{
-            if (row.getAttribute('href') === 'card_' + targetDate + '.html') {{
+            if (row.getAttribute('href') === 'card_' + targetDate) {{
                 activeRow = row;
                 break;
             }}
@@ -207,7 +207,7 @@ rows.forEach(row => {{
     row.classList.add('active');
     
     // Update URL history to support sharing/reloading
-    const dateMatch = row.getAttribute('href').match(/card_(.*)\\.html/);
+    const dateMatch = row.getAttribute('href').match(/card_(.*)$/);
     if(dateMatch) {{
         window.history.replaceState({{}}, '', '?date=' + dateMatch[1]);
     }}
@@ -227,7 +227,7 @@ rows.forEach(row => {{
     urls = [f"  <url><loc>{base}/</loc><changefreq>daily</changefreq><priority>0.7</priority></url>"]
     for d in dates:
         urls.append(
-            f'  <url><loc>{base}/card_{d}.html</loc><lastmod>{d}</lastmod>'
+            f'  <url><loc>{base}/card_{d}</loc><lastmod>{d}</lastmod>'
             f'<changefreq>never</changefreq><priority>0.5</priority></url>'
         )
     sitemap = (

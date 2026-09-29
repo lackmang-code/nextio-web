@@ -264,7 +264,10 @@ def main():
     items = data.get("items", []) if isinstance(data, dict) else data
     with open(logo_path, encoding="utf-8") as f:
         logo_svg = f.read()
-    card_url = brand["base_url"].rstrip("/") + f"/card_{date_str}.html"
+    # 2026-09-30: 확장자 없는 주소가 실제 서비스 주소다. Cloudflare Pages가 .html을 308로
+    # 그리로 넘기는데, canonical·og:url이 .html을 가리키고 있어 구글이 "리디렉션되는 URL이
+    # 정본"이라는 모순된 신호를 받고 있었다(색인 생성 안 됨 98건 중 12건 직접 원인).
+    card_url = brand["base_url"].rstrip("/") + f"/card_{date_str}"
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(build(items, date_str, logo_svg, card_url, brand))
     print(f"OK promo: {out_path} ({len(items)} items)")
