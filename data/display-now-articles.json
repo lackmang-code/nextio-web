@@ -1,36 +1,36 @@
 {
-  "updated": "2026-09-29",
+  "updated": "2026-10-13",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "애플 탭틱 엔진 특허소송 7.7조 패소",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-taction-apple-haptic-q-factor",
-      "section": "이슈",
-      "publishedAt": "2026-09-29"
-    },
-    {
-      "title": "표면처리기술 모스아이(Moth-eye)",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-moth-eye",
-      "section": "기술노트",
-      "publishedAt": "2026-09-29"
-    },
-    {
-      "title": "탠덤 OLED 전하생성층(CGL) 특허 430건 분석",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-tandem-oled-cgl-patents",
+      "title": "아이폰 18 Pro UDC 화소 구조 특허 분석",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-under-panel-camera-pixel-structure",
       "section": "특허",
-      "publishedAt": "2026-09-29"
+      "publishedAt": "2026-10-13"
     },
     {
-      "title": "액정 겔 온도센서는 굳힐 때의 상이 감도를 정한다",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-lc-gel-temperature-capacitor",
-      "section": "논문",
-      "publishedAt": "2026-09-29"
+      "title": "BOE 1+4+N 사업 해부",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-boe-1-4-n-business",
+      "section": "이슈",
+      "publishedAt": "2026-10-13"
     },
     {
-      "title": "21,000PPI 양자점 화소를 만든 가역 광패터닝",
-      "url": "https://display-now.nextio.ai.kr/article/2026-09-29-qd-reversible-photolithography",
+      "title": "조명용 OLED 특허에 걸린 삼성, 픽티바 특허소송 합의",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-pictiva-samsung-oled-patent",
+      "section": "이슈",
+      "publishedAt": "2026-10-13"
+    },
+    {
+      "title": "표면처리기술 HC(Hard Coating)",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-hc-hard-coating",
+      "section": "기술노트",
+      "publishedAt": "2026-10-13"
+    },
+    {
+      "title": "전하 균형이 효율과 롤오프를 함께 가른 라디칼 OLED",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-nir-radical-oled-charge-balance",
       "section": "논문",
-      "publishedAt": "2026-09-29"
+      "publishedAt": "2026-10-13"
     }
   ]
 }
