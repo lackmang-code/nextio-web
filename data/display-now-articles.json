@@ -1,36 +1,36 @@
 {
-  "updated": "2026-10-13",
+  "updated": "2026-10-20",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "아이폰 18 Pro UDC 화소 구조 특허 분석",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-under-panel-camera-pixel-structure",
+      "title": "FMM리스 OLED 패터닝 특허 분석",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-fmmless-oled-patterning-patents",
       "section": "특허",
-      "publishedAt": "2026-10-13"
+      "publishedAt": "2026-10-20"
     },
     {
-      "title": "BOE 1+4+N 사업 해부",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-boe-1-4-n-business",
+      "title": "FLiPP 전용으로 전환되는 파주 8.5세대 WOLED 라인",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-flipp-full-glass-gen85-line",
       "section": "이슈",
-      "publishedAt": "2026-10-13"
+      "publishedAt": "2026-10-20"
     },
     {
-      "title": "조명용 OLED 특허에 걸린 삼성, 픽티바 특허소송 합의",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-pictiva-samsung-oled-patent",
-      "section": "이슈",
-      "publishedAt": "2026-10-13"
-    },
-    {
-      "title": "표면처리기술 HC(Hard Coating)",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-hc-hard-coating",
+      "title": "표면처리기술 플렉서블 HC(Flexible Hard Coating)",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-flexible-hard-coating",
       "section": "기술노트",
-      "publishedAt": "2026-10-13"
+      "publishedAt": "2026-10-20"
     },
     {
-      "title": "전하 균형이 효율과 롤오프를 함께 가른 라디칼 OLED",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-13-nir-radical-oled-charge-balance",
+      "title": "액정 산란이 가른 신축 기계발광 필름의 밝기와 색",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-ml-haze-light-extraction",
       "section": "논문",
-      "publishedAt": "2026-10-13"
+      "publishedAt": "2026-10-20"
+    },
+    {
+      "title": "치환 위치가 가른 공액 고분자의 광안정성",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-positional-isomerism-photostability",
+      "section": "논문",
+      "publishedAt": "2026-10-20"
     }
   ]
 }
