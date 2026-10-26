@@ -1,36 +1,36 @@
 {
-  "updated": "2026-10-20",
+  "updated": "2026-10-27",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "FMM리스 OLED 패터닝 특허 분석",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-fmmless-oled-patterning-patents",
+      "title": "물방울 힌지 특허, 출원은 삼성·제품은 화웨이",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-foldable-waterdrop-hinge-patents",
       "section": "특허",
-      "publishedAt": "2026-10-20"
+      "publishedAt": "2026-10-27"
     },
     {
-      "title": "FLiPP 전용으로 전환되는 파주 8.5세대 WOLED 라인",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-flipp-full-glass-gen85-line",
+      "title": "삼성디스플레이 12인치 RGB 올레도스, 아직 양산해 본 적 없는 증착기에 1,500억 계획",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-rgb-oledos-12inch-deposition",
       "section": "이슈",
-      "publishedAt": "2026-10-20"
+      "publishedAt": "2026-10-27"
     },
     {
-      "title": "표면처리기술 플렉서블 HC(Flexible Hard Coating)",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-flexible-hard-coating",
+      "title": "커버윈도 화학강화유리",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-chemically-strengthened-glass",
       "section": "기술노트",
-      "publishedAt": "2026-10-20"
+      "publishedAt": "2026-10-27"
     },
     {
-      "title": "액정 산란이 가른 신축 기계발광 필름의 밝기와 색",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-ml-haze-light-extraction",
+      "title": "하이드라존으로 24시간 붙든 액정의 중간 전이온도",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-hydrazone-stepwise-lc-transition",
       "section": "논문",
-      "publishedAt": "2026-10-20"
+      "publishedAt": "2026-10-27"
     },
     {
-      "title": "치환 위치가 가른 공액 고분자의 광안정성",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-20-positional-isomerism-photostability",
+      "title": "금을 한 면에 몰아 낮춘 나노섬유 전극의 면저항",
+      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-metallized-nanofiber-electrode",
       "section": "논문",
-      "publishedAt": "2026-10-20"
+      "publishedAt": "2026-10-27"
     }
   ]
 }
