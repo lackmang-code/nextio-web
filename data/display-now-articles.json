@@ -1,36 +1,36 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-11-03",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "물방울 힌지 특허, 출원은 삼성·제품은 화웨이",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-foldable-waterdrop-hinge-patents",
-      "section": "특허",
-      "publishedAt": "2026-10-27"
-    },
-    {
-      "title": "삼성디스플레이 12인치 RGB 올레도스, 아직 양산해 본 적 없는 증착기에 1,500억 계획",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-rgb-oledos-12inch-deposition",
+      "title": "애플 아이폰 듀오 폴더블 OLED 라인 불량",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-iphone-duo-line-defect",
       "section": "이슈",
-      "publishedAt": "2026-10-27"
+      "publishedAt": "2026-11-03"
     },
     {
-      "title": "커버윈도 화학강화유리",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-chemically-strengthened-glass",
+      "title": "폴더블 지지판 특허, 주름을 풀자 비친 구멍",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-foldable-support-plate-patents",
+      "section": "특허",
+      "publishedAt": "2026-11-03"
+    },
+    {
+      "title": "커버윈도 결정화유리·사파이어",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-glass-ceramic-sapphire",
       "section": "기술노트",
-      "publishedAt": "2026-10-27"
+      "publishedAt": "2026-11-03"
     },
     {
-      "title": "하이드라존으로 24시간 붙든 액정의 중간 전이온도",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-hydrazone-stepwise-lc-transition",
+      "title": "백플레인 IGZO로 낮춘 ZnO 자외선 센서의 암전류",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-igzo-interlayer-uv-photodetector",
       "section": "논문",
-      "publishedAt": "2026-10-27"
+      "publishedAt": "2026-11-03"
     },
     {
-      "title": "금을 한 면에 몰아 낮춘 나노섬유 전극의 면저항",
-      "url": "https://display-now.nextio.ai.kr/article/2026-10-27-metallized-nanofiber-electrode",
+      "title": "주변기를 바꿔 잡은 자색청색 TADF의 농도소광",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-peripheral-group-tadf-quenching",
       "section": "논문",
-      "publishedAt": "2026-10-27"
+      "publishedAt": "2026-11-03"
     }
   ]
 }
