@@ -191,7 +191,19 @@ def publish_brand(imap, brand):
                "--max-age", str(MAX_AGE_DAYS)]
         if use_legacy:
             cmd.append("--legacy")
-        run(cmd)
+        try:
+            run(cmd)
+        except RuntimeError:
+            # 마크다운으로 판정했지만 실제로는 못 읽는 경우가 있다(2026-11-03 실측 —
+            # 같은 메일의 평문 파트가 구형식으로 정상 파싱됨). 판정을 버리지 않고
+            # 평문이 구형식처럼 보일 때만 그걸로 한 번 더 시도한다.
+            if use_legacy or not _is_legacy(plain) or not plain.strip():
+                raise
+            print("  마크다운 파싱 실패 → 평문(구형식)으로 재시도")
+            with open(raw_path, "w", encoding="utf-8") as f:
+                f.write(plain)
+            run([PY, "digest_md_to_items.py", raw_path, items_path, date_str,
+                 "--max-age", str(MAX_AGE_DAYS), "--legacy"])
 
         run([PY, "make_promo.py", items_path, card_path, date_str, brand["logo"], "--brand", key])
         run([PY, "make_index.py", pub_dir, brand["logo"], "--brand", key])
