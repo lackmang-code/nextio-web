@@ -18,8 +18,10 @@ for _s in (sys.stdout, sys.stderr):
         pass
 
 ITEM_RE = re.compile(r'^\d+\.\s+(.*\S)\s*$')
-CONTENT_RE = re.compile(r'^-\s*N?내용:\s*(.*\S)\s*$')
-ANALYSIS_RE = re.compile(r'^-\s*N?분석:\s*(.*\S)\s*$')
+# 레이블 문구가 "내용:"/"분석:" → "핵심 요약:"/"심층 분석 및 산업적 영향:" 로 바뀐 적이 있다
+# (2026-11-03, 파싱 0건으로 발견). 둘 다 받는다 — 다음에 또 바뀌어도 죽지 않게 접두 패턴으로 잡는다.
+CONTENT_RE = re.compile(r'^-\s*(?:N?내용|핵심\s*요약):\s*(.*\S)\s*$')
+ANALYSIS_RE = re.compile(r'^-\s*(?:N?분석|심층\s*분석[^:]*):\s*(.*\S)\s*$')
 SOURCE_RE = re.compile(r'^-\s*출처:\s*(.+?)\s*\((https?://\S+?)\)')
 
 def unwrap_url(u):

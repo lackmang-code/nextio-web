@@ -158,6 +158,7 @@ def main():
 
     msg = email.message_from_bytes(data[0][1])
     body_text = get_plain_text(msg)
+    plain_body_text = body_text  # 마크다운 판정으로 덮어쓰기 전 원본 평문 — 폴백용으로 남겨둔다
 
     # 본문 형식 판별(2026-09-16 도입). 신형식 제목과 함께 본문도 반도체·배터리와 같은
     # 마크다운형("## 1. [제목](URL)")으로 바뀌었다. 판별은 run_showcase.py와 같은 기준이다.
@@ -191,6 +192,14 @@ def main():
     if md_text:
         import digest_md_to_items  # noqa: E402
         items = digest_md_to_items.parse_digest(body_text)
+        # HTML→마크다운 변환이 실제 메일 구조와 안 맞아 0건일 때가 있다(2026-11-03 실측 —
+        # 같은 메일의 평문 파트는 레이블형("- 핵심 요약:" 등)으로 정상 파싱됐다).
+        # 마크다운 판정 자체를 버리지 않고, 0건일 때만 평문으로 한 번 더 시도한다.
+        if not items and plain_body_text.strip() and plain_body_text != body_text:
+            fallback_items = digest_to_items.parse_digest(plain_body_text)
+            if fallback_items:
+                print(f"마크다운 파싱 0건 → 평문 본문으로 재시도 성공 ({len(fallback_items)}건)")
+                items = fallback_items
     else:
         items = digest_to_items.parse_digest(body_text)
     for it in items:
