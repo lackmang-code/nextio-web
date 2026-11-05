@@ -1221,6 +1221,9 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   background:url(images/magazine-vitrine-bg-2shelf.jpg) center/cover no-repeat;
   filter:contrast(1.04) saturate(1.05);
 }
+/* 매거진사업 섹션: DISPLAY NOW 단독 진열이라 선반 1단만 쓴다 */
+.vitrine-box.single::before{ background-image:url(images/magazine-vitrine-bg.jpg); }
+.vitrine-box.single .shelf-row-2{ bottom:38%; }
 .vb-scrim-top{position:absolute;inset:0 0 auto 0;height:22%;background:linear-gradient(180deg,rgba(20,14,4,.5),transparent)}
 .vb-content{position:relative;height:100%}
 .vb-tag{position:absolute;top:14px;left:0;right:0;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);text-align:center}
@@ -1246,6 +1249,72 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   color:#f4ede0;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 6px rgba(0,0,0,.6);
 }
+
+/* ── 영상사업(Display Now TV) 섹션: 영상 목록 ── */
+.tv-video-list{display:flex;flex-direction:column;gap:14px;max-width:460px;margin:0 auto}
+.tv-video-item{
+  display:flex;align-items:center;gap:14px;text-decoration:none;
+  background:rgba(255,255,255,.02);border:1px solid var(--panel-border);
+  border-radius:14px;padding:10px;transition:all .25s cubic-bezier(0.16,1,0.3,1);
+}
+.tv-video-item:hover{background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3);transform:translateX(3px)}
+.tv-video-thumb{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;flex:none;
+  border:1px solid rgba(255,255,255,.12)}
+.tv-video-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.tv-video-title{font-size:13.5px;font-weight:700;color:#fff;line-height:1.4;word-break:keep-all}
+.tv-video-meta{font-size:11.5px;color:rgba(255,255,255,.5)}
+
+/* ── 위탁개발사업 섹션: 카드 3개(매거진·단행본·위탁교육) ── */
+.out-grid{position:relative;z-index:1;display:flex;flex-direction:column;gap:28px;
+  max-width:1040px;margin:0 auto;width:100%}
+.out-card{
+  display:flex;flex-direction:column;gap:22px;
+  background:var(--panel-bg);border:1px solid var(--panel-border);border-radius:20px;
+  padding:28px 26px;
+}
+.out-card-body{max-width:640px}
+.out-h3{font-size:clamp(20px,2.4vw,26px);font-weight:900;color:#fff;line-height:1.35;
+  margin:0 0 10px;letter-spacing:-.01em;word-break:keep-all}
+.out-h3 em{color:var(--gold);font-style:normal}
+.out-desc{font-size:.88rem;color:rgba(255,255,255,.72);line-height:1.7;margin:0 0 18px}
+.out-btn{display:inline-block;color:#fff;font-weight:600;font-size:.85rem;
+  padding:9px 20px;border-radius:20px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none}
+.out-btn-gold{background:var(--gold);color:#1B2D6B;border-color:var(--gold);font-weight:700}
+.out-card-shelf{display:flex;justify-content:center}
+.out-covers{flex-wrap:wrap}
+.out-covers .cover-slot{width:96px}
+.out-card-thumb{display:flex;justify-content:center}
+.out-card-thumb img{width:100%;max-width:220px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 14px 30px rgba(0,0,0,.4)}
+.out-edu-grid{display:flex;flex-direction:column;gap:20px}
+.out-edu-item{border-top:1px solid var(--panel-border);padding-top:18px}
+.out-edu-item:first-child{border-top:0;padding-top:0}
+.out-edu-kicker{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin:0 0 6px}
+.out-edu-h4{font-size:17px;font-weight:800;color:#fff;margin:0 0 8px;letter-spacing:-.01em}
+.out-edu-desc{font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.65;margin:0 0 14px}
+.out-edu-btns{display:flex;flex-wrap:wrap;gap:10px}
+
+@media (min-width:993px){
+  .out-card{flex-direction:row;align-items:center;gap:40px;padding:34px 40px}
+  .out-card-body{flex:1.15}
+  .out-card-shelf, .out-card-thumb{flex:.85}
+  .out-edu-grid{flex-direction:row;gap:36px}
+  .out-edu-item{border-top:0;border-left:1px solid var(--panel-border);padding:0 0 0 28px}
+  .out-edu-item:first-child{border-left:0;padding-left:0}
+}
+
+@media (max-width:992px){
+  .tv-video-thumb{width:96px}
+  .out-card{padding:22px 18px;gap:16px}
+  .out-covers .cover-slot{width:78px}
+  .book-shelf-covers .cover-slot{width:84px}
+}
+
+/* ── 단행본사업(Display Now Books) 섹션: 서가 (최대 2줄 × 3권) ── */
+.book-shelf{display:flex;justify-content:center;padding:20px 0}
+.book-shelf-covers{flex-wrap:wrap;row-gap:38px;max-width:420px}
+.book-shelf-covers .cover-slot{width:118px}
 
 /* DISPLAY NOW 최신 기사 목록 (매거진 섹션 좌측) */
 .dn-latest{margin-top:22px;max-width:420px}
@@ -1541,6 +1610,14 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
     padding-top: 110px;
   }
 
+  /* 위탁개발사업: 카드 3개(매거진·단행본·위탁교육)가 한 화면(100vh)을 넘어 세로 스크롤 허용 */
+  #outsourcing.pg-pub-layout {
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding-top: 110px;
+    padding-bottom: 60px;
+  }
+
   /* PC 페이지 네비 버튼 */
   .pg-nav {
     display: flex;
@@ -1623,10 +1700,10 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   </a>
   <nav class="nav-links">
     <span class="nav-link active" onclick="goTo(0)">HOME</span>
-    <span class="nav-link" onclick="goTo(1)">위탁콘텐츠제작1</span>
-    <span class="nav-link" onclick="goTo(2)">위탁콘텐츠제작2</span>
-    <span class="nav-link" onclick="goTo(3)">위탁교육프로그램1</span>
-    <span class="nav-link" onclick="goTo(4)">위탁교육프로그램2</span>
+    <span class="nav-link" onclick="goTo(1)">매거진사업</span>
+    <span class="nav-link" onclick="goTo(2)">영상사업</span>
+    <span class="nav-link" onclick="goTo(3)">단행본사업</span>
+    <span class="nav-link" onclick="goTo(4)">위탁개발사업</span>
   </nav>
   <span class="nav-contact" onclick="goTo(5)" style="cursor:pointer;">문의하기</span>
 </nav>
@@ -1675,7 +1752,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       </div>
       <p class="hero-mob-desc">잘 훈련된 AI 직원들을<br>당신의 PC에 이식해 드립니다.</p>
       <div class="hero-cta">
-        <a href="#unicorn" class="btn-gold">과정 보기 &darr;</a>
+        <a href="#outsourcing" class="btn-gold">과정 보기 &darr;</a>
       </div>
     </div>
   </div>
@@ -1683,19 +1760,28 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   <!-- 오른쪽: 네비게이션 메뉴 패널 -->
   <div class="hero-menu">
 
-    <!-- 위탁출간사업 -->
+    <!-- DISPLAY NOW — 자체 발행 3사업 -->
     <div class="biz-section biz-pub">
       <div class="biz-header">
-        <span class="biz-label">Publishing</span>
+        <span class="biz-label">Display Now</span>
         <div class="biz-line"></div>
       </div>
-      <div class="biz-name">위탁출간사업</div>
+      <div class="biz-name">DISPLAY NOW</div>
 
       <div class="nav-item" onclick="goto('magazine')">
         <div class="item-dot"></div>
         <div class="item-text">
-          <span class="item-label">온라인 매거진</span>
-          <span class="item-sub">학과·기업 맞춤 위탁 제작</span>
+          <span class="item-label">매거진사업</span>
+          <span class="item-sub">Display Now Magazine · 디스플레이 전문 주간지</span>
+        </div>
+        <span class="item-arrow">→</span>
+      </div>
+
+      <div class="nav-item" onclick="goto('tv')">
+        <div class="item-dot"></div>
+        <div class="item-text">
+          <span class="item-label">영상사업</span>
+          <span class="item-sub">Display Now TV · 디스플레이 이슈 영상</span>
         </div>
         <span class="item-arrow">→</span>
       </div>
@@ -1703,8 +1789,8 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <div class="nav-item" onclick="goto('book')">
         <div class="item-dot"></div>
         <div class="item-text">
-          <span class="item-label">단행본 프로젝트</span>
-          <span class="item-sub">기획부터 출간까지 AI 협업</span>
+          <span class="item-label">단행본사업</span>
+          <span class="item-sub">Display Now Books · 기술 가이드북</span>
         </div>
         <span class="item-arrow">→</span>
       </div>
@@ -1712,28 +1798,37 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
     <div class="menu-divider"></div>
 
-    <!-- 위탁교육사업 -->
+    <!-- 위탁개발사업 -->
     <div class="biz-section biz-edu">
       <div class="biz-header">
-        <span class="biz-label">Education</span>
+        <span class="biz-label">Outsourcing</span>
         <div class="biz-line"></div>
       </div>
-      <div class="biz-name">위탁교육사업</div>
+      <div class="biz-name">위탁개발사업</div>
 
-      <div class="nav-item" onclick="goto('unicorn')">
+      <div class="nav-item" onclick="goto('outsourcing')">
         <div class="item-dot"></div>
         <div class="item-text">
-          <span class="item-label">AI 유니콘 과정</span>
-          <span class="item-sub">5일 집중 · 핸즈온 · 34개 산출물</span>
+          <span class="item-label">매거진 위탁개발</span>
+          <span class="item-sub">학과·기업 맞춤 온라인 매거진 제작</span>
         </div>
         <span class="item-arrow">→</span>
       </div>
 
-      <div class="nav-item" onclick="goto('research')">
+      <div class="nav-item" onclick="goto('outsourcing')">
         <div class="item-dot"></div>
         <div class="item-text">
-          <span class="item-label">AI 연구역량 과정</span>
-          <span class="item-sub">2일 집중 · 논문 특화</span>
+          <span class="item-label">단행본 위탁개발</span>
+          <span class="item-sub">기획부터 출간까지 AI 협업</span>
+        </div>
+        <span class="item-arrow">→</span>
+      </div>
+
+      <div class="nav-item" onclick="goto('outsourcing')">
+        <div class="item-dot"></div>
+        <div class="item-text">
+          <span class="item-label">위탁교육</span>
+          <span class="item-sub">AI 유니콘 5일 · AI 연구역량 2일</span>
         </div>
         <span class="item-arrow">→</span>
       </div>
@@ -1743,38 +1838,40 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
   <!-- 모바일 전용 퀵 내비게이션 (사이트맵 hero-menu를 가로 스크롤 칩으로 압축) -->
   <div class="hero-quicknav">
-    <button type="button" onclick="goto('magazine')">온라인 매거진</button>
-    <button type="button" onclick="goto('book')">단행본 프로젝트</button>
-    <button type="button" onclick="goto('unicorn')">AI 유니콘 과정</button>
-    <button type="button" onclick="goto('research')">AI 연구역량 과정</button>
+    <button type="button" onclick="goto('magazine')">매거진사업</button>
+    <button type="button" onclick="goto('tv')">영상사업</button>
+    <button type="button" onclick="goto('book')">단행본사업</button>
+    <button type="button" onclick="goto('outsourcing')">위탁개발사업</button>
   </div>
 
 </section> <!-- /#hero -->
 
-  <!-- ② 온라인 매거진 -->
+  <!-- ② 매거진사업 (Display Now Magazine) -->
   <section id="magazine" class="pg-pub-layout">
     <div class="pub-bg-effect"></div>
 
     <!-- 상단 레이블 -->
     <div class="pu1-top">
-      <span class="pu1-label">위탁 콘텐츠제작 1</span>
+      <span class="pu1-label">매거진사업 · Display Now Magazine</span>
     </div>
 
     <div class="pub-container">
       <!-- 좌측: 비즈니스 가치 소구 카피 -->
       <div class="pub-left reveal">
-        <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 01 · ONLINE MAGAZINE</p>
-        <h2 class="pub-h2">기획은 대표가,<br>제작·배포는<br><em>AI 에이전트</em>가</h2>
+        <p class="pub-eyebrow pub-highlight">DISPLAY NOW · WEEKLY MAGAZINE</p>
+        <h2 class="pub-h2">AI 기자 넷이 쓰고,<br>공개 자료로만<br><em>근거</em>를 댑니다</h2>
         <p class="pub-desc" style="margin-bottom: 20px;">
-          귀사도 소정의 비용으로 매달 매거진을 발행할 수 있습니다.
+          디스플레이 산업 전문지 DISPLAY NOW를 매주 화요일 발행합니다. 테커·피어·클레임·데스크,
+          AI 기자 4인과 AI 편집장이 공개된 논문·특허·공시만 근거로 기사를 쓰고, 모든 기사에
+          근거 목록을 싣습니다. 전편 영문판도 함께 냅니다.
         </p>
-        <a href="#contact" onclick="goToContactFor('온라인 매거진 위탁제작'); return false;"
+        <a href="https://display-now.nextio.ai.kr/issue" target="_blank" rel="noopener"
            style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
-          위탁제작 문의
+          매거진 보러 가기
         </a>
-        <a href="https://pf.kakao.com/_ZGQiX" target="_blank" rel="noopener"
+        <a href="https://www.linkedin.com/newsletters/display-now-7505509288484900864" target="_blank" rel="noopener"
            style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 20px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;margin-top:10px;">
-          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#FEE500;margin-right:7px;vertical-align:1px;"></span>DISPLAY NOW 카카오채널
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0A66C2;margin-right:7px;vertical-align:1px;"></span>DISPLAY NOW 링크드인 뉴스레터
         </a>
 
         <!-- DISPLAY NOW 최신 기사 — 아래 <a>는 서버에 그대로 찍혀 나가는 기본값이며
@@ -1795,42 +1892,11 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
       <!-- 우측: 발행호 진열장 (실물 표지 + 라이브 매거진 링크) -->
       <div class="pub-right reveal reveal-d2">
-        <div class="vitrine-box">
+        <div class="vitrine-box single">
           <div class="vb-scrim-top"></div>
           <div class="vb-content">
-            <p class="vb-tag"><b>발행 매체</b> · Next I/O</p>
+            <p class="vb-tag"><b>발행 매체</b> · DISPLAY NOW</p>
             <div class="shelf-wrap">
-              <div class="shelf-row shelf-row-1">
-                <!-- 아래 칸들은 매거진 사이트의 data/issues.json 을 읽어 다시 그려진다.
-                     성대첨디공팀이 발행하면 그쪽 빌드가 그 JSON을 갱신하고, 이 HTML도
-                     표지 파일도 건드릴 필요가 없다(표지는 그쪽 사이트를 직접 참조).
-                     최신 3호까지만 진열하며 NEW 배지는 첫 항목에만 붙는다.
-                     JSON을 못 읽으면 아래 기본값이 그대로 남는다.
-                     ⚠️ 남의 오리진에서 오는 데이터라 렌더러가 오리진 화이트리스트로
-                        검증한다(syncMagazineShelf). 그 검증을 빼지 말 것.
-                     규격서: 연동규격_첨디공On_진열대.md -->
-                <div class="covers" id="mgCovers">
-                  <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-07/" target="_blank" rel="noopener">
-                    <div class="cover-card">
-                      <img src="images/magazine-cover-2026-07.png" alt="첨디공 On 창간호 2026년 7월 표지">
-                    </div>
-                    <div class="cover-vol">Vol.01 · 7월</div>
-                  </a>
-                  <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-08/" target="_blank" rel="noopener">
-                    <div class="cover-card">
-                      <img src="images/magazine-cover-2026-08.png" alt="첨디공 On 2호 2026년 8월 표지">
-                    </div>
-                    <div class="cover-vol">Vol.02 · 8월</div>
-                  </a>
-                  <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-09/" target="_blank" rel="noopener">
-                    <div class="cover-card">
-                      <span class="new-pin">NEW</span>
-                      <img src="images/magazine-cover-2026-09.png" alt="첨디공 On 3호 2026년 9월 표지">
-                    </div>
-                    <div class="cover-vol">Vol.03 · 9월</div>
-                  </a>
-                </div>
-              </div>
               <div class="shelf-row shelf-row-2">
                 <div class="covers" id="dnCovers">
                   <!-- 아래 칸들은 data/display-now-issues.json 이 있으면 그 내용으로 다시 그려진다.
@@ -1862,107 +1928,197 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
     </div>
   </section>
 
-  <!-- ③ 단행본 프로젝트 -->
+  <!-- ③ 영상사업 (Display Now TV) -->
+  <section id="tv" class="pg-pub-layout">
+    <div class="pub-bg-effect"></div>
+
+    <div class="pu1-top">
+      <span class="pu1-label">영상사업 · Display Now TV</span>
+    </div>
+
+    <div class="pub-container">
+      <div class="pub-left reveal">
+        <p class="pub-eyebrow pub-highlight">DISPLAY NOW · VIDEO</p>
+        <h2 class="pub-h2">기사로 다 못 담는 이야기,<br><em>영상</em>으로 풀어냅니다</h2>
+        <p class="pub-desc" style="margin-bottom: 20px;">
+          디스플레이 업계 이슈를 짧은 영상으로 풀어 보여드립니다. 월 1~2편, 애플·삼성디스플레이·LG디스플레이
+          같은 실제 이슈를 근거와 함께 다룹니다.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <a href="https://www.youtube.com/@displaynowtv" target="_blank" rel="noopener"
+             style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
+            유튜브 채널 바로가기
+          </a>
+          <a href="https://display-now.nextio.ai.kr/tv" target="_blank" rel="noopener"
+             style="display:inline-block;color:#12182b;font-weight:700;font-size:.9rem;padding:10px 22px;border-radius:22px;background:var(--gold);text-decoration:none;">
+            TV 페이지 보기
+          </a>
+        </div>
+      </div>
+
+      <div class="pub-right reveal reveal-d2">
+        <div class="tv-video-list">
+          <a class="tv-video-item" href="https://youtu.be/fX3DIFYgt3k" target="_blank" rel="noopener">
+            <img src="images/dn-tv-duo-hinge-crack.webp" alt="애플 듀오 화면 라인불량, 원인은 힌지? 썸네일" class="tv-video-thumb">
+            <div class="tv-video-text">
+              <span class="tv-video-title">애플 듀오 화면 라인불량, 원인은 힌지?</span>
+              <span class="tv-video-meta">6:54 · 2026.11.02</span>
+            </div>
+          </a>
+          <a class="tv-video-item" href="https://youtu.be/upKBkH7KEbw" target="_blank" rel="noopener">
+            <img src="images/dn-tv-faceid-under-panel.webp" alt="아이폰 18 Pro Face ID, 화면 아래로 내려갔다는데 사실일까? 썸네일" class="tv-video-thumb">
+            <div class="tv-video-text">
+              <span class="tv-video-title">아이폰 18 Pro Face ID, 화면 아래로 내려갔다는데 사실일까?</span>
+              <span class="tv-video-meta">6:27 · 2026.10.31</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 단행본사업 (Display Now Books) -->
   <section id="book" class="pg-pub-layout">
     <div class="pub-bg-effect"></div>
 
     <!-- 상단 레이블 -->
     <div class="pu1-top">
-      <span class="pu1-label">위탁 콘텐츠제작 2</span>
+      <span class="pu1-label">단행본사업 · Display Now Books</span>
     </div>
 
     <div class="pub-container">
       <!-- 좌측: 비즈니스 가치 소구 카피 & 출간 설명 -->
       <div class="pub-left reveal">
-        <p class="pub-eyebrow pub-highlight">PUBLISHING BIZ 02 · BOOK PROJECT</p>
-        <h2 class="pub-h2">원고 기획부터 서점 유통까지<br>귀사의 지식 자산을<br><em>권위 있는 책</em>으로 완성</h2>
+        <p class="pub-eyebrow pub-highlight">DISPLAY NOW BOOKS · 첫 책</p>
+        <h2 class="pub-h2">디스플레이 표면처리기술<br>일곱 가지 막을<br><em>그림과 시뮬레이션</em>으로</h2>
         <p class="pub-desc" style="margin-bottom: 20px;">
-          구술 인터뷰 기록과 분산된 내부 자료만 준비해 주십시오. AI 팩트체크 및 문체 교정 에이전트와 함께 귀사만의 독창적인 스토리를 고품격 단행본으로 기획 및 정교하게 다듬어 드립니다. 정식 ISBN 발급부터 전국 온·오프라인 서점 유통까지 올인원으로 서포트하며, 귀사의 전문성을 입증하는 가장 신뢰도 높은 책 브랜딩 에셋을 경제적으로 전달합니다.
+          지문방지·눈부심방지·반사방지·모스아이·대전방지·하드코트. 화면 맨 바깥의 일곱 가지 막을
+          그림 71장과 시뮬레이션 여덟 장면으로 풀어낸 기술 가이드북입니다. 공개된 논문·특허·기술자료
+          213건을 근거로 삼았습니다. 교보문고에서 종이책·전자책으로 만나보세요.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
-          <a href="#contact" onclick="goToContactFor('단행본 프로젝트'); return false;"
-             style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
-            위탁제작 문의
+          <a href="/book/surface-treatment/"
+             style="display:inline-block;color:#12182b;font-weight:700;font-size:.9rem;padding:10px 22px;border-radius:22px;background:var(--gold);text-decoration:none;">
+            📖 독자 페이지 보기
           </a>
           <!-- 2026-09-23: 미리보기로 바로 보내던 것을 서가로 돌렸다. 책이 늘어도 이 버튼 하나면 되고,
                서가 → 독자 페이지 → 미리보기로 이어진다(대표 결정). -->
           <a href="/book/"
-             style="display:inline-block;color:#12182b;font-weight:700;font-size:.9rem;padding:10px 22px;border-radius:22px;background:var(--gold);text-decoration:none;">
-            📚 Next I/O가 낸 책
+             style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
+            📚 Next I/O가 낸 책 전체보기
           </a>
         </div>
       </div>
 
-      <!-- 우측: 단행본 표지 고해상도 썸네일 -->
+      <!-- 우측: 단행본 서가 (최대 2줄, data/books.json 의 imprint:"display-now-books" 항목을 읽어 그려진다) -->
       <div class="pub-right reveal reveal-d2">
-        <img src="images/cs-book-coauthored.webp" alt="단행본 표지 이미지" class="pub-thumbnail gold-glow book-thumbnail">
+        <div class="book-shelf">
+          <div class="covers book-shelf-covers" id="dnBooksCovers">
+            <!-- 아래 칸은 data/books.json 이 있으면 imprint:"display-now-books" 인 책들로 다시 그려진다.
+                 단행본팀이 이 임프린트로 새 책을 내면 books.json 배열에 한 항목을 추가하면 되고,
+                 이 HTML은 건드릴 필요가 없다. 최대 6권(2줄 × 3)까지 진열한다.
+                 JSON을 못 읽으면 아래 기본값(표면처리기술 1권)이 그대로 남는다. -->
+            <a class="cover-slot" href="/book/surface-treatment/">
+              <div class="cover-card">
+                <img src="/book/surface-treatment/cover.jpg" alt="디스플레이 표면처리기술 표지">
+              </div>
+              <div class="cover-vol">표면처리기술</div>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ④ 대표교육프로그램1 — 인포그래픽 1페이지 -->
-  <section id="unicorn" class="pg-u1">
-    <div class="pu1-bg"></div>
+  <!-- ⑤ 위탁개발사업 (매거진위탁개발 · 단행본위탁개발 · 위탁교육) -->
+  <section id="outsourcing" class="pg-pub-layout pg-outsourcing">
+    <div class="pub-bg-effect"></div>
 
-    <!-- 상단 레이블 -->
     <div class="pu1-top">
-      <span class="pu1-label">위탁 교육프로그램 1</span>
+      <span class="pu1-label">위탁개발사업</span>
     </div>
 
-    <!-- 하단 패널: 좌(제목+버튼) + 우(타임라인) -->
-    <div class="pu1-panel">
+    <div class="out-grid">
 
-      <div class="pu1-left reveal">
-        <p class="pu1-eyebrow">FEATURED COURSE · 5-DAY INTENSIVE</p>
-        <h2 class="pu1-h2">AI 직원을 이용한<br><em>1인 유니콘</em> 첫발 딛기</h2>
-        <p class="pu1-highlight">잘 훈련된 AI 직원들이 <em>당신의 PC에서 일합니다.</em></p>
-        <p class="pu1-desc" style="color: rgba(255,255,255,0.92); max-width: 680px;">
-          브랜딩·법무·영업·콘텐츠 제작까지, 반복적인 창업 실무를 AI 팀원이 대신합니다. 실제 완성된 34개 산출물을 사례로, 5일 안에 본인 사업에 바로 적용할 수 있도록 설계했습니다.
-        </p>
-        <img class="pu1-mobile-img" src="education/images/unicorn-mobile.jpg" alt="1인 창업가가 AI로 브랜딩·법무·영업·콘텐츠까지 처리하는 모습">
-        <div class="pu1-btns">
-          <a href="education/unicorn.html" target="_blank"
-             style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
-            과정 상세 보기 →
-          </a>
-          <a href="#contact" onclick="goToContactFor('AI 유니콘 과정'); return false;"
-             style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
-            교육 문의
-          </a>
+      <!-- 매거진 위탁개발 -->
+      <div class="out-card reveal">
+        <div class="out-card-body">
+          <p class="pub-eyebrow pub-highlight">매거진 위탁개발</p>
+          <h3 class="out-h3">기획은 대표가,<br>제작·배포는 <em>AI 에이전트</em>가</h3>
+          <p class="out-desc">귀사도 소정의 비용으로 매달 매거진을 발행할 수 있습니다.</p>
+          <a href="#contact" onclick="goToContactFor('온라인 매거진 위탁제작'); return false;" class="out-btn">위탁제작 문의</a>
+        </div>
+        <div class="out-card-shelf">
+          <div class="covers out-covers" id="mgCovers">
+            <!-- 아래 칸들은 매거진 사이트의 data/issues.json 을 읽어 다시 그려진다.
+                 성대첨디공팀이 발행하면 그쪽 빌드가 그 JSON을 갱신하고, 이 HTML도
+                 표지 파일도 건드릴 필요가 없다(표지는 그쪽 사이트를 직접 참조).
+                 최신 3호까지만 진열하며 NEW 배지는 첫 항목에만 붙는다.
+                 JSON을 못 읽으면 아래 기본값이 그대로 남는다.
+                 ⚠️ 남의 오리진에서 오는 데이터라 렌더러가 오리진 화이트리스트로
+                    검증한다(syncMagazineShelf). 그 검증을 빼지 말 것.
+                 규격서: 연동규격_첨디공On_진열대.md -->
+            <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-07/" target="_blank" rel="noopener">
+              <div class="cover-card">
+                <img src="images/magazine-cover-2026-07.png" alt="첨디공 On 창간호 2026년 7월 표지">
+              </div>
+              <div class="cover-vol">Vol.01 · 7월</div>
+            </a>
+            <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-08/" target="_blank" rel="noopener">
+              <div class="cover-card">
+                <img src="images/magazine-cover-2026-08.png" alt="첨디공 On 2호 2026년 8월 표지">
+              </div>
+              <div class="cover-vol">Vol.02 · 8월</div>
+            </a>
+            <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-09/" target="_blank" rel="noopener">
+              <div class="cover-card">
+                <span class="new-pin">NEW</span>
+                <img src="images/magazine-cover-2026-09.png" alt="첨디공 On 3호 2026년 9월 표지">
+              </div>
+              <div class="cover-vol">Vol.03 · 9월</div>
+            </a>
+          </div>
         </div>
       </div>
 
-    </div>
-  </section>
+      <!-- 단행본 위탁개발 -->
+      <div class="out-card reveal">
+        <div class="out-card-body">
+          <p class="pub-eyebrow pub-highlight">단행본 위탁개발</p>
+          <h3 class="out-h3">원고 기획부터 서점 유통까지<br>귀사의 지식 자산을 <em>권위 있는 책</em>으로</h3>
+          <p class="out-desc">구술 인터뷰 기록과 분산된 내부 자료만 준비해 주십시오. AI 팩트체크·문체 교정 에이전트와 함께 기획·편집하고, ISBN 발급부터 서점 유통까지 지원합니다.</p>
+          <a href="#contact" onclick="goToContactFor('단행본 프로젝트'); return false;" class="out-btn">위탁제작 문의</a>
+        </div>
+        <div class="out-card-thumb">
+          <img src="images/cs-book-coauthored.webp" alt="단행본 위탁개발 이미지">
+        </div>
+      </div>
 
-  <!-- ⑤ AI 연구역량 과정 -->
-  <section id="research" class="pg-u1">
-    <div class="pu1-bg" style="background: url('education/images/hero2.webp') center/cover no-repeat;"></div>
-
-    <!-- 상단 레이블 -->
-    <div class="pu1-top">
-      <span class="pu1-label">위탁 교육프로그램 2</span>
-    </div>
-
-    <!-- 하단 패널: 2페이지와 동일한 1단 레이아웃 -->
-    <div class="pu1-panel">
-
-      <div class="pu1-left reveal">
-        <p class="pu1-eyebrow">RESEARCH COURSE · 2-DAY INTENSIVE</p>
-        <h2 class="pu1-h2">논문 읽기부터<br>투고 초안까지<br class="mob-only"> AI 조교와</h2>
-        <p class="pu1-desc" style="color: rgba(255,255,255,0.92); max-width: 680px;">
-          문헌 조사·발표 준비·논문 작성, 반복적인 연구 루틴을 AI가 대신합니다. 실제 완성된 AI 연구 파이프라인을 사례로, 수강 당일 본인 연구에 바로 적용할 수 있도록 설계했습니다.
-        </p>
-        <img class="pu1-mobile-img" src="education/images/research-mobile.jpg" alt="AI 홀로그램 어시스턴트와 함께 연구하는 모습">
-        <div class="pu1-btns">
-          <a href="education/research.html" target="_blank"
-             style="display:inline-block;background:#FBBF24;color:#1B2D6B;font-weight:700;font-size:.9rem;padding:11px 24px;border-radius:22px;text-decoration:none;">
-            과정 상세 보기 →
-          </a>
-          <a href="#contact" onclick="goToContactFor('AI 연구역량 과정'); return false;"
-             style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
-            교육 문의
-          </a>
+      <!-- 위탁교육 -->
+      <div class="out-card reveal">
+        <div class="out-card-body" style="max-width:none;">
+          <p class="pub-eyebrow pub-highlight">위탁교육</p>
+          <h3 class="out-h3">실제 산출물로 배우는 <em>AI 실무교육</em></h3>
+          <div class="out-edu-grid">
+            <div class="out-edu-item">
+              <p class="out-edu-kicker">FEATURED COURSE · 5-DAY INTENSIVE</p>
+              <h4 class="out-edu-h4">AI 유니콘 첫발 딛기</h4>
+              <p class="out-edu-desc">브랜딩·법무·영업·콘텐츠 제작까지, 창업 실무를 AI 팀원이 대신합니다. 완성된 34개 산출물로 5일 안에 바로 적용합니다.</p>
+              <div class="out-edu-btns">
+                <a href="education/unicorn.html" target="_blank" class="out-btn out-btn-gold">과정 상세 보기 →</a>
+                <a href="#contact" onclick="goToContactFor('AI 유니콘 과정'); return false;" class="out-btn">교육 문의</a>
+              </div>
+            </div>
+            <div class="out-edu-item">
+              <p class="out-edu-kicker">RESEARCH COURSE · 2-DAY INTENSIVE</p>
+              <h4 class="out-edu-h4">AI 연구역량 과정</h4>
+              <p class="out-edu-desc">문헌 조사·발표 준비·논문 작성, 반복적인 연구 루틴을 AI가 대신합니다. 완성된 AI 연구 파이프라인으로 당일 바로 적용합니다.</p>
+              <div class="out-edu-btns">
+                <a href="education/research.html" target="_blank" class="out-btn out-btn-gold">과정 상세 보기 →</a>
+                <a href="#contact" onclick="goToContactFor('AI 연구역량 과정'); return false;" class="out-btn">교육 문의</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2704,6 +2860,45 @@ window.goto = function(id) {
     .catch(() => load('data/display-now-latest.json')
       .then(d => draw(norm(d)))
       .catch(err => console.warn('DISPLAY NOW 발행호 정보를 읽지 못했습니다 — 기본값 유지:', err.message)));
+})();
+
+// ── 단행본사업 서가: data/books.json 의 imprint:"display-now-books" 연동 ──
+// 단행본팀이 이 임프린트로 새 책을 내면 books.json 배열에 한 항목만 추가하면 되고,
+// 이 HTML은 건드릴 필요가 없다. 최대 6권(2줄 × 3)까지 진열한다.
+// JSON을 못 읽거나 항목이 없으면 HTML 기본값(표면처리기술 1권)이 그대로 남는다.
+(function syncDisplayNowBooksShelf() {
+  const box = document.getElementById('dnBooksCovers');
+  if (!box) return;
+  const MAX = 6;
+
+  fetch('data/books.json', { cache: 'no-cache' })
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+    .then(d => {
+      const items = (d && Array.isArray(d.books) ? d.books : [])
+        .filter(b => b && b.imprint === 'display-now-books'
+                     && typeof b.url === 'string' && typeof b.cover === 'string')
+        .slice(0, MAX);
+      if (!items.length) return;                 // 비면 HTML 기본값 유지
+      const frag = document.createDocumentFragment();
+      items.forEach(b => {
+        const a = document.createElement('a');
+        a.className = 'cover-slot';
+        a.href = b.url;
+        const card = document.createElement('div');
+        card.className = 'cover-card';
+        const img = document.createElement('img');
+        img.src = b.cover;
+        img.alt = (b.title || '') + ' 표지';
+        card.appendChild(img);
+        const vol = document.createElement('div');
+        vol.className = 'cover-vol';
+        vol.textContent = b.title || '';
+        a.appendChild(card); a.appendChild(vol);
+        frag.appendChild(a);
+      });
+      box.replaceChildren(frag);
+    })
+    .catch(err => console.warn('단행본사업 서가 정보를 읽지 못했습니다 — 기본값 유지:', err.message));
 })();
 
 // ── 매거진 좌측: DISPLAY NOW 최신 기사 목록 연동 ──
