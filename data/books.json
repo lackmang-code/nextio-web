@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-18",
+  "updated": "2026-11-05",
   "_note": "단행본출판팀 소관 파일. 홍보팀은 /book/ 렌더링만 담당한다. 책이 늘면 books 배열에 한 항목을 추가하고, 홈페이지에 /book/<slug>/ 폴더를 요청한다. 표지·제목·특전은 HTML에 구워져 있고(종이에 박히는 것), 이 파일은 시간이 지나며 변하는 것만 담는다 — status · purchase · errata.",
   "books": [
     {
@@ -44,6 +44,44 @@
           "published_at": "2026-09-18",
           "price": 20000,
           "isbn": "979-11-221309-1-1"
+        }
+      ]
+    },
+    {
+      "slug": "surface-treatment",
+      "title": "디스플레이 표면처리기술",
+      "subtitle": "박원상 기획·편집·감수",
+      "author": "DISPLAY NOW 편집부",
+      "cover": "/book/surface-treatment/cover.jpg",
+      "url": "/book/surface-treatment/",
+      "blurb": "스마트폰·모니터·TV 화면 맨 바깥에 올라가는 일곱 가지 막 — 지문방지·눈부심방지·반사방지·모스아이·대전방지·하드코트를 그림 71장과 시뮬레이션 여덟 장면으로 풀어낸 기술 가이드북.",
+      "status": "전자책 · 종이책 출간",
+      "published_at": "2026-11-06",
+      "purchase": [
+        {
+          "name": "교보문고에서 전자책 구매",
+          "url": "https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000013787461"
+        },
+        {
+          "name": "교보문고에서 종이책 구매",
+          "url": "https://product.kyobobook.co.kr/detail/S000221882563"
+        }
+      ],
+      "errata": [],
+      "bonus": {},
+      "editions": [
+        {
+          "format": "종이책",
+          "published_at": "2026-11-06",
+          "price": 16000,
+          "isbn": "979-11-221309-2-8",
+          "spec": "신국판 · 컬러 208쪽"
+        },
+        {
+          "format": "전자책",
+          "published_at": "2026-11-06",
+          "price": 11000,
+          "isbn": "979-11-221309-3-5"
         }
       ]
     }
