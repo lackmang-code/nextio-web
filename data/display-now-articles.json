@@ -1,36 +1,36 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-10",
   "_note": "디플(04_Display_Now) 소관 파일. 홍보팀은 index.html 렌더링만 담당한다. 최대 5편.",
   "articles": [
     {
-      "title": "애플 아이폰 듀오 폴더블 OLED 라인 불량",
-      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-iphone-duo-line-defect",
-      "section": "이슈",
-      "publishedAt": "2026-11-03"
-    },
-    {
-      "title": "폴더블 지지판 특허, 주름을 풀자 비친 구멍",
-      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-foldable-support-plate-patents",
+      "title": "폴더블 디스플레이용 점착제",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-10-foldable-adhesive-low-temperature-modulus",
       "section": "특허",
-      "publishedAt": "2026-11-03"
+      "publishedAt": "2026-11-10"
     },
     {
-      "title": "커버윈도 결정화유리·사파이어",
-      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-glass-ceramic-sapphire",
+      "title": "애플 차세대 OLED 고이동도 산화물(HMO)",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-10-hmo-oxide-sputtering-vs-ald",
+      "section": "이슈",
+      "publishedAt": "2026-11-10"
+    },
+    {
+      "title": "커버윈도 플라스틱",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-10-plastic-window",
       "section": "기술노트",
-      "publishedAt": "2026-11-03"
+      "publishedAt": "2026-11-10"
     },
     {
-      "title": "백플레인 IGZO로 낮춘 ZnO 자외선 센서의 암전류",
-      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-igzo-interlayer-uv-photodetector",
+      "title": "밴드갭 아래 전압으로 늘린 페로브스카이트 LED 수명",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-10-perovskite-led-sub-bandgap-lifetime",
       "section": "논문",
-      "publishedAt": "2026-11-03"
+      "publishedAt": "2026-11-10"
     },
     {
-      "title": "주변기를 바꿔 잡은 자색청색 TADF의 농도소광",
-      "url": "https://display-now.nextio.ai.kr/article/2026-11-03-peripheral-group-tadf-quenching",
+      "title": "ZnO 전자수송층에 남은 TMAH가 깎은 QLED 효율",
+      "url": "https://display-now.nextio.ai.kr/article/2026-11-10-tmah-residue-qled-quenching",
       "section": "논문",
-      "publishedAt": "2026-11-03"
+      "publishedAt": "2026-11-10"
     }
   ]
 }
