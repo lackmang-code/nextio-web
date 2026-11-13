@@ -125,6 +125,15 @@ nav {
 }
 .nav-link:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.06); }
 .nav-link.active { color: #fff; font-weight: 700; background: rgba(111,168,255,0.12); }
+
+/* 히어로 큐브 연동 — 큐브가 돌아가는 동안(HOME에 있을 때) 지금 보이는 면과 같은 사업의
+   네비 글상자를 그 면 색으로 물들이고 크게 키운다. 2026-11-07, 대표 지시. */
+.nav-link[data-cube]{ transition: font-size .3s ease, color .3s ease, font-weight .3s ease, background .3s ease; }
+.nav-link.cube-on{ font-size: 15px; font-weight: 800; }
+.nav-link.cube-on[data-cube="0"]{ color:#1b1203; background:var(--gold); }
+.nav-link.cube-on[data-cube="1"]{ color:#fff; background:var(--blue); }
+.nav-link.cube-on[data-cube="2"]{ color:#0d3018; background:#4ADE80; }
+.nav-link.cube-on[data-cube="3"]{ color:#fff; background:#A78BFA; }
 @media (max-width: 992px) { .nav-links { display: none; } }
 
 /* ── HERO LAYOUT ── */
@@ -416,78 +425,80 @@ nav {
 .load-bar { height: 100%; background: linear-gradient(to right, var(--blue), var(--gold)); width: 0%; transition: width .15s ease; }
 .load-text { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: .2em; text-transform: uppercase; font-weight: 700; }
 
-/* ── CONTACT (라이브 index.html 이식) ── */
+/* ── CONTACT — 2026-11-13 재단장 2차: DISPLAY NOW 실제 게시판(display-now.nextio.ai.kr/board)을
+   참조했다. 같은 백엔드/구조(필드 구성까지 거의 동일)인데 그쪽은 흰 바탕 카드 + 플랫한 사각
+   버튼이라 훨씬 "편집국 게시판"답게 읽힌다 — 우리 쪽 어두운 유리 패널이 그래서 더 올드해
+   보였다. 위탁개발 카드와 같은 방향으로, 카드를 흰 배경으로 바꾸고 입력창도 플랫하게 깎았다.
+   필드 id·class는 그대로라(JS 안 건드림) 제출·비밀글·목록 로직은 그대로 작동한다. */
 .pg-contact {
-  background: #161F38;
+  background: var(--dark);
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
   padding: 80px 20px 48px; position: relative;
 }
-.board-wrap { max-width: 720px; width: 100%; position: relative; z-index: 1; }
-.contact-tagline { color: rgba(255,255,255,0.85); font-size: 15px; line-height: 1.7; margin-bottom: 20px; }
-.board-form { display: flex; flex-direction: column; gap: 14px; }
-.bf-row { display: flex; flex-direction: column; gap: 14px; }
+.board-wrap {
+  max-width: 720px; width: 100%; position: relative; z-index: 1;
+  background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 20px;
+  padding: 36px 32px; box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
+.board-wrap .eyebrow { display:block; font-size:.72rem; font-weight:800; letter-spacing:.18em;
+  text-transform:uppercase; color:#B8860B; margin-bottom:8px; }
+.board-wrap .sec-h { color:#12182b; font-size:clamp(26px,3.2vw,34px); font-weight:900; margin:0 0 10px; }
+.contact-tagline { color: rgba(18,24,43,0.65); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+.board-form { display: flex; flex-direction: column; gap: 16px; }
+.bf-row { display: flex; flex-direction: column; gap: 16px; }
 .bf-full { display: flex; flex-direction: column; }
 .bf-col { flex: 1; }
-.bf-label { display: block; font-size: 13px; color: rgba(255,255,255,0.9); margin-bottom: 6px; letter-spacing: 0.3px; }
-.bf-req { color: #6FA8FF; }
+.bf-label { display: block; font-size: 13px; color: rgba(18,24,43,0.85); margin-bottom: 6px; letter-spacing: 0.3px; }
+.bf-req { color: #B8860B; }
 .bf-input, .bf-textarea {
-  width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.4);
-  border-radius: 6px; padding: 11px 14px; font-size: 14px; color: #fff;
-  font-family: inherit; transition: border-color 0.2s, background 0.2s; outline: none;
+  width: 100%; background: #F4F3F0; border: 1px solid rgba(18,24,43,.12);
+  border-radius: 8px; padding: 12px 15px; font-size: 14px; color: #12182b;
+  font-family: inherit; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; outline: none;
 }
-.bf-input::placeholder, .bf-textarea::placeholder { color: rgba(255,255,255,0.5); }
-.bf-input:focus, .bf-textarea:focus { border-color: #6FA8FF; background: rgba(74,144,217,0.08); }
-.bf-input option { background-color: #161F38; color: #fff; }
+.bf-input::placeholder, .bf-textarea::placeholder { color: rgba(18,24,43,0.4); }
+.bf-input:focus, .bf-textarea:focus { border-color: var(--gold); background: #fff; box-shadow: 0 0 0 3px var(--gold-glow); }
+.bf-input option { background-color: #fff; color: #12182b; }
 .bf-textarea { resize: vertical; min-height: 120px; }
 .bf-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 4px; }
-.bf-priv { display: flex; align-items: center; gap: 8px; cursor: pointer; color: rgba(255,255,255,0.85); font-size: 13px; user-select: none; }
-.bf-priv input[type=checkbox] { accent-color: #6FA8FF; width: 16px; height: 16px; cursor: pointer; }
+.bf-priv { display: flex; align-items: center; gap: 8px; cursor: pointer; color: rgba(18,24,43,0.8); font-size: 13px; user-select: none; }
+.bf-priv input[type=checkbox] { accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer; }
 .bf-submit {
-  background: #6FA8FF; color: #050814; border: none; border-radius: 6px;
+  background: var(--gold); color: #1B2D6B; border: none; border-radius: 8px;
   padding: 11px 28px; font-size: 14px; font-weight: 700; cursor: pointer;
   font-family: inherit; letter-spacing: 0.5px;
-  transition: background 0.2s, transform 0.2s; white-space: nowrap;
+  transition: background 0.15s, transform 0.15s; white-space: nowrap;
 }
-.bf-submit:hover { background: #8cb8ff; transform: translateY(-1px); }
-.bf-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.bf-submit:hover { background: #ffd666; transform: translateY(-1px); }
+.bf-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 .board-done { text-align: center; padding: 40px 0; }
-.bd-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(74,144,217,0.2); border: 2px solid #6FA8FF; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #6FA8FF; margin: 0 auto 20px; }
-.bd-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-.bd-sub { color: rgba(255,255,255,0.6); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
-.bd-again { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 9px 22px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; transition: border-color 0.2s, color 0.2s; }
-.bd-again:hover { border-color: #6FA8FF; color: #fff; }
+.bd-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--gold-glow); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 28px; color: #B8860B; margin: 0 auto 20px; }
+.bd-title { font-size: 22px; font-weight: 700; color: #12182b; margin-bottom: 8px; }
+.bd-sub { color: rgba(18,24,43,0.6); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+.bd-again { background: transparent; border: 1px solid rgba(18,24,43,.2); color: rgba(18,24,43,0.7); padding: 9px 22px; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: inherit; transition: border-color 0.2s, color 0.2s; }
+.bd-again:hover { border-color: var(--gold); color: #12182b; }
 .board-list { margin-top: 32px; display: flex; flex-direction: column; gap: 10px; }
-.admin-link { display: block; text-align: center; margin-top: 28px; font-size: 11px; color: rgba(255,255,255,0.25); text-decoration: none; letter-spacing: 0.5px; }
-.admin-link:hover { color: rgba(255,255,255,0.55); }
-.bl-loading { color: rgba(255,255,255,0.5); font-size: 14px; text-align: center; padding: 16px 0; }
-.bl-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px 18px; }
+.admin-link { display: block; text-align: center; margin-top: 28px; font-size: 11px; color: rgba(18,24,43,0.3); text-decoration: none; letter-spacing: 0.5px; }
+.admin-link:hover { color: rgba(18,24,43,0.6); }
+.bl-loading { color: rgba(18,24,43,0.5); font-size: 14px; text-align: center; padding: 16px 0; }
+.bl-item { background: #F4F3F0; border: 1px solid rgba(18,24,43,.08); border-radius: 10px; padding: 14px 18px; transition: border-color .2s ease; }
+.bl-item:hover { border-color: rgba(184,134,11,.4); }
 .bl-item summary { cursor: pointer; display: flex; flex-direction: column; gap: 4px; list-style: none; }
 .bl-item summary::-webkit-details-marker { display: none; }
-.bl-title { color: #fff; font-size: 15px; font-weight: 600; }
-.bl-meta { color: rgba(255,255,255,0.5); font-size: 12px; display: flex; align-items: center; gap: 6px; }
-.bl-badge { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
-.bl-badge-done { background: rgba(74,217,144,0.2); color: #6FFFAE; }
-.bl-body { color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.6; white-space: pre-wrap; margin: 10px 0 0; }
-.bl-reply { margin-top: 10px; padding: 10px 14px; border-left: 3px solid #6FA8FF; background: rgba(111,168,255,0.08); border-radius: 4px; font-size: 13px; color: rgba(255,255,255,0.8); white-space: pre-wrap; }
+.bl-title { color: #12182b; font-size: 15px; font-weight: 600; }
+.bl-meta { color: rgba(18,24,43,0.5); font-size: 12px; display: flex; align-items: center; gap: 6px; }
+.bl-badge { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; background: rgba(18,24,43,.08); color: rgba(18,24,43,0.6); }
+.bl-badge-done { background: rgba(184,134,11,.15); color: #B8860B; }
+.bl-body { color: rgba(18,24,43,0.75); font-size: 14px; line-height: 1.6; white-space: pre-wrap; margin: 10px 0 0; }
+.bl-reply { margin-top: 10px; padding: 10px 14px; border-left: 3px solid var(--gold); background: rgba(251,191,36,.08); border-radius: 4px; font-size: 13px; color: rgba(18,24,43,0.8); white-space: pre-wrap; }
 .bl-unlock { display: flex; gap: 8px; margin-top: 10px; }
-.bl-pw-input { flex: 1; min-width: 0; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 13px; padding: 8px 10px; border-radius: 6px; font-family: inherit; }
-.bl-unlock-btn { flex-shrink: 0; background: #6FA8FF; border: none; color: #0a0e27; font-weight: 600; font-size: 12px; padding: 0 16px; border-radius: 6px; cursor: pointer; }
-.bl-unlock-btn:hover { background: #8cb8ff; }
+.bl-pw-input { flex: 1; min-width: 0; background: #fff; border: 1px solid rgba(18,24,43,.2); color: #12182b; font-size: 13px; padding: 8px 10px; border-radius: 8px; font-family: inherit; }
+.bl-unlock-btn { flex-shrink: 0; background: var(--gold); border: none; color: #1B2D6B; font-weight: 600; font-size: 12px; padding: 0 16px; border-radius: 8px; cursor: pointer; }
+.bl-unlock-btn:hover { background: #ffd666; }
 .bl-unlock-err { color: #f87171; font-size: 12px; margin: 6px 0 0; min-height: 14px; }
-.deco { display: none; }
 @media (min-width: 993px) {
   .pg-contact { padding: 36px 80px; align-items: center; }
   .bf-row { flex-direction: row; gap: 16px; }
-  .deco { display: block; position: absolute; pointer-events: none; overflow: hidden; }
-  .deco-tr { top: 0; right: 0; width: 130px; height: 90px; }
-  .deco-tr::before, .deco-tr::after { content: ''; position: absolute; height: 120%; }
-  .deco-tr::before { width: 48px; background: rgba(27,45,107,0.75); right: 48px; top: -10px; transform: skewX(-16deg); }
-  .deco-tr::after  { width: 38px; background: #6FA8FF; opacity: 0.85; right: 4px; top: -10px; transform: skewX(-16deg); }
-  .deco-bl { bottom: 0; left: 0; width: 130px; height: 90px; }
-  .deco-bl::before, .deco-bl::after { content: ''; position: absolute; height: 120%; bottom: -10px; }
-  .deco-bl::before { width: 48px; background: rgba(27,45,107,0.75); left: 48px; transform: skewX(-16deg); }
-  .deco-bl::after  { width: 38px; background: #6FA8FF; opacity: 0.85; left: 4px; transform: skewX(-16deg); }
 }
 
 /* 배경 파티클 */
@@ -1221,9 +1232,6 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   background:url(images/magazine-vitrine-bg-2shelf.jpg) center/cover no-repeat;
   filter:contrast(1.04) saturate(1.05);
 }
-/* 매거진사업 섹션: DISPLAY NOW 단독 진열이라 선반 1단만 쓴다 */
-.vitrine-box.single::before{ background-image:url(images/magazine-vitrine-bg.jpg); }
-.vitrine-box.single .shelf-row-2{ bottom:38%; }
 .vb-scrim-top{position:absolute;inset:0 0 auto 0;height:22%;background:linear-gradient(180deg,rgba(20,14,4,.5),transparent)}
 .vb-content{position:relative;height:100%}
 .vb-tag{position:absolute;top:14px;left:0;right:0;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);text-align:center}
@@ -1250,73 +1258,13 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   color:#f4ede0;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 6px rgba(0,0,0,.6);
 }
 
-/* ── 영상사업(Display Now TV) 섹션: 영상 목록 ── */
-.tv-video-list{display:flex;flex-direction:column;gap:14px;max-width:460px;margin:0 auto}
-.tv-video-item{
-  display:flex;align-items:center;gap:14px;text-decoration:none;
-  background:rgba(255,255,255,.02);border:1px solid var(--panel-border);
-  border-radius:14px;padding:10px;transition:all .25s cubic-bezier(0.16,1,0.3,1);
-}
-.tv-video-item:hover{background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3);transform:translateX(3px)}
-.tv-video-thumb{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;flex:none;
-  border:1px solid rgba(255,255,255,.12)}
-.tv-video-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-.tv-video-title{font-size:13.5px;font-weight:800;color:var(--gold);line-height:1.4;word-break:keep-all}
-.tv-video-meta{font-size:11.5px;color:rgba(255,255,255,.5)}
-
-/* ── 위탁개발사업 섹션: 카드 3개(매거진·단행본·위탁교육) ── */
-.out-grid{position:relative;z-index:1;display:flex;flex-direction:column;gap:28px;
-  max-width:1040px;margin:0 auto;width:100%}
-.out-card{
-  display:flex;flex-direction:column;gap:22px;
-  background:var(--panel-bg);border:1px solid var(--panel-border);border-radius:20px;
-  padding:28px 26px;
-}
-.out-card-body{max-width:640px}
-.out-h3{font-size:clamp(20px,2.4vw,26px);font-weight:900;color:#fff;line-height:1.35;
-  margin:0 0 10px;letter-spacing:-.01em;word-break:keep-all}
-.out-h3 em{color:var(--gold);font-style:normal}
-.out-desc{font-size:.88rem;color:rgba(255,255,255,.72);line-height:1.7;margin:0 0 18px}
-.out-btn{display:inline-block;color:#fff;font-weight:600;font-size:.85rem;
-  padding:9px 20px;border-radius:20px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none}
-.out-btn-gold{background:var(--gold);color:#1B2D6B;border-color:var(--gold);font-weight:700}
-.out-card-shelf{display:flex;justify-content:center}
-.out-covers{flex-wrap:wrap}
-.out-covers .cover-slot{width:96px}
-.out-card-thumb{display:flex;justify-content:center}
-.out-card-thumb img{width:100%;max-width:220px;border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);box-shadow:0 14px 30px rgba(0,0,0,.4)}
-.out-edu-grid{display:flex;flex-direction:column;gap:20px}
-.out-edu-item{border-top:1px solid var(--panel-border);padding-top:18px}
-.out-edu-item:first-child{border-top:0;padding-top:0}
-.out-edu-kicker{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--blue);margin:0 0 6px}
-.out-edu-h4{font-size:17px;font-weight:800;color:#fff;margin:0 0 8px;letter-spacing:-.01em}
-.out-edu-desc{font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.65;margin:0 0 14px}
-.out-edu-btns{display:flex;flex-wrap:wrap;gap:10px}
-
-@media (min-width:993px){
-  .out-card{flex-direction:row;align-items:center;gap:40px;padding:34px 40px}
-  .out-card-body{flex:1.15}
-  .out-card-shelf, .out-card-thumb{flex:.85}
-  .out-edu-grid{flex-direction:row;gap:36px}
-  .out-edu-item{border-top:0;border-left:1px solid var(--panel-border);padding:0 0 0 28px}
-  .out-edu-item:first-child{border-left:0;padding-left:0}
+/* 화면엔 안 보이지만 크롤러·스크린리더에는 남겨야 하는 콘텐츠용 (display:none 금지 — SEO 백링크 등) */
+.visually-hidden{
+  position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
 }
 
-@media (max-width:992px){
-  .tv-video-thumb{width:96px}
-  .out-card{padding:22px 18px;gap:16px}
-  .out-covers .cover-slot{width:78px}
-  .book-shelf-covers .cover-slot{width:84px}
-}
-
-/* ── 단행본사업(Display Now Books) 섹션: 서가 (최대 2줄 × 3권) ── */
-.book-shelf{display:flex;justify-content:center;padding:20px 0}
-.book-shelf-covers{flex-wrap:wrap;row-gap:38px;max-width:420px}
-.book-shelf-covers .cover-slot{width:118px}
-
-/* DISPLAY NOW 최신 기사 목록 (매거진 섹션 좌측) */
+/* DISPLAY NOW 최신 기사 목록 (현재 visually-hidden으로만 사용 — 2026-11-07 화면 노출 제거) */
 .dn-latest{margin-top:22px;max-width:420px}
 .dn-latest-h{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
   color:var(--gold);margin:0 0 9px}
@@ -1330,6 +1278,130 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   color:rgba(255,255,255,.35)}
 .dn-latest-list a:hover{color:var(--gold)}
 .dn-latest-list a:hover::before{color:var(--gold)}
+
+/* ── 영상사업(Display Now TV) 섹션: 영상 목록 — 썸네일에 이미 제목이 있어 텍스트 중복을 없애고
+   이미지 자체를 크게 보여준다(2026-11-13). ── */
+.tv-video-list{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:620px;margin:0 auto}
+.tv-video-item{
+  position:relative; display:block; text-decoration:none;
+  border-radius:12px; overflow:hidden; border:1px solid var(--panel-border);
+  transition:transform .25s cubic-bezier(0.16,1,0.3,1), border-color .25s ease;
+}
+.tv-video-item:hover{border-color:rgba(251,191,36,.4);transform:translateY(-2px)}
+.tv-video-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.tv-video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid rgba(255,255,255,.9);
+  pointer-events:none;transition:background .25s ease}
+.tv-video-play::after{content:"";position:absolute;top:50%;left:56%;transform:translate(-50%,-50%);
+  border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent #fff}
+.tv-video-item:hover .tv-video-play{background:rgba(251,191,36,.85)}
+.tv-video-meta{position:absolute;right:10px;bottom:8px;font-size:11px;font-weight:700;color:#fff;
+  background:rgba(5,8,20,.72);padding:3px 8px;border-radius:10px}
+
+/* ── 위탁개발사업 섹션: 카드 4개(매거진·단행본·홍보영상·위탁교육, 2026-11-08 2단 그리드로 압축) ── */
+.out-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:16px;
+  max-width:1040px;margin:0 auto;width:100%}
+/* 2026-11-13: 프레임(카드) 전체를 흰색으로 — 어두운 패널 배경 위에 어두운 사진이 올라가니
+   "까매서 안 보인다"는 지적이 있었다. 카드를 통째로 흰 배경으로 바꾸고, 그 안의 글자색도
+   전부 어둡게 뒤집는다(.out-card 스코프로만 — 다른 섹션의 .out-h3/.out-desc/.out-btn 재사용은
+   없지만 혹시 몰라 명시적으로 범위를 좁혀둔다). */
+.out-card{
+  display:flex;flex-direction:row;align-items:flex-start;gap:16px;
+  background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:16px;
+  padding:20px 18px;
+}
+.out-card-body{flex:1;min-width:0;max-width:none}
+.out-card .out-h3{font-size:clamp(16px,1.8vw,19px);font-weight:900;color:#12182b;line-height:1.35;
+  margin:0 0 8px;letter-spacing:-.01em;word-break:keep-all}
+.out-card .out-h3 em{color:#B8860B;font-style:normal}
+.out-card .out-desc{font-size:.8rem;color:rgba(18,24,43,.72);line-height:1.6;margin:0 0 12px}
+.out-card .out-btn{display:inline-block;color:#12182b;font-weight:600;font-size:.78rem;
+  padding:7px 16px;border-radius:18px;border:1.5px solid rgba(18,24,43,.3);text-decoration:none}
+.out-card .out-btn-gold{background:var(--gold);color:#1B2D6B;border-color:var(--gold);font-weight:700}
+.out-card .pub-eyebrow.pub-highlight{color:#B8860B}
+/* 2026-11-13: 4카드 전부 같은 크기의 썸네일 하나씩(92px) — 매거진만 진열대로 따로 커서
+   "사이즈 제각각"이 됐던 문제를 카드 옆 고정폭 썸네일로 통일한다. 이미지 자체가 "사례 보기"
+   버튼과 같은 곳으로 링크된다(아래 out-card-thumb). */
+/* 2026-11-13: 사진 대부분이 어두운 배경이라 카드의 짙은 배경 위에서 경계가 안 보였다
+   ("까매서 하나도 안 보인다") — 썸네일 뒤에 흰색 매트(여백)를 깔아 테두리를 분명하게 만든다. */
+.out-card-thumb{flex:none;width:92px;display:block;position:relative;text-decoration:none;cursor:pointer;
+  background:#fff;border-radius:10px;padding:5px;box-shadow:0 10px 22px rgba(0,0,0,.4)}
+.out-card-thumb img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;border-radius:6px}
+.out-thumb-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.4);border:2px solid rgba(255,255,255,.9);pointer-events:none}
+.out-thumb-play::after{content:"";position:absolute;top:50%;left:55%;transform:translate(-50%,-50%);
+  border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent #fff}
+.out-edu-grid{display:flex;flex-direction:column;gap:20px}
+.out-edu-item{border-top:1px solid var(--panel-border);padding-top:18px}
+.out-edu-item:first-child{border-top:0;padding-top:0}
+.out-edu-kicker{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin:0 0 6px}
+.out-edu-h4{font-size:17px;font-weight:800;color:#fff;margin:0 0 8px;letter-spacing:-.01em}
+.out-edu-desc{font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.65;margin:0 0 14px}
+.out-edu-btns{display:flex;flex-wrap:wrap;gap:10px}
+
+/* 2026-11-13: 4개 카드를 2×3(3열+맨아래 넓은칸)이 아니라 2×2 정사각 프레임으로 통일한다
+   (대표 지시). 위탁교육 카드도 더 이상 넓게 펼치지 않고 나머지 3개와 같은 모양으로 맞춘다.
+   내용 길이가 카드마다 달라 높이가 제각각이었다(실측 200~242px) — 가장 긴 위탁교육 기준으로
+   네 칸 다 같은 높이(248px)로 고정한다. */
+@media (min-width:700px){
+  .out-grid{grid-template-columns:repeat(2,1fr);}
+  .out-card{height:248px;}
+}
+/* 2026-11-13: "위탁개발사업" 상단 라벨(.pu1-top)은 데스크톱에서 position:absolute; top:80px로
+   섹션 중앙정렬(justify-content:center) 계산과 무관하게 고정돼 있다. 카드를 248px로 통일하면서
+   2×2 전체 높이가 늘어 중앙정렬된 .out-grid 윗변이 라벨과 겹쳤다 — 라벨 아래로 확실히
+   내려오도록 그리드에 여유를 더 준다. */
+@media (min-width:993px){
+  #outsourcing .out-grid{margin-top:44px;}
+}
+/* out-edu-grid는 세로로 쌓은 채 둔다 — 카드가 2×2라 절반 폭이라 가로 2분할하면 글이 너무 좁아진다. */
+
+@media (max-width:992px){
+  .out-card{padding:22px 18px;gap:16px}
+  .out-covers .cover-slot{width:78px}
+  .bw-stage{max-width:360px;height:300px}
+  .bw-item{width:160px;margin:-124px 0 0 -80px}
+}
+
+/* ── 단행본사업(Display Now Books) 섹션: 드래그로 돌리는 원형 캐러셀 "회전접시"
+   (2026-11-13, 대표 지시 — 커밍순 5칸 + 드래그 회전. 6칸을 정육각형처럼 균등 각도로 두면 메인이
+   옆칸과 같은 크기일 수밖에 없어서, 코드도 "링 전체 회전"에서 "각 칸을 중심에서의 거리(d)로
+   직접 배치"하는 커버플로 방식으로 바꿨다 — 메인(d=0)은 기준 크기 그대로, 옆칸은 d가 커질수록
+   scale·opacity를 비선형으로 줄인다. 실제 계산은 initBookWheel()/BookWheel의 render() 참고. */
+.book-wheel{display:flex;align-items:center;justify-content:center;gap:10px}
+.bw-stage{position:relative;width:100%;max-width:600px;height:370px;perspective:1300px;
+  cursor:grab;touch-action:pan-y;-webkit-user-select:none;user-select:none}
+.bw-stage.dragging{cursor:grabbing}
+.bw-ring{position:absolute;inset:0}
+.bw-item{position:absolute;top:50%;left:50%;width:220px;margin:-171px 0 0 -110px;
+  text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  transition:transform .5s cubic-bezier(.65,0,.35,1),opacity .5s ease}
+.bw-ring.no-transition .bw-item{transition:none}
+.bw-card{display:block;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 26px 54px rgba(0,0,0,.55);background:#0d1120}
+.bw-card img{width:100%;display:block;pointer-events:none}
+.bw-card-coming{aspect-ratio:3/4.3;border:1.5px dashed rgba(255,255,255,.3);
+  background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.01));
+  display:flex;align-items:center;justify-content:center}
+.bw-coming-badge{font-size:11px;font-weight:800;letter-spacing:.07em;color:rgba(255,255,255,.6);
+  border:1px solid rgba(255,255,255,.3);padding:4px 9px;border-radius:10px;
+  white-space:nowrap;pointer-events:none}
+.bw-label{margin-top:11px;font-size:14.5px;font-weight:800;color:#fff;line-height:1.3;pointer-events:none}
+.bw-label-muted{color:rgba(255,255,255,.5);font-weight:600}
+.bw-hint{text-align:center;font-size:11.5px;color:rgba(255,255,255,.4);margin-top:12px}
+
+/* 회전 화살표 — 히어로 큐브 버튼과 같은 글로시 구체 스타일, 크기만 이 섹션에 맞게 축소 */
+.bw-arrow{position:relative;flex:none;width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.4),rgba(255,255,255,.05) 42%,rgba(5,8,20,.8) 76%);
+  border:1px solid rgba(255,255,255,.3);
+  box-shadow:0 10px 20px rgba(0,0,0,.5),inset 0 2px 3px rgba(255,255,255,.4),inset 0 -3px 6px rgba(0,0,0,.45);
+  color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:transform .2s ease}
+.bw-arrow:hover{transform:scale(1.08)}
+.bw-arrow svg{width:22px;height:22px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+.bw-arrow.prev svg{transform:scaleX(-1)}
+
 
 /* 모바일 데일리카드 오버레이 — 폰 목업이 모바일에서 숨겨져 카드를 볼 방법이 없었다.
    새 탭으로 내보내면 사이트를 떠나므로, 페이지 위에 띄우고 뒤로가기로 닫는다. */
@@ -1381,6 +1453,12 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   }
   #magazine .pub-left { flex: .78; }
   #magazine .pub-right { flex: 1.22; margin-top: 44px; }
+  /* 영상사업·단행본사업도 매거진과 같은 비율로 — 기본값(좌 1.1:우 0.9)은 이미지 쪽이 너무 좁다(2026-11-13). */
+  #tv .pub-left { flex: .78; }
+  #tv .pub-right { flex: 1.22; }
+  /* 단행본 회전접시는 메인 책을 최대한 크게 보여줘야 해서 그림부를 더 넓힌다(2026-11-13). */
+  #book .pub-left { flex: .62; }
+  #book .pub-right { flex: 1.38; }
   
   /* #daily 섹션 전용 데스크톱 레이아웃 조율 */
   #daily.pg-pub-layout {
@@ -1665,6 +1743,106 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   .pu1-stat strong { font-size: 2rem; }
   .pu1-stat span   { font-size: .75rem; }
 }
+
+/* ══ 히어로 3D 큐브 — 2026-11-07 미리보기. 데스크탑(993px↑) 전용, 8/5 결정으로
+   PC 히어로를 차지했던 AI 에이전트 영상(hero-desktop-agents.mp4)을 대체한다.
+   그 영상은 #outsourcing 섹션으로 옮긴다(아래 .out-video-banner).
+   기존 .hero-desk-video-wrap과 동일한 "기본 숨김 → 993px↑에서만 표시" 패턴을 그대로 따른다. ══ */
+.hcube-wrap{ display:none; }
+@media (min-width: 993px) {
+  /* justify-content:center로 했더니 짧은 화면에서 네비바(고정, 흐름 밖)와 큐브 상단이
+     거의 붙어버렸다(실측 2px) — 100vh 가운데 정렬은 네비바가 차지한 공간을 모른다.
+     그래서 다시 고정 padding-top으로 네비바 높이(64px)+여유를 확실히 비워둔다. */
+  .hcube-wrap{ position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:flex-start; padding-top:104px; z-index:1; }
+  .hcube-glow{ position:absolute; inset:-100px; z-index:0; pointer-events:none;
+    background: radial-gradient(ellipse 60% 55% at 50% 42%, rgba(var(--hcube-glow,251,191,36),.35) 0%, transparent 62%);
+    filter: blur(60px); transition: background 1.1s ease; }
+  /* 큐브 크기 — 실제 쓰던 AI 에이전트 영상(전체 폭 배경)을 대체하는 만큼 존재감이 있어야 한다.
+     세로는 "상단 padding-top 104px + 하단 점/여백 ~96px"를 뺀 나머지에 맞춰 늘어나고,
+     가로는 세로에 비례(420:460 ≈ .913)해서 커진다. */
+  .hcube-stage{ position:relative; z-index:1; perspective:2200px;
+    height: clamp(440px, calc(100vh - 200px), 700px);
+    width:  clamp(402px, calc((100vh - 200px) * .913), 639px); }
+  .hcube{ position:absolute; inset:0; transform-style:preserve-3d;
+    transition: transform .85s cubic-bezier(.65,0,.35,1); }
+  .hface{ position:absolute; inset:0; border-radius:16px; overflow:hidden; cursor:pointer;
+    border:1px solid rgba(255,255,255,.1); box-shadow:0 30px 70px rgba(0,0,0,.55);
+    backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+  .hface.c-gold .hface-media{ background:linear-gradient(145deg,#FFE082 0%,#FBBF24 55%,#B8860B 100%); }
+  .hface.c-blue .hface-media{ background:linear-gradient(145deg,#9FC2FF 0%,#6FA8FF 55%,#2E5FC2 100%); }
+  .hface.c-green .hface-media{ background:linear-gradient(145deg,#86EFAC 0%,#4ADE80 55%,#15803D 100%); }
+  .hface.c-violet .hface-media{ background:linear-gradient(145deg,#C4B5FD 0%,#A78BFA 55%,#5B21B6 100%); }
+  /* 큐브 윗면 — 내려다보면 위가 뚫려 비어 보인다. 지금 보이는 면과 같은 색 뚜껑을 달아
+     속이 빈 틀이 아니라 실제 입체처럼 보이게 한다(2026-11-13). 옆면(.hface)과 달리 가로×세로(W×H)가
+     아니라 가로×깊이(W×W, 깊이는 옆면 translateZ(half)와 같은 W)라야 한다 — 그대로 inset:0을 쓰면
+     세로(H)만큼 깊어져서 실제 박스 깊이(W)보다 튀어나온 "처마"가 생긴다(2026-11-13 실측으로 발견).
+     그래서 크기·위치·이동거리를 전부 JS layout()에서 계산해 넣는다. */
+  .hface-top{ position:absolute; border-radius:16px; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.4); transition:background 1.1s ease; }
+  .hface-top.c-gold{ background:linear-gradient(145deg,#FFE082 0%,#FBBF24 55%,#B8860B 100%); }
+  .hface-top.c-blue{ background:linear-gradient(145deg,#9FC2FF 0%,#6FA8FF 55%,#2E5FC2 100%); }
+  .hface-top.c-green{ background:linear-gradient(145deg,#86EFAC 0%,#4ADE80 55%,#15803D 100%); }
+  .hface-top.c-violet{ background:linear-gradient(145deg,#C4B5FD 0%,#A78BFA 55%,#5B21B6 100%); }
+  .hface-media{ position:absolute; left:0; right:0; top:0; bottom:50px;
+    display:flex; align-items:center; justify-content:center; }
+  .hface-media img{ max-width:80%; max-height:80%; object-fit:contain; display:block; border-radius:4px;
+    box-shadow:0 20px 40px rgba(0,0,0,.4); }
+  .hface.c-blue .hface-media img{ max-width:77%; max-height:77%; }
+  .hface-play{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:44px; height:44px; border-radius:50%; background:rgba(0,0,0,.35); border:2px solid rgba(255,255,255,.9); }
+  .hface-play::after{ content:""; position:absolute; top:50%; left:54%; transform:translate(-50%,-50%);
+    border-style:solid; border-width:8px 0 8px 13px; border-color:transparent transparent transparent #fff; }
+  .hface-cap{ position:absolute; left:0; right:0; bottom:0; height:50px;
+    background:rgba(5,8,20,.88); backdrop-filter:blur(6px); padding:0 16px; display:flex; align-items:center; }
+  .hface-cap span{ font-size:19.5px; font-weight:800; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .hface-cap em{ font-style:normal; }
+  .hface.c-gold .hface-cap em{ color:var(--gold); }
+  .hface.c-blue .hface-cap em{ color:var(--blue); }
+  .hface.c-green .hface-cap em{ color:#4ADE80; }
+  .hface.c-violet .hface-cap em{ color:#A78BFA; }
+  .hface-cap i{ font-style:normal; font-weight:800; margin-left:6px; opacity:.6; }
+  .hface-grid2{ position:absolute; left:0; right:0; top:0; bottom:50px;
+    display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:2px; }
+  .hg-cell{ position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; gap:6px; }
+  .hg-cell img{ max-width:87%; max-height:78%; object-fit:contain; display:block; border-radius:4px; box-shadow:0 10px 22px rgba(0,0,0,.4); }
+  .hg-cell span{ font-size:18px; font-weight:800; color:#fff; text-align:center; padding:0 6px; }
+  /* 큰 입체(글로시) 버튼 — 작은 텍스트 화살표 대신 그라디언트+베벨로 눌러볼만한 물성을 준다(2026-11-13). */
+  .hcube-arrow{ position:absolute; top:50%; transform:translateY(-50%); z-index:3;
+    width:62px; height:62px; border-radius:50%;
+    background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.4), rgba(255,255,255,.05) 42%, rgba(5,8,20,.8) 76%);
+    border:1px solid rgba(255,255,255,.3);
+    box-shadow: 0 12px 26px rgba(0,0,0,.5), inset 0 2px 3px rgba(255,255,255,.4), inset 0 -4px 7px rgba(0,0,0,.45);
+    color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition: transform .2s ease, box-shadow .2s ease; }
+  .hcube-arrow svg{ width:32px; height:32px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.55)); }
+  .hcube-arrow.prev svg{ transform: scaleX(-1); }
+  .hcube-arrow.prev{ left:-80px; } .hcube-arrow.next{ right:-80px; }
+  .hcube-arrow:hover{ transform:translateY(-50%) scale(1.08);
+    box-shadow: 0 14px 30px rgba(0,0,0,.55), inset 0 2px 3px rgba(255,255,255,.5), inset 0 -4px 7px rgba(0,0,0,.45); }
+  .hcube-dots{ position:relative; z-index:1; display:flex; gap:8px; margin-top:20px; }
+  .hcube-dot{ width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.2); cursor:pointer; padding:0; transition:background .3s,border-color .3s; }
+  .hcube-dot.active{ background:var(--gold); border-color:var(--gold); }
+}
+
+/* ══ 위탁개발 섹션 — AI 에이전트 영상 배너 (8/5 PC 히어로에서 옮겨옴, 2026-11-08 축소) ══
+   ⚠️ height:0+padding-bottom(%) 기법은 쓰지 않는다 — padding-bottom(%)은 "자기 width"가 아니라
+   "부모 컨테이너 width"를 기준으로 계산돼서, max-width로 폭을 줄여도 비율이 안 맞고 커진다
+   (2026-11-08 실측: max-width:380px인데 padding-bottom:42.86%가 528px로 찍힘 — 부모인
+   #outsourcing의 width 기준으로 계산된 것). 자식이 전부 absolute라 aspect-ratio도 못 쓰므로
+   (2026-11-07에 이미 겪은 문제) 고정 height로 둔다. */
+.out-video-banner{
+  position:relative; z-index:1; max-width:380px; margin:28px auto 20px; width:100%;
+  border-radius:14px; overflow:hidden; border:1px solid var(--panel-border);
+  height:163px; background:#000; flex:none;
+}
+.out-video-banner video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 30%; }
+.out-video-banner .ovb-cap{ position:absolute; left:0; right:0; bottom:0; z-index:2;
+  padding:10px 14px; background:linear-gradient(0deg, rgba(5,8,20,.85) 20%, transparent); }
+.out-video-banner .ovb-cap strong{ color:var(--gold); }
+.out-video-banner .ovb-cap p{ font-size:10.5px; font-weight:700; color:#fff; margin:0; }
+@media (max-width:992px){ .out-video-banner{ max-width:300px; height:188px; } .out-video-banner .ovb-cap p{ font-size:9.5px; } }
 </style>
 </head>
 <body>
@@ -1700,10 +1878,10 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   </a>
   <nav class="nav-links">
     <span class="nav-link active" onclick="goTo(0)">HOME</span>
-    <span class="nav-link" onclick="goTo(1)">매거진사업</span>
-    <span class="nav-link" onclick="goTo(2)">영상사업</span>
-    <span class="nav-link" onclick="goTo(3)">단행본사업</span>
-    <span class="nav-link" onclick="goTo(4)">위탁개발사업</span>
+    <span class="nav-link" data-cube="0" onclick="goTo(1)">매거진사업</span>
+    <span class="nav-link" data-cube="1" onclick="goTo(2)">영상사업</span>
+    <span class="nav-link" data-cube="2" onclick="goTo(3)">단행본사업</span>
+    <span class="nav-link" data-cube="3" onclick="goTo(4)">위탁개발사업</span>
   </nav>
   <span class="nav-contact" onclick="goTo(5)" style="cursor:pointer;">문의하기</span>
 </nav>
@@ -1717,15 +1895,80 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   <!-- ① HERO -->
   <section id="hero" class="hero">
 
-  <!-- 데스크탑 전용 히어로 영상 (제미나이 생성, AI 에이전트 파이프라인) — 히어로 전체 폭 배경 -->
-  <div class="hero-desk-video-wrap">
-    <video id="hero-desktop-video" src="videos/hero-desktop-agents.mp4" autoplay muted loop playsinline></video>
+  <!-- 데스크탑 전용 히어로 3D 큐브 — 2026-11-07. 기존 AI 에이전트 영상은 #outsourcing 으로 이동.
+       누르면 실제 window.goto(id)를 호출해 해당 섹션으로 스냅스크롤 이동한다. -->
+  <div class="hcube-wrap desk-only" id="hcubeWrap">
+    <div class="hcube-glow" id="hcubeGlow"></div>
+    <div class="hcube-stage" id="hcubeStage">
+      <button class="hcube-arrow prev" type="button" aria-label="이전 면 (큐브 회전)">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <defs>
+            <linearGradient id="hcubeArrowGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#c7d0e0"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#hcubeArrowGrad)" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.09A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+        </svg>
+      </button>
+      <button class="hcube-arrow next" type="button" aria-label="다음 면 (큐브 회전)">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="url(#hcubeArrowGrad)" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.09A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+        </svg>
+      </button>
+      <div class="hcube" id="hcube">
+
+        <div class="hface c-gold" data-goto="magazine" data-glow="251,191,36">
+          <div class="hface-media"><img src="images/magazine-cover-display-now-12.webp" alt="DISPLAY NOW 제12호 표지"></div>
+          <div class="hface-cap"><span>DISPLAY NOW <em>MAGAZINE</em><i>→</i></span></div>
+        </div>
+
+        <div class="hface c-blue" data-goto="tv" data-glow="111,168,255">
+          <div class="hface-media">
+            <img src="images/dn-tv-ultrasonic-fingerprint.webp" alt="지문을 소리로 읽는다고? 초음파 지문센서의 원리 썸네일">
+            <div class="hface-play" aria-hidden="true"></div>
+          </div>
+          <div class="hface-cap"><span>DISPLAY NOW <em>TV</em><i>→</i></span></div>
+        </div>
+
+        <div class="hface c-green" data-goto="book" data-glow="74,222,128">
+          <div class="hface-media"><img src="/book/surface-treatment/cover.jpg" alt="디스플레이 표면처리기술 표지"></div>
+          <div class="hface-cap"><span>DISPLAY NOW <em>BOOKS</em><i>→</i></span></div>
+        </div>
+
+        <div class="hface c-violet" data-goto="outsourcing" data-glow="167,139,250">
+          <!-- 2x2 — 매거진/단행본/교육영상/위탁교육. 아래 위탁개발사업 섹션의 카드 4개와 내용을
+               맞춘다(2026-11-13: 홍보영상→교육영상으로 변경, 썸네일도 전자레인지 3D 렌더로 교체 —
+               자세한 경위는 #outsourcing 섹션의 주석 참고). -->
+          <div class="hface-grid2">
+            <div class="hg-cell" style="background:linear-gradient(160deg,#C4B5FD,#8B5CF6)">
+              <img src="images/magazine-cover-2026-09.png" alt="첨디공 On 3호 표지"><span>매거진제작</span>
+            </div>
+            <div class="hg-cell" style="background:linear-gradient(160deg,#A78BFA,#7C3AED)">
+              <img src="images/cs-book-coauthored.webp" alt="단행본 위탁개발 이미지"><span>단행본제작</span>
+            </div>
+            <div class="hg-cell" style="background:linear-gradient(160deg,#8B5CF6,#6D28D9)">
+              <img src="images/edu-video-microwave-3d.png" alt="전자레인지 3D 해부 교육영상 예시">
+              <div class="hface-play hg-play" aria-hidden="true"></div>
+              <span>교육영상제작</span>
+            </div>
+            <div class="hg-cell" style="background:linear-gradient(160deg,#7C3AED,#4C1D95)">
+              <img src="education/images/hero.webp" alt="AI 유니콘 첫발 딛기 과정"><span>위탁교육</span>
+            </div>
+          </div>
+          <div class="hface-cap"><span>NEXT I/O · <em>CUSTOM PUBLISHING</em><i>→</i></span></div>
+        </div>
+
+        <div class="hface-top c-gold" id="hcubeTop"></div>
+
+      </div>
+    </div>
+    <div class="hcube-dots" id="hcubeDots"></div>
   </div>
 
-  <!-- 데스크탑 전용 히어로 카피 (Q&A 슬로건, 영상 위 빈 공간, 한 줄) -->
-  <div class="hero-qa desk-only">
-    <p class="hero-qa-line">잘 훈련된 AI 직원들을 &nbsp;<span class="hqa-big"><span class="hqa-gold">당신의 PC에 이식</span>해 드립니다.</span></p>
-  </div>
+  <!-- 2026-11-07: 기존 AI 에이전트 영상용 Q&A 슬로건("AI 직원을 PC에 이식")은 삭제.
+       히어로가 이제 매거진/영상/단행본/위탁개발 4개 사업 큐브라서 그 카피와 내용이 안 맞았다
+       (대표 지적). 새 카피가 필요하면 별도로 정한다 — 지금은 큐브만 둔다. -->
 
   <!-- 왼쪽: 3D 비주얼 영역 (Three.js 렌더러, 모바일 전용) -->
   <div class="hero-visual">
@@ -1752,7 +1995,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       </div>
       <p class="hero-mob-desc">잘 훈련된 AI 직원들을<br>당신의 PC에 이식해 드립니다.</p>
       <div class="hero-cta">
-        <a href="#outsourcing" class="btn-gold">과정 보기 &darr;</a>
+        <a href="#outsourcing" class="btn-gold" onclick="goto('outsourcing'); return false;">과정 보기 &darr;</a>
       </div>
     </div>
   </div>
@@ -1859,26 +2102,28 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <!-- 좌측: 비즈니스 가치 소구 카피 -->
       <div class="pub-left reveal">
         <p class="pub-eyebrow pub-highlight">DISPLAY NOW · WEEKLY MAGAZINE</p>
-        <h2 class="pub-h2">AI 기자 넷이 쓰고,<br>공개 자료로만<br><em>근거</em>를 댑니다</h2>
+        <h2 class="pub-h2">디스플레이 전문지를<br>AI 기자 넷이<br><em>근거</em>로만 씁니다</h2>
         <p class="pub-desc" style="margin-bottom: 20px;">
           디스플레이 산업 전문지 DISPLAY NOW를 매주 화요일 발행합니다. 테커·피어·클레임·데스크,
           AI 기자 4인과 AI 편집장이 공개된 논문·특허·공시만 근거로 기사를 쓰고, 모든 기사에
           근거 목록을 싣습니다. 전편 영문판도 함께 냅니다.
         </p>
-        <a href="https://display-now.nextio.ai.kr/issue" target="_blank" rel="noopener"
-           style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
-          매거진 보러 가기
-        </a>
-        <a href="https://www.linkedin.com/newsletters/display-now-7505509288484900864" target="_blank" rel="noopener"
-           style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 20px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;margin-top:10px;">
-          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0A66C2;margin-right:7px;vertical-align:1px;"></span>DISPLAY NOW 링크드인 뉴스레터
-        </a>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <a href="https://display-now.nextio.ai.kr/issue" target="_blank" rel="noopener"
+             style="display:inline-block;color:#12182b;font-weight:700;font-size:.9rem;padding:10px 22px;border-radius:22px;background:var(--gold);text-decoration:none;">
+            매거진 보러 가기
+          </a>
+          <a href="https://www.linkedin.com/newsletters/display-now-7505509288484900864" target="_blank" rel="noopener"
+             style="display:inline-block;color:#fff;font-weight:600;font-size:.9rem;padding:10px 22px;border-radius:22px;border:1.5px solid rgba(255,255,255,.4);text-decoration:none;">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0A66C2;margin-right:7px;vertical-align:1px;"></span>링크드인 뉴스레터
+          </a>
+        </div>
 
-        <!-- DISPLAY NOW 최신 기사 — 아래 <a>는 서버에 그대로 찍혀 나가는 기본값이며
-             data/display-now-articles.json 이 있으면 그 내용으로 교체된다.
-             디플(04_Display_Now)이 그 JSON만 갱신하고 이 HTML은 건드리지 않는다.
-             JSON을 못 읽어도 기본값이 남으므로 목록이 비지 않는다. 최대 5편. -->
-        <div class="dn-latest">
+        <!-- 화면에는 숨기되 서버 렌더 <a href>는 유지한다 — 디플나우 검색 색인 유입용 SEO 백링크
+             (2026-08-24 신설, 연동규격_DISPLAY_NOW_진열대.md 3번). 2026-11-07 화면 노출은 제거했지만
+             뷰포트 밖으로 치우는 visually-hidden 기법으로 크롤러·스크린리더에는 그대로 남긴다.
+             data/display-now-articles.json 이 있으면 그 내용으로 교체된다(디플 소관, 이 HTML은 건드리지 않음). -->
+        <div class="dn-latest visually-hidden">
           <p class="dn-latest-h">DISPLAY NOW 최신 기사</p>
           <ul class="dn-latest-list" id="dnLatestList">
             <li><a href="https://display-now.nextio.ai.kr/article/2026-08-18-blue-phosphorescent-oled-patents" target="_blank" rel="noopener">청색 인광 OLED(PHOLED) 특허 8건 분석</a></li>
@@ -1892,32 +2137,63 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
 
       <!-- 우측: 발행호 진열장 (실물 표지 + 라이브 매거진 링크) -->
       <div class="pub-right reveal reveal-d2">
-        <div class="vitrine-box single">
+        <div class="vitrine-box">
           <div class="vb-scrim-top"></div>
           <div class="vb-content">
             <p class="vb-tag"><b>발행 매체</b> · DISPLAY NOW</p>
             <div class="shelf-wrap">
+              <!-- 뒷줄(선반 위): 다음으로 오래된 3호. data/display-now-issues.json 이 있으면
+                   4~6번째 항목으로 다시 그려진다. -->
+              <div class="shelf-row shelf-row-1">
+                <div class="covers" id="dnCoversBack">
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/9" target="_blank" rel="noopener">
+                    <div class="cover-card">
+                      <img src="images/magazine-cover-display-now-9.webp" alt="DISPLAY NOW 제9호 표지">
+                    </div>
+                    <div class="cover-vol">제9호 10월 2주</div>
+                  </a>
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/8" target="_blank" rel="noopener">
+                    <div class="cover-card">
+                      <img src="images/magazine-cover-display-now-8.webp" alt="DISPLAY NOW 제8호 표지">
+                    </div>
+                    <div class="cover-vol">제8호 10월 1주</div>
+                  </a>
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/7" target="_blank" rel="noopener">
+                    <div class="cover-card">
+                      <img src="images/magazine-cover-display-now-7.webp" alt="DISPLAY NOW 제7호 표지">
+                    </div>
+                    <div class="cover-vol">제7호 9월 5주</div>
+                  </a>
+                </div>
+              </div>
+              <!-- 앞줄(선반 아래): 최신 3호. 아래 <a>는 서버에 그대로 찍혀 나가는 기본값이며
+                   data/display-now-issues.json 이 있으면 그 내용으로 교체된다.
+                   디플(04_Display_Now)이 새 호를 낼 때 그 JSON 배열 맨 앞에 항목을 추가하고
+                   표지 파일을 함께 올리면 되고, 이 HTML은 건드리지 않는다.
+                   최신 6호까지(앞줄 3 + 뒷줄 3) 진열하며 NEW 배지는 첫 항목에만 붙는다.
+                   JSON을 못 읽으면 아래 기본값이 그대로 남는다.
+                   ⚠️ 표지 파일명은 반드시 호수별로 다르게 — 고정 파일명으로 덮어쓰면
+                      지난 호 표지가 사라진다(2026-08-25 실제 발생). -->
               <div class="shelf-row shelf-row-2">
                 <div class="covers" id="dnCovers">
-                  <!-- 아래 칸들은 data/display-now-issues.json 이 있으면 그 내용으로 다시 그려진다.
-                       디플(04_Display_Now)이 새 호를 낼 때 그 JSON 배열 맨 앞에 항목을 추가하고
-                       표지 파일을 함께 올리면 되고, 이 HTML은 건드리지 않는다.
-                       최신 3호까지만 진열하며 NEW 배지는 첫 항목에만 붙는다.
-                       JSON을 못 읽으면 아래 기본값이 그대로 남는다.
-                       ⚠️ 표지 파일명은 반드시 호수별로 다르게 — 고정 파일명으로 덮어쓰면
-                          지난 호 표지가 사라진다(2026-08-25 실제 발생). -->
-                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/2" target="_blank" rel="noopener">
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/12" target="_blank" rel="noopener">
                     <div class="cover-card">
                       <span class="new-pin">NEW</span>
-                      <img src="images/magazine-cover-display-now-2.webp" alt="DISPLAY NOW 제2호 표지">
+                      <img src="images/magazine-cover-display-now-12.webp" alt="DISPLAY NOW 제12호 표지">
                     </div>
-                    <div class="cover-vol">제2호 · 8월</div>
+                    <div class="cover-vol">제12호 11월 1주</div>
                   </a>
-                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/1" target="_blank" rel="noopener">
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/11" target="_blank" rel="noopener">
                     <div class="cover-card">
-                      <img src="images/magazine-cover-display-now-1.webp" alt="DISPLAY NOW 제1호 표지">
+                      <img src="images/magazine-cover-display-now-11.webp" alt="DISPLAY NOW 제11호 표지">
                     </div>
-                    <div class="cover-vol">제1호 · 8월</div>
+                    <div class="cover-vol">제11호 10월 4주</div>
+                  </a>
+                  <a class="cover-slot" href="https://display-now.nextio.ai.kr/issue/10" target="_blank" rel="noopener">
+                    <div class="cover-card">
+                      <img src="images/magazine-cover-display-now-10.webp" alt="DISPLAY NOW 제10호 표지">
+                    </div>
+                    <div class="cover-vol">제10호 10월 3주</div>
                   </a>
                 </div>
               </div>
@@ -1939,7 +2215,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
     <div class="pub-container">
       <div class="pub-left reveal">
         <p class="pub-eyebrow pub-highlight">DISPLAY NOW · VIDEO</p>
-        <h2 class="pub-h2">기사로 다 못 담는 이야기,<br><em>영상</em>으로 풀어냅니다</h2>
+        <h2 class="pub-h2">디스플레이 이슈를<br><em>영상</em>으로 풀어냅니다</h2>
         <p class="pub-desc" style="margin-bottom: 20px;">
           디스플레이 업계 이슈를 짧은 영상으로 풀어 보여드립니다. 월 1~2편, 애플·삼성디스플레이·LG디스플레이
           같은 실제 이슈를 근거와 함께 다룹니다.
@@ -1957,20 +2233,23 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       </div>
 
       <div class="pub-right reveal reveal-d2">
+        <!-- 2026-11-13: 썸네일 이미지 자체에 제목 문구가 이미 들어있어 옆에 같은 텍스트를 또 쓰면
+             중복이다 — 썸네일만 크게 보여주고, 이미지에 없는 정보(러닝타임·날짜)만 아래 한 줄로 남긴다. -->
         <div class="tv-video-list">
+          <a class="tv-video-item" href="https://youtu.be/DnWvhOUgxLI" target="_blank" rel="noopener">
+            <img src="images/dn-tv-ultrasonic-fingerprint.webp" alt="지문을 소리로 읽는다고? 초음파 지문센서의 원리 썸네일" class="tv-video-thumb">
+            <span class="tv-video-play" aria-hidden="true"></span>
+            <span class="tv-video-meta">9:32 · 2026.11.06</span>
+          </a>
           <a class="tv-video-item" href="https://youtu.be/fX3DIFYgt3k" target="_blank" rel="noopener">
             <img src="images/dn-tv-duo-hinge-crack.webp" alt="애플 듀오 화면 라인불량, 원인은 힌지? 썸네일" class="tv-video-thumb">
-            <div class="tv-video-text">
-              <span class="tv-video-title">애플 듀오 화면 라인불량, 원인은 힌지?</span>
-              <span class="tv-video-meta">6:54 · 2026.11.02</span>
-            </div>
+            <span class="tv-video-play" aria-hidden="true"></span>
+            <span class="tv-video-meta">6:54 · 2026.11.02</span>
           </a>
           <a class="tv-video-item" href="https://youtu.be/upKBkH7KEbw" target="_blank" rel="noopener">
             <img src="images/dn-tv-faceid-under-panel.webp" alt="아이폰 18 Pro Face ID, 화면 아래로 내려갔다는데 사실일까? 썸네일" class="tv-video-thumb">
-            <div class="tv-video-text">
-              <span class="tv-video-title">아이폰 18 Pro Face ID, 화면 아래로 내려갔다는데 사실일까?</span>
-              <span class="tv-video-meta">6:27 · 2026.10.31</span>
-            </div>
+            <span class="tv-video-play" aria-hidden="true"></span>
+            <span class="tv-video-meta">6:27 · 2026.10.31</span>
           </a>
         </div>
       </div>
@@ -1990,7 +2269,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <!-- 좌측: 비즈니스 가치 소구 카피 & 출간 설명 -->
       <div class="pub-left reveal">
         <p class="pub-eyebrow pub-highlight">DISPLAY NOW BOOKS · 첫 책</p>
-        <h2 class="pub-h2">디스플레이 표면처리기술<br>일곱 가지 막을<br><em>그림과 시뮬레이션</em>으로</h2>
+        <h2 class="pub-h2">디스플레이 기술을<br>책 한 권으로<br><em>정리</em>합니다</h2>
         <p class="pub-desc" style="margin-bottom: 20px;">
           지문방지·눈부심방지·반사방지·모스아이·대전방지·하드코트. 화면 맨 바깥의 일곱 가지 막을
           그림 71장과 시뮬레이션 여덟 장면으로 풀어낸 기술 가이드북입니다. 공개된 논문·특허·기술자료
@@ -2010,22 +2289,55 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
         </div>
       </div>
 
-      <!-- 우측: 단행본 서가 (최대 2줄, data/books.json 의 imprint:"display-now-books" 항목을 읽어 그려진다) -->
+      <!-- 우측: 단행본 "회전접시" — 마우스/터치로 직접 붙잡고 돌리는 원형 캐러셀(2026-11-13,
+           대표 지시로 드래그 회전 + COMING SOON 5칸으로 재구성). 진짜 책은 맨 앞 슬롯,
+           나머지는 COMING SOON placeholder라 책이 1권뿐인 지금도 "돌아가는 접시" 컨셉이 보인다.
+           data/books.json 의 imprint:"display-now-books" 항목이 늘면 BookWheel.rebind()가
+           실제 책을 앞쪽 슬롯에 채우고 COMING SOON은 최소 2칸 남을 때까지 자동으로 줄인다. -->
       <div class="pub-right reveal reveal-d2">
-        <div class="book-shelf">
-          <div class="covers book-shelf-covers" id="dnBooksCovers">
-            <!-- 아래 칸은 data/books.json 이 있으면 imprint:"display-now-books" 인 책들로 다시 그려진다.
-                 단행본팀이 이 임프린트로 새 책을 내면 books.json 배열에 한 항목을 추가하면 되고,
-                 이 HTML은 건드릴 필요가 없다. 최대 6권(2줄 × 3)까지 진열한다.
-                 JSON을 못 읽으면 아래 기본값(표면처리기술 1권)이 그대로 남는다. -->
-            <a class="cover-slot" href="/book/surface-treatment/">
-              <div class="cover-card">
-                <img src="/book/surface-treatment/cover.jpg" alt="디스플레이 표면처리기술 표지">
+        <div class="book-wheel">
+          <button class="bw-arrow prev" id="bwPrev" type="button" aria-label="이전 책 (돌리기)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="url(#hcubeArrowGrad)" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.09A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+          </button>
+          <div class="bw-stage" id="bwStage">
+            <div class="bw-ring" id="bwRing">
+              <div class="bw-item" data-type="book">
+                <a class="bw-card" href="/book/surface-treatment/" draggable="false">
+                  <img src="/book/surface-treatment/cover.jpg" alt="디스플레이 표면처리기술 표지" draggable="false">
+                </a>
+                <div class="bw-label">표면처리기술</div>
               </div>
-              <div class="cover-vol">표면처리기술</div>
-            </a>
+              <div class="bw-item" data-type="coming">
+                <div class="bw-card bw-card-coming"><span class="bw-coming-badge">COMING SOON</span></div>
+                <div class="bw-label bw-label-muted">다음 책<br>준비 중</div>
+              </div>
+              <div class="bw-item" data-type="coming">
+                <div class="bw-card bw-card-coming"><span class="bw-coming-badge">COMING SOON</span></div>
+                <div class="bw-label bw-label-muted">다음 책<br>준비 중</div>
+              </div>
+              <div class="bw-item" data-type="coming">
+                <div class="bw-card bw-card-coming"><span class="bw-coming-badge">COMING SOON</span></div>
+                <div class="bw-label bw-label-muted">다음 책<br>준비 중</div>
+              </div>
+              <div class="bw-item" data-type="coming">
+                <div class="bw-card bw-card-coming"><span class="bw-coming-badge">COMING SOON</span></div>
+                <div class="bw-label bw-label-muted">다음 책<br>준비 중</div>
+              </div>
+              <div class="bw-item" data-type="coming">
+                <div class="bw-card bw-card-coming"><span class="bw-coming-badge">COMING SOON</span></div>
+                <div class="bw-label bw-label-muted">다음 책<br>준비 중</div>
+              </div>
+            </div>
           </div>
+          <button class="bw-arrow next" id="bwNext" type="button" aria-label="다음 책 (돌리기)">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="url(#hcubeArrowGrad)" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.09A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+          </button>
         </div>
+        <p class="bw-hint">👆 드래그해서 돌려보세요</p>
       </div>
     </div>
   </section>
@@ -2038,86 +2350,79 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <span class="pu1-label">위탁개발사업</span>
     </div>
 
+    <!-- 2026-11-13: AI 로봇 영상 배너는 삭제(대표 지시 — 이걸 빼야 4카드가 스크롤 없이 한 화면에
+         들어간다). 카드마다 이미지 크기·배치가 달랐던 게 "2x2인데 제각각"의 원인이었어서
+         이미지 자체를 없앤 적이 있었는데, 그건 과했다(대표 피드백) — 이미지는 유지하되
+         4장 전부 같은 고정폭(92px) 썸네일로 통일하고, 이미지도 옆의 "사례 보기" 버튼과
+         똑같은 곳으로 링크를 걸었다. -->
     <div class="out-grid">
 
       <!-- 매거진 위탁개발 -->
       <div class="out-card reveal">
+        <a class="out-card-thumb" href="https://display-magazine.pages.dev/" target="_blank" rel="noopener">
+          <img src="images/magazine-cover-2026-09.png" alt="첨디공 On 매거진 표지 사례">
+        </a>
         <div class="out-card-body">
           <p class="pub-eyebrow pub-highlight">매거진 위탁개발</p>
           <h3 class="out-h3">기획은 대표가,<br>제작·배포는 <em>AI 에이전트</em>가</h3>
           <p class="out-desc">귀사도 소정의 비용으로 매달 매거진을 발행할 수 있습니다.</p>
-          <a href="#contact" onclick="goToContactFor('온라인 매거진 위탁제작'); return false;" class="out-btn">위탁제작 문의</a>
-        </div>
-        <div class="out-card-shelf">
-          <div class="covers out-covers" id="mgCovers">
-            <!-- 아래 칸들은 매거진 사이트의 data/issues.json 을 읽어 다시 그려진다.
-                 성대첨디공팀이 발행하면 그쪽 빌드가 그 JSON을 갱신하고, 이 HTML도
-                 표지 파일도 건드릴 필요가 없다(표지는 그쪽 사이트를 직접 참조).
-                 최신 3호까지만 진열하며 NEW 배지는 첫 항목에만 붙는다.
-                 JSON을 못 읽으면 아래 기본값이 그대로 남는다.
-                 ⚠️ 남의 오리진에서 오는 데이터라 렌더러가 오리진 화이트리스트로
-                    검증한다(syncMagazineShelf). 그 검증을 빼지 말 것.
-                 규격서: 연동규격_첨디공On_진열대.md -->
-            <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-07/" target="_blank" rel="noopener">
-              <div class="cover-card">
-                <img src="images/magazine-cover-2026-07.png" alt="첨디공 On 창간호 2026년 7월 표지">
-              </div>
-              <div class="cover-vol">Vol.01 · 7월</div>
-            </a>
-            <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-08/" target="_blank" rel="noopener">
-              <div class="cover-card">
-                <img src="images/magazine-cover-2026-08.png" alt="첨디공 On 2호 2026년 8월 표지">
-              </div>
-              <div class="cover-vol">Vol.02 · 8월</div>
-            </a>
-            <a class="cover-slot" href="https://display-magazine.pages.dev/magazine/2026-09/" target="_blank" rel="noopener">
-              <div class="cover-card">
-                <span class="new-pin">NEW</span>
-                <img src="images/magazine-cover-2026-09.png" alt="첨디공 On 3호 2026년 9월 표지">
-              </div>
-              <div class="cover-vol">Vol.03 · 9월</div>
-            </a>
+          <div class="out-edu-btns">
+            <a href="https://display-magazine.pages.dev/" target="_blank" rel="noopener" class="out-btn out-btn-gold">사례 보기 →</a>
+            <a href="#contact" onclick="goToContactFor('온라인 매거진 위탁제작'); return false;" class="out-btn">위탁제작 문의</a>
           </div>
         </div>
       </div>
 
       <!-- 단행본 위탁개발 -->
       <div class="out-card reveal">
+        <a class="out-card-thumb" href="/book/">
+          <img src="images/cs-book-coauthored.webp" alt="단행본 위탁개발 제작 예시">
+        </a>
         <div class="out-card-body">
           <p class="pub-eyebrow pub-highlight">단행본 위탁개발</p>
           <h3 class="out-h3">원고 기획부터 서점 유통까지<br>귀사의 지식 자산을 <em>권위 있는 책</em>으로</h3>
           <p class="out-desc">구술 인터뷰 기록과 분산된 내부 자료만 준비해 주십시오. AI 팩트체크·문체 교정 에이전트와 함께 기획·편집하고, ISBN 발급부터 서점 유통까지 지원합니다.</p>
-          <a href="#contact" onclick="goToContactFor('단행본 프로젝트'); return false;" class="out-btn">위탁제작 문의</a>
-        </div>
-        <div class="out-card-thumb">
-          <img src="images/cs-book-coauthored.webp" alt="단행본 위탁개발 이미지">
+          <div class="out-edu-btns">
+            <a href="/book/" class="out-btn out-btn-gold">제작 예시 보기 →</a>
+            <a href="#contact" onclick="goToContactFor('단행본 프로젝트'); return false;" class="out-btn">위탁제작 문의</a>
+          </div>
         </div>
       </div>
 
-      <!-- 위탁교육 -->
+      <!-- 교육영상 위탁제작 (2026-11-13: "홍보영상"에서 변경 — 썸네일로 쓸 실제 홍보영상 사례가
+           없어서, 파커(SKKU)가 만든 3D 전자레인지 해부 영상(교육·설명형)의 렌더 이미지로 대체.
+           영상 파일 자체는 아직 대표 공개승인 전이라 홈페이지엔 안 쓰고 정지 이미지만 가져왔다.
+           원본: SKKU\06_수익화채널\영상\전자레인지_훅_v04_3D.mp4 → images/edu-video-microwave-3d.png
+           (복사본, 원본 안 건드림). -->
       <div class="out-card reveal">
-        <div class="out-card-body" style="max-width:none;">
+        <a class="out-card-thumb" href="#contact" onclick="goToContactFor('교육영상 위탁제작'); return false;">
+          <img src="images/edu-video-microwave-3d.png" alt="전자레인지 3D 해부 교육영상 예시">
+          <div class="out-thumb-play" aria-hidden="true"></div>
+        </a>
+        <div class="out-card-body">
+          <p class="pub-eyebrow pub-highlight">교육영상 위탁제작</p>
+          <h3 class="out-h3">복잡한 원리를<br><em>3D 영상</em>으로 쉽게 풀어냅니다</h3>
+          <p class="out-desc">제품·기술 원리를 3D 해부·시뮬레이션 영상으로 설명합니다. 기획·렌더링·편집을 위탁으로 제작합니다.</p>
+          <div class="out-edu-btns">
+            <a href="#contact" onclick="goToContactFor('교육영상 위탁제작'); return false;" class="out-btn">위탁제작 문의</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 위탁교육 — 과정이 2종이라 다른 카드보다 버튼이 하나 더 많다(둘 다 실제 상세 페이지로
+           가는 링크라 하나를 빼면 정보 손실이다. 2026-11-13). -->
+      <div class="out-card reveal">
+        <a class="out-card-thumb" href="education/unicorn.html" target="_blank">
+          <img src="education/images/hero.webp" alt="AI 실무교육 과정 예시">
+        </a>
+        <div class="out-card-body">
           <p class="pub-eyebrow pub-highlight">위탁교육</p>
           <h3 class="out-h3">실제 산출물로 배우는 <em>AI 실무교육</em></h3>
-          <div class="out-edu-grid">
-            <div class="out-edu-item">
-              <p class="out-edu-kicker">FEATURED COURSE · 5-DAY INTENSIVE</p>
-              <h4 class="out-edu-h4">AI 유니콘 첫발 딛기</h4>
-              <p class="out-edu-desc">브랜딩·법무·영업·콘텐츠 제작까지, 창업 실무를 AI 팀원이 대신합니다. 완성된 34개 산출물로 5일 안에 바로 적용합니다.</p>
-              <div class="out-edu-btns">
-                <a href="education/unicorn.html" target="_blank" class="out-btn out-btn-gold">과정 상세 보기 →</a>
-                <a href="#contact" onclick="goToContactFor('AI 유니콘 과정'); return false;" class="out-btn">교육 문의</a>
-              </div>
-            </div>
-            <div class="out-edu-item">
-              <p class="out-edu-kicker">RESEARCH COURSE · 2-DAY INTENSIVE</p>
-              <h4 class="out-edu-h4">AI 연구역량 과정</h4>
-              <p class="out-edu-desc">문헌 조사·발표 준비·논문 작성, 반복적인 연구 루틴을 AI가 대신합니다. 완성된 AI 연구 파이프라인으로 당일 바로 적용합니다.</p>
-              <div class="out-edu-btns">
-                <a href="education/research.html" target="_blank" class="out-btn out-btn-gold">과정 상세 보기 →</a>
-                <a href="#contact" onclick="goToContactFor('AI 연구역량 과정'); return false;" class="out-btn">교육 문의</a>
-              </div>
-            </div>
+          <p class="out-desc">창업 실무부터 연구 루틴까지, AI 팀원이 실무를 대신하는 과정 2종을 운영합니다.</p>
+          <div class="out-edu-btns">
+            <a href="education/unicorn.html" target="_blank" class="out-btn out-btn-gold">AI 유니콘 과정 →</a>
+            <a href="education/research.html" target="_blank" class="out-btn out-btn-gold">AI 연구역량 과정 →</a>
+            <a href="#contact" onclick="goToContactFor('AI 유니콘 과정'); return false;" class="out-btn">교육 문의</a>
           </div>
         </div>
       </div>
@@ -2126,9 +2431,9 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
   </section>
 
   <!-- ⑥ CONTACT / 협력제안 게시판 (라이브 index.html 그대로 이식) -->
+  <!-- 2026-11-13: 옛 파란 테마 시절 장식용 사선 블록(.deco-tr/.deco-bl)을 치웠다 — 대표가
+       "좌우에 이상한 마크들"이라고 지적. 지금 골드/글래스 톤과도 안 맞았다. -->
   <section id="contact" class="pg-contact">
-    <div class="deco deco-tr"></div>
-    <div class="deco deco-bl"></div>
     <div class="board-wrap">
       <p class="eyebrow white">CONTACT US</p>
       <h2 class="sec-h white">문의 게시판</h2>
@@ -2144,27 +2449,33 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
             <option value="데일리카드 위탁제작">데일리카드 위탁제작</option>
             <option value="온라인 매거진 위탁제작">온라인 매거진 위탁제작</option>
             <option value="단행본 프로젝트">단행본 프로젝트</option>
+            <option value="홍보영상 위탁제작">홍보영상 위탁제작</option>
+            <option value="교육영상 위탁제작">교육영상 위탁제작</option>
             <option value="엔지니어용 웹 시뮬레이터">엔지니어용 웹 시뮬레이터</option>
             <option value="기타">기타</option>
           </select>
         </div>
+        <!-- 2026-11-13: 이름/이메일에 autocomplete를 달아 브라우저 자동완성(자동선택)이 뜨게 하고,
+             소속·제목을 한 줄로 묶어 세로 길이를 한 줄 줄였다(대표 지적: "설문조사지 같다"). -->
         <div class="bf-row">
           <div class="bf-col">
             <label class="bf-label">이름 <span class="bf-req">*</span></label>
-            <input class="bf-input" type="text" name="name" placeholder="성함" maxlength="40" required>
+            <input class="bf-input" type="text" name="name" autocomplete="name" placeholder="성함" maxlength="40" required>
           </div>
           <div class="bf-col">
             <label class="bf-label">이메일 <span class="bf-req">*</span></label>
-            <input class="bf-input" type="email" name="email" placeholder="답장받을 이메일 주소" maxlength="120" required>
+            <input class="bf-input" type="email" name="email" autocomplete="email" placeholder="답장받을 이메일 주소" maxlength="120" required>
           </div>
         </div>
-        <div class="bf-full">
-          <label class="bf-label">소속 / 기관</label>
-          <input class="bf-input" type="text" name="organization" placeholder="회사 · 학교 · 기관명 (선택)" maxlength="80">
-        </div>
-        <div class="bf-full">
-          <label class="bf-label">제목 <span class="bf-req">*</span></label>
-          <input class="bf-input" id="bf-title" type="text" name="title" placeholder="문의 제목" maxlength="120" required>
+        <div class="bf-row">
+          <div class="bf-col">
+            <label class="bf-label">소속 / 기관</label>
+            <input class="bf-input" type="text" name="organization" autocomplete="organization" placeholder="회사 · 학교 · 기관명 (선택)" maxlength="80">
+          </div>
+          <div class="bf-col">
+            <label class="bf-label">제목 <span class="bf-req">*</span></label>
+            <input class="bf-input" id="bf-title" type="text" name="title" placeholder="문의 제목" maxlength="120" required>
+          </div>
         </div>
         <div class="bf-full">
           <label class="bf-label">내용 <span class="bf-req">*</span></label>
@@ -2751,6 +3062,15 @@ function syncUI() {
   if (prevBtn) prevBtn.disabled = currentIdx === 0;
   if (nextBtn) nextBtn.disabled = currentIdx === sections.length - 1;
   navLinks.forEach((el, i) => el.classList.toggle('active', i === currentIdx));
+  // HOME을 벗어나면(실제 섹션으로 스크롤) 큐브 연동 강조는 끈다 — 그 섹션 자체의 .active가 대신한다.
+  // 큐브 자동회전 타이머 자체도 멈춰야 한다 — 안 그러면 다른 섹션을 보는 중에도 타이머가
+  // 혼자 돌면서 네비바 강조가 계속 바뀐다(2026-11-13, "연동이 안 되고 순차적으로 돈다" 지적).
+  if (currentIdx !== 0) {
+    navLinks.forEach(el => el.classList.remove('cube-on'));
+    if (window.HeroCube) window.HeroCube.pause();
+  } else if (window.HeroCube) {
+    window.HeroCube.resume();
+  }
 }
 
 if (prevBtn) prevBtn.addEventListener('click', () => goTo(currentIdx - 1));
@@ -2805,14 +3125,122 @@ window.goto = function(id) {
   }
 };
 
-// ── 매거진 진열대: DISPLAY NOW 최신호 연동 ──
-// 디플이 새 호를 낼 때 data/display-now-latest.json 과 표지 파일만 갱신하면
+// ── 히어로 3D 큐브 (2026-11-07) — 실제 window.goto(id)를 그대로 호출해 해당 섹션으로 이동한다.
+(function initHeroCube(){
+  var wrap = document.getElementById('hcubeWrap');
+  if (!wrap) return;
+  var cube = document.getElementById('hcube');
+  var stage = document.getElementById('hcubeStage');
+  var faces = Array.prototype.slice.call(cube.querySelectorAll('.hface'));
+  var topFace = document.getElementById('hcubeTop');
+  var dotsWrap = document.getElementById('hcubeDots');
+  var prevBtn = wrap.querySelector('.hcube-arrow.prev');
+  var nextBtn = wrap.querySelector('.hcube-arrow.next');
+  var n = faces.length;
+  var active = 0;
+  var rotation = 0;
+  var half = 0;
+  var timer = null;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  faces.forEach(function(f, i){
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'hcube-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', '진열 ' + (i + 1));
+    dot.addEventListener('click', function(){ cGoTo(i); restart(); });
+    dotsWrap.appendChild(dot);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  prevBtn.addEventListener('click', function(){ cGoTo((active - 1 + n) % n); restart(); });
+  nextBtn.addEventListener('click', function(){ cGoTo((active + 1) % n); restart(); });
+
+  faces.forEach(function(f, i){
+    f.addEventListener('click', function(){
+      if (i === active) {
+        window.goto(f.getAttribute('data-goto'));
+      } else {
+        cGoTo(i);
+        restart();
+      }
+    });
+  });
+
+  function layout(){
+    half = stage.clientWidth / 2;
+    faces.forEach(function(f, i){
+      f.style.transform = 'rotateY(' + (i * 90) + 'deg) translateZ(' + half + 'px)';
+    });
+    // 윗면 크기는 옆면 깊이(half, = 가로/2)에 맞춰 정사각형(W×W)으로 잡아야 "처마"가 안 생긴다.
+    // 그 정사각형을 박스 세로 중앙(H/2)에 오도록 top을 보정한 뒤, 세로 절반(H/2)만큼 밀어 올리고
+    // 90도 젖혀야 실제 박스 상단 높이와 깊이가 둘 다 맞는다(2026-11-13, 처마 버그 수정).
+    var H = stage.clientHeight, W = stage.clientWidth;
+    topFace.style.left = '0px';
+    topFace.style.width = W + 'px';
+    topFace.style.height = W + 'px';
+    topFace.style.top = ((H - W) / 2) + 'px';
+    topFace.style.transform = 'rotateX(90deg) translateZ(' + (H / 2) + 'px)';
+    applyCubeTransform();
+  }
+  function applyCubeTransform(){
+    // 정면만 보이면 평평한 카드처럼 보인다 — rotateX로 살짝 내려다보고, rotateY에 고정 오프셋(18deg)을
+    // 더해 옆면 모서리가 살짝 드러나게 해서 진짜 입체 큐브로 보이게 한다(2026-11-13).
+    cube.style.transform = 'translateZ(-' + half + 'px) rotateX(-16deg) rotateY(' + (rotation + 18) + 'deg)';
+  }
+  function cGoTo(target){
+    var diff = (target - active + n) % n;
+    if (diff > n / 2) diff -= n;
+    rotation -= diff * 90;
+    active = target;
+    applyCubeTransform();
+    dots.forEach(function(d, idx){ d.classList.toggle('active', idx === active); });
+    document.documentElement.style.setProperty('--hcube-glow', faces[active].getAttribute('data-glow'));
+    // 윗면 뚜껑도 지금 보이는 면과 같은 색으로 바꿔 한 덩어리처럼 보이게 한다.
+    var activeColor = Array.prototype.slice.call(faces[active].classList).filter(function(c){ return c.indexOf('c-') === 0; })[0];
+    topFace.className = 'hface-top' + (activeColor ? ' ' + activeColor : '');
+    // 네비바 글상자를 지금 보이는 큐브 면과 같은 색으로 키워서 연동한다.
+    document.querySelectorAll('.nav-link[data-cube]').forEach(function(el){
+      el.classList.toggle('cube-on', Number(el.getAttribute('data-cube')) === active);
+    });
+  }
+  function next(){ cGoTo((active + 1) % n); }
+  function restart(){
+    if (reduced || awayFromHome) return;
+    clearInterval(timer);
+    timer = setInterval(next, 4500);
+  }
+
+  // HOME 페이지를 벗어나도 이 타이머는 그냥 계속 돌아서, 다른 섹션을 보는 중에도
+  // 4.5초마다 네비바 강조색이 혼자 바뀌는 문제가 있었다(2026-11-13 대표 지적 — "연동이 안 되고
+  // 계속 순차적으로 돌고 있다"). HOME을 벗어나면 타이머를 완전히 멈추고, 돌아오면 다시 돌린다.
+  var awayFromHome = false;
+  function pause(){ awayFromHome = true; clearInterval(timer); }
+  function resume(){
+    awayFromHome = false;
+    cGoTo(active); // 멈춰있던 동안 꺼졌던 cube-on 강조를 지금 큐브가 보여주는 면 기준으로 즉시 되살린다
+    restart();
+  }
+  window.HeroCube = { pause: pause, resume: resume };
+
+  window.addEventListener('resize', layout);
+  stage.addEventListener('mouseenter', function(){ clearInterval(timer); });
+  stage.addEventListener('mouseleave', restart);
+
+  layout();
+  cGoTo(0);
+  restart();
+})();
+
+// ── 매거진 진열대: DISPLAY NOW 최신호 연동 (2단 선반, 앞줄 3 + 뒷줄 3) ──
+// 디플이 새 호를 낼 때 data/display-now-issues.json 과 표지 파일만 갱신하면
 // 여기가 알아서 표지·라벨·링크를 바꾼다. 파일이 없거나 형식이 깨져도
 // HTML에 적힌 기본값이 그대로 남으므로 진열대가 비지 않는다.
 (function syncDisplayNowShelf() {
-  const box = document.getElementById('dnCovers');
-  if (!box) return;
-  const MAX = 3;   // 최신 3호까지만. 더 늘리면 96px 칸이 좁아진다.
+  const boxFront = document.getElementById('dnCovers');
+  const boxBack = document.getElementById('dnCoversBack');
+  if (!boxFront || !boxBack) return;
+  const MAX = 6;   // 앞줄 3 + 뒷줄 3 = 최신 6호까지.
 
   // 신형(배열) 우선, 없으면 구형(단일 객체)으로 폴백한다.
   // 디플이 규격을 아직 못 봤을 때도 진열대가 비지 않게 하기 위함.
@@ -2825,34 +3253,44 @@ window.goto = function(id) {
     return [];
   };
 
+  const buildSlot = (x, isFirst) => {
+    const a = document.createElement('a');
+    a.className = 'cover-slot';
+    a.href = x.url; a.target = '_blank'; a.rel = 'noopener';
+    const card = document.createElement('div');
+    card.className = 'cover-card';
+    if (isFirst) {                              // NEW 배지는 최신호에만
+      const pin = document.createElement('span');
+      pin.className = 'new-pin'; pin.textContent = 'NEW';
+      card.appendChild(pin);
+    }
+    const img = document.createElement('img');
+    img.src = x.cover;
+    img.alt = x.alt || ('DISPLAY NOW 제' + (x.issue || '') + '호 표지');
+    card.appendChild(img);
+    const vol = document.createElement('div');
+    vol.className = 'cover-vol';
+    vol.textContent = x.label || ('DISPLAY NOW 제' + (x.issue || '') + '호');
+    a.appendChild(card); a.appendChild(vol);
+    return a;
+  };
+
   const draw = (list) => {
     const items = list
       .filter(x => x && typeof x.url === 'string' && typeof x.cover === 'string')
       .slice(0, MAX);
     if (!items.length) return;                 // 비면 HTML 기본값 유지
-    const frag = document.createDocumentFragment();
-    items.forEach((x, i) => {
-      const a = document.createElement('a');
-      a.className = 'cover-slot';
-      a.href = x.url; a.target = '_blank'; a.rel = 'noopener';
-      const card = document.createElement('div');
-      card.className = 'cover-card';
-      if (i === 0) {                            // NEW 배지는 최신호에만
-        const pin = document.createElement('span');
-        pin.className = 'new-pin'; pin.textContent = 'NEW';
-        card.appendChild(pin);
-      }
-      const img = document.createElement('img');
-      img.src = x.cover;
-      img.alt = x.alt || ('DISPLAY NOW 제' + (x.issue || '') + '호 표지');
-      card.appendChild(img);
-      const vol = document.createElement('div');
-      vol.className = 'cover-vol';
-      vol.textContent = x.label || ('DISPLAY NOW 제' + (x.issue || '') + '호');
-      a.appendChild(card); a.appendChild(vol);
-      frag.appendChild(a);
-    });
-    box.replaceChildren(frag);
+    const front = items.slice(0, 3);
+    const back = items.slice(3, 6);
+    if (!back.length) return;                  // 6개 미만이면 2단 배치가 어색해지므로 기본값 유지
+
+    const fragFront = document.createDocumentFragment();
+    front.forEach((x, i) => fragFront.appendChild(buildSlot(x, i === 0)));
+    boxFront.replaceChildren(fragFront);
+
+    const fragBack = document.createDocumentFragment();
+    back.forEach(x => fragBack.appendChild(buildSlot(x, false)));
+    boxBack.replaceChildren(fragBack);
   };
 
   load('data/display-now-issues.json')
@@ -2862,43 +3300,177 @@ window.goto = function(id) {
       .catch(err => console.warn('DISPLAY NOW 발행호 정보를 읽지 못했습니다 — 기본값 유지:', err.message)));
 })();
 
-// ── 단행본사업 서가: data/books.json 의 imprint:"display-now-books" 연동 ──
-// 단행본팀이 이 임프린트로 새 책을 내면 books.json 배열에 한 항목만 추가하면 되고,
-// 이 HTML은 건드릴 필요가 없다. 최대 6권(2줄 × 3)까지 진열한다.
-// JSON을 못 읽거나 항목이 없으면 HTML 기본값(표면처리기술 1권)이 그대로 남는다.
-(function syncDisplayNowBooksShelf() {
-  const box = document.getElementById('dnBooksCovers');
-  if (!box) return;
-  const MAX = 6;
+// ── 단행본사업 "회전접시" — 커버플로 방식 드래그 캐러셀 (2026-11-13) ──
+// 6칸을 정육각형처럼 똑같은 각도로 돌리면 메인도 옆칸과 같은 크기일 수밖에 없다(2026-11-13 대표
+// 지적). 그래서 "링 전체 회전"을 버리고, 각 칸을 "중심에서 몇 칸 떨어져 있나(d)"로 직접
+// translateX/scale/opacity를 계산해 배치한다 — d=0(정면)은 기준 크기 그대로, |d|가 커질수록
+// 비선형으로 작아지고 흐려진다. GAP·SCALE_K 숫자만 바꾸면 "메인 대비 옆칸 크기"를 조절할 수 있다.
+var BookWheel = (function () {
+  var stage, ring, prevBtn, nextBtn, items = [], n = 0, bound = false;
+  var GAP = 150;        // 칸 사이 가로 간격(px) — layout()에서 실제 칸 폭(모바일에서 더 작음)에
+                         // 비례하도록 다시 계산한다(칸 폭의 .68배가 기본 비율)
+  var SCALE_K = 0.8;     // scale = 1/(1+SCALE_K*|d|) — 클수록 옆칸이 더 빨리 작아진다
+  var pos = 0, dragging = false, dragStartX = 0, dragStartPos = 0, dragMoved = false, capturedPointerId = null;
+
+  function wrapDiff(d) {
+    d = d % n;
+    if (d > n / 2) d -= n;
+    if (d < -n / 2) d += n;
+    return d;
+  }
+  function render() {
+    items.forEach(function (it, i) {
+      var d = wrapDiff(i - pos);
+      var absD = Math.abs(d);
+      var sign = d === 0 ? 0 : (d > 0 ? 1 : -1);
+      var scale = 1 / (1 + SCALE_K * absD);
+      var tiltAmount = Math.min(absD, 1); // 바로 옆칸까지만 완전히 기울이고, 더 먼 칸은 같은 각도 유지
+      it.style.transform = 'translateX(' + (d * GAP).toFixed(1) + 'px) translateZ(' + (-absD * 70).toFixed(0) + 'px) '
+        + 'rotateY(' + (-sign * tiltAmount * 30).toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')';
+      it.style.opacity = Math.max(0.18, 1 - absD * 0.32).toFixed(2);
+      it.style.zIndex = String(100 - Math.round(absD * 10));
+      it.style.pointerEvents = absD > n / 2 - 0.5 ? 'none' : 'auto';
+    });
+  }
+  function activeIndex() {
+    return (((Math.round(pos) % n) + n) % n);
+  }
+  function setPos(p, animate) {
+    pos = p;
+    if (animate) ring.classList.remove('no-transition'); else ring.classList.add('no-transition');
+    render();
+  }
+  function goToIndex(i, animate) {
+    // i와 현재 pos 사이의 최단 경로(래핑 포함)로 이동 — 6칸을 넘나들 때 먼 길로 안 돈다.
+    setPos(pos + wrapDiff(i - pos), animate);
+  }
+  function layout() {
+    if (items.length) {
+      // getBoundingClientRect는 scale() 적용 후 크기라 옆칸일 때 작게 잡힌다 —
+      // transform 영향을 안 받는 computed width(레이아웃 폭)로 재야 한다.
+      var w = parseFloat(getComputedStyle(items[0]).width) || 220;
+      GAP = w * 0.68;
+    }
+    render();
+  }
+  function bindItems() {
+    items = Array.prototype.slice.call(ring.querySelectorAll('.bw-item'));
+    n = items.length;
+    pos = 0;
+    items.forEach(function (it, i) {
+      it.addEventListener('click', function (e) {
+        if (dragMoved) { e.preventDefault(); dragMoved = false; return; }
+        if (i !== activeIndex()) {
+          e.preventDefault();
+          goToIndex(i, true);
+        }
+        // i === activeIndex()이고 실제 책(<a href>)이면 기본 동작(이동)을 막지 않는다.
+      });
+    });
+    layout();
+  }
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    stage.classList.remove('dragging');
+    if (capturedPointerId !== null) {
+      try { stage.releasePointerCapture(capturedPointerId); } catch (_) {}
+      capturedPointerId = null;
+    }
+    setPos(Math.round(pos), true);
+  }
+  function bindOnce() {
+    if (bound) return;
+    bound = true;
+    stage.addEventListener('pointerdown', function (e) {
+      dragging = true; dragMoved = false;
+      dragStartX = e.clientX; dragStartPos = pos;
+      ring.classList.add('no-transition');
+      stage.classList.add('dragging');
+      // setPointerCapture는 여기서 바로 걸지 않는다 — pointerdown 시점에 걸면 "드래그 없이
+      // 그냥 클릭"만 해도 캡처가 한 번 걸렸다 풀리면서 그 뒤의 click 이벤트가 stage로
+      // 재타게팅돼, 앞면 책 <a href>를 클릭해도 실제 이동(navigation)이 전혀 안 일어났다
+      // (2026-11-13 발견 — pointerup에서 release만 해서는 안 고쳐졌고, Playwright로
+      // "캡처를 아예 안 걸면 클릭이 된다"를 직접 확인해서 원인을 좁혔다). 그래서 실제로
+      // "끌었다"고 판단되는 순간(pointermove에서 dragMoved=true 될 때)에만 늦게 캡처한다 —
+      // 단순 클릭은 캡처를 아예 거치지 않아 click 타게팅이 흐트러지지 않는다.
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - dragStartX;
+      if (Math.abs(dx) > 4 && !dragMoved) {
+        dragMoved = true;
+        capturedPointerId = e.pointerId;
+        try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+      setPos(dragStartPos - dx / GAP, false);
+    });
+    stage.addEventListener('pointerup', endDrag);
+    stage.addEventListener('pointercancel', endDrag);
+    stage.addEventListener('pointerleave', function () { if (dragging) endDrag(); });
+    prevBtn.addEventListener('click', function () { goToIndex((activeIndex() - 1 + n) % n, true); });
+    nextBtn.addEventListener('click', function () { goToIndex((activeIndex() + 1) % n, true); });
+    window.addEventListener('resize', layout);
+  }
+  function init() {
+    stage = document.getElementById('bwStage');
+    if (!stage) return;
+    ring = document.getElementById('bwRing');
+    prevBtn = document.getElementById('bwPrev');
+    nextBtn = document.getElementById('bwNext');
+    bindItems();
+    bindOnce();
+  }
+  return { init: init, rebind: bindItems };
+})();
+BookWheel.init();
+
+// ── 단행본사업 회전접시 연동: data/books.json 의 imprint:"display-now-books" ──
+// 책이 1권뿐이면 손대지 않는다(HTML 기본값 = 책 1 + COMING SOON 5가 이미 그 상태).
+// 2권 이상이면 최신순으로 앞쪽 슬롯을 실제 책으로 채우고, COMING SOON은 최소 2칸까지만 줄인다.
+(function syncDisplayNowBooksWheel() {
+  var ring = document.getElementById('bwRing');
+  if (!ring) return;
+  var MIN_COMING = 2, MAX_TOTAL = 8;
 
   fetch('data/books.json', { cache: 'no-cache' })
-    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
-    .then(d => {
-      const items = (d && Array.isArray(d.books) ? d.books : [])
-        .filter(b => b && b.imprint === 'display-now-books'
-                     && typeof b.url === 'string' && typeof b.cover === 'string')
-        .slice(0, MAX);
-      if (!items.length) return;                 // 비면 HTML 기본값 유지
-      const frag = document.createDocumentFragment();
-      items.forEach(b => {
-        const a = document.createElement('a');
-        a.className = 'cover-slot';
-        a.href = b.url;
-        const card = document.createElement('div');
-        card.className = 'cover-card';
-        const img = document.createElement('img');
-        img.src = b.cover;
-        img.alt = (b.title || '') + ' 표지';
-        card.appendChild(img);
-        const vol = document.createElement('div');
-        vol.className = 'cover-vol';
-        vol.textContent = b.title || '';
-        a.appendChild(card); a.appendChild(vol);
-        frag.appendChild(a);
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)); })
+    .then(function (d) {
+      var items = (d && Array.isArray(d.books) ? d.books : [])
+        .filter(function (b) {
+          return b && b.imprint === 'display-now-books'
+            && typeof b.url === 'string' && typeof b.cover === 'string';
+        });
+      if (items.length <= 1) return;              // 1권 이하면 HTML 기본값 유지
+
+      var realCount = Math.min(items.length, MAX_TOTAL - MIN_COMING);
+      var comingCount = Math.max(MIN_COMING, MAX_TOTAL - realCount);
+      var frag = document.createDocumentFragment();
+
+      items.slice(0, realCount).forEach(function (b) {
+        var div = document.createElement('div');
+        div.className = 'bw-item'; div.setAttribute('data-type', 'book');
+        var a = document.createElement('a');
+        a.className = 'bw-card'; a.href = b.url; a.draggable = false;
+        var img = document.createElement('img');
+        img.src = b.cover; img.alt = (b.title || '') + ' 표지'; img.draggable = false;
+        a.appendChild(img);
+        var label = document.createElement('div');
+        label.className = 'bw-label'; label.textContent = b.title || '';
+        div.appendChild(a); div.appendChild(label);
+        frag.appendChild(div);
       });
-      box.replaceChildren(frag);
+      for (var i = 0; i < comingCount; i++) {
+        var cdiv = document.createElement('div');
+        cdiv.className = 'bw-item'; cdiv.setAttribute('data-type', 'coming');
+        cdiv.innerHTML = '<div class="bw-card bw-card-coming"><span class="bw-coming-badge">COMING SOON</span></div>'
+          + '<div class="bw-label bw-label-muted">다음 책<br>준비 중</div>';
+        frag.appendChild(cdiv);
+      }
+      ring.replaceChildren(frag);
+      BookWheel.rebind();
     })
-    .catch(err => console.warn('단행본사업 서가 정보를 읽지 못했습니다 — 기본값 유지:', err.message));
+    .catch(function (err) { console.warn('단행본 회전접시 정보를 읽지 못했습니다 — 기본값 유지:', err.message); });
 })();
 
 // ── 매거진 좌측: DISPLAY NOW 최신 기사 목록 연동 ──
