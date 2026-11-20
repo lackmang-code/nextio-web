@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-20",
   "_note": "단행본출판팀 소관 파일. 홍보팀은 /book/ 렌더링만 담당한다. 책이 늘면 books 배열에 한 항목을 추가하고, 홈페이지에 /book/<slug>/ 폴더를 요청한다. 표지·제목·특전은 HTML에 구워져 있고(종이에 박히는 것), 이 파일은 시간이 지나며 변하는 것만 담는다 — status · purchase · errata.",
   "books": [
     {
@@ -83,6 +83,45 @@
           "published_at": "2026-11-06",
           "price": 11000,
           "isbn": "979-11-221309-3-5"
+        }
+      ]
+    },
+    {
+      "slug": "sensor-tech-1",
+      "imprint": "display-now-books",
+      "title": "디스플레이 센서기술 I",
+      "subtitle": "박원상 기획·편집·감수",
+      "author": "DISPLAY NOW 편집부",
+      "cover": "/book/sensor-tech-1/cover.jpg",
+      "url": "/book/sensor-tech-1/",
+      "blurb": "화면 아래로 옮겨 간 다섯 센서가 무엇을 잃었고 어떻게 되찾아 왔는지 — 조도·근접 센서, 화면 밑 카메라, 얼굴 인식, 광학·초음파 지문 센서를 그림으로 풀어낸 기술 가이드북.",
+      "status": "전자책 · 종이책 출간",
+      "published_at": "2026-11-26",
+      "purchase": [
+        {
+          "name": "교보문고에서 전자책 구매",
+          "url": "https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000013849277"
+        },
+        {
+          "name": "교보문고에서 종이책 구매",
+          "url": "https://product.kyobobook.co.kr/detail/S000222029805"
+        }
+      ],
+      "errata": [],
+      "bonus": {},
+      "editions": [
+        {
+          "format": "종이책",
+          "published_at": "2026-11-26",
+          "price": 16000,
+          "isbn": "979-11-221309-4-2",
+          "spec": "신국판 · 컬러 202쪽"
+        },
+        {
+          "format": "전자책",
+          "published_at": "2026-11-26",
+          "price": 11000,
+          "isbn": "979-11-221309-5-9"
         }
       ]
     }
