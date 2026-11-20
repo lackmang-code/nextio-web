@@ -117,6 +117,16 @@
         <p class="go">독자 페이지 열기 →</p>
       </div>
     </a>
+    <a class="book" href="/book/surface-treatment-en/">
+      <img src="/book/surface-treatment-en/cover.jpg" alt="Display Surface Treatment Technology cover">
+      <div class="body">
+        <span class="status">Kindle eBook</span>
+        <h2>Display Surface Treatment Technology</h2>
+        <p class="sub">DISPLAY NOW Editorial Team · Planning, editing, and review by Won Sang Park</p>
+        <p class="blurb">Every screen you touch is wrapped in films you never see. Seven films on today's displays — anti-fingerprint, anti-glare, anti-reflection, moth-eye, antistatic, hard coat, and flexible hard coat — from everyday scenes down to the physics and the numbers engineers use.</p>
+        <p class="go">독자 페이지 열기 →</p>
+      </div>
+    </a>
   </div>
 
   <div class="note">
@@ -165,7 +175,7 @@
           + '<div class="body">'
           + (b.status ? '<span class="status">' + esc(b.status) + '</span>' : '')
           + '<h2>' + esc(b.title) + '</h2>'
-          + '<p class="sub">' + esc(b.author) + ' 지음'
+          + '<p class="sub">' + esc(b.author) + (b.lang === 'en' ? '' : ' 지음')
           + (b.subtitle ? ' · ' + esc(b.subtitle) : '') + '</p>'
           + (b.blurb ? '<p class="blurb">' + esc(b.blurb) + '</p>' : '')
           + '<p class="go">독자 페이지 열기 →</p>'

@@ -2241,6 +2241,11 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
         <!-- 2026-11-13: 썸네일 이미지 자체에 제목 문구가 이미 들어있어 옆에 같은 텍스트를 또 쓰면
              중복이다 — 썸네일만 크게 보여주고, 이미지에 없는 정보(러닝타임·날짜)만 아래 한 줄로 남긴다. -->
         <div class="tv-video-list">
+          <a class="tv-video-item" href="https://youtu.be/xJ9qIbUoVA4" target="_blank" rel="noopener">
+            <img src="images/dn-tv-pwm-flicker.jpg" alt="OLED 맥북 프로 두통 논란, PWM 디밍이 뭐길래? 썸네일" class="tv-video-thumb">
+            <span class="tv-video-play" aria-hidden="true"></span>
+            <span class="tv-video-meta">5:44 · 2026.11.16</span>
+          </a>
           <a class="tv-video-item" href="https://youtu.be/DnWvhOUgxLI" target="_blank" rel="noopener">
             <img src="images/dn-tv-ultrasonic-fingerprint.webp" alt="지문을 소리로 읽는다고? 초음파 지문센서의 원리 썸네일" class="tv-video-thumb">
             <span class="tv-video-play" aria-hidden="true"></span>
@@ -3458,7 +3463,7 @@ BookWheel.init();
         var a = document.createElement('a');
         a.className = 'bw-card'; a.href = b.url; a.draggable = false;
         var img = document.createElement('img');
-        img.src = b.cover; img.alt = (b.title || '') + ' 표지'; img.draggable = false;
+        img.src = b.cover; img.alt = (b.title || '') + (b.lang === 'en' ? ' cover' : ' 표지'); img.draggable = false;
         a.appendChild(img);
         var label = document.createElement('div');
         label.className = 'bw-label'; label.textContent = b.title || '';

@@ -124,6 +124,35 @@
           "isbn": "979-11-221309-5-9"
         }
       ]
+    },
+    {
+      "slug": "surface-treatment-en",
+      "imprint": "display-now-books",
+      "lang": "en",
+      "title": "Display Surface Treatment Technology",
+      "subtitle": "Planning, editing, and review by Won Sang Park",
+      "author": "DISPLAY NOW Editorial Team",
+      "cover": "/book/surface-treatment-en/cover.jpg",
+      "url": "/book/surface-treatment-en/",
+      "blurb": "Every screen you touch is wrapped in films you never see. Seven films on today's displays — anti-fingerprint, anti-glare, anti-reflection, moth-eye, antistatic, hard coat, and flexible hard coat — from everyday scenes down to the physics and the numbers engineers use.",
+      "status": "Kindle eBook",
+      "published_at": "2026-11-19",
+      "purchase": [
+        {
+          "name": "Buy on Amazon (Kindle)",
+          "url": "https://www.amazon.com/dp/B0HS7ZBXRX"
+        }
+      ],
+      "errata": [],
+      "bonus": {},
+      "editions": [
+        {
+          "format": "Kindle eBook",
+          "published_at": "2026-11-19",
+          "spec": "US$9.99",
+          "isbn": "B0HS7ZBXRX"
+        }
+      ]
     }
   ]
 }
