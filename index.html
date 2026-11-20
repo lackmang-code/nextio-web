@@ -1924,20 +1924,20 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <div class="hcube" id="hcube">
 
         <div class="hface c-gold" data-goto="magazine" data-glow="251,191,36">
-          <div class="hface-media"><img src="images/magazine-cover-display-now-12.webp" alt="DISPLAY NOW 제12호 표지"></div>
+          <div class="hface-media"><img id="hcubeMagImg" src="images/magazine-cover-display-now-14.webp" alt="DISPLAY NOW 제14호 표지"></div>
           <div class="hface-cap"><span>DISPLAY NOW <em>MAGAZINE</em><i>→</i></span></div>
         </div>
 
         <div class="hface c-blue" data-goto="tv" data-glow="111,168,255">
           <div class="hface-media">
-            <img src="images/dn-tv-ultrasonic-fingerprint.webp" alt="지문을 소리로 읽는다고? 초음파 지문센서의 원리 썸네일">
+            <img id="hcubeTvImg" src="https://i.ytimg.com/vi/xJ9qIbUoVA4/hqdefault.jpg" alt="OLED 맥북 프로 두통 논란, PWM 디밍이 뭐길래? 썸네일">
             <div class="hface-play" aria-hidden="true"></div>
           </div>
           <div class="hface-cap"><span>DISPLAY NOW <em>TV</em><i>→</i></span></div>
         </div>
 
         <div class="hface c-green" data-goto="book" data-glow="74,222,128">
-          <div class="hface-media"><img src="/book/surface-treatment/cover.jpg" alt="디스플레이 표면처리기술 표지"></div>
+          <div class="hface-media"><img id="hcubeBookImg" src="/book/sensor-tech-1/cover.jpg" alt="디스플레이 센서기술 I 표지"></div>
           <div class="hface-cap"><span>DISPLAY NOW <em>BOOKS</em><i>→</i></span></div>
         </div>
 
@@ -2240,7 +2240,7 @@ a.col-item:hover .col-arrow{color:var(--gold);transform:translateX(2px)}
       <div class="pub-right reveal reveal-d2">
         <!-- 2026-11-13: 썸네일 이미지 자체에 제목 문구가 이미 들어있어 옆에 같은 텍스트를 또 쓰면
              중복이다 — 썸네일만 크게 보여주고, 이미지에 없는 정보(러닝타임·날짜)만 아래 한 줄로 남긴다. -->
-        <div class="tv-video-list">
+        <div class="tv-video-list" id="tvVideoList">
           <a class="tv-video-item" href="https://youtu.be/xJ9qIbUoVA4" target="_blank" rel="noopener">
             <img src="images/dn-tv-pwm-flicker.jpg" alt="OLED 맥북 프로 두통 논란, PWM 디밍이 뭐길래? 썸네일" class="tv-video-thumb">
             <span class="tv-video-play" aria-hidden="true"></span>
@@ -3290,6 +3290,15 @@ window.goto = function(id) {
       .filter(x => x && typeof x.url === 'string' && typeof x.cover === 'string')
       .slice(0, MAX);
     if (!items.length) return;                 // 비면 HTML 기본값 유지
+
+    // 히어로 큐브의 매거진 면은 2단 선반 조건(6개 이상)과 무관하게 항상 최신호로 맞춘다 —
+    // 배열 맨 앞(items[0])이 최신호라는 전제(새 호는 맨 앞에 추가).
+    const cubeImg = document.getElementById('hcubeMagImg');
+    if (cubeImg && items[0]) {
+      cubeImg.src = items[0].cover;
+      cubeImg.alt = items[0].alt || ('DISPLAY NOW 제' + (items[0].issue || '') + '호 표지');
+    }
+
     const front = items.slice(0, 3);
     const back = items.slice(3, 6);
     if (!back.length) return;                  // 6개 미만이면 2단 배치가 어색해지므로 기본값 유지
@@ -3308,6 +3317,52 @@ window.goto = function(id) {
     .catch(() => load('data/display-now-latest.json')
       .then(d => draw(norm(d)))
       .catch(err => console.warn('DISPLAY NOW 발행호 정보를 읽지 못했습니다 — 기본값 유지:', err.message)));
+})();
+
+// ── 영상사업(TV) 최신 영상 연동 ──
+// 디플영상이 data/display-now-videos.json 맨 앞에 영상을 추가하면 목록과 히어로 큐브 TV 면이
+// 함께 최신으로 바뀐다. 썸네일은 유튜브 CDN(i.ytimg.com)에서 영상 ID로 바로 가져오므로
+// 썸네일 이미지 파일을 따로 올릴 필요가 없다. 파일이 없거나 형식이 깨지면 HTML 기본값이 남는다.
+(function syncDisplayNowVideos() {
+  const list = document.getElementById('tvVideoList');
+  if (!list) return;
+  const MAX = 4;
+
+  fetch('data/display-now-videos.json', { cache: 'no-cache' })
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+    .then(d => {
+      const items = (d && Array.isArray(d.videos) ? d.videos : [])
+        .filter(v => v && typeof v.videoId === 'string' && typeof v.title === 'string')
+        .slice(0, MAX);
+      if (!items.length) return;                  // 비면 HTML 기본값 유지
+
+      const cubeImg = document.getElementById('hcubeTvImg');
+      if (cubeImg && items[0]) {
+        cubeImg.src = `https://i.ytimg.com/vi/${items[0].videoId}/hqdefault.jpg`;
+        cubeImg.alt = items[0].title + ' 썸네일';
+      }
+
+      const frag = document.createDocumentFragment();
+      items.forEach(v => {
+        const a = document.createElement('a');
+        a.className = 'tv-video-item'; a.href = `https://youtu.be/${v.videoId}`;
+        a.target = '_blank'; a.rel = 'noopener';
+        const img = document.createElement('img');
+        img.className = 'tv-video-thumb';
+        img.src = `https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`;
+        img.alt = v.title + ' 썸네일';
+        const play = document.createElement('span');
+        play.className = 'tv-video-play'; play.setAttribute('aria-hidden', 'true');
+        const meta = document.createElement('span');
+        meta.className = 'tv-video-meta';
+        meta.textContent = [v.duration, v.published_at ? v.published_at.replace(/-/g, '.') : '']
+          .filter(Boolean).join(' · ');
+        a.appendChild(img); a.appendChild(play); a.appendChild(meta);
+        frag.appendChild(a);
+      });
+      list.replaceChildren(frag);
+    })
+    .catch(err => console.warn('DISPLAY NOW TV 영상 정보를 읽지 못했습니다 — 기본값 유지:', err.message));
 })();
 
 // ── 단행본사업 "회전접시" — 커버플로 방식 드래그 캐러셀 (2026-11-13) ──
@@ -3451,7 +3506,21 @@ BookWheel.init();
           return b && b.imprint === 'display-now-books'
             && typeof b.url === 'string' && typeof b.cover === 'string';
         });
-      if (items.length <= 1) return;              // 1권 이하면 HTML 기본값 유지
+
+      // 히어로 큐브의 단행본 면은 회전접시와 별개로, published_at이 가장 늦은(최신) 책으로 맞춘다
+      // (books.json은 책을 배열 끝에 추가해 와서 맨 앞이 최신이라는 보장이 없다 — 날짜로 직접 비교).
+      var cubeImg = document.getElementById('hcubeBookImg');
+      if (cubeImg && items.length) {
+        var latest = items.reduce(function (a, b) {
+          return (!a || (b.published_at || '') > (a.published_at || '')) ? b : a;
+        }, null);
+        if (latest) {
+          cubeImg.src = latest.cover;
+          cubeImg.alt = (latest.title || '') + (latest.lang === 'en' ? ' cover' : ' 표지');
+        }
+      }
+
+      if (items.length <= 1) return;              // 1권 이하면 회전접시는 HTML 기본값 유지
 
       var realCount = Math.min(items.length, MAX_TOTAL - MIN_COMING);
       var comingCount = Math.max(MIN_COMING, MAX_TOTAL - realCount);

@@ -1,0 +1,30 @@
+{
+  "_note": "디플영상(04_Display_Now/디플영상) 소관. 새 롱폼/영상을 유튜브에 공개하면 이 배열 맨 앞에 한 항목을 추가한다(videoId·title·duration·published_at). 썸네일은 유튜브 영상 ID로 자동 생성되므로(i.ytimg.com/vi/<id>/hqdefault.jpg) 별도 이미지 파일을 올릴 필요가 없다. 홈페이지는 앞에서 최대 4개만 2x2로 보여준다.",
+  "updated": "2026-11-20",
+  "videos": [
+    {
+      "videoId": "xJ9qIbUoVA4",
+      "title": "OLED 맥북 프로 두통 논란, PWM 디밍이 뭐길래?",
+      "duration": "5:44",
+      "published_at": "2026-11-16"
+    },
+    {
+      "videoId": "DnWvhOUgxLI",
+      "title": "지문을 소리로 읽는다고? 초음파 지문센서의 원리",
+      "duration": "9:32",
+      "published_at": "2026-11-06"
+    },
+    {
+      "videoId": "fX3DIFYgt3k",
+      "title": "애플 듀오 화면 라인불량, 원인은 힌지?",
+      "duration": "6:54",
+      "published_at": "2026-11-02"
+    },
+    {
+      "videoId": "upKBkH7KEbw",
+      "title": "아이폰 18 Pro Face ID, 화면 아래로 내려갔다는데 사실일까?",
+      "duration": "6:27",
+      "published_at": "2026-10-31"
+    }
+  ]
+}
