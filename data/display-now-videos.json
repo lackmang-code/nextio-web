@@ -1,7 +1,13 @@
 {
   "_note": "디플영상(04_Display_Now/디플영상) 소관. 새 롱폼/영상을 유튜브에 공개하면 이 배열 맨 앞에 한 항목을 추가한다(videoId·title·duration·published_at). 썸네일은 유튜브 영상 ID로 자동 생성되므로(i.ytimg.com/vi/<id>/hqdefault.jpg) 별도 이미지 파일을 올릴 필요가 없다. 홈페이지는 앞에서 최대 4개만 2x2로 보여준다.",
-  "updated": "2026-11-20",
+  "updated": "2026-11-23",
   "videos": [
+    {
+      "videoId": "oVXr5k49XIU",
+      "title": "유리가 어떻게 접히지? 접는 폰 유리의 원리",
+      "duration": "8:47",
+      "published_at": "2026-11-23"
+    },
     {
       "videoId": "xJ9qIbUoVA4",
       "title": "OLED 맥북 프로 두통 논란, PWM 디밍이 뭐길래?",
